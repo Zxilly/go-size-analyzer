@@ -10,7 +10,7 @@ namespace gsv {
         static bool check_golang_toolchain();
     public:
         GoNM();
-        void execute(std::string binary);
+        void execute(const std::string& binary);
     };
 
 } // gsv

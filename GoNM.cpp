@@ -36,7 +36,7 @@ namespace gsv {
         return false;
     }
 
-    void GoNM::execute(std::string binary) {
+    void GoNM::execute(const std::string& binary) {
 
     }
 
