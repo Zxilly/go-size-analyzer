@@ -3,4 +3,5 @@ project(go-size-analysis)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(go-size-analysis main.cpp)
+include_directories(${PROJECT_SOURCE_DIR})
+add_executable(go-size-analysis main.cpp GoNM.cpp utils.cpp utils.h)
