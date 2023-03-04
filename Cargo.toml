@@ -1,0 +1,23 @@
+[package]
+name = "go-size-view"
+version = "0.1.0"
+edition = "2021"
+description = "Analysis golang compiled binary size"
+authors = ["Zxilly <zxilly@outlook.com>"]
+license = "MPL-2.0"
+readme = "README.md"
+homepage = "https://github.com/Zxilly/go-size-view"
+repository = "https://github.com/Zxilly/go-size-view"
+categories = ["command-line-interface"]
+
+[dependencies]
+clap = { version = "4.1.8", features = ["derive", "cargo", "std"] }
+cpp_demangle = "0.4.0"
+
+[profile.release]
+lto = true
+opt-level = 3
+
+[[bin]]
+name = "gsv"
+path = "src/main.rs"
