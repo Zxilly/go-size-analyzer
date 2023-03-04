@@ -1,5 +1,6 @@
-use std::io::stderr;
+use std::collections::HashMap;
 use std::process::Command;
+use crate::go_symbol::GoSymbol;
 
 pub(crate) fn check_golang_toolchain() -> bool {
     let output = Command::new("go")
@@ -9,26 +10,6 @@ pub(crate) fn check_golang_toolchain() -> bool {
 
     let version = String::from_utf8_lossy(&output.stdout);
     version.contains("go version")
-}
-
-pub(crate) struct GoSymbol {
-    // in hexadecimal
-    address: String,
-    // T	text (code) segment symbol
-    // t	static text segment symbol
-    // R	read-only data segment symbol
-    // r	static read-only data segment symbol
-    // D	data segment symbol
-    // d	static data segment symbol
-    // B	bss segment symbol
-    // b	static bss segment symbol
-    // C	constant address
-    // U	referenced but undefined symbol
-    symbolType: String,
-    // name of symbol
-    name: String,
-    // size of symbol
-    size: i64,
 }
 
 pub(crate) fn execute_go_tool_nm(name: String) -> Result<Vec<GoSymbol>, String> {
@@ -57,23 +38,37 @@ pub(crate) fn execute_go_tool_nm(name: String) -> Result<Vec<GoSymbol>, String> 
 
     let lines = output_str.lines();
     for line in lines {
-        let mut parts = line.split_whitespace();
-
-        let address = parts.next().unwrap();
-        let size = parts.next().unwrap();
-        let symbol_type = parts.next().unwrap();
-
-
-        let name = parts.next().unwrap();
-
-        let symbol = GoSymbol {
-            address: address.to_string(),
-            symbolType: symbol_type.to_string(),
-            name: name.to_string(),
-            size: size.parse().unwrap(),
-        };
-        symbols.push(symbol);
+        let symbol = GoSymbol::parse(line);
+        if symbol.is_none() {
+            continue;
+        }
+        symbols.push(symbol.unwrap());
     }
 
-    return Ok(symbols);
+    Ok(symbols)
+}
+
+pub(crate) struct Package {
+    pub(crate) name: String,
+    pub(crate) size: i64,
+}
+
+pub(crate) fn merge_symbols(symbols: Vec<GoSymbol>) -> Vec<Package> {
+    let mut symbols_mp = HashMap::new();
+
+    for symbol in symbols {
+        let key = symbol.package.clone();
+        let size = symbol.size;
+        let value = symbols_mp.entry(key).or_insert(0);
+        *value += size;
+    }
+
+    let mut ret = Vec::new();
+    for (key, value) in symbols_mp {
+        ret.push(Package {
+            name: key,
+            size: value,
+        });
+    }
+    ret
 }
