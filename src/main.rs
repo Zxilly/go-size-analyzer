@@ -1,6 +1,5 @@
-mod go;
 mod cli;
-mod go_symbol;
+mod utils;
 
 fn main() {
     let cli = cli::Cli::new();
