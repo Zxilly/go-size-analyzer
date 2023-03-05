@@ -9,11 +9,10 @@ readme = "README.md"
 homepage = "https://github.com/Zxilly/go-size-view"
 repository = "https://github.com/Zxilly/go-size-view"
 categories = ["command-line-interface"]
-build = "build.rs"
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive", "cargo", "std"] }
-cpp_demangle = "0.4.0"
+goblin = "0.6.1"
 
 [profile.release]
 lto = true

@@ -1,5 +1,6 @@
-use crate::utils::require_linux;
+use crate::utils::{require_binary, require_elf_64};
 use clap::Parser;
+use crate::elf::parse_elf;
 
 /// Analysis golang compiled binary size
 #[derive(Parser)]
@@ -23,6 +24,8 @@ impl Cli {
     }
 
     pub(crate) fn execute(&self) {
-        require_linux();
+        let buffer = require_binary(&self.binary);
+        let elf = require_elf_64(&buffer);
+        parse_elf(elf);
     }
 }

@@ -34,3 +34,6 @@
 .idea/
 cmake-build-debug/
 target/
+
+t
+bloaty
