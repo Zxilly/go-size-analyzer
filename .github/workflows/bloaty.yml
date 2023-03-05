@@ -22,10 +22,16 @@ jobs:
           echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           echo "commit_time=$(git show -s --format=%ci HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Set up Clang
+        uses: egor-tensin/setup-clang@v1
+        with:
+          version: latest
+          platform: x64
+
       - name: Install dependencies
         run: |
-          apt update
-          apt install -y cmake ninja-build
+          sudo apt update
+          sudo apt install -y cmake ninja-build
 
       - name: Build
         run: |
