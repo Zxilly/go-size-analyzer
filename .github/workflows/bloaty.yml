@@ -46,6 +46,6 @@ jobs:
           name: Bloaty ${{ steps.commit.outputs.commit_time }}
           tag_name: bloaty
           body: |
-            Commit: ${{ steps.commit.outputs.commit_hash }}
-            Commit time: ${{ steps.commit.outputs.commit_time }}
+            Commit: `${{ steps.commit.outputs.commit_hash }}`
+            Commit time: `${{ steps.commit.outputs.commit_time }}`
 
