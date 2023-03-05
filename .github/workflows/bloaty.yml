@@ -37,6 +37,7 @@ jobs:
         run: |
           cmake -B build -G Ninja -S .
           cmake --build build
+          strip -s build/bloaty
 
       - name: Release binary
         uses: softprops/action-gh-release@v1
