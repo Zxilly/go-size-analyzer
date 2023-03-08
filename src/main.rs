@@ -1,8 +1,11 @@
 mod cli;
 mod utils;
-mod elf;
+mod go;
+mod parse;
+mod object;
 
 fn main() {
     let cli = cli::Cli::new();
     cli.execute();
 }
+

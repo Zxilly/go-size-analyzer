@@ -1,6 +1,10 @@
-use crate::utils::{require_binary, require_elf_64};
+use crate::go::parse_go_packages;
+use crate::object::Targets;
+use crate::parse::parse_symbols;
+use crate::utils::{check_file, pretty_print_size, require_binary};
 use clap::Parser;
-use crate::elf::parse_elf;
+use object::{Object, ObjectSection, Section};
+use std::collections::HashMap;
 
 /// Analysis golang compiled binary size
 #[derive(Parser)]
@@ -24,8 +28,17 @@ impl Cli {
     }
 
     pub(crate) fn execute(&self) {
-        let buffer = require_binary(&self.binary);
-        let elf = require_elf_64(&buffer);
-        parse_elf(elf);
+        let binary = require_binary(&self.binary);
+
+        let buffer = std::fs::read(binary).unwrap();
+        let file = object::File::parse(&*buffer).unwrap();
+
+        check_file(&file);
+
+        let mut targets = Targets::new();
+
+        let packages = parse_go_packages(&file);
+
+        parse_symbols(&mut targets, &file, &packages);
     }
 }
