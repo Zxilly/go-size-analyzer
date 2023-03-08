@@ -9,12 +9,13 @@ readme = "README.md"
 homepage = "https://github.com/Zxilly/go-size-view"
 repository = "https://github.com/Zxilly/go-size-view"
 categories = ["command-line-interface"]
+build = "build.rs"
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive", "cargo", "std"] }
-cpp_demangle = "0.4.0"
 gimli = "0.27.2"
 object = "0.30.3"
+tempfile = "3.4.0"
 typed-arena = "2.0.2"
 
 [profile.release]

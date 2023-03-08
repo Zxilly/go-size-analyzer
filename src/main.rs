@@ -1,8 +1,8 @@
 mod cli;
 mod utils;
 mod go;
-mod parse;
 mod object;
+mod bloaty;
 
 fn main() {
     let cli = cli::Cli::new();
