@@ -1,3 +1,4 @@
+use std::fs;
 use std::process::Command;
 
 fn main() {
@@ -35,7 +36,18 @@ fn git_checkout() {
         .expect("failed to reset git submodules");
 }
 
-fn bloaty_patch() {}
+fn bloaty_patch() {
+    // copy file in patch/bloaty to third_party/bloaty
+
+    fs::copy(
+        "patch/bloaty/CMakeLists.txt",
+        "third_party/bloaty/CMakeLists.txt",
+    ).expect("failed to copy bloaty CMakeLists.txt");
+    fs::copy(
+        "patch/bloaty/lib.cc",
+        "third_party/bloaty/src/lib.cc",
+    ).expect("failed to copy bloaty lib.cc");
+}
 
 // find if a tool is in path
 fn check_tool(name: &str) {

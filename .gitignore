@@ -32,8 +32,6 @@
 *.app
 
 .idea/
-cmake-build-debug/
 target/
-
-third_party/bloaty/build/
-third_party/bloaty/cmake-build-debug/
+/cmake-build-debug/
+/build/
