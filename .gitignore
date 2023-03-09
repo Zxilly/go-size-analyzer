@@ -34,10 +34,3 @@
 .idea/
 cmake-build-debug/
 target/
-
-t
-r
-t.i64
-e
-e.*
-bloaty

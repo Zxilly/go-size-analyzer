@@ -1,4 +1,6 @@
+use std::path::Path;
 use crate::utils::{check_file, pretty_print_size, require_binary};
+use crate::{bloaty, go};
 use clap::Parser;
 
 /// Analysis golang compiled binary size
@@ -25,14 +27,19 @@ impl Cli {
     pub(crate) fn execute(&self) {
         self.prepare();
 
+        let (binary, go_packages) = self.prepare();
 
+        bloaty::scan(*binary, go_packages);
 
     }
 
-    fn prepare(&self) {
+    fn prepare(&self) -> (Box<&Path>,Vec<String>) {
         let binary = require_binary(&self.binary);
-        let buffer = std::fs::read(binary).unwrap();
+        let buffer = std::fs::read(binary.clone()).unwrap();
         let file = object::File::parse(&*buffer).unwrap();
         check_file(&file);
+        let go_packages = go::parse_go_packages(&file);
+
+        return (binary,go_packages);
     }
 }

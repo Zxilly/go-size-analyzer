@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Debug,Copy, Clone)]
 pub(crate) struct Targets {
     inner: HashMap<String, Target>,
 }
@@ -20,6 +21,7 @@ impl Targets {
     }
 }
 
+#[derive(Debug,Copy, Clone)]
 pub(crate) struct Target {
     package: String,
     size: TargetSize,
@@ -38,6 +40,7 @@ impl Target {
     }
 }
 
+#[derive(Debug,Copy, Clone)]
 pub(crate) struct TargetSize {
     inner: HashMap<String, u64>,
 }

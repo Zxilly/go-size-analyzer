@@ -1,16 +1,36 @@
-use std::path::Path;
+use std::process::Command;
 
 fn main() {
-    // target os
-    let target_os = std::env::var("CARGO_CFG_TARGET_OS").unwrap();
-    let target_arch = std::env::var("CARGO_CFG_TARGET_ARCH").unwrap();
+    // check if git in path
+    ["git", "cmake", "ninja"]
+        .iter()
+        .for_each(|tool| check_tool(tool));
 
-    if target_os != "linux" || target_arch != "x86_64" {
-        panic!("This program only supports Linux x86_64");
-    }
+    // ensure all git submodules are checked
+    Command::new("git")
+        .args(&["submodule", "update", "--init", "--recursive"])
+        .output()
+        .expect("failed to update git submodules");
 
-    let bloaty = Path::new("bloaty");
-    if !bloaty.exists() {
-        panic!("bloaty not found");
-    }
+    // git submodule foreach --recursive git reset --hard HEAD
+    Command::new("git")
+        .args(&[
+            "submodule",
+            "foreach",
+            "--recursive",
+            "git",
+            "reset",
+            "--hard",
+            "HEAD",
+        ])
+        .output()
+        .expect("failed to reset git submodules");
+}
+
+// find if a tool is in path
+fn check_tool(name: &str) {
+    Command::new(name)
+        .arg("--version")
+        .output()
+        .expect("failed to check tool " + name);
 }
