@@ -26,3 +26,7 @@ opt-level = 3
 [[bin]]
 name = "gsv"
 path = "src/main.rs"
+
+[build-dependencies]
+bindgen = { version = "0.64.0", features = ["static"] }
+cmake = "0.1.49"
