@@ -1,7 +1,7 @@
 mod cli;
 mod utils;
 mod go;
-mod object;
+mod artifact;
 mod bloaty;
 
 fn main() {

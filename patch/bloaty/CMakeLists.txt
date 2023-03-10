@@ -11,14 +11,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 find_package(PkgConfig)
 
 add_definitions(-D_LIBCXXABI_FUNC_VIS=)
-add_definitions(-DUSE_RE2)
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-
-add_subdirectory(third_party/re2)
-include_directories(third_party/re2)
 
 add_subdirectory(third_party/capstone)
 include_directories(third_party/capstone/include)
@@ -106,9 +102,8 @@ add_library(bloaty STATIC
         )
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
-set(LIBBLOATY_LIBS libbloaty)
+set(LIBBLOATY_LIBS)
 list(APPEND LIBBLOATY_LIBS libprotoc)
-list(APPEND LIBBLOATY_LIBS re2)
 list(APPEND LIBBLOATY_LIBS capstone-static)
 list(APPEND LIBBLOATY_LIBS zlibstatic)
 list(APPEND LIBBLOATY_LIBS Threads::Threads)
@@ -117,10 +112,8 @@ list(APPEND LIBBLOATY_LIBS Threads::Threads)
 target_link_libraries(bloaty ${LIBBLOATY_LIBS})
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
-add_custom_target(combined ALL
-        COMMAND ${CMAKE_AR} rc ${CMAKE_STATIC_LIBRARY_PREFIX}combined${CMAKE_STATIC_LIBRARY_SUFFIX} $<TARGET_FILE:bloaty>
-        $<TARGET_FILE:capstone-static>
-        $<TARGET_FILE:re2>
-        $<TARGET_FILE:libprotoc>
-        $<TARGET_FILE:zlibstatic>
+install(TARGETS bloaty
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
         )

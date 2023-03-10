@@ -1,7 +1,8 @@
 use std::path::Path;
-use crate::utils::{check_file, pretty_print_size, require_binary};
+use crate::utils::{check_file, require_binary};
 use crate::{bloaty, go};
 use clap::Parser;
+use crate::artifact::Artifacts;
 
 /// Analysis golang compiled binary size
 #[derive(Parser)]
@@ -10,7 +11,7 @@ pub(crate) struct Cli {
     #[arg(
     short,
     long,
-    value_parser = clap::value_parser!(u16).range(1..65535),
+    value_parser = clap::value_parser ! (u16).range(1..65535),
     default_value = "8888")]
     pub(crate) port: u16,
 
@@ -25,19 +26,22 @@ impl Cli {
     }
 
     pub(crate) fn execute(&self) {
-        self.prepare();
-
+        let mut artifacts = Artifacts::new();
         let (binary, go_packages) = self.prepare();
-
+        bloaty::execute(binary, go_packages, &mut artifacts);
+        println!("{}", artifacts);
     }
 
-    fn prepare(&self) -> (Box<&Path>,Vec<String>) {
-        let binary = *require_binary(&self.binary);
-        let buffer = std::fs::read(binary.clone()).unwrap();
+    fn prepare(&self) -> (&Path, Vec<String>) {
+        let path = Path::new(&self.binary);
+
+        require_binary(path);
+
+        let buffer = std::fs::read(path).unwrap();
         let file = object::File::parse(&*buffer).unwrap();
         check_file(&file);
         let go_packages = go::parse_go_packages(&file);
 
-        return (Box::from(binary), go_packages);
+        (path, go_packages)
     }
 }

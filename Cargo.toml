@@ -13,6 +13,7 @@ build = "build.rs"
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive", "cargo", "std"] }
+csv = "1.2.1"
 gimli = "0.27.2"
 object = "0.30.3"
 regex = "1.7.1"
@@ -28,5 +29,4 @@ name = "gsv"
 path = "src/main.rs"
 
 [build-dependencies]
-bindgen = { version = "0.64.0", features = ["static"] }
 cmake = "0.1.49"

@@ -1,7 +1,7 @@
 use gimli::{AttributeValue, DebugAbbrev, DebugInfo, DebugStr, EndianSlice, RunTimeEndian};
 use object::{File, Object, ObjectSection};
 use std::borrow::{Borrow, Cow};
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashSet};
 use typed_arena::Arena;
 
 pub(crate) fn parse_go_packages(obj: &File) -> Vec<String> {
@@ -38,7 +38,7 @@ pub(crate) fn parse_go_packages(obj: &File) -> Vec<String> {
     let debug_info = &load_section(&arena, obj, endian);
     let debug_str = &load_section(&arena, obj, endian);
 
-    return collect_go_packages(debug_info, debug_abbrev, debug_str);
+    dedup_go_packages(collect_go_packages(debug_info, debug_abbrev, debug_str))
 }
 
 fn collect_go_packages(
@@ -89,5 +89,18 @@ fn collect_go_packages(
         }
     }
 
-    return go_packages.into_iter().collect();
+    go_packages.into_iter().collect()
+}
+
+
+fn dedup_go_packages(package_names: Vec<String>) -> Vec<String> {
+    let mut ret = HashSet::new();
+    let shorten = |package_name: &str| {
+        let parts = package_name.split('/').take(3).collect::<Vec<_>>();
+        parts.join("/")
+    };
+    for package in package_names {
+        ret.insert(shorten(&package));
+    }
+    ret.into_iter().collect()
 }

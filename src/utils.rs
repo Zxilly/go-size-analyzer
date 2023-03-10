@@ -2,19 +2,16 @@ use object::{Architecture, File, Object};
 use std::path::Path;
 use std::process::exit;
 
-pub(crate) fn require_binary(binary: &str) -> Box<&Path> {
-    let path = Path::new(binary);
+pub(crate) fn require_binary(path: &Path) {
     if !path.exists() {
-        eprintln!("The binary {} does not exist", binary);
+        eprintln!("The binary {} does not exist", path.to_str().unwrap());
         exit(1);
     }
 
     if !path.is_file() {
-        eprintln!("The binary {} is not a file", binary);
+        eprintln!("The binary {} is not a file", path.to_str().unwrap());
         exit(1);
     }
-
-    Box::new(path)
 }
 
 pub(crate) fn check_file(file: &File) {

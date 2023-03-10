@@ -1,7 +1,10 @@
 use std::fs;
 use std::process::Command;
+use cmake::Config;
 
 fn main() {
+    println!("cargo:rerun-if-changed=patch/bloaty");
+
     check_tools();
     git_checkout();
     bloaty_patch();
@@ -38,7 +41,6 @@ fn git_checkout() {
 
 fn bloaty_patch() {
     // copy file in patch/bloaty to third_party/bloaty
-
     fs::copy(
         "patch/bloaty/CMakeLists.txt",
         "third_party/bloaty/CMakeLists.txt",
@@ -57,4 +59,15 @@ fn check_tool(name: &str) {
         .unwrap_or_else(|_| panic!("{} not found in path", name));
 }
 
-fn cmake_build() {}
+fn cmake_build() {
+    let dst = Config::new("third_party/bloaty")
+        .define("CMAKE_BUILD_TYPE", "Release")
+        .build();
+    println!("cargo:rustc-link-search={}", dst.join("lib").display());
+    println!("cargo:rustc-link-lib=static=bloaty");
+    println!("cargo:rustc-link-lib=static=capstone");
+    println!("cargo:rustc-link-lib=static=protoc");
+    println!("cargo:rustc-link-lib=static=protobuf");
+    println!("cargo:rustc-link-lib=static=z");
+    println!("cargo:rustc-link-lib=static=stdc++");
+}
