@@ -1,3 +1,5 @@
+name: Build and publish
+
 on:
   push:
     branches: [ master ]
