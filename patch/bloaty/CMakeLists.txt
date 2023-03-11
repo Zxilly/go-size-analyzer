@@ -26,7 +26,7 @@ set(protobuf_BUILD_PROTOC_BINARIES ON CACHE BOOL "Build protoc" FORCE)
 set(protobuf_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
 
 add_subdirectory(third_party/protobuf/cmake)
-# include_directories(third_party/protobuf/src)
+include_directories(third_party/protobuf/src)
 
 add_subdirectory(third_party/zlib)
 # include_directories(third_party/zlib)
@@ -51,7 +51,7 @@ endif ()
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src)
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/bloaty.pb.cc
-        COMMAND env protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
+        COMMAND protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
         --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/src
         -I${CMAKE_CURRENT_SOURCE_DIR}/src
 )
