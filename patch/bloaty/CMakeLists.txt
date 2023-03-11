@@ -8,6 +8,8 @@ project(Bloaty VERSION 1.1)
 set(CMAKE_CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+set(BUILD_SHARED_LIBS OFF)
+
 find_package(PkgConfig)
 
 add_definitions(-D_LIBCXXABI_FUNC_VIS=)
@@ -15,21 +17,16 @@ add_definitions(-D_LIBCXXABI_FUNC_VIS=)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-
+set(CAPSTONE_BUILD_SHARED OFF CACHE BOOL "Build shared library" FORCE)
 add_subdirectory(third_party/capstone)
 include_directories(third_party/capstone/include)
 
-set(protobuf_BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
-set(protobuf_BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
-set(protobuf_WITH_ZLIB OFF CACHE BOOL "Build with zlib" FORCE)
-set(protobuf_BUILD_PROTOC_BINARIES ON CACHE BOOL "Build protoc" FORCE)
-set(protobuf_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
-
-add_subdirectory(third_party/protobuf/cmake)
-include_directories(third_party/protobuf/src)
-
-add_subdirectory(third_party/zlib)
+add_subdirectory(third_party/zlib EXCLUDE_FROM_ALL)
 # include_directories(third_party/zlib)
+
+# link_directories()
+
+# set_target_properties(protoc PROPERTIES INSTALL_RPATH "" BUILD_RPATH "")
 
 include_directories(.)
 include_directories(src)
@@ -49,9 +46,13 @@ if (SUPPORTS_COLOR_ALWAYS)
 endif ()
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src)
+
+pkg_search_module(PROTOBUF REQUIRED protobuf)
+include_directories(${PROTOBUF_INCLUDE_DIRS})
+
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/bloaty.pb.cc
-        COMMAND protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
+        COMMAND env protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
         --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/src
         -I${CMAKE_CURRENT_SOURCE_DIR}/src
 )
@@ -109,8 +110,7 @@ add_library(bloaty STATIC
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
 set(LIBBLOATY_LIBS)
-list(APPEND LIBBLOATY_LIBS libprotobuf)
-list(APPEND LIBBLOATY_LIBS libprotoc)
+list(APPEND LIBBLOATY_LIBS ${PROTOBUF_LIBRARIES})
 list(APPEND LIBBLOATY_LIBS capstone-static)
 list(APPEND LIBBLOATY_LIBS zlibstatic)
 list(APPEND LIBBLOATY_LIBS Threads::Threads)
@@ -119,10 +119,13 @@ list(APPEND LIBBLOATY_LIBS Threads::Threads)
 target_link_libraries(bloaty ${LIBBLOATY_LIBS})
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
-add_custom_target(build-static DEPENDS bloaty
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:bloaty> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:bloaty>
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotobuf> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotobuf>
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotoc> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotoc>
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:capstone-static> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:capstone-static>
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:zlibstatic> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:zlibstatic>
-        )
+install(TARGETS bloaty ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS zlibstatic ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+#add_custom_target(build-static DEPENDS bloaty
+#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:bloaty> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:bloaty>
+#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotobuf> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotobuf>
+#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotoc> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotoc>
+#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:capstone-static> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:capstone-static>
+#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:zlibstatic> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:zlibstatic>
+#        )

@@ -45,10 +45,14 @@ fn bloaty_patch() {
         "patch/bloaty/CMakeLists.txt",
         "third_party/bloaty/CMakeLists.txt",
     ).expect("failed to copy bloaty CMakeLists.txt");
-    fs::copy(
-        "patch/bloaty/lib.cc",
-        "third_party/bloaty/src/lib.cc",
-    ).expect("failed to copy bloaty lib.cc");
+    ["lib.cc"]
+        .iter()
+        .for_each(|file| {
+            fs::copy(
+                format!("patch/bloaty/{}", file),
+                format!("third_party/bloaty/src/{}", file),
+            ).unwrap_or_else(|_| panic!("failed to copy bloaty {}", file));
+        });
 }
 
 // find if a tool is in path
@@ -61,23 +65,28 @@ fn check_tool(name: &str) {
 
 fn cmake_build() {
     let dst = Config::new("third_party/bloaty")
-        .define("CMAKE_BUILD_TYPE", "Release")
-        .define("CMAKE_CXX_COMPILER", "clang++")
-        .define("CMAKE_C_COMPILER", "clang")
         .static_crt(true)
         .generator("Ninja")
-        .build_target("build-static")
         .build();
-    println!("cargo:rustc-link-search={}", dst.join("build").display());
+    println!("cargo:rustc-link-search={}", dst.join("lib").display());
     println!("cargo:rustc-link-lib=static=bloaty");
     println!("cargo:rustc-link-lib=static=capstone");
-    println!("cargo:rustc-link-lib=static=protoc");
-    println!("cargo:rustc-link-lib=static=protobuf");
     println!("cargo:rustc-link-lib=static=z");
+
+
+    pkg_config::Config::new()
+        .atleast_version("3.0.0")
+        .statik(true)
+        .probe("protobuf")
+        .unwrap().link_paths.iter().for_each(|path| {
+        println!("cargo:rustc-link-search={}", path.display());
+    });
+    println!("cargo:rustc-link-lib=static=protobuf");
+
+
     println!("cargo:rustc-link-lib=static=stdc++");
 
     // workaround for static link on glibc, for pthread has weak symbol
-    println!("cargo:rustc-link-arg-bins=-lrt");
     println!("cargo:rustc-link-arg-bins=-pthread");
     println!("cargo:rustc-link-arg-bins=-Wl,--whole-archive");
     println!("cargo:rustc-link-arg-bins=-lpthread");

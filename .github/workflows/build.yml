@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake ninja-build protobuf-compiler pkg-config
+          sudo apt install -y cmake ninja-build protobuf-compiler pkg-config libprotoc-dev libprotobuf-dev
           cargo install --force cargo-deb 
 
       - name: Build

@@ -18,11 +18,11 @@ pub(crate) fn parse_go_packages(obj: &File) -> Vec<String> {
         file: &'file File<'input>,
         endian: Endian,
     ) -> S
-    where
-        S: gimli::Section<EndianSlice<'a, Endian>>,
-        Endian: gimli::Endianity + Send + Sync,
-        'file: 'input,
-        'a: 'file,
+        where
+            S: gimli::Section<EndianSlice<'a, Endian>>,
+            Endian: gimli::Endianity + Send + Sync,
+            'file: 'input,
+            'a: 'file,
     {
         let data = match file.section_by_name(S::section_name()) {
             Some(ref section) => section
@@ -96,7 +96,13 @@ fn collect_go_packages(
 fn dedup_go_packages(package_names: Vec<String>) -> Vec<String> {
     let mut ret = HashSet::new();
     let shorten = |package_name: &str| {
-        let parts = package_name.split('/').take(3).collect::<Vec<_>>();
+        let take_num = if package_name.starts_with("vendor/") {
+            4
+        } else {
+            3
+        };
+
+        let parts = package_name.split('/').take(take_num).collect::<Vec<_>>();
         parts.join("/")
     };
     for package in package_names {
