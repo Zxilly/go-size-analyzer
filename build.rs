@@ -75,6 +75,8 @@ fn cmake_build() {
     println!("cargo:rustc-link-lib=static=protobuf");
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rustc-link-lib=static=stdc++");
+
+    // workaround for static link on glibc, for pthread has weak symbol
     println!("cargo:rustc-link-arg-bins=-lrt");
     println!("cargo:rustc-link-arg-bins=-pthread");
     println!("cargo:rustc-link-arg-bins=-Wl,--whole-archive");

@@ -1,1 +1,0 @@
-const char* runBloaty(const char* filename);

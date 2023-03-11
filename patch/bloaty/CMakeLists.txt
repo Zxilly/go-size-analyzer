@@ -51,7 +51,7 @@ endif ()
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src)
 add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/src/bloaty.pb.cc
-        COMMAND protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
+        COMMAND env protoc ${CMAKE_CURRENT_SOURCE_DIR}/src/bloaty.proto
         --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/src
         -I${CMAKE_CURRENT_SOURCE_DIR}/src
 )
