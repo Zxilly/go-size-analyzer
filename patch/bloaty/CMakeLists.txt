@@ -17,7 +17,7 @@ find_package(Threads REQUIRED)
 
 
 add_subdirectory(third_party/capstone)
-# include_directories(third_party/capstone/include)
+include_directories(third_party/capstone/include)
 
 set(protobuf_BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
 set(protobuf_BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
