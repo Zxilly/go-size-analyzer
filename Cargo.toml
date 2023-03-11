@@ -17,12 +17,12 @@ csv = "1.2.1"
 gimli = "0.27.2"
 object = "0.30.3"
 regex = "1.7.1"
-tempfile = "3.4.0"
 typed-arena = "2.0.2"
 
 [profile.release]
 lto = true
 opt-level = 3
+strip = "symbols"
 
 [[bin]]
 name = "gsv"

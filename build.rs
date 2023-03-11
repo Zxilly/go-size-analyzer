@@ -62,12 +62,22 @@ fn check_tool(name: &str) {
 fn cmake_build() {
     let dst = Config::new("third_party/bloaty")
         .define("CMAKE_BUILD_TYPE", "Release")
+        .define("CMAKE_CXX_COMPILER", "clang++")
+        .define("CMAKE_C_COMPILER", "clang")
+        .static_crt(true)
+        .generator("Ninja")
+        .build_target("build-static")
         .build();
-    println!("cargo:rustc-link-search={}", dst.join("lib").display());
+    println!("cargo:rustc-link-search={}", dst.join("build").display());
     println!("cargo:rustc-link-lib=static=bloaty");
     println!("cargo:rustc-link-lib=static=capstone");
     println!("cargo:rustc-link-lib=static=protoc");
     println!("cargo:rustc-link-lib=static=protobuf");
     println!("cargo:rustc-link-lib=static=z");
     println!("cargo:rustc-link-lib=static=stdc++");
+    println!("cargo:rustc-link-arg-bins=-lrt");
+    println!("cargo:rustc-link-arg-bins=-pthread");
+    println!("cargo:rustc-link-arg-bins=-Wl,--whole-archive");
+    println!("cargo:rustc-link-arg-bins=-lpthread");
+    println!("cargo:rustc-link-arg-bins=-Wl,--no-whole-archive");
 }

@@ -17,20 +17,26 @@ find_package(Threads REQUIRED)
 
 
 add_subdirectory(third_party/capstone)
-include_directories(third_party/capstone/include)
+# include_directories(third_party/capstone/include)
+
+set(protobuf_BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
+set(protobuf_BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
+set(protobuf_WITH_ZLIB OFF CACHE BOOL "Build with zlib" FORCE)
+set(protobuf_BUILD_PROTOC_BINARIES ON CACHE BOOL "Build protoc" FORCE)
+set(protobuf_BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
 
 add_subdirectory(third_party/protobuf/cmake)
-include_directories(SYSTEM third_party/protobuf/src)
+# include_directories(third_party/protobuf/src)
 
 add_subdirectory(third_party/zlib)
-include_directories(SYSTEM third_party/zlib)
+# include_directories(third_party/zlib)
 
 include_directories(.)
 include_directories(src)
 include_directories(third_party/abseil-cpp)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
-set(CMAKE_CXX_FLAGS "-W -Wall -Wno-sign-compare")
+set(CMAKE_CXX_FLAGS "-W -Wall -Wno-sign-compare -fPIE")
 set(CMAKE_CXX_FLAGS_DEBUG "-g1")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g1")
@@ -103,6 +109,7 @@ add_library(bloaty STATIC
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
 set(LIBBLOATY_LIBS)
+list(APPEND LIBBLOATY_LIBS libprotobuf)
 list(APPEND LIBBLOATY_LIBS libprotoc)
 list(APPEND LIBBLOATY_LIBS capstone-static)
 list(APPEND LIBBLOATY_LIBS zlibstatic)
@@ -112,8 +119,10 @@ list(APPEND LIBBLOATY_LIBS Threads::Threads)
 target_link_libraries(bloaty ${LIBBLOATY_LIBS})
 set_property(TARGET bloaty PROPERTY FOLDER "bloaty")
 
-install(TARGETS bloaty
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+add_custom_target(build-static DEPENDS bloaty
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:bloaty> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:bloaty>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotobuf> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotobuf>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:libprotoc> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:libprotoc>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:capstone-static> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:capstone-static>
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:zlibstatic> ${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:zlibstatic>
         )
