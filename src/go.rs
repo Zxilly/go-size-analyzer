@@ -4,7 +4,7 @@ use std::borrow::{Borrow, Cow};
 use std::collections::{BTreeSet, HashSet};
 use typed_arena::Arena;
 
-pub(crate) fn parse_go_packages(obj: &File) -> Vec<String> {
+pub(crate) fn parse_go_packages(obj: &File) ->HashSet<String> {
     let endian = if obj.is_little_endian() {
         RunTimeEndian::Little
     } else {
@@ -93,7 +93,7 @@ fn collect_go_packages(
 }
 
 
-fn dedup_go_packages(package_names: Vec<String>) -> Vec<String> {
+fn dedup_go_packages(package_names: Vec<String>) -> HashSet<String> {
     let mut ret = HashSet::new();
     let shorten = |package_name: &str| {
         let take_num = if package_name.starts_with("vendor/") {
@@ -108,5 +108,5 @@ fn dedup_go_packages(package_names: Vec<String>) -> Vec<String> {
     for package in package_names {
         ret.insert(shorten(&package));
     }
-    ret.into_iter().collect()
+    ret
 }

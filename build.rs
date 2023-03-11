@@ -73,7 +73,6 @@ fn cmake_build() {
     println!("cargo:rustc-link-lib=static=capstone");
     println!("cargo:rustc-link-lib=static=z");
 
-
     pkg_config::Config::new()
         .atleast_version("3.0.0")
         .statik(true)
@@ -82,7 +81,6 @@ fn cmake_build() {
         println!("cargo:rustc-link-search={}", path.display());
     });
     println!("cargo:rustc-link-lib=static=protobuf");
-
 
     println!("cargo:rustc-link-lib=static=stdc++");
 

@@ -1,8 +1,9 @@
+use std::collections::HashSet;
 use std::path::Path;
-use crate::utils::{check_file, require_binary};
+use crate::utils::{check_file, require_file};
 use crate::{bloaty, go};
 use clap::Parser;
-use crate::artifact::Artifacts;
+use crate::artifact::Packages;
 
 /// Analysis golang compiled binary size
 #[derive(Parser)]
@@ -26,16 +27,16 @@ impl Cli {
     }
 
     pub(crate) fn execute(&self) {
-        let mut artifacts = Artifacts::new();
-        let (binary, go_packages) = self.prepare();
-        bloaty::execute(binary, go_packages, &mut artifacts);
+        let (binary, go_packages) = self.pre_check();
+        let mut artifacts = Packages::new(go_packages);
+        bloaty::execute(binary, &mut artifacts);
         println!("{}", artifacts);
     }
 
-    fn prepare(&self) -> (&Path, Vec<String>) {
+    fn pre_check(&self) -> (&Path, HashSet<String>) {
         let path = Path::new(&self.binary);
 
-        require_binary(path);
+        require_file(path);
 
         let buffer = std::fs::read(path).unwrap();
         let file = object::File::parse(&*buffer).unwrap();
