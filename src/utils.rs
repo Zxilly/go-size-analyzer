@@ -1,3 +1,4 @@
+use std::future::Future;
 use object::{Architecture, File, Object};
 use std::path::Path;
 use std::process::exit;
@@ -57,4 +58,8 @@ pub(crate) fn pretty_print_size(size: u64) -> String {
         unit = "GB";
     }
     format!("{:.2}{}", size, unit)
+}
+
+pub(crate) fn run_blocking<F: Future>(future: F) {
+    tokio::runtime::Runtime::new().unwrap().block_on(future);
 }

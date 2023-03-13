@@ -1,4 +1,4 @@
-use std::ffi::CStr;
+use std::ffi::{CStr, CString};
 use std::path::Path;
 use crate::artifact::Packages;
 
@@ -14,21 +14,18 @@ pub(crate) fn execute(path: &Path, artifacts: &mut Packages) {
 fn execute_bloaty(path: &Path) -> String {
     let absolute_path = path.canonicalize().unwrap();
     let path = absolute_path.to_str().unwrap();
-    let path_cstr = std::ffi::CString::new(path).unwrap();
-    let r: String;
+    let path_cstr = CString::new(path).unwrap();
 
     unsafe {
         let ret = runBloaty(path_cstr.as_ptr());
         let output = CStr::from_ptr(ret).to_str().unwrap();
-        r = output.to_string();
+        output.to_string()
     }
-    r
 }
 
 type CSVItem = (String, u64, u64);
 
 fn parse_bloaty_result(output: String, packages: &mut Packages) {
-
     let records = csv::ReaderBuilder::new()
         .has_headers(true)
         .from_reader(output.as_bytes())

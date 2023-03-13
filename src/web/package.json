@@ -1,0 +1,20 @@
+{
+  "name": "gsv-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.1.0",
+    "rollup": "^3.19.1",
+    "vite-plugin-singlefile": "^0.13.3"
+  },
+  "dependencies": {
+    "d3": "^7.8.2",
+    "d3-hierarchy": "^3.1.2"
+  }
+}

@@ -12,12 +12,14 @@ categories = ["command-line-interface"]
 build = "build.rs"
 
 [dependencies]
+actix-web = "4.3.1"
 clap = { version = "4.1.8", features = ["derive", "cargo", "std"] }
 csv = "1.2.1"
 gimli = "0.27.2"
-indextree = "4.6.0"
 object = "0.30.3"
+once_cell = "1.17.1"
 regex = "1.7.1"
+tokio = { version = "1.26.0", features = ["rt-multi-thread"]}
 typed-arena = "2.0.2"
 
 [profile.release]
