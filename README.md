@@ -10,6 +10,14 @@ Build on top of [bloaty](https://github.com/google/bloaty).
 
 ## Usage
 
+First, you need to compile your Go program with the following flags:
+
+```bash
+ go build -gcflags=all="-N -l"
+```
+
+Then, you can use `gsv` to analyze the binary:
+
 ```bash
 Analysis golang compiled binary size
 
@@ -24,9 +32,9 @@ Options:
   -h, --help         Print help
 ```
 
-## Example
+### Example
 
-### Web mode
+#### Web mode
 
 ```bash
 $ gsv --web golang-compiled-binary
@@ -41,7 +49,7 @@ The web page will look like this:
 
 You can click the darker part to see the detail, and click the top bar to return to the previous level.
 
-### Text mode 
+#### Text mode 
 
 ```bash
 $ gsv golang-compiled-binary
