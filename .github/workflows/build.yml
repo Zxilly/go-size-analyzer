@@ -19,7 +19,19 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Rust Setup
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19
+          cache: 'pnpm'
+          cache-dependency-path: 'src/web/pnpm-lock.yaml'
+
+      - name: Setup Rust
         id: setup
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -43,7 +55,17 @@ jobs:
           sudo apt install -y cmake ninja-build protobuf-compiler pkg-config libprotoc-dev libprotobuf-dev
           cargo install --force cargo-deb 
 
-      - name: Build
+      - name: Install web dependencies
+        working-directory: src/web
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Build web
+        working-directory: src/web
+        run: |
+          pnpm run build
+
+      - name: Build rust
         run: |
           cargo build --release --target x86_64-unknown-linux-gnu
           cargo deb --target x86_64-unknown-linux-gnu --no-build
