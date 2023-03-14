@@ -17,6 +17,7 @@ Will start a web server on port 8888, you can view the result in your browser.
 The web page will look like this:
 
 ![image](https://user-images.githubusercontent.com/31370133/225002647-1e37e52f-dada-4adb-a33b-e806396621cf.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view?ref=badge_shield)
 
 You can click the darker part to see the detail, and click the top bar to return to the previous level.
 
@@ -65,3 +66,5 @@ As for now, `gsv` can only analyze `elf64` binary. PE and Mach-O support will be
 ## LICENSE
 
 Published under the [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view?ref=badge_large)
