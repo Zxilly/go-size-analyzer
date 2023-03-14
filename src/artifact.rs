@@ -203,6 +203,7 @@ impl ArtifactType {
         match self {
             ArtifactType::Go => ArtifactType::parse_go_symbol(symbol),
             ArtifactType::Cpp => ArtifactType::parse_cpp_symbol(symbol),
+            ArtifactType::Section => ArtifactType::parse_section(symbol),
             _ => {
                 let package = self.to_string();
                 let id = vec![TREE_ROOT.to_string(), package.clone()].join(RELATION_SEPARATOR);
@@ -229,7 +230,7 @@ impl ArtifactType {
                 package_parts.push(clean(part));
                 continue;
             }
-            let sub = part.split('.').next().unwrap();
+            let sub = part.split(&['.', '(']).next().unwrap();
             package_parts.push(clean(sub));
             break;
         };
@@ -256,6 +257,13 @@ impl ArtifactType {
         let parent = parts.join(RELATION_SEPARATOR);
 
         (namespace, id, parent)
+    }
+
+    fn parse_section(symbol: String) -> (String, String, String) {
+        let section = symbol.trim_start_matches(SECTION_PREFIX).trim_end_matches(']');
+        let id = vec![TREE_ROOT, ArtifactType::Section.to_string().as_str(), section].join(RELATION_SEPARATOR);
+        let parent = vec![TREE_ROOT, ArtifactType::Section.to_string().as_str()].join(RELATION_SEPARATOR);
+        (section.to_string(), id, parent)
     }
 }
 
@@ -330,6 +338,7 @@ impl PackageCsv {
                 self.size,
             ))
         }
+        // add root node
         flattened.push(PackageCsv::new(
             "".to_string(),
             TREE_ROOT.to_string(),

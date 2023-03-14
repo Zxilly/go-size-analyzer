@@ -1,14 +1,22 @@
 use std::fs;
+use std::path::Path;
 use std::process::Command;
 use cmake::Config;
 
 fn main() {
     println!("cargo:rerun-if-changed=patch/bloaty");
 
+    check_web_asset();
     check_tools();
     git_checkout();
     bloaty_patch();
     cmake_build();
+}
+
+fn check_web_asset() {
+    if !Path::new("src/web/dist/index.html").exists() {
+        panic!("Please run `pnpm run build` in src/web first")
+    }
 }
 
 fn check_tools() {

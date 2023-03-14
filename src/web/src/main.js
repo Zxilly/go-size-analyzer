@@ -1,28 +1,38 @@
 import './style.css'
 
 import * as d3 from "d3";
-import { stratify, treemapBinary } from "d3-hierarchy";
+import "d3-hierarchy";
 
 async function loadCsv() {
-    return await d3.csv('http://127.0.0.1:8888/csv');
+    return await d3.csv('/csv');
 }
 
 const getID = () => Math.random().toString(36).substring(7);
 
 async function main() {
-    const width = 960;
-    const height = 500;
-
     const csv = await loadCsv();
 
-    const csvData = stratify()
+    const csvData = d3.stratify()
         .id(d => d.id)
         .parentId(d => {
             return d.parent_id
         })
         (csv)
-        .sum(d => +d.size)
+        .each(node => {
+            node.value = +node.data.size;
+        })
         .sort((a, b) => b.size - a.size);
+    drawMap(csvData);
+
+    addEventListener("resize", () => {
+        document.querySelector("div#chart").children[0].remove();
+        drawMap(csvData);
+    });
+}
+
+async function drawMap(csvData) {
+    let width = window.innerWidth;
+    let height = window.innerHeight - 60;
 
     const treemap = (data) => {
         return d3.treemap()
@@ -30,8 +40,9 @@ async function main() {
             (data)
     }
 
+    const algo = d3.treemapBinary;
     function tile(node, x0, y0, x1, y1) {
-        d3.treemapBinary(node, 0, 0, width, height);
+        algo(node, 0, 0, width, height);
         for (const child of node.children) {
             child.x0 = x0 + child.x0 / width * (x1 - x0);
             child.x1 = x0 + child.x1 / width * (x1 - x0);
@@ -43,9 +54,13 @@ async function main() {
     const x = d3.scaleLinear().rangeRound([0, width]);
     const y = d3.scaleLinear().rangeRound([0, height]);
 
-    const svg = d3.select("body").append("svg")
-        .attr("viewBox", [0.5, -30.5, width, height + 30])
-        .style("font", "10px sans-serif");
+    const svg = d3.select("div#chart")
+        .append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", [0.5, -60.5, width, height + 60])
+        .attr("style", "max-height: 100%; width: intrinsic;")
+        .style("font", "15px sans-serif")
+
 
     let group = svg.append("g")
         .call(render, treemap(csvData));
@@ -68,6 +83,26 @@ async function main() {
         return `${fsize.toFixed(2)} ${unit}`;
     }
 
+    const colorMap = {
+        0: "#E8EAF6",
+        1: "#C5CAE9",
+        2: "#9FA8DA",
+        3: "#7986CB",
+        4: "#5C6BC0",
+        5: "#3F51B5",
+        6: "#3949AB",
+        7: "#303F9F",
+        8: "#283593",
+        9: "#1A237E",
+    }
+
+    function display(node) {
+        if (node.data.id === "ROOT") {
+            return "root";
+        }
+        return node.data.display_name;
+    }
+
     function render(group, root) {
         const node = group
             .selectAll("g")
@@ -79,11 +114,13 @@ async function main() {
             .on("click", (event, d) => d === root ? zoomout(root) : zoomin(d));
 
         node.append("title")
-            .text(d => d)
+            .text(d => {
+                return `${display(d)}\n${format_size(d.data.size)}`
+            })
 
         node.append("rect")
             .attr("id", d => (d.leafUid = getID()))
-            .attr("fill", d => d === root ? "#fff" : d.children ? "#ccc" : "#ddd")
+            .attr("fill", d => d === root ? "#fff" : d.children ? "#90CAF9" : "#E3F2FD")
             .attr("stroke", "#fff");
 
         node.append("clipPath")
@@ -96,11 +133,7 @@ async function main() {
             .attr("font-weight", d => d === root ? "bold" : null)
             .selectAll("tspan")
             .data(d => {
-                if (d.data.id == "ROOT") {
-                    return ["root", format_size(d.data.size)];
-                }
-
-                return [`${d.data.display_name}`, format_size(d.data.size)];
+                return [display(d), format_size(d.data.size)];
             })
             .join("tspan")
             .attr("x", 3)
@@ -108,7 +141,6 @@ async function main() {
             .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
             .attr("font-weight", (d, i, nodes) => i === nodes.length - 1 ? "normal" : null)
             .text(d => {
-                console.log(d);
                 return d;
             });
 
@@ -117,10 +149,10 @@ async function main() {
 
     function position(group, root) {
         group.selectAll("g")
-            .attr("transform", d => d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`)
+            .attr("transform", d => d === root ? `translate(0,-60)` : `translate(${x(d.x0)},${y(d.y0)})`)
             .select("rect")
             .attr("width", d => d === root ? width : x(d.x1) - x(d.x0))
-            .attr("height", d => d === root ? 30 : y(d.y1) - y(d.y0));
+            .attr("height", d => d === root ? 60 : y(d.y1) - y(d.y0));
     }
 
     function zoomin(d) {
