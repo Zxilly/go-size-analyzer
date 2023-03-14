@@ -6,6 +6,22 @@ Build on top of [bloaty](https://github.com/google/bloaty).
 
 ## Usage
 
+### Web mode
+
+```bash
+$ gsv --web golang-compiled-binary
+```
+
+Will start a web server on port 8888, you can view the result in your browser.
+
+The web page will look like this:
+
+![image](https://user-images.githubusercontent.com/31370133/225002647-1e37e52f-dada-4adb-a33b-e806396621cf.png)
+
+You can click the darker part to see the detail, and click the top bar to return to the previous level.
+
+### Text mode 
+
 ```bash
 $ gsv golang-compiled-binary
 github.com/swaggo/files                             : 8.19MB
