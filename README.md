@@ -1,22 +1,18 @@
 # gsv
 
-[![Build and publish](https://github.com/Zxilly/go-size-view/actions/workflows/build.yml/badge.svg)](https://github.com/Zxilly/go-size-view/actions/workflows/build.yml)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FZxilly%2Fgo-size-view?ref=badge_shield)
 
 
 A simple tool to view the size of a Go compiled binary. 
 
-Build on top of [bloaty](https://github.com/google/bloaty).
+> [!CAUTION]
+> The GSV is currently being refactored to be implemented in Golang, and search based on the pclntab table will be implemented. Debug information will no longer be a prerequisite.
+> 
+> If you want to view the code of the old version, please check the `rust` branch.
 
 ## Usage
 
-First, you need to compile your Go program with the following flags:
-
-```bash
- go build -gcflags=all="-N -l"
-```
-
-Then, you can use `gsv` to analyze the binary:
+you can use `gsv` to analyze the binary:
 
 ```bash
 Analysis golang compiled binary size

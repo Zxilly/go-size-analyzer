@@ -1,5 +1,0 @@
-[target.x86_64-unknown-linux-gnu]
-rustflags = ["-C", "target-feature=+crt-static"]
-
-[build]
-target = "x86_64-unknown-linux-gnu"
