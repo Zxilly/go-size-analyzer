@@ -39,6 +39,12 @@ func UsingConstRune() {
 	println(ConstRune)
 }
 
+//go:noinline
+func UsingInLineConstString() {
+	const ConstString = "this is a inline const string"
+	println(ConstString)
+}
+
 type TestStruct struct {
 	A int
 	B string
@@ -57,6 +63,7 @@ func main() {
 	UsingConstFloat()
 	UsingConstComplex()
 	UsingConstRune()
+	UsingInLineConstString()
 
 	a := TestStruct{A: 1, B: "2", C: true}
 	println(ReflectGetA(a))

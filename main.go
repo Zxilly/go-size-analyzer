@@ -23,7 +23,11 @@ func execute(cmd *cobra.Command, args []string) {
 		log.Fatalf("Error: %v", err)
 	}
 
-	go_size_view.Analyze(file)
+	_, err = go_size_view.Analyze(file)
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+		return
+	}
 
 }
 

@@ -5,6 +5,7 @@ import (
 	"github.com/Zxilly/go-size-view/go-size-view/objfile"
 	"github.com/goretk/gore"
 	"io"
+	"strings"
 )
 
 type textReader struct {
@@ -57,13 +58,12 @@ func Analyze(file *gore.GoFile) (*Bin, error) {
 	for _, pkg := range pkgs.Self {
 		for _, fi := range pkg.Files {
 			for _, fn := range fi.Functions {
+				if !strings.Contains(fn.Name, "ConstString") {
+					continue
+				}
 				fmt.Println("")
 				fmt.Printf("name: %s following:\n", fn.Name)
-				disasm.Decode(fn.Offset, fn.End, nil, false, func(pc, size uint64, file string, line int, text string) {
-					fmt.Printf("pc: %#x\tsize:%d\n", pc, size)
-					fmt.Printf("file: %s\tline:%d\n", file, line)
-					fmt.Printf("text: %s\n", text)
-				})
+				disasm.Filter(fn.Offset, fn.End)
 			}
 		}
 	}
