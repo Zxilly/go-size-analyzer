@@ -4,11 +4,12 @@ import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
+	"github.com/Zxilly/go-size-view/go-size-view/objfile"
 	"github.com/goretk/gore"
 	"log"
 )
 
-func extractSectionsFromGoFile(gofile *gore.GoFile) (sections SectionMap) {
+func extractSectionsFromGoFile(gofile *gore.GoFile) (sections *SectionMap) {
 	switch f := gofile.GetParsedFile().(type) {
 	case *pe.File:
 		sections = extractSectionsFromPe(f)
@@ -18,32 +19,45 @@ func extractSectionsFromGoFile(gofile *gore.GoFile) (sections SectionMap) {
 		sections = extractSectionsFromMacho(f)
 	}
 
+	sections.SymTab = SymbolTable{Symbols: make(map[uint64]*Symbol)}
+
+	obj, _ := objfile.Create(gofile.GetFile(), gofile.GetParsedFile())
+	syms, err := obj.Symbols()
+	if err != nil {
+		log.Println("Warning: failed to get symbols. deep analysis will not be available")
+		return
+	}
+
+	for _, sym := range syms {
+		sections.SymTab.Symbols[sym.Addr] = &Symbol{Sym: sym, SizeCounted: false}
+	}
+
 	return
 }
 
-func assertSectionsSize(sections SectionMap, size uint64) {
+func assertSectionsSize(sections *SectionMap, size uint64) {
 	sectionsSize := uint64(0)
-	for _, section := range sections {
+	for _, section := range sections.Sections {
 		sectionsSize += section.TotalSize
 	}
 
 	if sectionsSize > size {
-		log.Fatalf("Error: sections size %v is bigger than file size %v", sectionsSize, size)
+		log.Fatalf("Error: sections size is bigger than file size. sections size: %d, file size: %d", sectionsSize, size)
 	}
 }
 
-func getimageBase(file *pe.File) uint64 {
-	if file.Machine == pe.IMAGE_FILE_MACHINE_I386 {
-		optHdr := file.OptionalHeader.(*pe.OptionalHeader32)
-		return uint64(optHdr.ImageBase)
-	} else {
-		optHdr := file.OptionalHeader.(*pe.OptionalHeader64)
-		return optHdr.ImageBase
-	}
-}
+func extractSectionsFromPe(file *pe.File) (ret *SectionMap) {
+	ret = &SectionMap{Sections: make(map[string]*Section)}
 
-func extractSectionsFromPe(file *pe.File) (ret SectionMap) {
-	ret = make(SectionMap)
+	getimageBase := func(file *pe.File) uint64 {
+		if file.Machine == pe.IMAGE_FILE_MACHINE_I386 {
+			optHdr := file.OptionalHeader.(*pe.OptionalHeader32)
+			return uint64(optHdr.ImageBase)
+		} else {
+			optHdr := file.OptionalHeader.(*pe.OptionalHeader64)
+			return optHdr.ImageBase
+		}
+	}
 
 	imageBase := getimageBase(file)
 
@@ -52,7 +66,7 @@ func extractSectionsFromPe(file *pe.File) (ret SectionMap) {
 			continue
 		}
 
-		ret[section.Name] = &Section{
+		ret.Sections[section.Name] = &Section{
 			Name:      section.Name,
 			TotalSize: uint64(section.Size),
 			KnownSize: 0,
@@ -65,16 +79,26 @@ func extractSectionsFromPe(file *pe.File) (ret SectionMap) {
 	return
 }
 
-func extractSectionsFromElf(file *elf.File) (ret SectionMap) {
-	ret = make(SectionMap)
+func extractSectionsFromElf(file *elf.File) (ret *SectionMap) {
+	ret = &SectionMap{Sections: make(map[string]*Section)}
 
 	for _, section := range file.Sections {
 		// not exist in binary
-		if section.Type == elf.SHT_NULL || section.Type == elf.SHT_NOBITS || section.Size == 0 {
+		if section.Type == elf.SHT_NULL || section.Size == 0 {
 			continue
 		}
 
-		ret[section.Name] = &Section{
+		if section.Type == elf.SHT_NOBITS {
+			// seems like .bss section
+			ret.Sections[section.Name] = &Section{
+				Name:   section.Name,
+				GoAddr: section.Addr,
+				GoEnd:  section.Addr + section.Size,
+			}
+			continue
+		}
+
+		ret.Sections[section.Name] = &Section{
 			Name:      section.Name,
 			TotalSize: section.FileSize,
 			KnownSize: 0,
@@ -88,15 +112,20 @@ func extractSectionsFromElf(file *elf.File) (ret SectionMap) {
 	return
 }
 
-func extractSectionsFromMacho(file *macho.File) (ret SectionMap) {
-	ret = make(SectionMap)
+func extractSectionsFromMacho(file *macho.File) (ret *SectionMap) {
+	ret = &SectionMap{
+		Sections: map[string]*Section{},
+		SymTab: SymbolTable{
+			Symbols: make(map[uint64]*Symbol),
+		},
+	}
 
 	for _, section := range file.Sections {
 		if section.Size == 0 {
 			continue
 		}
 
-		ret[section.Name] = &Section{
+		ret.Sections[section.Name] = &Section{
 			Name:      section.Name,
 			TotalSize: section.Size,
 			KnownSize: 0,
@@ -106,5 +135,6 @@ func extractSectionsFromMacho(file *macho.File) (ret SectionMap) {
 			GoEnd:     section.Addr + section.Size,
 		}
 	}
+
 	return
 }

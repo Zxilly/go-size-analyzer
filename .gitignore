@@ -2,3 +2,4 @@ kubectl
 gsa
 *.exe
 .idea/
+tmp/

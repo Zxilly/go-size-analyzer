@@ -5,7 +5,7 @@ import (
 	"github.com/goretk/gore"
 )
 
-func loadPackages(file *gore.GoFile, sections SectionMap) (*TypedPackages, error) {
+func configurePackages(file *gore.GoFile, sections *SectionMap) (*TypedPackages, error) {
 	pkgs := new(TypedPackages)
 	pclntab, err := file.PCLNTab()
 	if err != nil {
@@ -53,7 +53,7 @@ func loadPackages(file *gore.GoFile, sections SectionMap) (*TypedPackages, error
 	return pkgs, nil
 }
 
-func loadPackagesFromGorePackages(gr []*gore.Package, sections SectionMap, pclntab *gosym.Table) ([]*Packages, error) {
+func loadPackagesFromGorePackages(gr []*gore.Package, sections *SectionMap, pclntab *gosym.Table) ([]*Packages, error) {
 	pkgs := make([]*Packages, 0, len(gr))
 	for _, g := range gr {
 		pkg, err := loadPackageFromGore(g, sections, pclntab)
@@ -65,7 +65,7 @@ func loadPackagesFromGorePackages(gr []*gore.Package, sections SectionMap, pclnt
 	return pkgs, nil
 }
 
-func loadPackageFromGore(pkg *gore.Package, sections SectionMap, pclntab *gosym.Table) (*Packages, error) {
+func loadPackageFromGore(pkg *gore.Package, sections *SectionMap, pclntab *gosym.Table) (*Packages, error) {
 	size := uint64(0)
 	files := map[string]*File{}
 
@@ -83,8 +83,15 @@ func loadPackageFromGore(pkg *gore.Package, sections SectionMap, pclntab *gosym.
 		return f
 	}
 
+	setSymbolMark := func(offset uint64) {
+		sym := sections.SymTab.Symbols[offset]
+		if sym != nil {
+			sym.SizeCounted = true
+		}
+	}
+
 	for _, m := range pkg.Methods {
-		file, _, _ := pclntab.PCToLine(m.Offset)
+		src, _, _ := pclntab.PCToLine(m.Offset)
 
 		size += m.End - m.Offset
 		err := sections.IncreaseKnown(m.Offset, m.End)
@@ -93,13 +100,15 @@ func loadPackageFromGore(pkg *gore.Package, sections SectionMap, pclntab *gosym.
 			//return nil, err
 		}
 
-		mf := getFile(file)
+		setSymbolMark(m.Offset)
+
+		mf := getFile(src)
 		mf.Functions = append(mf.Functions, m.Function)
 		mf.Size += m.End - m.Offset
 	}
 
 	for _, f := range pkg.Functions {
-		file, _, _ := pclntab.PCToLine(f.Offset)
+		src, _, _ := pclntab.PCToLine(f.Offset)
 
 		size += f.End - f.Offset
 		err := sections.IncreaseKnown(f.Offset, f.End)
@@ -108,7 +117,9 @@ func loadPackageFromGore(pkg *gore.Package, sections SectionMap, pclntab *gosym.
 			//return nil, err
 		}
 
-		ff := getFile(file)
+		setSymbolMark(f.Offset)
+
+		ff := getFile(src)
 		ff.Functions = append(ff.Functions, f)
 		ff.Size += f.End - f.Offset
 	}

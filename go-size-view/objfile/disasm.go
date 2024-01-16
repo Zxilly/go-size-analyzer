@@ -54,8 +54,22 @@ func (e *Entry) Disasm() (*Disasm, error) {
 	return d, nil
 }
 
-// Filter the .rodata string address and length
-func (d *Disasm) Filter(start, end uint64) {
+type SectionLocation int
+
+const (
+	SectionUnknown SectionLocation = iota
+	SectionRoData
+	SectionData
+)
+
+type PossibleString struct {
+	Start    uint64
+	Len      uint64
+	Location SectionLocation
+}
+
+// Filter the .rodata/.data string address and length
+func (d *Disasm) Filter(start, end uint64) []PossibleString {
 	if start < d.textStart {
 		start = d.textStart
 	}
@@ -66,41 +80,45 @@ func (d *Disasm) Filter(start, end uint64) {
 
 	expectLen := false
 
-	stringFound := make([]struct {
-		Start uint64
-		Len   uint64
-	}, 0)
+	stringFound := make([]PossibleString, 0)
 
 	var lastAddr uint64 = 0
+	var lastLocation = SectionUnknown
 
 	for pc := start; pc < end; {
 		i := pc - d.textStart
 		ret, size := d.check(code[i:], pc, expectLen, d.byteOrder)
-		if ret.typ == FoundPossibleAddr {
-			expectLen = true
+
+		switch ret.typ {
+		case foundPossibleRoDataAddr:
 			lastAddr = ret.value
-		} else {
-			expectLen = false
-			if ret.typ == FoundLength {
-				stringFound = append(stringFound, struct {
-					Start uint64
-					Len   uint64
-				}{Start: lastAddr, Len: ret.value})
-			} else {
-				lastAddr = 0
-			}
+			expectLen = true
+			lastLocation = SectionRoData
+		case foundPossibleDataAddr:
+			lastAddr = ret.value
+			expectLen = true
+			lastLocation = SectionData
+		case foundLength:
+			stringFound = append(stringFound, PossibleString{Start: lastAddr, Len: ret.value, Location: lastLocation})
+			fallthrough
+		case notFound:
+			lastAddr = 0
+			lastLocation = SectionUnknown
 		}
 
 		pc += uint64(size)
 	}
+
+	return stringFound
 }
 
 type judgeType int
 
 const (
-	FoundPossibleAddr judgeType = iota
-	FoundLength
-	NotFound
+	foundPossibleRoDataAddr judgeType = iota
+	foundPossibleDataAddr
+	foundLength
+	notFound
 )
 
 type result struct {
@@ -125,15 +143,64 @@ func checkX86(code []byte, pc uint64, expectLen bool, arch int) (result, int) {
 
 	size := inst.Len
 	if err != nil || size == 0 || inst.Op == 0 {
-		return result{NotFound, 0}, 1
+		return result{notFound, 0}, 1
 	}
-
-	if inst.Op == x86asm.L
 
 	text := x86asm.GoSyntax(inst, pc, nil)
 	println(text)
 
-	return result{NotFound, 0}, size
+	typ := SectionUnknown
+
+	if expectLen {
+		if inst.Op != x86asm.MOV || countNotArgsX86(inst.Args) != 2 {
+			goto notfound
+		}
+
+		imm, ok := inst.Args[1].(x86asm.Imm)
+		if ok {
+			return result{foundLength, uint64(imm)}, size
+		}
+		if !ok {
+			goto notfound
+		} else {
+
+		}
+	} else {
+		if inst.Op == x86asm.LEA && countNotArgsX86(inst.Args) == 2 {
+			typ = SectionRoData
+			goto getaddr
+		}
+		if inst.Op == x86asm.MOV && countNotArgsX86(inst.Args) == 2 {
+			typ = SectionData
+			goto getaddr
+		}
+		goto notfound
+
+	getaddr:
+		mem, ok := inst.Args[1].(x86asm.Mem)
+		if !ok {
+			goto notfound
+		} else {
+			// should be IP base
+			if mem.Base != x86asm.RIP {
+				goto notfound
+			}
+
+			// cal absolute address
+			absAddr := pc + uint64(inst.Len) + uint64(mem.Disp)
+
+			if typ == SectionRoData {
+				return result{foundPossibleRoDataAddr, absAddr}, size
+			} else if typ == SectionData {
+				return result{foundPossibleDataAddr, absAddr}, size
+			} else {
+				goto notfound
+			}
+		}
+	}
+
+notfound:
+	return result{notFound, 0}, size
 }
 
 //func disasm_arm(code []byte, pc uint64, _ binary.ByteOrder) (result, int) {
