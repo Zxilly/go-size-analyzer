@@ -120,9 +120,10 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 	}
 
 	return &Packages{
-		Name:  pkg.Name,
-		Files: filesSlice,
-		grPkg: pkg,
+		Name:     pkg.Name,
+		Files:    filesSlice,
+		Sections: make(map[string]uint64),
+		grPkg:    pkg,
 	}, nil
 }
 

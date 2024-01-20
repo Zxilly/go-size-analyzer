@@ -36,17 +36,6 @@ func assertSectionsSize(sections *SectionMap, size uint64) {
 func extractSectionsFromPe(file *pe.File) (ret *SectionMap) {
 	ret = &SectionMap{Sections: make(map[string]*Section)}
 
-	getimageBase := func(file *pe.File) uint64 {
-		switch hdr := file.OptionalHeader.(type) {
-		case *pe.OptionalHeader32:
-			return uint64(hdr.ImageBase)
-		case *pe.OptionalHeader64:
-			return hdr.ImageBase
-		default:
-			panic("This should not happened :(")
-		}
-	}
-
 	imageBase := getimageBase(file)
 
 	for _, section := range file.Sections {

@@ -1,6 +1,7 @@
 package go_size_view
 
 import (
+	"errors"
 	"fmt"
 	"github.com/goretk/gore"
 	"strings"
@@ -19,12 +20,14 @@ type KnownInfo struct {
 	}
 }
 
+var ErrPackageNotFound = errors.New("package not found")
+
 // MarkKnownPartWithPackage mark the part of the memory as known, should only be called after extractPackages
 func (b *KnownInfo) MarkKnownPartWithPackage(start uint64, size uint64, pkg string) error {
 	b.FoundAddr.Insert(start, size)
 	pkgPtr, ok := b.Packages.nameToPkg[pkg]
 	if !ok {
-		return fmt.Errorf("package %s not found", pkg)
+		return errors.Join(ErrPackageNotFound, errors.New(pkg))
 	}
 	sectionName := b.SectionMap.GetSectionName(start)
 	if sectionName == "" {
@@ -102,7 +105,17 @@ func (b *KnownInfo) Collect(file *gore.GoFile) error {
 	}
 	b.Packages = pkgs
 
-	collectSizeFromSymbol(file, b)
+	err = collectSizeFromSymbol(file, b)
+	if err != nil {
+		return err
+	}
+
+	//todo: disasm find more addr
+
+	err = b.FoundAddr.AssertOverLap()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
