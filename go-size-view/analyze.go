@@ -1,69 +1,20 @@
 package go_size_view
 
 import (
-	"fmt"
 	"github.com/goretk/gore"
-	"io"
+	"log"
 )
 
-type textReader struct {
-	code []byte
-	pc   uint64
-}
-
-func (r textReader) ReadAt(data []byte, off int64) (n int, err error) {
-	if off < 0 || uint64(off) < r.pc {
-		return 0, io.EOF
-	}
-	d := uint64(off) - r.pc
-	if d >= uint64(len(r.code)) {
-		return 0, io.EOF
-	}
-	n = copy(data, r.code[d:])
-	if n < len(data) {
-		err = io.ErrUnexpectedEOF
-	}
-	return
-}
-
-func Analyze(file *gore.GoFile) (*Bin, error) {
-	secm := extractSectionsFromGoFile(file)
-	size := getFileSize(file.GetFile())
-	assertSectionsSize(secm, size)
-
-	pkgs, err := configurePackages(file, secm)
+func Analyze(path string) error {
+	file, err := gore.Open(path)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error: %v", err)
 	}
 
-	bin := &Bin{
-		Size:       size,
-		BuildInfo:  file.BuildInfo,
-		SectionMap: secm,
-		Packages:   pkgs,
-	}
-
-	err = increaseSectionSizeFromSymbol(secm)
+	target := &KnownInfo{}
+	err = target.Collect(file)
 	if err != nil {
-		return nil, err
-	}
-
-	for _, section := range secm.Sections {
-		printPercentage := func(num1, num2 uint64) string {
-			var percentage float64
-
-			// 检查除数是否为0
-			if num2 == 0 {
-				percentage = 100.0
-			} else {
-				// 计算百分比，并保留两位小数
-				percentage = float64(num1) / float64(num2) * 100
-			}
-
-			return fmt.Sprintf("%.2f%%\n", percentage)
-		}
-
-		println(section.Name, section.KnownSize, section.TotalSize, printPercentage(section.KnownSize, section.TotalSize))
+		return err
 	}
 
 	//disasm, err := objf.Disasm()
@@ -114,5 +65,5 @@ func Analyze(file *gore.GoFile) (*Bin, error) {
 	//	}
 	//}
 
-	return bin, nil
+	return nil
 }

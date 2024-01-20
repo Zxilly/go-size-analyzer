@@ -4,7 +4,6 @@ import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
-	"github.com/Zxilly/go-size-view/go-size-view/objfile"
 	"github.com/goretk/gore"
 	"log"
 )
@@ -17,21 +16,9 @@ func extractSectionsFromGoFile(gofile *gore.GoFile) (sections *SectionMap) {
 		sections = extractSectionsFromElf(f)
 	case *macho.File:
 		sections = extractSectionsFromMacho(f)
+	default:
+		panic("This should not happened :(")
 	}
-
-	sections.SymTab = SymbolTable{Symbols: make(map[uint64]*Symbol)}
-
-	obj, _ := objfile.Create(gofile.GetFile(), gofile.GetParsedFile())
-	syms, err := obj.Symbols()
-	if err != nil {
-		log.Println("Warning: failed to get symbols. deep analysis will not be available")
-		return
-	}
-
-	for _, sym := range syms {
-		sections.SymTab.Symbols[sym.Addr] = &Symbol{Sym: sym, SizeCounted: false}
-	}
-
 	return
 }
 
@@ -50,30 +37,27 @@ func extractSectionsFromPe(file *pe.File) (ret *SectionMap) {
 	ret = &SectionMap{Sections: make(map[string]*Section)}
 
 	getimageBase := func(file *pe.File) uint64 {
-		if file.Machine == pe.IMAGE_FILE_MACHINE_I386 {
-			optHdr := file.OptionalHeader.(*pe.OptionalHeader32)
-			return uint64(optHdr.ImageBase)
-		} else {
-			optHdr := file.OptionalHeader.(*pe.OptionalHeader64)
-			return optHdr.ImageBase
+		switch hdr := file.OptionalHeader.(type) {
+		case *pe.OptionalHeader32:
+			return uint64(hdr.ImageBase)
+		case *pe.OptionalHeader64:
+			return hdr.ImageBase
+		default:
+			panic("This should not happened :(")
 		}
 	}
 
 	imageBase := getimageBase(file)
 
 	for _, section := range file.Sections {
-		if section.Size == 0 {
-			continue
-		}
-
 		ret.Sections[section.Name] = &Section{
-			Name:      section.Name,
-			TotalSize: uint64(section.Size),
-			KnownSize: 0,
-			Offset:    uint64(section.Offset),
-			End:       uint64(section.Offset + section.Size),
-			GoAddr:    imageBase + uint64(section.VirtualAddress),
-			GoEnd:     imageBase + uint64(section.VirtualAddress+section.Size),
+			Name:         section.Name,
+			TotalSize:    uint64(section.Size),
+			Offset:       uint64(section.Offset),
+			End:          uint64(section.Offset + section.Size),
+			Addr:         imageBase + uint64(section.VirtualAddress),
+			AddrEnd:      imageBase + uint64(section.VirtualAddress+section.VirtualSize),
+			OnlyInMemory: false, // pe file not set only in memory section
 		}
 	}
 	return
@@ -91,21 +75,22 @@ func extractSectionsFromElf(file *elf.File) (ret *SectionMap) {
 		if section.Type == elf.SHT_NOBITS {
 			// seems like .bss section
 			ret.Sections[section.Name] = &Section{
-				Name:   section.Name,
-				GoAddr: section.Addr,
-				GoEnd:  section.Addr + section.Size,
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
 			}
 			continue
 		}
 
 		ret.Sections[section.Name] = &Section{
-			Name:      section.Name,
-			TotalSize: section.FileSize,
-			KnownSize: 0,
-			Offset:    section.Offset,
-			End:       section.Offset + section.FileSize,
-			GoAddr:    section.Addr,
-			GoEnd:     section.Addr + section.Size,
+			Name:         section.Name,
+			TotalSize:    section.FileSize,
+			Offset:       section.Offset,
+			End:          section.Offset + section.FileSize,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
 		}
 	}
 
@@ -113,26 +98,32 @@ func extractSectionsFromElf(file *elf.File) (ret *SectionMap) {
 }
 
 func extractSectionsFromMacho(file *macho.File) (ret *SectionMap) {
-	ret = &SectionMap{
-		Sections: map[string]*Section{},
-		SymTab: SymbolTable{
-			Symbols: make(map[uint64]*Symbol),
-		},
-	}
+	ret = &SectionMap{Sections: map[string]*Section{}}
 
 	for _, section := range file.Sections {
 		if section.Size == 0 {
 			continue
 		}
 
+		if section.Offset == 0 {
+			// seems like .bss section
+			ret.Sections[section.Name] = &Section{
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
+			}
+			continue
+		}
+
 		ret.Sections[section.Name] = &Section{
-			Name:      section.Name,
-			TotalSize: section.Size,
-			KnownSize: 0,
-			Offset:    uint64(section.Offset),
-			End:       uint64(section.Offset) + section.Size,
-			GoAddr:    section.Addr,
-			GoEnd:     section.Addr + section.Size,
+			Name:         section.Name,
+			TotalSize:    section.Size,
+			Offset:       uint64(section.Offset),
+			End:          uint64(section.Offset) + section.Size,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
 		}
 	}
 

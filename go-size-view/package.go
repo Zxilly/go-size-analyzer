@@ -3,10 +3,14 @@ package go_size_view
 import (
 	"debug/gosym"
 	"github.com/goretk/gore"
+	"maps"
 )
 
-func configurePackages(file *gore.GoFile, sections *SectionMap) (*TypedPackages, error) {
+func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 	pkgs := new(TypedPackages)
+
+	pkgs.nameToPkg = make(map[string]*Packages)
+
 	pclntab, err := file.PCLNTab()
 	if err != nil {
 		return nil, err
@@ -16,64 +20,69 @@ func configurePackages(file *gore.GoFile, sections *SectionMap) (*TypedPackages,
 	if err != nil {
 		return nil, err
 	}
-	selfPkgs, err := loadPackagesFromGorePackages(self, sections, pclntab)
+	selfPkgs, n, err := loadPackagesFromGorePackages(self, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Self = selfPkgs
+	maps.Copy(pkgs.nameToPkg, n)
 
 	grStd, _ := file.GetSTDLib()
-	std, err := loadPackagesFromGorePackages(grStd, sections, pclntab)
+	std, n, err := loadPackagesFromGorePackages(grStd, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Std = std
+	maps.Copy(pkgs.nameToPkg, n)
 
 	grVendor, _ := file.GetVendors()
-	vendor, err := loadPackagesFromGorePackages(grVendor, sections, pclntab)
+	vendor, n, err := loadPackagesFromGorePackages(grVendor, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Vendor = vendor
+	maps.Copy(pkgs.nameToPkg, n)
 
 	grGenerated, _ := file.GetGeneratedPackages()
-	generated, err := loadPackagesFromGorePackages(grGenerated, sections, pclntab)
+	generated, n, err := loadPackagesFromGorePackages(grGenerated, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Generated = generated
+	maps.Copy(pkgs.nameToPkg, n)
 
 	grUnknown, _ := file.GetUnknown()
-	unknown, err := loadPackagesFromGorePackages(grUnknown, sections, pclntab)
+	unknown, n, err := loadPackagesFromGorePackages(grUnknown, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Unknown = unknown
+	maps.Copy(pkgs.nameToPkg, n)
 
 	return pkgs, nil
 }
 
-func loadPackagesFromGorePackages(gr []*gore.Package, sections *SectionMap, pclntab *gosym.Table) ([]*Packages, error) {
+func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Packages, map[string]*Packages, error) {
 	pkgs := make([]*Packages, 0, len(gr))
+	nameToPkg := make(map[string]*Packages)
 	for _, g := range gr {
-		pkg, err := loadPackageFromGore(g, sections, pclntab)
+		pkg, err := loadPackageFromGore(g, k, pclntab)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		pkgs = append(pkgs, pkg)
+		nameToPkg[pkg.Name] = pkg
 	}
-	return pkgs, nil
+	return pkgs, nameToPkg, nil
 }
 
-func loadPackageFromGore(pkg *gore.Package, sections *SectionMap, pclntab *gosym.Table) (*Packages, error) {
-	size := uint64(0)
+func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Packages, error) {
 	files := map[string]*File{}
 
 	getFile := func(path string) *File {
 		f, ok := files[path]
 		if !ok {
 			nf := &File{
-				Size:      0,
 				Path:      path,
 				Functions: make([]*gore.Function, 0),
 			}
@@ -83,45 +92,26 @@ func loadPackageFromGore(pkg *gore.Package, sections *SectionMap, pclntab *gosym
 		return f
 	}
 
-	setSymbolMark := func(offset uint64) {
-		sym := sections.SymTab.Symbols[offset]
-		if sym != nil {
-			sym.SizeCounted = true
-		}
+	setAddrMark := func(addr, size uint64) {
+		k.FoundAddr.Insert(addr, size)
 	}
 
 	for _, m := range pkg.Methods {
 		src, _, _ := pclntab.PCToLine(m.Offset)
 
-		size += m.End - m.Offset
-		err := sections.IncreaseKnown(m.Offset, m.End)
-		if err != nil {
-			println(m.PackageName, m.Name, "no section found", m.Offset, m.End)
-			//return nil, err
-		}
-
-		setSymbolMark(m.Offset)
+		setAddrMark(m.Offset, m.End-m.Offset)
 
 		mf := getFile(src)
 		mf.Functions = append(mf.Functions, m.Function)
-		mf.Size += m.End - m.Offset
 	}
 
 	for _, f := range pkg.Functions {
 		src, _, _ := pclntab.PCToLine(f.Offset)
 
-		size += f.End - f.Offset
-		err := sections.IncreaseKnown(f.Offset, f.End)
-		if err != nil {
-			println(f.PackageName, f.Name, "no section found", f.Offset, f.End)
-			//return nil, err
-		}
-
-		setSymbolMark(f.Offset)
+		setAddrMark(f.Offset, f.End-f.Offset)
 
 		ff := getFile(src)
 		ff.Functions = append(ff.Functions, f)
-		ff.Size += f.End - f.Offset
 	}
 
 	filesSlice := make([]*File, 0, len(files))
@@ -131,8 +121,35 @@ func loadPackageFromGore(pkg *gore.Package, sections *SectionMap, pclntab *gosym
 
 	return &Packages{
 		Name:  pkg.Name,
-		Size:  size,
 		Files: filesSlice,
 		grPkg: pkg,
 	}, nil
+}
+
+type TypedPackages struct {
+	Self      []*Packages
+	Std       []*Packages
+	Vendor    []*Packages
+	Generated []*Packages
+	Unknown   []*Packages
+
+	nameToPkg map[string]*Packages
+}
+
+type Packages struct {
+	Name     string
+	Files    []*File
+	Sections map[string]uint64
+	grPkg    *gore.Package
+}
+
+func (p *Packages) GetSize() uint64 {
+	var size uint64 = 0
+	for _, f := range p.Files {
+		size += f.GetSize()
+	}
+	for _, s := range p.Sections {
+		size += s
+	}
+	return size
 }

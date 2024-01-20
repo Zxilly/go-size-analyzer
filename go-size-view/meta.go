@@ -1,19 +1,81 @@
 package go_size_view
 
 import (
-	"errors"
-	"github.com/Zxilly/go-size-view/go-size-view/objfile"
+	"fmt"
 	"github.com/goretk/gore"
+	"strings"
 )
 
-type Bin struct {
+type KnownInfo struct {
 	Size       uint64
 	BuildInfo  *gore.BuildInfo
 	SectionMap *SectionMap
 	Packages   *TypedPackages
+	FoundAddr  *FoundAddr
+
+	version struct {
+		leq118 bool
+		meq120 bool
+	}
 }
 
-func (b *Bin) GetMetaSize() uint64 {
+// MarkKnownPartWithPackage mark the part of the memory as known, should only be called after extractPackages
+func (b *KnownInfo) MarkKnownPartWithPackage(start uint64, size uint64, pkg string) error {
+	b.FoundAddr.Insert(start, size)
+	pkgPtr, ok := b.Packages.nameToPkg[pkg]
+	if !ok {
+		return fmt.Errorf("package %s not found", pkg)
+	}
+	sectionName := b.SectionMap.GetSectionName(start)
+	if sectionName == "" {
+		return fmt.Errorf("section not found for addr %#x", start)
+	}
+	pkgPtr.Sections[sectionName] += size
+	return nil
+}
+
+// ExtractPackageFromSymbol copied from debug/gosym/symtab.go
+func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
+	nameWithoutInst := func(name string) string {
+		start := strings.Index(name, "[")
+		if start < 0 {
+			return name
+		}
+		end := strings.LastIndex(name, "]")
+		if end < 0 {
+			// Malformed name, should contain closing bracket too.
+			return name
+		}
+		return name[0:start] + name[end+1:]
+	}
+
+	name := nameWithoutInst(s)
+
+	// Since go1.20, a prefix of "type:" and "go:" is a compiler-generated symbol,
+	// they do not belong to any package.
+	//
+	// See cmd/compile/internal/base/link.go:ReservedImports variable.
+	if b.version.meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
+		return ""
+	}
+
+	// For go1.18 and below, the prefix are "type." and "go." instead.
+	if b.version.leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
+		return ""
+	}
+
+	pathend := strings.LastIndex(name, "/")
+	if pathend < 0 {
+		pathend = 0
+	}
+
+	if i := strings.Index(name[pathend:], "."); i != -1 {
+		return name[:pathend+i]
+	}
+	return ""
+}
+
+func (b *KnownInfo) GetPaddingSize() uint64 {
 	var sectionSize uint64 = 0
 	for _, section := range b.SectionMap.Sections {
 		sectionSize += section.TotalSize
@@ -21,69 +83,65 @@ func (b *Bin) GetMetaSize() uint64 {
 	return b.Size - sectionSize
 }
 
-type Symbol struct {
-	objfile.Sym
-	SizeCounted bool
-}
+func (b *KnownInfo) Collect(file *gore.GoFile) error {
+	b.FoundAddr = NewFoundAddr()
 
-type SymbolTable struct {
-	Symbols map[uint64]*Symbol // addr -> symbol
+	b.SectionMap = extractSectionsFromGoFile(file)
+	b.Size = getFileSize(file.GetFile())
+	b.BuildInfo = file.BuildInfo
+
+	b.version.leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
+	b.version.meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
+
+	assertSectionsSize(b.SectionMap, b.Size)
+
+	// this also increase the known size of sections
+	pkgs, err := extractPackages(file, b)
+	if err != nil {
+		return err
+	}
+	b.Packages = pkgs
+
+	collectSizeFromSymbol(file, b)
+
+	return nil
 }
 
 type SectionMap struct {
 	Sections map[string]*Section
-	SymTab   SymbolTable
 }
 
-func (s *SectionMap) IncreaseKnown(start uint64, end uint64) error {
+func (s *SectionMap) GetSectionName(addr uint64) string {
 	for _, section := range s.Sections {
-		if start >= section.GoAddr && end <= section.GoEnd {
-			if section.TotalSize == 0 {
-				// just ignore, can be .bss or .noptrbss
-				return nil
-			}
-
-			section.KnownSize += end - start
-			if section.KnownSize > section.TotalSize {
-				return errors.New("known size is bigger than total size")
-			}
-
-			return nil
+		if addr >= section.Addr && addr < section.AddrEnd {
+			return section.Name
 		}
 	}
-	return errors.New("no section found")
+	return ""
 }
 
 type Section struct {
 	Name      string
 	TotalSize uint64
-	KnownSize uint64 // has been calculated in the modules
 
 	Offset uint64
 	End    uint64
 
-	GoAddr uint64
-	GoEnd  uint64
-}
+	Addr    uint64
+	AddrEnd uint64
 
-type TypedPackages struct {
-	Self      []*Packages
-	Std       []*Packages
-	Vendor    []*Packages
-	Generated []*Packages
-	Unknown   []*Packages
-}
-
-type Packages struct {
-	Name     string
-	Size     uint64
-	Files    []*File
-	Sections map[string]uint64
-	grPkg    *gore.Package
+	OnlyInMemory bool
 }
 
 type File struct {
-	Size      uint64
 	Path      string
 	Functions []*gore.Function
+}
+
+func (f *File) GetSize() uint64 {
+	var size uint64 = 0
+	for _, fn := range f.Functions {
+		size += fn.End - fn.Offset
+	}
+	return size
 }
