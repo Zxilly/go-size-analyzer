@@ -6,12 +6,13 @@ import (
 	"debug/pe"
 	"errors"
 	"fmt"
+	"github.com/Zxilly/go-size-view/go-size-view/tool"
 	"github.com/goretk/gore"
 	"log"
 	"slices"
 )
 
-func collectSizeFromSymbol(file *gore.GoFile, b *KnownInfo) error {
+func analysisSymbol(file *gore.GoFile, b *KnownInfo) error {
 	switch f := file.GetParsedFile().(type) {
 	case *pe.File:
 		return collectSizeFromPeSymbol(f, b)
@@ -24,8 +25,21 @@ func collectSizeFromSymbol(file *gore.GoFile, b *KnownInfo) error {
 	}
 }
 
+func markSymbolOnAddrs(b *KnownInfo, addr, size uint64, pkg string) error {
+	err := b.MarkKnownPartWithPackageStr(addr, size, pkg)
+	if err != nil {
+		if errors.Is(err, ErrPackageNotFound) || errors.Is(err, ErrDuplicatePackageForAddr) {
+			// some symbol like complex symbol or cgo symbol, can't find
+			// or duplicate package for addr, just skip, we may have mark it at parse pclntab
+			return nil
+		}
+		return err
+	}
+	return nil
+}
+
 func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
-	imageBase := getimageBase(f)
+	imageBase := tool.GetImageBase(f)
 
 	const (
 		NUndef = 0
@@ -57,7 +71,6 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 	addrs := make([]uint64, 0)
 
 	for _, s := range peSyms {
-
 		const (
 			text = 0x20
 			data = 0x40
@@ -69,13 +82,15 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 			continue // not text/data, skip
 		}
 
+		addr := uint64(s.Value) + imageBase + uint64(sect.VirtualAddress)
+
 		syms = append(syms, sym{
 			Name: s.Name,
-			Addr: uint64(s.Value),
+			Addr: addr,
 			Size: 0, // will be filled later
 		})
 
-		addrs = append(addrs, uint64(s.Value)+imageBase+uint64(sect.VirtualAddress))
+		addrs = append(addrs, addr)
 	}
 
 	slices.Sort(addrs)
@@ -83,7 +98,7 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Addr)
 		if !ok {
-			// Maybe we met the last symbol, skip it, no way to get the size
+			// Maybe we met the last symbol, skip it, no way to get the Size
 			continue
 		}
 		size := addrs[i] - s.Addr
@@ -92,15 +107,28 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 		if pkgName == "" {
 			continue // skip compiler-generated symbols
 		}
+		s.Size = size
 
-		err := b.MarkKnownPartWithPackage(s.Addr, size, pkgName)
+		err := markSymbolOnAddrs(b, s.Addr, size, pkgName)
 		if err != nil {
-			if errors.Is(err, ErrPackageNotFound) {
-				continue // some symbol like complex symbol or cgo symbol, can't find
-			}
 			return err
 		}
 	}
+
+	// try to fill go:string.*
+	for _, s := range syms {
+		if s.Name == "go.string.*" {
+			if s.Size == 0 {
+				break // well, no way to get this
+			}
+
+			b.GoStrSymbol.Size = s.Size
+			b.GoStrSymbol.Start = s.Addr
+			b.GoStrSymbol.Found = true
+			break
+		}
+	}
+
 	return nil
 }
 
@@ -108,7 +136,7 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 	symbols, err := f.Symbols()
 	if err != nil {
 		if errors.Is(err, elf.ErrNoSymbols) {
-			log.Println("Warning: no symbol table found")
+			log.Println("Warning: no symbol table Found")
 			return nil // keep going without symbol table
 		}
 		return err
@@ -143,23 +171,32 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 
 		pkgName := b.ExtractPackageFromSymbol(s.Name)
 		if pkgName == "" {
+			if s.Name == "go:string.*" {
+				if s.Size == 0 {
+					continue // well, no way to get this
+				}
+
+				b.GoStrSymbol.Size = s.Size
+				b.GoStrSymbol.Start = s.Value
+				b.GoStrSymbol.Found = true
+				continue
+			}
+
 			continue // skip compiler-generated symbols
 		}
 
-		err = b.MarkKnownPartWithPackage(s.Value, s.Size, pkgName)
+		err = markSymbolOnAddrs(b, s.Value, s.Size, pkgName)
 		if err != nil {
-			if errors.Is(err, ErrPackageNotFound) {
-				continue // some symbol like complex symbol or cgo symbol, can't find
-			}
 			return err
 		}
 	}
+
 	return nil
 }
 
 func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
 	if f.Symtab == nil {
-		log.Println("Warning: no symbol table found")
+		log.Println("Warning: no symbol table Found")
 		return nil // keep going without symbol table
 	}
 
@@ -184,7 +221,7 @@ func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Value)
 		if !ok {
-			// maybe we met the last symbol, no way to get the size
+			// maybe we met the last symbol, no way to get the Size
 			continue
 		}
 		size := addrs[i] - s.Value
@@ -208,14 +245,22 @@ func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
 
 		pkgName := b.ExtractPackageFromSymbol(s.Name)
 		if pkgName == "" {
+			if s.Name == "go:string.*" {
+				if size == 0 {
+					continue // well, no way to get this
+				}
+
+				b.GoStrSymbol.Size = size
+				b.GoStrSymbol.Start = s.Value
+				b.GoStrSymbol.Found = true
+				continue
+			}
+
 			continue // skip compiler-generated symbols
 		}
 
-		err := b.MarkKnownPartWithPackage(s.Value, size, pkgName)
+		err := markSymbolOnAddrs(b, s.Value, size, pkgName)
 		if err != nil {
-			if errors.Is(err, ErrPackageNotFound) {
-				continue // some symbol like complex symbol or cgo symbol, can't find
-			}
 			return err
 		}
 	}

@@ -2,7 +2,7 @@ package go_size_view
 
 import (
 	"errors"
-	"fmt"
+	"github.com/Zxilly/go-size-view/go-size-view/tool"
 	"github.com/goretk/gore"
 	"strings"
 )
@@ -14,27 +14,29 @@ type KnownInfo struct {
 	Packages   *TypedPackages
 	FoundAddr  *FoundAddr
 
-	version struct {
-		leq118 bool
-		meq120 bool
+	Version struct {
+		Leq118 bool
+		Meq120 bool
+	}
+
+	// not using right now
+	GoStrSymbol struct {
+		Start uint64
+		Size  uint64
+		Found bool
 	}
 }
 
-var ErrPackageNotFound = errors.New("package not found")
+var ErrPackageNotFound = errors.New("package not Found")
 
-// MarkKnownPartWithPackage mark the part of the memory as known, should only be called after extractPackages
-func (b *KnownInfo) MarkKnownPartWithPackage(start uint64, size uint64, pkg string) error {
-	b.FoundAddr.Insert(start, size)
-	pkgPtr, ok := b.Packages.nameToPkg[pkg]
+// MarkKnownPartWithPackageStr mark the part of the memory as known, should only be called after extractPackages
+func (b *KnownInfo) MarkKnownPartWithPackageStr(start uint64, size uint64, pkg string) error {
+	pkgPtr, ok := b.Packages.NameToPkg[pkg]
 	if !ok {
 		return errors.Join(ErrPackageNotFound, errors.New(pkg))
 	}
-	sectionName := b.SectionMap.GetSectionName(start)
-	if sectionName == "" {
-		return fmt.Errorf("section not found for addr %#x", start)
-	}
-	pkgPtr.Sections[sectionName] += size
-	return nil
+
+	return b.FoundAddr.Insert(start, size, pkgPtr)
 }
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
@@ -58,12 +60,12 @@ func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	// they do not belong to any package.
 	//
 	// See cmd/compile/internal/base/link.go:ReservedImports variable.
-	if b.version.meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
+	if b.Version.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
 		return ""
 	}
 
 	// For go1.18 and below, the prefix are "type." and "go." instead.
-	if b.version.leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
+	if b.Version.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
 		return ""
 	}
 
@@ -90,27 +92,30 @@ func (b *KnownInfo) Collect(file *gore.GoFile) error {
 	b.FoundAddr = NewFoundAddr()
 
 	b.SectionMap = extractSectionsFromGoFile(file)
-	b.Size = getFileSize(file.GetFile())
+	b.Size = tool.GetFileSize(file.GetFile())
 	b.BuildInfo = file.BuildInfo
 
-	b.version.leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
-	b.version.meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
+	b.Version.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
+	b.Version.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
 
 	assertSectionsSize(b.SectionMap, b.Size)
 
-	// this also increase the known size of sections
+	// this also increase the known Size of sections
 	pkgs, err := extractPackages(file, b)
 	if err != nil {
 		return err
 	}
 	b.Packages = pkgs
 
-	err = collectSizeFromSymbol(file, b)
+	err = analysisSymbol(file, b)
 	if err != nil {
 		return err
 	}
 
-	//todo: disasm find more addr
+	err = TryExtractWithDisasm(file, b)
+	if err != nil {
+		return err
+	}
 
 	err = b.FoundAddr.AssertOverLap()
 	if err != nil {
@@ -131,6 +136,24 @@ func (s *SectionMap) GetSectionName(addr uint64) string {
 		}
 	}
 	return ""
+}
+
+func (s *SectionMap) GetSection(addr, size uint64) *Section {
+	for _, section := range s.Sections {
+		if addr >= section.Addr && addr < section.AddrEnd && addr+size <= section.AddrEnd {
+			return section
+		}
+	}
+	return nil
+}
+
+func (s *SectionMap) AddrToOffset(addr uint64) uint64 {
+	for _, section := range s.Sections {
+		if addr >= section.Addr && addr < section.AddrEnd {
+			return addr - section.Addr + section.Offset
+		}
+	}
+	return 0
 }
 
 type Section struct {

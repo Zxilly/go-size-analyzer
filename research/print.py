@@ -1,8 +1,7 @@
 import argparse
 import subprocess
 
-
-from .download import versions, get_bin_path, ensure_exist
+from download import versions, get_bin_path, ensure_exist
 
 
 def print_asm(arch: str, pos: str, target: str = ""):
@@ -22,12 +21,12 @@ def print_asm(arch: str, pos: str, target: str = ""):
         print(ret.stdout.decode("utf-8"))
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-a', '--arch', choices=['amd64', 'arm64', '386'], nargs="+", default=['amd64'])
-parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
-parser.add_argument('-t', '--target', default="", required=False)
-
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--arch', choices=['amd64', 'arm64', '386'], nargs="+", default=['amd64'])
+    parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
+    parser.add_argument('-t', '--target', default="", required=False)
+
     args = parser.parse_args()
     for a in args.arch:
         for p in args.os:

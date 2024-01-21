@@ -9,7 +9,7 @@ import (
 func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 	pkgs := new(TypedPackages)
 
-	pkgs.nameToPkg = make(map[string]*Packages)
+	pkgs.NameToPkg = make(map[string]*Package)
 
 	pclntab, err := file.PCLNTab()
 	if err != nil {
@@ -25,7 +25,7 @@ func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 		return nil, err
 	}
 	pkgs.Self = selfPkgs
-	maps.Copy(pkgs.nameToPkg, n)
+	maps.Copy(pkgs.NameToPkg, n)
 
 	grStd, _ := file.GetSTDLib()
 	std, n, err := loadPackagesFromGorePackages(grStd, k, pclntab)
@@ -33,7 +33,7 @@ func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 		return nil, err
 	}
 	pkgs.Std = std
-	maps.Copy(pkgs.nameToPkg, n)
+	maps.Copy(pkgs.NameToPkg, n)
 
 	grVendor, _ := file.GetVendors()
 	vendor, n, err := loadPackagesFromGorePackages(grVendor, k, pclntab)
@@ -41,7 +41,7 @@ func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 		return nil, err
 	}
 	pkgs.Vendor = vendor
-	maps.Copy(pkgs.nameToPkg, n)
+	maps.Copy(pkgs.NameToPkg, n)
 
 	grGenerated, _ := file.GetGeneratedPackages()
 	generated, n, err := loadPackagesFromGorePackages(grGenerated, k, pclntab)
@@ -49,7 +49,7 @@ func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 		return nil, err
 	}
 	pkgs.Generated = generated
-	maps.Copy(pkgs.nameToPkg, n)
+	maps.Copy(pkgs.NameToPkg, n)
 
 	grUnknown, _ := file.GetUnknown()
 	unknown, n, err := loadPackagesFromGorePackages(grUnknown, k, pclntab)
@@ -57,14 +57,14 @@ func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
 		return nil, err
 	}
 	pkgs.Unknown = unknown
-	maps.Copy(pkgs.nameToPkg, n)
+	maps.Copy(pkgs.NameToPkg, n)
 
 	return pkgs, nil
 }
 
-func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Packages, map[string]*Packages, error) {
-	pkgs := make([]*Packages, 0, len(gr))
-	nameToPkg := make(map[string]*Packages)
+func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Package, map[string]*Package, error) {
+	pkgs := make([]*Package, 0, len(gr))
+	nameToPkg := make(map[string]*Package)
 	for _, g := range gr {
 		pkg, err := loadPackageFromGore(g, k, pclntab)
 		if err != nil {
@@ -76,7 +76,13 @@ func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gos
 	return pkgs, nameToPkg, nil
 }
 
-func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Packages, error) {
+func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
+	ret := &Package{
+		Name:  pkg.Name,
+		Addrs: make([]*PkgAddr, 0),
+		grPkg: pkg,
+	}
+
 	files := map[string]*File{}
 
 	getFile := func(path string) *File {
@@ -93,7 +99,8 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 	}
 
 	setAddrMark := func(addr, size uint64) {
-		k.FoundAddr.Insert(addr, size)
+		// nothing will happen here
+		_ = k.FoundAddr.Insert(addr, size, ret)
 	}
 
 	for _, m := range pkg.Methods {
@@ -119,38 +126,44 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 		filesSlice = append(filesSlice, f)
 	}
 
-	return &Packages{
-		Name:     pkg.Name,
-		Files:    filesSlice,
-		Sections: make(map[string]uint64),
-		grPkg:    pkg,
-	}, nil
+	ret.Files = filesSlice
+
+	return ret, nil
 }
 
 type TypedPackages struct {
-	Self      []*Packages
-	Std       []*Packages
-	Vendor    []*Packages
-	Generated []*Packages
-	Unknown   []*Packages
+	Self      []*Package
+	Std       []*Package
+	Vendor    []*Package
+	Generated []*Package
+	Unknown   []*Package
 
-	nameToPkg map[string]*Packages
+	NameToPkg map[string]*Package
 }
 
-type Packages struct {
-	Name     string
-	Files    []*File
-	Sections map[string]uint64
-	grPkg    *gore.Package
+func (tp *TypedPackages) GetPackages() []*Package {
+	var pkgs []*Package
+
+	// use this order to make it more likely to set the disasm result to the right package
+	pkgs = append(pkgs, tp.Unknown...)
+	pkgs = append(pkgs, tp.Generated...)
+	pkgs = append(pkgs, tp.Std...)
+	pkgs = append(pkgs, tp.Vendor...)
+	pkgs = append(pkgs, tp.Self...)
+	return pkgs
 }
 
-func (p *Packages) GetSize() uint64 {
-	var size uint64 = 0
+type Package struct {
+	Name  string
+	Files []*File
+	Addrs []*PkgAddr // from symbols and disasm result
+	grPkg *gore.Package
+}
+
+func (p *Package) GetFunctions() []*gore.Function {
+	var fns []*gore.Function
 	for _, f := range p.Files {
-		size += f.GetSize()
+		fns = append(fns, f.Functions...)
 	}
-	for _, s := range p.Sections {
-		size += s
-	}
-	return size
+	return fns
 }

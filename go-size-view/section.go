@@ -4,6 +4,7 @@ import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
+	"github.com/Zxilly/go-size-view/go-size-view/tool"
 	"github.com/goretk/gore"
 	"log"
 )
@@ -29,14 +30,14 @@ func assertSectionsSize(sections *SectionMap, size uint64) {
 	}
 
 	if sectionsSize > size {
-		log.Fatalf("Error: sections size is bigger than file size. sections size: %d, file size: %d", sectionsSize, size)
+		log.Fatalf("Error: sections Size is bigger than file Size. sections Size: %d, file Size: %d", sectionsSize, size)
 	}
 }
 
 func extractSectionsFromPe(file *pe.File) (ret *SectionMap) {
 	ret = &SectionMap{Sections: make(map[string]*Section)}
 
-	imageBase := getimageBase(file)
+	imageBase := tool.GetImageBase(file)
 
 	for _, section := range file.Sections {
 		ret.Sections[section.Name] = &Section{

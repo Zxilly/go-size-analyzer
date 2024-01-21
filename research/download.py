@@ -3,7 +3,7 @@ import os
 
 import requests
 
-TARGET_TAG = "20240117143504"
+TARGET_TAG = "latest"
 BIN_REPO = "Zxilly/go-testdata"
 versions = ["1.13", "1.17", "1.21"]
 
@@ -11,7 +11,7 @@ full_versions = [f"1.{i}" for i in range(13, 22)]
 
 
 def get_bin_path(filename: str):
-    return os.path.join(os.getcwd(), "bins", filename)
+    return os.path.join(os.path.dirname(__file__), "bins", filename)
 
 
 def download(filename: str):
@@ -48,13 +48,13 @@ def ensure_exist(filename: str):
         print(f"{filename} exists.")
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-a', '--arch', choices=['amd64', 'arm64', '386'], nargs="+", default=['amd64'])
-parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
-parser.add_argument('-v', '--version', default=["1.21"], choices=full_versions)
-parser.add_argument('-s', '--strip', action='store_true', default=False)
-
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--arch', choices=['amd64', 'arm64', '386'], nargs="+", default=['amd64'])
+    parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
+    parser.add_argument('-v', '--version', default=["1.21"], choices=full_versions)
+    parser.add_argument('-s', '--strip', action='store_true', default=False)
+
     args = parser.parse_args()
     for arch in args.arch:
         for pos in args.os:

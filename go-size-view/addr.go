@@ -2,64 +2,76 @@ package go_size_view
 
 import (
 	"cmp"
+	"errors"
 	"fmt"
 	"slices"
 )
 
-type Addr struct {
+type RawAddr struct {
 	Addr uint64
 	Size uint64
 }
 
-type sortedAddr struct {
-	values []Addr
+type PkgAddr struct {
+	RawAddr
+	Pkg *Package
 }
 
-func (s *sortedAddr) Insert(addr Addr) {
-	i, _ := slices.BinarySearchFunc(s.values, addr, func(i, j Addr) int {
+type sortedAddr struct {
+	values []RawAddr
+}
+
+func (s *sortedAddr) Insert(addr RawAddr) {
+	i, _ := slices.BinarySearchFunc(s.values, addr, func(i, j RawAddr) int {
 		return cmp.Compare(i.Addr, j.Addr)
 	})
 	s.values = slices.Insert(s.values, i, addr)
 }
 
 type FoundAddr struct {
-	values map[uint64]uint64
+	values map[uint64]*PkgAddr
 }
 
 func NewFoundAddr() *FoundAddr {
 	return &FoundAddr{
-		values: make(map[uint64]uint64),
+		values: make(map[uint64]*PkgAddr),
 	}
 }
 
-// Insert when meet the duplicated addr, keep the larger size, and return the diff
-func (f *FoundAddr) Insert(addr uint64, size uint64) uint64 {
-	if _, ok := f.values[addr]; ok {
-		if f.values[addr] >= size {
-			return 0
-		} else {
-			diff := size - f.values[addr]
-			f.values[addr] = size
-			return diff
+var ErrDuplicatePackageForAddr = fmt.Errorf("duplicate package for addr")
+
+// Insert when meet the duplicated addr, keep the larger Size, and return the diff
+func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package) error {
+	if addrptr, ok := f.values[addr]; ok {
+		if addrptr.Pkg.Name != p.Name {
+			return errors.Join(ErrDuplicatePackageForAddr, errors.New(addrptr.Pkg.Name), errors.New(p.Name))
 		}
+		// not overwrite the pclntab info, since it always more accurate
+		return nil
 	}
 
-	f.values[addr] = size
-	return size
+	f.values[addr] = &PkgAddr{
+		RawAddr: RawAddr{
+			Addr: addr,
+			Size: size,
+		},
+		Pkg: p,
+	}
+	return nil
 }
 
 func (f *FoundAddr) AssertOverLap() error {
 	sa := sortedAddr{
-		values: make([]Addr, 0, len(f.values)),
+		values: make([]RawAddr, 0, len(f.values)),
 	}
 
-	for addr, size := range f.values {
-		sa.Insert(Addr{Addr: addr, Size: size})
+	for _, addr := range f.values {
+		sa.Insert(RawAddr{Addr: addr.Addr, Size: addr.Size})
 	}
 
 	for i := 0; i < len(sa.values)-1; i++ {
 		if sa.values[i].Addr+sa.values[i].Size > sa.values[i+1].Addr {
-			return fmt.Errorf("addr %x size %d overlaps addr %x", sa.values[i].Addr, sa.values[i].Size, sa.values[i+1].Addr)
+			return fmt.Errorf("addr %x Size %d overlaps addr %x", sa.values[i].Addr, sa.values[i].Size, sa.values[i+1].Addr)
 		}
 	}
 	return nil
