@@ -1,4 +1,4 @@
-module github.com/Zxilly/go-size-view
+module github.com/Zxilly/go-size-analyzer
 
 go 1.21
 

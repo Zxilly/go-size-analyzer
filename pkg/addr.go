@@ -1,4 +1,4 @@
-package go_size_view
+package pkg
 
 import (
 	"cmp"
@@ -12,7 +12,7 @@ type RawAddr struct {
 	Size uint64
 }
 
-type PkgAddr struct {
+type AddrWithAddr struct {
 	RawAddr
 	Pkg *Package
 }
@@ -29,12 +29,12 @@ func (s *sortedAddr) Insert(addr RawAddr) {
 }
 
 type FoundAddr struct {
-	values map[uint64]*PkgAddr
+	values map[uint64]*AddrWithAddr
 }
 
 func NewFoundAddr() *FoundAddr {
 	return &FoundAddr{
-		values: make(map[uint64]*PkgAddr),
+		values: make(map[uint64]*AddrWithAddr),
 	}
 }
 
@@ -50,7 +50,7 @@ func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package) error {
 		return nil
 	}
 
-	f.values[addr] = &PkgAddr{
+	f.values[addr] = &AddrWithAddr{
 		RawAddr: RawAddr{
 			Addr: addr,
 			Size: size,

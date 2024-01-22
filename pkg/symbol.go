@@ -1,4 +1,4 @@
-package go_size_view
+package pkg
 
 import (
 	"debug/elf"
@@ -6,7 +6,7 @@ import (
 	"debug/pe"
 	"errors"
 	"fmt"
-	"github.com/Zxilly/go-size-view/go-size-view/tool"
+	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
 	"log"
 	"slices"

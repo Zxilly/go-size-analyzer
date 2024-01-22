@@ -3,7 +3,7 @@ package disasm
 import (
 	"debug/pe"
 	"fmt"
-	go_size_view "github.com/Zxilly/go-size-view/go-size-view/tool"
+	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 )
 
 type peWrapper struct {
@@ -11,7 +11,7 @@ type peWrapper struct {
 }
 
 func (p *peWrapper) text() (textStart uint64, text []byte, err error) {
-	imageBase := go_size_view.GetImageBase(p.file)
+	imageBase := tool.GetImageBase(p.file)
 
 	sect := p.file.Section(".text")
 	if sect == nil {

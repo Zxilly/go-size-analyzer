@@ -8,11 +8,11 @@ def print_asm(arch: str, pos: str, target: str = ""):
     for version in versions:
         filename = f"bin-{pos}-{version}-{arch}"
         ensure_exist(filename)
-        args = ["go", "tool", "objdump"]
+        cmd_args = ["go", "tool", "objdump"]
         if target:
-            args.extend(["-s", target])
-        args.append(get_bin_path(filename))
-        ret = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cmd_args.extend(["-s", target])
+        cmd_args.append(get_bin_path(filename))
+        ret = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if ret.returncode != 0:
             print(f"## {filename} failed")
             print(ret.stderr.decode("utf-8"))

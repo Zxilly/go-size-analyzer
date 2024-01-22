@@ -1,15 +1,28 @@
-package go_size_view
+package pkg
 
 import (
-	"github.com/Zxilly/go-size-view/go-size-view/disasm"
+	"github.com/Zxilly/go-size-analyzer/pkg/disasm"
 	"github.com/goretk/gore"
-	"log"
+	"os"
 	"unicode/utf8"
 )
 
+type stringValidator struct {
+	file *os.File
+}
+
+func (s *stringValidator) Validate(offset uint64, size uint64) bool {
+	var d = make([]byte, size)
+	_, err := s.file.ReadAt(d, int64(offset))
+	if err != nil {
+		return false
+	}
+	return utf8.Valid(d)
+}
+
 func TryExtractWithDisasm(f *gore.GoFile, k *KnownInfo) error {
-	file := f.GetFile()
 	pkgs := k.Packages.GetPackages()
+	validator := &stringValidator{file: f.GetFile()}
 
 	e, err := disasm.NewExtractor(f)
 	if err != nil {
@@ -25,16 +38,9 @@ func TryExtractWithDisasm(f *gore.GoFile, k *KnownInfo) error {
 				if offset == 0 {
 					continue
 				}
-				var d = make([]byte, p.Size)
-				_, err = file.ReadAt(d, int64(offset))
-				if err != nil {
-					log.Printf("read file failed: %v", err)
-				}
-				ok := utf8.Valid(d)
-				if !ok {
+				if !validator.Validate(offset, p.Size) {
 					continue
 				}
-				log.Printf("possible string: %s", string(d))
 			}
 		}
 	}

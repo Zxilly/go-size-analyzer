@@ -1,4 +1,4 @@
-package go_size_view
+package pkg
 
 import (
 	"debug/gosym"
@@ -79,7 +79,7 @@ func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gos
 func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
 	ret := &Package{
 		Name:  pkg.Name,
-		Addrs: make([]*PkgAddr, 0),
+		Addrs: make([]*AddrWithAddr, 0),
 		grPkg: pkg,
 	}
 
@@ -156,7 +156,7 @@ func (tp *TypedPackages) GetPackages() []*Package {
 type Package struct {
 	Name  string
 	Files []*File
-	Addrs []*PkgAddr // from symbols and disasm result
+	Addrs []*AddrWithAddr // from symbols and disasm result
 	grPkg *gore.Package
 }
 

@@ -1,4 +1,4 @@
-package go_size_view
+package pkg
 
 import (
 	mapset "github.com/deckarep/golang-set/v2"

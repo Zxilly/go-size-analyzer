@@ -1,8 +1,8 @@
-package go_size_view
+package pkg
 
 import (
 	"errors"
-	"github.com/Zxilly/go-size-view/go-size-view/tool"
+	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
 	"strings"
 )

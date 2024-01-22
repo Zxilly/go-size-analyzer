@@ -1,4 +1,4 @@
-package go_size_view
+package pkg
 
 import (
 	"github.com/goretk/gore"
