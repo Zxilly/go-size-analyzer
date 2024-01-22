@@ -3,6 +3,7 @@ package disasm
 import (
 	"fmt"
 	"github.com/goretk/gore"
+	"unicode/utf8"
 )
 
 type PossibleStr struct {
@@ -13,6 +14,7 @@ type PossibleStr struct {
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
 
 type Extractor struct {
+	raw       rawFileWrapper
 	text      []byte        // bytes of text segment (actual instructions)
 	textStart uint64        // start PC of text
 	textEnd   uint64        // end PC of text
@@ -23,6 +25,7 @@ type Extractor struct {
 type rawFileWrapper interface {
 	text() (textStart uint64, text []byte, err error)
 	goarch() string
+	readAddr(addr, size uint64) ([]byte, error)
 }
 
 func NewExtractor(f *gore.GoFile) (*Extractor, error) {
@@ -43,6 +46,7 @@ func NewExtractor(f *gore.GoFile) (*Extractor, error) {
 	}
 
 	return &Extractor{
+		raw:       rawFile,
 		text:      text,
 		textStart: textStart,
 		textEnd:   textStart + uint64(len(text)),
@@ -62,4 +66,12 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	code := e.text[start-e.textStart : end-e.textStart]
 
 	return e.extractor(code, start)
+}
+
+func (e *Extractor) AddrIsString(addr, size uint64) bool {
+	data, err := e.raw.readAddr(addr, size)
+	if err != nil {
+		return false
+	}
+	return utf8.Valid(data)
 }

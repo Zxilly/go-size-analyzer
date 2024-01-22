@@ -9,6 +9,20 @@ type machoWrapper struct {
 	file *macho.File
 }
 
+func (m *machoWrapper) readAddr(addr, size uint64) ([]byte, error) {
+	mf := m.file
+	for _, sect := range mf.Sections {
+		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
+			data := make([]byte, size)
+			if _, err := sect.ReadAt(data, int64(addr-sect.Addr)); err != nil {
+				return nil, err
+			}
+			return data, nil
+		}
+	}
+	return nil, fmt.Errorf("address not found")
+}
+
 func (m *machoWrapper) text() (textStart uint64, text []byte, err error) {
 	sect := m.file.Section("__text")
 	if sect == nil {

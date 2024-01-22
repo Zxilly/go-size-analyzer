@@ -3,26 +3,10 @@ package pkg
 import (
 	"github.com/Zxilly/go-size-analyzer/pkg/disasm"
 	"github.com/goretk/gore"
-	"os"
-	"unicode/utf8"
 )
-
-type stringValidator struct {
-	file *os.File
-}
-
-func (s *stringValidator) Validate(offset uint64, size uint64) bool {
-	var d = make([]byte, size)
-	_, err := s.file.ReadAt(d, int64(offset))
-	if err != nil {
-		return false
-	}
-	return utf8.Valid(d)
-}
 
 func TryExtractWithDisasm(f *gore.GoFile, k *KnownInfo) error {
 	pkgs := k.Packages.GetPackages()
-	validator := &stringValidator{file: f.GetFile()}
 
 	e, err := disasm.NewExtractor(f)
 	if err != nil {
@@ -38,8 +22,8 @@ func TryExtractWithDisasm(f *gore.GoFile, k *KnownInfo) error {
 				if offset == 0 {
 					continue
 				}
-				if !validator.Validate(offset, p.Size) {
-					continue
+				if e.AddrIsString(p.Addr, p.Size) {
+					_ = k.FoundAddr.Insert(p.Addr, p.Size, pkg)
 				}
 			}
 		}

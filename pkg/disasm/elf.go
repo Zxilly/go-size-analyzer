@@ -10,6 +10,23 @@ type elfWrapper struct {
 	file *elf.File
 }
 
+func (e *elfWrapper) readAddr(addr, size uint64) ([]byte, error) {
+	ef := e.file
+	for _, prog := range ef.Progs {
+		if prog.Type != elf.PT_LOAD {
+			continue
+		}
+		data := make([]byte, size)
+		if prog.Vaddr <= addr && addr+size-1 <= prog.Vaddr+prog.Filesz-1 {
+			if _, err := prog.ReadAt(data, int64(addr-prog.Vaddr)); err != nil {
+				return nil, err
+			}
+			return data, nil
+		}
+	}
+	return nil, fmt.Errorf("address not found")
+}
+
 func (e *elfWrapper) text() (textStart uint64, text []byte, err error) {
 	sect := e.file.Section(".text")
 	if sect == nil {

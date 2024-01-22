@@ -10,6 +10,20 @@ type peWrapper struct {
 	file *pe.File
 }
 
+func (p *peWrapper) readAddr(addr, size uint64) ([]byte, error) {
+	pf := p.file
+	for _, sect := range pf.Sections {
+		if uint64(sect.VirtualAddress) <= addr && addr+size <= uint64(sect.VirtualAddress+sect.VirtualSize) {
+			data := make([]byte, size)
+			if _, err := sect.ReadAt(data, int64(addr-uint64(sect.VirtualAddress))); err != nil {
+				return nil, err
+			}
+			return data, nil
+		}
+	}
+	return nil, fmt.Errorf("address not found")
+}
+
 func (p *peWrapper) text() (textStart uint64, text []byte, err error) {
 	imageBase := tool.GetImageBase(p.file)
 

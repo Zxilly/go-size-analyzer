@@ -158,7 +158,8 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 
 		i := int(s.Section)
 		if i < 0 || i >= len(f.Sections) {
-			return fmt.Errorf("invalid section number in symbol table")
+			// just ignore, exmaple: we met go.go
+			continue
 		}
 		sect := f.Sections[i]
 		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
