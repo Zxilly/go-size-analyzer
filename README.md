@@ -4,10 +4,9 @@
 A simple tool to view the size of a Go compiled binary. 
 
 > [!CAUTION]
-> The GSV is currently being refactored to be implemented in Golang, and search based on the pclntab table will be implemented. Debug information will no longer be a prerequisite.
-> 
-> If you want to view the code of the old version, please check the `rust` branch.
-
+> The GSV is currently being refactored for implementation in Golang. As part of this process, search functionality based on the pclntab table will be added, which will eliminate the need for debug information.
+>
+> If you wish to view the code of the previous version, it is available on the 'rust' branch.
 ## Usage
 
 you can use `gsv` to analyze the binary:
@@ -28,7 +27,9 @@ Options:
 
 > [!CAUTION]
 > 
-> The tool can work with the stripped binary, but for those binaries that built with cgo enabled, symbol table is required, or the result can be totally wrong.
+> The tool can work with stripped binaries, but for those built with cgo enabled, a symbol table is required. Otherwise, the results can be completely inaccurate.
+>
+>The tool will display a warning message when it detects this situation. However, if you build the binary with static linking and cgo, it may be difficult to identify.
 
 ### Example
 
