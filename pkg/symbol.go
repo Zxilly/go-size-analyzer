@@ -25,8 +25,8 @@ func analysisSymbol(file *gore.GoFile, b *KnownInfo) error {
 	}
 }
 
-func markSymbolOnAddrs(b *KnownInfo, addr, size uint64, pkg string) error {
-	err := b.MarkKnownPartWithPackageStr(addr, size, pkg)
+func markSymbolWithAddr(b *KnownInfo, addr, size uint64, pkg string, meta string) error {
+	err := b.MarkKnownPartWithPackageStr(addr, size, pkg, AddrPassSymbol, meta)
 	if err != nil {
 		if errors.Is(err, ErrPackageNotFound) || errors.Is(err, ErrDuplicatePackageForAddr) {
 			// some symbol like complex symbol or cgo symbol, can't find
@@ -109,7 +109,7 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 		}
 		s.Size = size
 
-		err := markSymbolOnAddrs(b, s.Addr, size, pkgName)
+		err := markSymbolWithAddr(b, s.Addr, size, pkgName, s.Name)
 		if err != nil {
 			return err
 		}
@@ -152,8 +152,9 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 	symbols = keep
 
 	for _, s := range symbols {
-		if s.Section == elf.SHN_UNDEF || s.Section == elf.SHN_COMMON {
-			continue // skip undefined/bss symbols
+		switch s.Section {
+		case elf.SHN_UNDEF, elf.SHN_ABS, elf.SHN_COMMON:
+			continue // not addr, skip
 		}
 
 		i := int(s.Section)
@@ -171,6 +172,7 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 		}
 
 		pkgName := b.ExtractPackageFromSymbol(s.Name)
+
 		if pkgName == "" {
 			if s.Name == "go:string.*" {
 				if s.Size == 0 {
@@ -186,7 +188,7 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 			continue // skip compiler-generated symbols
 		}
 
-		err = markSymbolOnAddrs(b, s.Value, s.Size, pkgName)
+		err = markSymbolWithAddr(b, s.Value, s.Size, pkgName, s.Name)
 		if err != nil {
 			return err
 		}
@@ -260,7 +262,7 @@ func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
 			continue // skip compiler-generated symbols
 		}
 
-		err := markSymbolOnAddrs(b, s.Value, size, pkgName)
+		err := markSymbolWithAddr(b, s.Value, size, pkgName, s.Name)
 		if err != nil {
 			return err
 		}

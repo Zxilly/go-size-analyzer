@@ -4,6 +4,7 @@ import (
 	"debug/gosym"
 	"github.com/goretk/gore"
 	"maps"
+	"strings"
 )
 
 func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
@@ -79,7 +80,7 @@ func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gos
 func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
 	ret := &Package{
 		Name:  pkg.Name,
-		Addrs: make([]*AddrWithAddr, 0),
+		Addrs: make([]*Addr, 0),
 		grPkg: pkg,
 	}
 
@@ -98,15 +99,14 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 		return f
 	}
 
-	setAddrMark := func(addr, size uint64) {
-		// nothing will happen here
-		_ = k.FoundAddr.Insert(addr, size, ret)
+	setAddrMark := func(addr, size uint64, meta string) {
+		_ = k.FoundAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
 	}
 
 	for _, m := range pkg.Methods {
 		src, _, _ := pclntab.PCToLine(m.Offset)
 
-		setAddrMark(m.Offset, m.End-m.Offset)
+		setAddrMark(m.Offset, m.End-m.Offset, strings.Join([]string{m.PackageName, m.Receiver, m.Name}, "."))
 
 		mf := getFile(src)
 		mf.Functions = append(mf.Functions, m.Function)
@@ -115,7 +115,7 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 	for _, f := range pkg.Functions {
 		src, _, _ := pclntab.PCToLine(f.Offset)
 
-		setAddrMark(f.Offset, f.End-f.Offset)
+		setAddrMark(f.Offset, f.End-f.Offset, "function "+f.PackageName+" "+f.String())
 
 		ff := getFile(src)
 		ff.Functions = append(ff.Functions, f)
@@ -156,7 +156,7 @@ func (tp *TypedPackages) GetPackages() []*Package {
 type Package struct {
 	Name  string
 	Files []*File
-	Addrs []*AddrWithAddr // from symbols and disasm result
+	Addrs []*Addr // from symbols and disasm result
 	grPkg *gore.Package
 }
 

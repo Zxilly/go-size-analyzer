@@ -2,6 +2,7 @@ package disasm
 
 import (
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
 	"unicode/utf8"
 )
@@ -15,6 +16,7 @@ type extractorFunc func(code []byte, pc uint64) []PossibleStr
 
 type Extractor struct {
 	raw       rawFileWrapper
+	size      uint64
 	text      []byte        // bytes of text segment (actual instructions)
 	textStart uint64        // start PC of text
 	textEnd   uint64        // end PC of text
@@ -30,6 +32,8 @@ type rawFileWrapper interface {
 
 func NewExtractor(f *gore.GoFile) (*Extractor, error) {
 	rawFile := buildWrapper(f)
+
+	size := tool.GetFileSize(f.GetFile())
 
 	textStart, text, err := rawFile.text()
 	if err != nil {
@@ -47,6 +51,7 @@ func NewExtractor(f *gore.GoFile) (*Extractor, error) {
 
 	return &Extractor{
 		raw:       rawFile,
+		size:      size,
 		text:      text,
 		textStart: textStart,
 		textEnd:   textStart + uint64(len(text)),
@@ -68,8 +73,18 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	return e.extractor(code, start)
 }
 
-func (e *Extractor) AddrIsString(addr, size uint64) bool {
-	data, err := e.raw.readAddr(addr, size)
+func (e *Extractor) AddrIsString(addr uint64, size int64) bool {
+	if size <= 0 {
+		// wtf?
+		return false
+	}
+
+	if size > int64(e.size) {
+		// it's obviously a string can not larger than file size
+		return false
+	}
+
+	data, err := e.raw.readAddr(addr, uint64(size))
 	if err != nil {
 		return false
 	}

@@ -14,6 +14,8 @@ type KnownInfo struct {
 	Packages   *TypedPackages
 	FoundAddr  *FoundAddr
 
+	IsDynamicLink bool
+
 	Version struct {
 		Leq118 bool
 		Meq120 bool
@@ -30,13 +32,13 @@ type KnownInfo struct {
 var ErrPackageNotFound = errors.New("package not Found")
 
 // MarkKnownPartWithPackageStr mark the part of the memory as known, should only be called after extractPackages
-func (b *KnownInfo) MarkKnownPartWithPackageStr(start uint64, size uint64, pkg string) error {
+func (b *KnownInfo) MarkKnownPartWithPackageStr(start uint64, size uint64, pkg string, pass AddrParsePass, meta string) error {
 	pkgPtr, ok := b.Packages.NameToPkg[pkg]
 	if !ok {
 		return errors.Join(ErrPackageNotFound, errors.New(pkg))
 	}
 
-	return b.FoundAddr.Insert(start, size, pkgPtr)
+	return b.FoundAddr.Insert(start, size, pkgPtr, pass, meta)
 }
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
@@ -88,15 +90,22 @@ func (b *KnownInfo) GetPaddingSize() uint64 {
 	return b.Size - sectionSize
 }
 
-func (b *KnownInfo) Collect(file *gore.GoFile) error {
+func Collect(file *gore.GoFile) error {
+	b := &KnownInfo{}
+
 	b.FoundAddr = NewFoundAddr()
 
 	b.SectionMap = extractSectionsFromGoFile(file)
 	b.Size = tool.GetFileSize(file.GetFile())
 	b.BuildInfo = file.BuildInfo
 
-	b.Version.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
-	b.Version.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
+	if b.BuildInfo != nil && b.BuildInfo.Compiler != nil {
+		b.Version.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
+		b.Version.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
+	} else {
+		// if we can't get build info, we assume it's go1.20 plus
+		b.Version.Meq120 = true
+	}
 
 	assertSectionsSize(b.SectionMap, b.Size)
 
@@ -123,37 +132,6 @@ func (b *KnownInfo) Collect(file *gore.GoFile) error {
 	}
 
 	return nil
-}
-
-type SectionMap struct {
-	Sections map[string]*Section
-}
-
-func (s *SectionMap) GetSectionName(addr uint64) string {
-	for _, section := range s.Sections {
-		if addr >= section.Addr && addr < section.AddrEnd {
-			return section.Name
-		}
-	}
-	return ""
-}
-
-func (s *SectionMap) GetSection(addr, size uint64) *Section {
-	for _, section := range s.Sections {
-		if addr >= section.Addr && addr < section.AddrEnd && addr+size <= section.AddrEnd {
-			return section
-		}
-	}
-	return nil
-}
-
-func (s *SectionMap) AddrToOffset(addr uint64) uint64 {
-	for _, section := range s.Sections {
-		if addr >= section.Addr && addr < section.AddrEnd {
-			return addr - section.Addr + section.Offset
-		}
-	}
-	return 0
 }
 
 type Section struct {

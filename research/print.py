@@ -25,7 +25,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--arch', choices=['amd64', 'arm64', '386'], nargs="+", default=['amd64'])
     parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
-    parser.add_argument('-t', '--target', default="", required=False)
+    parser.add_argument('-t', '--target', default="", required=True)
 
     args = parser.parse_args()
     for a in args.arch:

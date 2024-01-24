@@ -11,7 +11,7 @@ func Analyze(path string) error {
 		log.Fatalf("Error: %v", err)
 	}
 
-	target := &KnownInfo{}
-	err = target.Collect(file)
+	err = Collect(file)
+
 	return err
 }

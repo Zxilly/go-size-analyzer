@@ -26,6 +26,10 @@ Options:
   -h, --help         Print help
 ```
 
+> [!CAUTION]
+> 
+> The tool can work with the stripped binary, but for those binaries that built with cgo enabled, symbol table is required, or the result can be totally wrong.
+
 ### Example
 
 #### Web mode
