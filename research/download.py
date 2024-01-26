@@ -14,15 +14,20 @@ def get_bin_path(filename: str):
     return os.path.join(os.path.dirname(__file__), "bins", filename)
 
 
-release_info = None
+release_info_cache = None
+
+
+def get_release_info():
+    global release_info_cache
+    if release_info_cache is None:
+        response = requests.get(f'https://api.github.com/repos/{BIN_REPO}/releases/tags/{TARGET_TAG}')
+        response.raise_for_status()
+        release_info_cache = response.json()
+    return release_info_cache
 
 
 def download(filename: str):
-    global release_info
-    if release_info is None:
-        response = requests.get(f'https://api.github.com/repos/{BIN_REPO}/releases/tags/{TARGET_TAG}')
-        response.raise_for_status()
-        release_info = response.json()
+    release_info = get_release_info()
 
     # 查找指定的文件
     file_info = None
@@ -58,12 +63,13 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--arch', choices=['amd64'], nargs="+", default=['amd64'])
     parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
     parser.add_argument('-v', '--version', choices=full_versions, nargs="+", default=["1.21"])
-    parser.add_argument("-e", '--ext', action='store_true', default=False)
-    parser.add_argument('-s', '--strip', action='store_true', default=False)
+    parser.add_argument("-e", '--ext', action='store_true', default=False, help="Download external link version")
+    parser.add_argument('-p', '--pie', action='store_true', default=False, help="Download PIE version")
+    parser.add_argument('-s', '--strip', action='store_true', default=False, help="Download stripped version")
 
     args = parser.parse_args()
     for arch in args.arch:
         for pos in args.os:
             for version in args.version:
-                name = f"bin-{pos}-{version}-{arch}" + ("-ext" if args.ext else "") + ("-strip" if args.strip else "")
+                name = f"bin-{pos}-{version}-{arch}" + ("-strip" if args.strip else "") + ("-ext" if args.ext else "") + ("-pie" if args.pie else "")
                 ensure_exist(name)
