@@ -79,7 +79,10 @@ func init() {
 }
 
 func main() {
-	fmt.Printf("%-26s %16s %16s %16s\n", "Name", "symbolAddr", "moduleDataAddr", "textAddr")
+	fmt.Printf("%-26s %10s %10s %10s %10s %10s %10s %10s\n",
+		"Name",
+		"sAddr", "mdAddr", "tAddr", "pe ibase",
+		"sbased", "mbased", "tbased")
 
 	for _, file := range files() {
 		name := filepath.Base(file)
@@ -118,21 +121,50 @@ func main() {
 			panic("This should not happened :(")
 		}
 
+		const target = "UsingConstString"
+
+		pkgs, err := gf.GetPackages()
+		if err != nil {
+			log.Fatalf("%s: %v", name, err)
+		}
+
+		targetOffset := uint64(0)
+
+		for _, pkg := range pkgs {
+			for _, f := range pkg.Functions {
+				if f.Name == target {
+					targetOffset = f.Offset
+					break
+				}
+			}
+		}
+		if targetOffset == 0 {
+			log.Fatalf("%s: %v", name, "target function not found")
+		}
+
+		targetOffset -= textAddr
+		if _, ok := rf.(*pe.File); ok {
+			targetOffset -= peImageBase(rf.(*pe.File))
+		}
+
 		name = name[4:]
 
-		fmt.Printf("%-26s %16x %s %s", name, symbolAddr, colored(symbolAddr, moduleDataAddr), colored(symbolAddr, textAddr))
+		fmt.Printf("%-26s %10x %s %s", name, symbolAddr, colored(symbolAddr, moduleDataAddr), colored(symbolAddr, textAddr))
 		if _, ok := rf.(*pe.File); ok {
-			fmt.Printf(" %16x", peImageBase(rf.(*pe.File)))
+			fmt.Printf(" %10x", peImageBase(rf.(*pe.File)))
+		} else {
+			fmt.Printf(" %10s", "")
 		}
+		fmt.Printf(" %10x %10x %10x", targetOffset+symbolAddr, targetOffset+moduleDataAddr, targetOffset+textAddr)
 		fmt.Println()
 	}
 }
 
 func colored(real, check uint64) string {
 	if real == check {
-		return color.GreenString("%16x", check)
+		return color.GreenString("%10x", check)
 	} else {
-		return color.RedString("%16x", check)
+		return color.RedString("%10x", check)
 	}
 }
 

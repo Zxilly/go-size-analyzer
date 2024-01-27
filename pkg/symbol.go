@@ -12,7 +12,7 @@ import (
 	"slices"
 )
 
-func analysisSymbol(file *gore.GoFile, b *KnownInfo) error {
+func analyzeSymbol(file *gore.GoFile, b *KnownInfo) error {
 	switch f := file.GetParsedFile().(type) {
 	case *pe.File:
 		return collectSizeFromPeSymbol(f, b)
@@ -25,16 +25,25 @@ func analysisSymbol(file *gore.GoFile, b *KnownInfo) error {
 	}
 }
 
-func markSymbolWithAddr(b *KnownInfo, addr, size uint64, pkg string, meta string) error {
-	err := b.MarkKnownPartWithPackageStr(addr, size, pkg, AddrPassSymbol, meta)
-	if err != nil {
-		if errors.Is(err, ErrPackageNotFound) || errors.Is(err, ErrDuplicatePackageForAddr) {
-			// some symbol like complex symbol or cgo symbol, can't find
-			// or duplicate package for addr, just skip, we may have mark it at parse pclntab
-			return nil
-		}
-		return err
+func markSymbolWithAddr(b *KnownInfo, name string, addr, size uint64) error {
+	pkgName := b.ExtractPackageFromSymbol(name)
+	if pkgName == "" {
+		return nil // no package or compiler-generated symbol, skip
 	}
+
+	pkgPtr, ok := b.Packages.NameToPkg[pkgName]
+	if !ok {
+		return nil // no package found, skip
+	}
+
+	// golang devs are happy to create the same thing everywhere, example: internal/godebug and io both have stderr
+	// and the smart linker can recognize them and only keep one in the final binary, ignore
+	// it hard to say the size belongs to which package :(
+	_ = b.FoundAddr.Insert(addr, size, pkgPtr, AddrPassSymbol, SymbolMeta{
+		SymbolName:  name,
+		PackageName: pkgName,
+	})
+
 	return nil
 }
 
@@ -103,29 +112,11 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 		}
 		size := addrs[i] - s.Addr
 
-		pkgName := b.ExtractPackageFromSymbol(s.Name)
-		if pkgName == "" {
-			continue // skip compiler-generated symbols
-		}
 		s.Size = size
 
-		err := markSymbolWithAddr(b, s.Addr, size, pkgName, s.Name)
+		err := markSymbolWithAddr(b, s.Name, s.Addr, size)
 		if err != nil {
 			return err
-		}
-	}
-
-	// try to fill go:string.*
-	for _, s := range syms {
-		if s.Name == "go.string.*" {
-			if s.Size == 0 {
-				break // well, no way to get this
-			}
-
-			b.GoStrSymbol.Size = s.Size
-			b.GoStrSymbol.Start = s.Addr
-			b.GoStrSymbol.Found = true
-			break
 		}
 	}
 
@@ -171,24 +162,7 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 			continue // not text/data, skip
 		}
 
-		pkgName := b.ExtractPackageFromSymbol(s.Name)
-
-		if pkgName == "" {
-			if s.Name == "go:string.*" {
-				if s.Size == 0 {
-					continue // well, no way to get this
-				}
-
-				b.GoStrSymbol.Size = s.Size
-				b.GoStrSymbol.Start = s.Value
-				b.GoStrSymbol.Found = true
-				continue
-			}
-
-			continue // skip compiler-generated symbols
-		}
-
-		err = markSymbolWithAddr(b, s.Value, s.Size, pkgName, s.Name)
+		err = markSymbolWithAddr(b, s.Name, s.Value, s.Size)
 		if err != nil {
 			return err
 		}
@@ -246,23 +220,7 @@ func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
 			continue // broken index
 		}
 
-		pkgName := b.ExtractPackageFromSymbol(s.Name)
-		if pkgName == "" {
-			if s.Name == "go:string.*" {
-				if size == 0 {
-					continue // well, no way to get this
-				}
-
-				b.GoStrSymbol.Size = size
-				b.GoStrSymbol.Start = s.Value
-				b.GoStrSymbol.Found = true
-				continue
-			}
-
-			continue // skip compiler-generated symbols
-		}
-
-		err := markSymbolWithAddr(b, s.Value, size, pkgName, s.Name)
+		err := markSymbolWithAddr(b, s.Name, s.Value, size)
 		if err != nil {
 			return err
 		}

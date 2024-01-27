@@ -141,21 +141,3 @@ func (s *SectionMap) GetSection(addr, size uint64) *Section {
 	}
 	return nil
 }
-
-func (s *SectionMap) AddrToOffset(addr uint64) uint64 {
-	for _, section := range s.Sections {
-		if addr >= section.Addr && addr < section.AddrEnd {
-			return addr - section.Addr + section.Offset
-		}
-	}
-	return 0
-}
-
-func (s *SectionMap) OffsetToAddr(offset uint64) uint64 {
-	for _, section := range s.Sections {
-		if offset >= section.Offset && offset < section.End {
-			return offset - section.Offset + section.Addr
-		}
-	}
-	return 0
-}

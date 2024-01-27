@@ -11,7 +11,7 @@ func Analyze(path string) error {
 		log.Fatalf("Error: %v", err)
 	}
 
-	err = Collect(file)
+	_, err = Collect(file)
 
 	return err
 }

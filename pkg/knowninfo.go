@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"errors"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
 	"strings"
@@ -16,29 +15,10 @@ type KnownInfo struct {
 
 	IsDynamicLink bool
 
-	Version struct {
+	VersionFlag struct {
 		Leq118 bool
 		Meq120 bool
 	}
-
-	// not using right now
-	GoStrSymbol struct {
-		Start uint64
-		Size  uint64
-		Found bool
-	}
-}
-
-var ErrPackageNotFound = errors.New("package not Found")
-
-// MarkKnownPartWithPackageStr mark the part of the memory as known, should only be called after extractPackages
-func (b *KnownInfo) MarkKnownPartWithPackageStr(start uint64, size uint64, pkg string, pass AddrParsePass, meta string) error {
-	pkgPtr, ok := b.Packages.NameToPkg[pkg]
-	if !ok {
-		return errors.Join(ErrPackageNotFound, errors.New(pkg))
-	}
-
-	return b.FoundAddr.Insert(start, size, pkgPtr, pass, meta)
 }
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
@@ -61,23 +41,23 @@ func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	// Since go1.20, a prefix of "type:" and "go:" is a compiler-generated symbol,
 	// they do not belong to any package.
 	//
-	// See cmd/compile/internal/base/link.go:ReservedImports variable.
-	if b.Version.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
+	// See cmd/compile/internal/base/link.go: ReservedImports variable.
+	if b.VersionFlag.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
 		return ""
 	}
 
-	// For go1.18 and below, the prefix are "type." and "go." instead.
-	if b.Version.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
+	// For go1.18 and below, the prefix is "type." and "go." instead.
+	if b.VersionFlag.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
 		return ""
 	}
 
-	pathend := strings.LastIndex(name, "/")
-	if pathend < 0 {
-		pathend = 0
+	pathEnd := strings.LastIndex(name, "/")
+	if pathEnd < 0 {
+		pathEnd = 0
 	}
 
-	if i := strings.Index(name[pathend:], "."); i != -1 {
-		return name[:pathend+i]
+	if i := strings.Index(name[pathEnd:], "."); i != -1 {
+		return name[:pathEnd+i]
 	}
 	return ""
 }
@@ -90,7 +70,7 @@ func (b *KnownInfo) GetPaddingSize() uint64 {
 	return b.Size - sectionSize
 }
 
-func Collect(file *gore.GoFile) error {
+func Collect(file *gore.GoFile) (*KnownInfo, error) {
 	b := &KnownInfo{}
 
 	b.FoundAddr = NewFoundAddr()
@@ -100,38 +80,37 @@ func Collect(file *gore.GoFile) error {
 	b.BuildInfo = file.BuildInfo
 
 	if b.BuildInfo != nil && b.BuildInfo.Compiler != nil {
-		b.Version.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
-		b.Version.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
+		b.VersionFlag.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
+		b.VersionFlag.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
 	} else {
 		// if we can't get build info, we assume it's go1.20 plus
-		b.Version.Meq120 = true
+		b.VersionFlag.Meq120 = true
 	}
 
 	assertSectionsSize(b.SectionMap, b.Size)
 
-	// this also increase the known Size of sections
 	pkgs, err := extractPackages(file, b)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	b.Packages = pkgs
 
-	err = analysisSymbol(file, b)
+	err = analyzeSymbol(file, b)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = TryExtractWithDisasm(file, b)
+	err = tryExtractWithDisasm(file, b)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = b.FoundAddr.AssertOverLap()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return b, nil
 }
 
 type Section struct {
@@ -150,6 +129,7 @@ type Section struct {
 type File struct {
 	Path      string
 	Functions []*gore.Function
+	Methods   []*gore.Method
 }
 
 func (f *File) GetSize() uint64 {

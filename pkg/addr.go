@@ -7,27 +7,6 @@ import (
 	"slices"
 )
 
-type AddrParsePass int
-
-const (
-	AddrPassGoPclntab AddrParsePass = iota
-	AddrPassSymbol
-	AddrPassDisasm
-)
-
-func (p AddrParsePass) String() string {
-	switch p {
-	case AddrPassGoPclntab:
-		return "pclntab"
-	case AddrPassSymbol:
-		return "symbol"
-	case AddrPassDisasm:
-		return "disasm"
-	default:
-		return "unknown"
-	}
-}
-
 type Addr struct {
 	Addr uint64
 	Size uint64
@@ -35,7 +14,7 @@ type Addr struct {
 
 	Pass AddrParsePass
 	// for debug only
-	Meta string
+	Meta any
 }
 
 type sortedAddr struct {
@@ -59,14 +38,17 @@ func NewFoundAddr() *FoundAddr {
 	}
 }
 
-var ErrDuplicatePackageForAddr = fmt.Errorf("duplicate package for addr")
+var ErrDifferentPackageForAddr = errors.New("different package for addr")
 
-func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParsePass, meta string) error {
-	if addrptr, ok := f.values[addr]; ok {
-		if addrptr.Pkg.Name != p.Name {
-			return errors.Join(ErrDuplicatePackageForAddr, errors.New(addrptr.Pkg.Name), errors.New(p.Name))
+func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParsePass, meta InternMeta) error {
+	if addrPtr, ok := f.values[addr]; ok {
+		if addrPtr.Pkg.Name != p.Name {
+			return errors.Join(ErrDifferentPackageForAddr,
+				fmt.Errorf("previous known: %#v %s", addrPtr.Meta, addrPtr.Pass),
+				fmt.Errorf("current: %#v %s", meta, pass),
+			)
 		}
-		// not overwrite the pclntab info, since it always more accurate
+		// not overwrite the previous info
 		return nil
 	}
 
@@ -75,7 +57,7 @@ func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParseP
 		Size: size,
 		Pkg:  p,
 		Pass: pass,
-		Meta: meta,
+		Meta: meta.GetInternedMeta(),
 	}
 	return nil
 }
@@ -89,14 +71,19 @@ func (f *FoundAddr) AssertOverLap() error {
 		sa.Insert(addr)
 	}
 
+	// handle the case that link optimization merge rodata
+
 	for i := 0; i < len(sa.values)-1; i++ {
-		if sa.values[i].Addr+sa.values[i].Size > sa.values[i+1].Addr {
+		first := sa.values[i]
+		second := sa.values[i+1]
+
+		if first.Addr+first.Size > second.Addr {
 			return fmt.Errorf(
-				"addr {%x Size:%d Pass:%s Pkg:%s Meta:%s}"+
+				"{addr %x Size:%d Pass:%s Pkg:%s Meta:%#v}"+
 					" overlaps "+
-					"{addr %x Size:%d Pass:%s Pkg:%s Meta:%s}",
-				sa.values[i].Addr, sa.values[i].Size, sa.values[i].Pass, sa.values[i].Pkg.Name, sa.values[i].Meta,
-				sa.values[i+1].Addr, sa.values[i+1].Size, sa.values[i+1].Pass, sa.values[i+1].Pkg.Name, sa.values[i+1].Meta,
+					"{addr %x Size:%d Pass:%s Pkg:%s Meta:%#v}",
+				first.Addr, first.Size, first.Pass, first.Pkg.Name, first.Meta,
+				second.Addr, second.Size, second.Pass, second.Pkg.Name, second.Meta,
 			)
 		}
 	}

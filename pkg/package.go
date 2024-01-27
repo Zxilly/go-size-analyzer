@@ -4,7 +4,6 @@ import (
 	"debug/gosym"
 	"github.com/goretk/gore"
 	"maps"
-	"strings"
 )
 
 func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
@@ -92,6 +91,7 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 			nf := &File{
 				Path:      path,
 				Functions: make([]*gore.Function, 0),
+				Methods:   make([]*gore.Method, 0),
 			}
 			files[path] = nf
 			return nf
@@ -99,23 +99,33 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 		return f
 	}
 
-	setAddrMark := func(addr, size uint64, meta string) {
+	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
 		_ = k.FoundAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
 	}
 
 	for _, m := range pkg.Methods {
 		src, _, _ := pclntab.PCToLine(m.Offset)
 
-		setAddrMark(m.Offset, m.End-m.Offset, strings.Join([]string{m.PackageName, m.Receiver, m.Name}, "."))
+		setAddrMark(m.Offset, m.End-m.Offset, GoPclntabMeta{
+			FuncName:    m.Name,
+			PackageName: m.PackageName,
+			Type:        "method",
+			Receiver:    m.Receiver,
+		})
 
 		mf := getFile(src)
-		mf.Functions = append(mf.Functions, m.Function)
+		mf.Methods = append(mf.Methods, m)
 	}
 
 	for _, f := range pkg.Functions {
 		src, _, _ := pclntab.PCToLine(f.Offset)
 
-		setAddrMark(f.Offset, f.End-f.Offset, "function "+f.PackageName+" "+f.String())
+		setAddrMark(f.Offset, f.End-f.Offset, GoPclntabMeta{
+			FuncName:    f.Name,
+			PackageName: f.PackageName,
+			Type:        "function",
+			Receiver:    "",
+		})
 
 		ff := getFile(src)
 		ff.Functions = append(ff.Functions, f)
@@ -138,7 +148,7 @@ type TypedPackages struct {
 	Generated []*Package
 	Unknown   []*Package
 
-	NameToPkg map[string]*Package
+	NameToPkg map[string]*Package // available after extractPackages, loadPackagesFromGorePackage[s]
 }
 
 func (tp *TypedPackages) GetPackages() []*Package {
@@ -166,4 +176,12 @@ func (p *Package) GetFunctions() []*gore.Function {
 		fns = append(fns, f.Functions...)
 	}
 	return fns
+}
+
+func (p *Package) GetMethods() []*gore.Method {
+	var mds []*gore.Method
+	for _, f := range p.Files {
+		mds = append(mds, f.Methods...)
+	}
+	return mds
 }
