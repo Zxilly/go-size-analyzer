@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
-	"strconv"
 	"unicode/utf8"
 )
 
@@ -92,5 +91,5 @@ func (e *Extractor) AddrIsString(addr uint64, size int64) (string, bool) {
 	if !utf8.Valid(data) {
 		return "", false
 	}
-	return strconv.Quote(string(data)), true
+	return string(data), true
 }
