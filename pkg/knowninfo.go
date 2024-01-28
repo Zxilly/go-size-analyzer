@@ -1,8 +1,10 @@
 package pkg
 
 import (
+	"errors"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
+	"log"
 	"strings"
 )
 
@@ -22,7 +24,7 @@ type KnownInfo struct {
 }
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
-func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
+func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	nameWithoutInst := func(name string) string {
 		start := strings.Index(name, "[")
 		if start < 0 {
@@ -30,7 +32,7 @@ func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
 		}
 		end := strings.LastIndex(name, "]")
 		if end < 0 {
-			// Malformed name, should contain closing bracket too.
+			// Malformed name should contain closing bracket too.
 			return name
 		}
 		return name[0:start] + name[end+1:]
@@ -42,12 +44,12 @@ func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	// they do not belong to any package.
 	//
 	// See cmd/compile/internal/base/link.go: ReservedImports variable.
-	if b.VersionFlag.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
+	if k.VersionFlag.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
 		return ""
 	}
 
 	// For go1.18 and below, the prefix is "type." and "go." instead.
-	if b.VersionFlag.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
+	if k.VersionFlag.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
 		return ""
 	}
 
@@ -62,12 +64,12 @@ func (b *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	return ""
 }
 
-func (b *KnownInfo) GetPaddingSize() uint64 {
+func (k *KnownInfo) GetPaddingSize() uint64 {
 	var sectionSize uint64 = 0
-	for _, section := range b.SectionMap.Sections {
-		sectionSize += section.TotalSize
+	for _, section := range k.SectionMap.Sections {
+		sectionSize += section.Size
 	}
-	return b.Size - sectionSize
+	return k.Size - sectionSize
 }
 
 func Collect(file *gore.GoFile) (*KnownInfo, error) {
@@ -75,7 +77,7 @@ func Collect(file *gore.GoFile) (*KnownInfo, error) {
 
 	b.FoundAddr = NewFoundAddr()
 
-	b.SectionMap = extractSectionsFromGoFile(file)
+	b.SectionMap = loadSectionMap(file)
 	b.Size = tool.GetFileSize(file.GetFile())
 	b.BuildInfo = file.BuildInfo
 
@@ -87,20 +89,27 @@ func Collect(file *gore.GoFile) (*KnownInfo, error) {
 		b.VersionFlag.Meq120 = true
 	}
 
-	assertSectionsSize(b.SectionMap, b.Size)
+	err := b.SectionMap.AssertSize(b.Size)
+	if err != nil {
+		return nil, err
+	}
 
-	pkgs, err := extractPackages(file, b)
+	pkgs, err := b.loadPackages(file)
 	if err != nil {
 		return nil, err
 	}
 	b.Packages = pkgs
 
-	err = analyzeSymbol(file, b)
+	err = b.analyzeSymbol(file)
 	if err != nil {
-		return nil, err
+		if errors.Is(err, ErrNoSymbolTable) {
+			log.Println("Warning: no symbol table found, this can lead to inaccurate results")
+		} else {
+			return nil, err
+		}
 	}
 
-	err = tryExtractWithDisasm(file, b)
+	err = b.tryDisasm(file)
 	if err != nil {
 		return nil, err
 	}
@@ -114,8 +123,8 @@ func Collect(file *gore.GoFile) (*KnownInfo, error) {
 }
 
 type Section struct {
-	Name      string
-	TotalSize uint64
+	Name string
+	Size uint64
 
 	Offset uint64
 	End    uint64

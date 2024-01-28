@@ -8,18 +8,19 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
-	"log"
 	"slices"
 )
 
-func analyzeSymbol(file *gore.GoFile, b *KnownInfo) error {
+var ErrNoSymbolTable = errors.New("no symbol table found")
+
+func (k *KnownInfo) analyzeSymbol(file *gore.GoFile) error {
 	switch f := file.GetParsedFile().(type) {
 	case *pe.File:
-		return collectSizeFromPeSymbol(f, b)
+		return analyzePeSymbol(f, k)
 	case *elf.File:
-		return collectSizeFromElfSymbol(f, b)
+		return analyzeElfSymbol(f, k)
 	case *macho.File:
-		return collectSizeFromMachoSymbol(f, b)
+		return analyzeMachoSymbol(f, k)
 	default:
 		panic("This should not happened :(")
 	}
@@ -47,7 +48,11 @@ func markSymbolWithAddr(b *KnownInfo, name string, addr, size uint64) error {
 	return nil
 }
 
-func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
+func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
+	if len(f.Symbols) == 0 {
+		return ErrNoSymbolTable
+	}
+
 	imageBase := tool.GetImageBase(f)
 
 	const (
@@ -123,12 +128,11 @@ func collectSizeFromPeSymbol(f *pe.File, b *KnownInfo) error {
 	return nil
 }
 
-func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
+func analyzeElfSymbol(f *elf.File, b *KnownInfo) error {
 	symbols, err := f.Symbols()
 	if err != nil {
 		if errors.Is(err, elf.ErrNoSymbols) {
-			log.Println("Warning: no symbol table Found")
-			return nil // keep going without symbol table
+			return ErrNoSymbolTable
 		}
 		return err
 	}
@@ -171,10 +175,9 @@ func collectSizeFromElfSymbol(f *elf.File, b *KnownInfo) error {
 	return nil
 }
 
-func collectSizeFromMachoSymbol(f *macho.File, b *KnownInfo) error {
+func analyzeMachoSymbol(f *macho.File, b *KnownInfo) error {
 	if f.Symtab == nil {
-		log.Println("Warning: no symbol table Found")
-		return nil // keep going without symbol table
+		return ErrNoSymbolTable
 	}
 
 	const stabTypeMask = 0xe0

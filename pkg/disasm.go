@@ -5,7 +5,7 @@ import (
 	"github.com/goretk/gore"
 )
 
-func tryExtractWithDisasm(f *gore.GoFile, k *KnownInfo) error {
+func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 	pkgs := k.Packages.GetPackages()
 
 	e, err := disasm.NewExtractor(f)

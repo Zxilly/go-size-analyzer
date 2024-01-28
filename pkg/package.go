@@ -6,7 +6,7 @@ import (
 	"maps"
 )
 
-func extractPackages(file *gore.GoFile, k *KnownInfo) (*TypedPackages, error) {
+func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	pkgs := new(TypedPackages)
 
 	pkgs.NameToPkg = make(map[string]*Package)
@@ -148,7 +148,7 @@ type TypedPackages struct {
 	Generated []*Package
 	Unknown   []*Package
 
-	NameToPkg map[string]*Package // available after extractPackages, loadPackagesFromGorePackage[s]
+	NameToPkg map[string]*Package // available after loadPackages, loadPackagesFromGorePackage[s]
 }
 
 func (tp *TypedPackages) GetPackages() []*Package {

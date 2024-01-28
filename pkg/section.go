@@ -4,117 +4,23 @@ import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
+	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
-	"log"
 )
 
-func extractSectionsFromGoFile(gofile *gore.GoFile) (sections *SectionMap) {
+func loadSectionMap(gofile *gore.GoFile) (sections *SectionMap) {
+	sections = &SectionMap{Sections: make(map[string]*Section)}
+
 	switch f := gofile.GetParsedFile().(type) {
 	case *pe.File:
-		sections = extractSectionsFromPe(f)
+		sections.loadFromPe(f)
 	case *elf.File:
-		sections = extractSectionsFromElf(f)
+		sections.loadFromElf(f)
 	case *macho.File:
-		sections = extractSectionsFromMacho(f)
+		sections.loadFromMacho(f)
 	default:
 		panic("This should not happened :(")
-	}
-	return
-}
-
-func assertSectionsSize(sections *SectionMap, size uint64) {
-	sectionsSize := uint64(0)
-	for _, section := range sections.Sections {
-		sectionsSize += section.TotalSize
-	}
-
-	if sectionsSize > size {
-		log.Fatalf("Error: sections Size is bigger than file Size. sections Size: %d, file Size: %d", sectionsSize, size)
-	}
-}
-
-func extractSectionsFromPe(file *pe.File) (ret *SectionMap) {
-	ret = &SectionMap{Sections: make(map[string]*Section)}
-
-	imageBase := tool.GetImageBase(file)
-
-	for _, section := range file.Sections {
-		ret.Sections[section.Name] = &Section{
-			Name:         section.Name,
-			TotalSize:    uint64(section.Size),
-			Offset:       uint64(section.Offset),
-			End:          uint64(section.Offset + section.Size),
-			Addr:         imageBase + uint64(section.VirtualAddress),
-			AddrEnd:      imageBase + uint64(section.VirtualAddress+section.VirtualSize),
-			OnlyInMemory: false, // pe file not set only in memory section
-		}
-	}
-	return
-}
-
-func extractSectionsFromElf(file *elf.File) (ret *SectionMap) {
-	ret = &SectionMap{Sections: make(map[string]*Section)}
-
-	for _, section := range file.Sections {
-		// not exist in binary
-		if section.Type == elf.SHT_NULL || section.Size == 0 {
-			continue
-		}
-
-		if section.Type == elf.SHT_NOBITS {
-			// seems like .bss section
-			ret.Sections[section.Name] = &Section{
-				Name:         section.Name,
-				Addr:         section.Addr,
-				AddrEnd:      section.Addr + section.Size,
-				OnlyInMemory: true,
-			}
-			continue
-		}
-
-		ret.Sections[section.Name] = &Section{
-			Name:         section.Name,
-			TotalSize:    section.FileSize,
-			Offset:       section.Offset,
-			End:          section.Offset + section.FileSize,
-			Addr:         section.Addr,
-			AddrEnd:      section.Addr + section.Size,
-			OnlyInMemory: false,
-		}
-	}
-
-	return
-}
-
-func extractSectionsFromMacho(file *macho.File) (ret *SectionMap) {
-	ret = &SectionMap{Sections: map[string]*Section{}}
-
-	for _, section := range file.Sections {
-		if section.Size == 0 {
-			continue
-		}
-
-		if section.Offset == 0 {
-			// seems like .bss section
-			ret.Sections[section.Name] = &Section{
-				Name:         section.Name,
-				Addr:         section.Addr,
-				AddrEnd:      section.Addr + section.Size,
-				OnlyInMemory: true,
-			}
-			continue
-		}
-
-		ret.Sections[section.Name] = &Section{
-			Name:         section.Name,
-			TotalSize:    section.Size,
-			Offset:       uint64(section.Offset),
-			End:          uint64(section.Offset) + section.Size,
-			Addr:         section.Addr,
-			AddrEnd:      section.Addr + section.Size,
-			OnlyInMemory: false,
-		}
 	}
 
 	return
@@ -140,4 +46,97 @@ func (s *SectionMap) GetSection(addr, size uint64) *Section {
 		}
 	}
 	return nil
+}
+
+func (s *SectionMap) AssertSize(size uint64) error {
+	sectionsSize := uint64(0)
+	for _, section := range s.Sections {
+		sectionsSize += section.Size
+	}
+
+	if sectionsSize > size {
+		return fmt.Errorf("section size %d > file size %d", sectionsSize, size)
+	}
+
+	return nil
+}
+
+func (s *SectionMap) loadFromPe(file *pe.File) {
+	imageBase := tool.GetImageBase(file)
+
+	for _, section := range file.Sections {
+		s.Sections[section.Name] = &Section{
+			Name:         section.Name,
+			Size:         uint64(section.Size),
+			Offset:       uint64(section.Offset),
+			End:          uint64(section.Offset + section.Size),
+			Addr:         imageBase + uint64(section.VirtualAddress),
+			AddrEnd:      imageBase + uint64(section.VirtualAddress+section.VirtualSize),
+			OnlyInMemory: false, // pe file didn't have an only-in-memory section
+		}
+	}
+	return
+}
+
+func (s *SectionMap) loadFromElf(file *elf.File) {
+	for _, section := range file.Sections {
+		// not exist in binary
+		if section.Type == elf.SHT_NULL || section.Size == 0 {
+			continue
+		}
+
+		if section.Type == elf.SHT_NOBITS {
+			// seems like .bss section
+			s.Sections[section.Name] = &Section{
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
+			}
+			continue
+		}
+
+		s.Sections[section.Name] = &Section{
+			Name:         section.Name,
+			Size:         section.FileSize,
+			Offset:       section.Offset,
+			End:          section.Offset + section.FileSize,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
+		}
+	}
+
+	return
+}
+
+func (s *SectionMap) loadFromMacho(file *macho.File) {
+	for _, section := range file.Sections {
+		if section.Size == 0 {
+			continue
+		}
+
+		if section.Offset == 0 {
+			// seems like .bss section
+			s.Sections[section.Name] = &Section{
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
+			}
+			continue
+		}
+
+		s.Sections[section.Name] = &Section{
+			Name:         section.Name,
+			Size:         section.Size,
+			Offset:       uint64(section.Offset),
+			End:          uint64(section.Offset) + section.Size,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
+		}
+	}
+
+	return
 }

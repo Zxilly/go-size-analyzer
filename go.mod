@@ -18,7 +18,7 @@ require (
 	github.com/philpearl/stringbank v1.2.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 )
 
 replace github.com/goretk/gore => github.com/Zxilly/gore v0.0.0-20240127163533-9d499bcb13f4
