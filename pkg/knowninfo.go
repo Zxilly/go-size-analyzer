@@ -1,10 +1,7 @@
 package pkg
 
 import (
-	"errors"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
-	"log"
 	"strings"
 )
 
@@ -20,6 +17,16 @@ type KnownInfo struct {
 	VersionFlag struct {
 		Leq118 bool
 		Meq120 bool
+	}
+}
+
+func (k *KnownInfo) updateVersionFlag() {
+	if k.BuildInfo != nil && k.BuildInfo.Compiler != nil {
+		k.VersionFlag.Leq118 = gore.GoVersionCompare(k.BuildInfo.Compiler.Name, "go1.18") <= 0
+		k.VersionFlag.Meq120 = gore.GoVersionCompare(k.BuildInfo.Compiler.Name, "go1.20") >= 0
+	} else {
+		// if we can't get build info, we assume it's go1.20 plus
+		k.VersionFlag.Meq120 = true
 	}
 }
 
@@ -70,81 +77,4 @@ func (k *KnownInfo) GetPaddingSize() uint64 {
 		sectionSize += section.Size
 	}
 	return k.Size - sectionSize
-}
-
-func Collect(file *gore.GoFile) (*KnownInfo, error) {
-	b := &KnownInfo{}
-
-	b.FoundAddr = NewFoundAddr()
-
-	b.SectionMap = loadSectionMap(file)
-	b.Size = tool.GetFileSize(file.GetFile())
-	b.BuildInfo = file.BuildInfo
-
-	if b.BuildInfo != nil && b.BuildInfo.Compiler != nil {
-		b.VersionFlag.Leq118 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.18") <= 0
-		b.VersionFlag.Meq120 = gore.GoVersionCompare(b.BuildInfo.Compiler.Name, "go1.20") >= 0
-	} else {
-		// if we can't get build info, we assume it's go1.20 plus
-		b.VersionFlag.Meq120 = true
-	}
-
-	err := b.SectionMap.AssertSize(b.Size)
-	if err != nil {
-		return nil, err
-	}
-
-	pkgs, err := b.loadPackages(file)
-	if err != nil {
-		return nil, err
-	}
-	b.Packages = pkgs
-
-	err = b.analyzeSymbol(file)
-	if err != nil {
-		if errors.Is(err, ErrNoSymbolTable) {
-			log.Println("Warning: no symbol table found, this can lead to inaccurate results")
-		} else {
-			return nil, err
-		}
-	}
-
-	err = b.tryDisasm(file)
-	if err != nil {
-		return nil, err
-	}
-
-	err = b.FoundAddr.AssertOverLap()
-	if err != nil {
-		return nil, err
-	}
-
-	return b, nil
-}
-
-type Section struct {
-	Name string
-	Size uint64
-
-	Offset uint64
-	End    uint64
-
-	Addr    uint64
-	AddrEnd uint64
-
-	OnlyInMemory bool
-}
-
-type File struct {
-	Path      string
-	Functions []*gore.Function
-	Methods   []*gore.Method
-}
-
-func (f *File) GetSize() uint64 {
-	var size uint64 = 0
-	for _, fn := range f.Functions {
-		size += fn.End - fn.Offset
-	}
-	return size
 }

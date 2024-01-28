@@ -3,10 +3,13 @@ package pkg
 import (
 	"debug/gosym"
 	"github.com/goretk/gore"
+	"log"
 	"maps"
 )
 
 func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
+	log.Println("Loading packages...")
+
 	pkgs := new(TypedPackages)
 
 	pkgs.NameToPkg = make(map[string]*Package)
@@ -20,7 +23,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	if err != nil {
 		return nil, err
 	}
-	selfPkgs, n, err := loadPackagesFromGorePackages(self, k, pclntab)
+	selfPkgs, n, err := loadGorePackages(self, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +31,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	maps.Copy(pkgs.NameToPkg, n)
 
 	grStd, _ := file.GetSTDLib()
-	std, n, err := loadPackagesFromGorePackages(grStd, k, pclntab)
+	std, n, err := loadGorePackages(grStd, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +39,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	maps.Copy(pkgs.NameToPkg, n)
 
 	grVendor, _ := file.GetVendors()
-	vendor, n, err := loadPackagesFromGorePackages(grVendor, k, pclntab)
+	vendor, n, err := loadGorePackages(grVendor, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +47,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	maps.Copy(pkgs.NameToPkg, n)
 
 	grGenerated, _ := file.GetGeneratedPackages()
-	generated, n, err := loadPackagesFromGorePackages(grGenerated, k, pclntab)
+	generated, n, err := loadGorePackages(grGenerated, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
@@ -52,21 +55,23 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	maps.Copy(pkgs.NameToPkg, n)
 
 	grUnknown, _ := file.GetUnknown()
-	unknown, n, err := loadPackagesFromGorePackages(grUnknown, k, pclntab)
+	unknown, n, err := loadGorePackages(grUnknown, k, pclntab)
 	if err != nil {
 		return nil, err
 	}
 	pkgs.Unknown = unknown
 	maps.Copy(pkgs.NameToPkg, n)
 
+	log.Println("Loading packages done")
+
 	return pkgs, nil
 }
 
-func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Package, map[string]*Package, error) {
+func loadGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Package, map[string]*Package, error) {
 	pkgs := make([]*Package, 0, len(gr))
 	nameToPkg := make(map[string]*Package)
 	for _, g := range gr {
-		pkg, err := loadPackageFromGore(g, k, pclntab)
+		pkg, err := loadGorePackage(g, k, pclntab)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -76,7 +81,7 @@ func loadPackagesFromGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gos
 	return pkgs, nameToPkg, nil
 }
 
-func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
+func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
 	ret := &Package{
 		Name:  pkg.Name,
 		Addrs: make([]*Addr, 0),
@@ -115,6 +120,7 @@ func loadPackageFromGore(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) 
 
 		mf := getFile(src)
 		mf.Methods = append(mf.Methods, m)
+
 	}
 
 	for _, f := range pkg.Functions {
@@ -161,6 +167,16 @@ func (tp *TypedPackages) GetPackages() []*Package {
 	pkgs = append(pkgs, tp.Vendor...)
 	pkgs = append(pkgs, tp.Self...)
 	return pkgs
+}
+
+func (tp *TypedPackages) GetPackageAndCountFn() ([]*Package, int) {
+	pkgs := tp.GetPackages()
+	cnt := 0
+	for _, p := range pkgs {
+		cnt += len(p.GetFunctions())
+		cnt += len(p.GetMethods())
+	}
+	return pkgs, cnt
 }
 
 type Package struct {

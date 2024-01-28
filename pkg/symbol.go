@@ -8,22 +8,34 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
+	"log"
 	"slices"
 )
 
 var ErrNoSymbolTable = errors.New("no symbol table found")
 
 func (k *KnownInfo) analyzeSymbol(file *gore.GoFile) error {
+	log.Println("Analyzing symbols...")
+	var err error
+
 	switch f := file.GetParsedFile().(type) {
 	case *pe.File:
-		return analyzePeSymbol(f, k)
+		err = analyzePeSymbol(f, k)
 	case *elf.File:
-		return analyzeElfSymbol(f, k)
+		err = analyzeElfSymbol(f, k)
 	case *macho.File:
-		return analyzeMachoSymbol(f, k)
+		err = analyzeMachoSymbol(f, k)
 	default:
 		panic("This should not happened :(")
 	}
+
+	if err != nil {
+		return err
+	}
+
+	log.Println("Analyzing symbols done")
+
+	return nil
 }
 
 func markSymbolWithAddr(b *KnownInfo, name string, addr, size uint64) error {
