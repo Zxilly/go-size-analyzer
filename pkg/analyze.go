@@ -10,7 +10,7 @@ func Analyze(path string) error {
 		return err
 	}
 
-	_, err = Collect(file)
+	k, err := analyze(file)
 
 	return err
 }

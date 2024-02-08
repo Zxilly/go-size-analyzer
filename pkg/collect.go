@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Collect(file *gore.GoFile) (*KnownInfo, error) {
+func analyze(file *gore.GoFile) (*KnownInfo, error) {
 	b := &KnownInfo{}
 
 	b.FoundAddr = NewFoundAddr()
