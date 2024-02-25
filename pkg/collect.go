@@ -43,7 +43,7 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 		return nil, err
 	}
 
-	err = b.FoundAddr.AssertOverLap()
+	err = b.FoundAddr.Validate()
 	if err != nil {
 		return nil, err
 	}

@@ -105,32 +105,31 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 	}
 
 	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
-		_ = k.FoundAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
+		k.FoundAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
 	}
 
 	for _, m := range pkg.Methods {
 		src, _, _ := pclntab.PCToLine(m.Offset)
 
 		setAddrMark(m.Offset, m.End-m.Offset, GoPclntabMeta{
-			FuncName:    m.Name,
-			PackageName: m.PackageName,
-			Type:        "method",
-			Receiver:    m.Receiver,
+			FuncName:    Deduplicate(m.Name),
+			PackageName: Deduplicate(m.PackageName),
+			Type:        FuncTypeMethod,
+			Receiver:    Deduplicate(m.Receiver),
 		})
 
 		mf := getFile(src)
 		mf.Methods = append(mf.Methods, m)
-
 	}
 
 	for _, f := range pkg.Functions {
 		src, _, _ := pclntab.PCToLine(f.Offset)
 
 		setAddrMark(f.Offset, f.End-f.Offset, GoPclntabMeta{
-			FuncName:    f.Name,
-			PackageName: f.PackageName,
-			Type:        "function",
-			Receiver:    "",
+			FuncName:    Deduplicate(f.Name),
+			PackageName: Deduplicate(f.PackageName),
+			Type:        FuncTypeFunction,
+			Receiver:    Deduplicate(""),
 		})
 
 		ff := getFile(src)

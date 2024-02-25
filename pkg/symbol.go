@@ -52,9 +52,9 @@ func markSymbolWithAddr(b *KnownInfo, name string, addr, size uint64) error {
 	// golang devs are happy to create the same thing everywhere, example: internal/godebug and io both have stderr
 	// and the smart linker can recognize them and only keep one in the final binary, ignore
 	// it hard to say the size belongs to which package :(
-	_ = b.FoundAddr.Insert(addr, size, pkgPtr, AddrPassSymbol, SymbolMeta{
-		SymbolName:  name,
-		PackageName: pkgName,
+	b.FoundAddr.Insert(addr, size, pkgPtr, AddrPassSymbol, SymbolMeta{
+		SymbolName:  Deduplicate(name),
+		PackageName: Deduplicate(pkgName),
 	})
 
 	return nil
@@ -162,6 +162,11 @@ func analyzeElfSymbol(f *elf.File, b *KnownInfo) error {
 		switch s.Section {
 		case elf.SHN_UNDEF, elf.SHN_ABS, elf.SHN_COMMON:
 			continue // not addr, skip
+		}
+
+		if s.Size == 0 {
+			// nothing to do
+			continue
 		}
 
 		i := int(s.Section)

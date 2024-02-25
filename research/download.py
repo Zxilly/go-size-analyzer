@@ -7,7 +7,7 @@ TARGET_TAG = "latest"
 BIN_REPO = "Zxilly/go-testdata"
 versions = ["1.16", "1.18", "1.21"]
 
-full_versions = [f"1.{i}" for i in range(16, 22)]
+full_versions = [f"1.{i}" for i in range(11, 22)]
 
 
 def get_bin_path(filename: str):
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--arch', choices=['amd64'], nargs="+", default=['amd64'])
     parser.add_argument('-o', '--os', choices=['linux', 'windows', 'darwin'], nargs="+", default=['linux'])
     parser.add_argument('-v', '--version', choices=full_versions, nargs="+", default=["1.21"])
-    parser.add_argument("-e", '--ext', action='store_true', default=False, help="Download external link version")
+    parser.add_argument("-c", '--cgo', action='store_true', default=False, help="Download CGO version")
     parser.add_argument('-p', '--pie', action='store_true', default=False, help="Download PIE version")
     parser.add_argument('-s', '--strip', action='store_true', default=False, help="Download stripped version")
 
@@ -71,5 +71,5 @@ if __name__ == '__main__':
     for arch in args.arch:
         for pos in args.os:
             for version in args.version:
-                name = f"bin-{pos}-{version}-{arch}" + ("-strip" if args.strip else "") + ("-ext" if args.ext else "") + ("-pie" if args.pie else "")
+                name = f"bin-{pos}-{version}-{arch}" + ("-strip" if args.strip else "") + ("-cgo" if args.cgo else "") + ("-pie" if args.pie else "")
                 ensure_exist(name)

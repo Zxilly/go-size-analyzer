@@ -6,7 +6,6 @@ import (
 	"debug/pe"
 	"flag"
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/goretk/gore"
 	"log"
 	"os"
@@ -14,7 +13,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
-	"slices"
 	"strings"
 )
 
@@ -65,176 +63,73 @@ func files() (ret []string) {
 	return
 }
 
-var ext = flag.Bool("ext", false, "analyze external link file")
-var pie = flag.Bool("pie", false, "analyze pie file")
-var goos = flag.String("os", "linux", "target os")
-
-// currently have no way to analyze:
-var ignores = []string{
-	"bin-linux-1.21-amd64-ext-pie",
-}
+var ext = flag.Bool("ext", true, "analyze external link file")
+var pie = flag.Bool("pie", true, "analyze pie file")
+var goos = flag.String("os", "linux,darwin,windows", "target os")
 
 func init() {
 	flag.Parse()
 }
 
 func main() {
-	fmt.Printf("%-26s %10s %10s %10s %10s %10s %10s %10s\n",
-		"Name",
-		"sAddr", "mdAddr", "tAddr", "pe ibase",
-		"sbased", "mbased", "tbased")
-
 	for _, file := range files() {
 		name := filepath.Base(file)
 
-		if slices.Contains(ignores, name) {
-			continue
-		}
+		fmt.Printf("%-30s: ", name)
 
 		gf, err := gore.Open(file)
 		if err != nil {
 			log.Fatalf("%s: %v", name, err)
 		}
 
-		var symbolAddr uint64
-		var textAddr uint64
-		var moduleDataAddr uint64
-
-		md, err := gf.Moduledata()
-		if err != nil {
-			log.Fatalf("%s: %v", name, err)
-		}
-		moduleDataAddr = md.Text().Address
-
 		rf := gf.GetParsedFile()
 		switch f := rf.(type) {
 		case *pe.File:
-			symbolAddr = peSymbolAddr(f)
-			textAddr = peTextAddr(f)
+			printSegNamePE(f)
 		case *elf.File:
-			symbolAddr = elfSymbolAddr(f)
-			textAddr = elfTextAddr(f)
+			printSegNameELF(f)
 		case *macho.File:
-			symbolAddr = machoSymbolAddr(f)
-			textAddr = machoTextAddr(f)
+			printSegNameMACHO(f)
 		default:
 			panic("This should not happened :(")
 		}
-
-		const target = "UsingConstString"
-
-		pkgs, err := gf.GetPackages()
-		if err != nil {
-			log.Fatalf("%s: %v", name, err)
-		}
-
-		targetOffset := uint64(0)
-
-		for _, pkg := range pkgs {
-			for _, f := range pkg.Functions {
-				if f.Name == target {
-					targetOffset = f.Offset
-					break
-				}
-			}
-		}
-		if targetOffset == 0 {
-			log.Fatalf("%s: %v", name, "target function not found")
-		}
-
-		targetOffset -= textAddr
-		if _, ok := rf.(*pe.File); ok {
-			targetOffset -= peImageBase(rf.(*pe.File))
-		}
-
-		name = name[4:]
-
-		fmt.Printf("%-26s %10x %s %s", name, symbolAddr, colored(symbolAddr, moduleDataAddr), colored(symbolAddr, textAddr))
-		if _, ok := rf.(*pe.File); ok {
-			fmt.Printf(" %10x", peImageBase(rf.(*pe.File)))
-		} else {
-			fmt.Printf(" %10s", "")
-		}
-		fmt.Printf(" %10x %10x %10x", targetOffset+symbolAddr, targetOffset+moduleDataAddr, targetOffset+textAddr)
 		fmt.Println()
 	}
 }
 
-func colored(real, check uint64) string {
-	if real == check {
-		return color.GreenString("%10x", check)
-	} else {
-		return color.RedString("%10x", check)
+const symName = "runtime.pclntab"
+
+func printSegNamePE(f *pe.File) {
+	for _, sym := range f.Symbols {
+		if sym.Name == symName {
+			sect := f.Sections[sym.SectionNumber-1]
+			fmt.Printf("PE: %s", sect.Name)
+			return
+		}
 	}
 }
 
-func peImageBase(rf *pe.File) uint64 {
-	switch hdr := rf.OptionalHeader.(type) {
-	case *pe.OptionalHeader32:
-		return uint64(hdr.ImageBase)
-	case *pe.OptionalHeader64:
-		return hdr.ImageBase
-	}
-	panic("unknown optional header")
-}
-
-func elfSymbolAddr(rf *elf.File) uint64 {
-	symbols, err := rf.Symbols()
+func printSegNameELF(f *elf.File) {
+	symbols, err := f.Symbols()
 	if err != nil {
 		panic(err)
 	}
+
 	for _, sym := range symbols {
-		if sym.Name == "runtime.text" {
-			return sym.Value
+		if sym.Name == symName {
+			sect := f.Sections[sym.Section]
+			fmt.Printf("ELF: %s", sect.Name)
+			return
 		}
 	}
-	panic("runtime.text not found")
 }
 
-func elfTextAddr(rf *elf.File) uint64 {
-	for _, section := range rf.Sections {
-		if section.Name == ".text" {
-			return section.Addr
+func printSegNameMACHO(f *macho.File) {
+	for _, sym := range f.Symtab.Syms {
+		if sym.Name == symName {
+			sect := f.Sections[sym.Sect-1]
+			fmt.Printf("MACHO: %s", sect.Name)
+			return
 		}
 	}
-	panic(".text not found")
-}
-
-func machoSymbolAddr(rf *macho.File) uint64 {
-	if rf.Symtab == nil {
-		panic("rf.Symtab == nil")
-	}
-	for _, sym := range rf.Symtab.Syms {
-		if sym.Name == "runtime.text" {
-			return sym.Value
-		}
-	}
-	panic("runtime.text not found")
-}
-
-func machoTextAddr(rf *macho.File) uint64 {
-	for _, section := range rf.Sections {
-		if section.Name == "__text" {
-			return section.Addr
-		}
-	}
-	panic("__text not found")
-}
-
-func peSymbolAddr(rf *pe.File) uint64 {
-	for _, symb := range rf.Symbols {
-		if symb.Name == "runtime.text" {
-			return uint64(symb.Value)
-		}
-	}
-	panic("main.main not found")
-}
-
-func peTextAddr(rf *pe.File) uint64 {
-	for _, section := range rf.Sections {
-		if section.Name == ".text" {
-			return uint64(section.VirtualAddress)
-		}
-	}
-	panic(".text not found")
 }

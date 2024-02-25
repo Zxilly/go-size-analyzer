@@ -62,10 +62,10 @@ func NewExtractor(f *gore.GoFile) (*Extractor, error) {
 
 func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	if start < e.textStart {
-		start = e.textStart
+		panic(fmt.Sprintf("start address %#x is before text segment %#x", start, e.textStart))
 	}
 	if end > e.textEnd {
-		end = e.textEnd
+		panic(fmt.Sprintf("end address %#x is after text segment %#x", end, e.textEnd))
 	}
 
 	code := e.text[start-e.textStart : end-e.textStart]

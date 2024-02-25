@@ -18,8 +18,6 @@ func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 	wg := sync.WaitGroup{}
 	wg.Add(cnt)
 
-	fillLock := sync.Mutex{}
-
 	e, err := disasm.NewExtractor(f)
 	if err != nil {
 		return err
@@ -33,7 +31,7 @@ func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 
 	resultChan := make(chan result, 1000)
 
-	process := func(fn *gore.Function, pkg *Package, typ, receiver string) {
+	processWorker := func(fn *gore.Function, pkg *Package, typ FuncType, receiver string) {
 		possible := e.Extract(fn.Offset, fn.End)
 		for i, p := range possible {
 			if s, ok := e.AddrIsString(p.Addr, int64(p.Size)); ok {
@@ -42,14 +40,14 @@ func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 					size: p.Size,
 					pkg:  pkg,
 					meta: DisasmMeta{
-						GoPclntabMeta: GoPclntabMeta{
-							FuncName:    fn.Name,
-							PackageName: pkg.Name,
-							Type:        typ,
-							Receiver:    receiver,
+						Source: GoPclntabMeta{
+							FuncName:    Deduplicate(fn.Name),
+							PackageName: Deduplicate(pkg.Name),
+							Type:        typ, // const string, no need to intern it
+							Receiver:    Deduplicate(receiver),
 						},
 						DisasmIndex:  i,
-						DisasmString: s,
+						DisasmString: Deduplicate(s),
 					},
 				}
 			}
@@ -58,32 +56,35 @@ func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 		wg.Done()
 	}
 
-	fill := func() {
-		fillLock.Lock()
-		defer fillLock.Unlock()
+	collectLock := sync.Mutex{}
+	collectResult := func() {
+		collectLock.Lock()
+		defer collectLock.Unlock()
 		for r := range resultChan {
-			_ = k.FoundAddr.Insert(r.addr, r.size, r.pkg, AddrPassDisasm, r.meta)
+			k.FoundAddr.Insert(r.addr, r.size, r.pkg, AddrPassDisasm, r.meta)
 		}
 	}
 
-	go fill()
+	go collectResult()
 
 	for _, pkg := range pkgs {
 		funcs := pkg.GetFunctions()
 		for _, fn := range funcs {
-			go process(fn, pkg, "function", "")
+			go processWorker(fn, pkg, FuncTypeFunction, "")
 		}
 
 		methods := pkg.GetMethods()
 		for _, m := range methods {
-			go process(m.Function, pkg, "method", m.Receiver)
+			go processWorker(m.Function, pkg, FuncTypeMethod, m.Receiver)
 		}
 	}
 
 	wg.Wait()
 	close(resultChan)
-	fillLock.Lock()
-	fillLock.Unlock()
+
+	// wait for collectResult to release the lock
+	collectLock.Lock()
+	collectLock.Unlock()
 
 	log.Println("Disassemble done")
 
