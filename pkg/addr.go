@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"errors"
 	"fmt"
 	"log"
 )
@@ -18,7 +19,7 @@ type Addr struct {
 	Size uint64
 	Pkg  *Package
 
-	Source AddrSource
+	Source AddrSourceType
 	Type   AddrType
 
 	Meta any
@@ -30,25 +31,80 @@ func (a Addr) String() string {
 	return msg
 }
 
-type PackageAddrs = map[AddrSource]Addr
+type PackageAddrs struct {
+	sources map[AddrSourceType]*Addr
+}
 
-type PackagesOnAddr = map[string]PackageAddrs
+func (p *PackageAddrs) Insert(addr *Addr) error {
+	cur, ok := p.sources[addr.Source]
+	if !ok {
+		// don't have this source, add it
+		p.sources[addr.Source] = addr
+		return nil
+	}
 
-func NewPackageAddr() PackagesOnAddr {
-	return make(PackagesOnAddr)
+	switch addr.Source {
+	case AddrSourceGoPclntab, AddrSourceSymbol:
+		// should not duplicate
+		return errors.New("duplicate source")
+	case AddrSourceDisasm:
+		// always keep the largest size
+		if addr.Size > cur.Size {
+			p.sources[addr.Source] = addr
+		}
+		return nil
+	default:
+		panic("unreachable")
+	}
+}
+
+func NewPackageAddrs(addr *Addr) *PackageAddrs {
+	return &PackageAddrs{
+		sources: map[AddrSourceType]*Addr{
+			addr.Source: addr,
+		},
+	}
+}
+
+// PackagesOnAddr package name -> types
+type PackagesOnAddr struct {
+	pkgs map[string]*PackageAddrs
+	typ  AddrType
+}
+
+func (p *PackagesOnAddr) Insert(addr *Addr) error {
+	if addr.Type != p.typ {
+		return errors.New("type mismatch")
+	}
+
+	sources, ok := p.pkgs[addr.Pkg.Name]
+	if !ok {
+		p.pkgs[addr.Pkg.Name] = NewPackageAddrs(addr)
+		return nil
+	}
+	return sources.Insert(addr)
+}
+
+func NewPackagesOnAddr(addr *Addr) *PackagesOnAddr {
+	return &PackagesOnAddr{
+		pkgs: map[string]*PackageAddrs{
+			addr.Pkg.Name: NewPackageAddrs(addr),
+		},
+		typ: addr.Type,
+	}
 }
 
 type KnownAddr struct {
-	values map[uint64]PackagesOnAddr
+	memory map[uint64]*PackagesOnAddr
 }
 
 func NewFoundAddr() *KnownAddr {
 	return &KnownAddr{
-		values: make(map[uint64]PackagesOnAddr),
+		memory: make(map[uint64]*PackagesOnAddr),
 	}
 }
 
-func (f *KnownAddr) Insert(addr uint64, size uint64, p *Package, src AddrSource, typ AddrType, meta any) {
+func (f *KnownAddr) Insert(addr uint64, size uint64, p *Package, src AddrSourceType, typ AddrType, meta any) {
 	cur := Addr{
 		Addr:   addr,
 		Size:   size,
@@ -58,34 +114,14 @@ func (f *KnownAddr) Insert(addr uint64, size uint64, p *Package, src AddrSource,
 		Meta:   meta,
 	}
 
-	// Did we already have this addr recorded?
-	if _, ok := f.values[addr]; !ok {
-		f.values[addr] = NewPackageAddr()
-	}
-
-	// Did we already have this src at this addr?
-	if _, ok := f.values[addr][p.Name]; !ok {
-		f.values[addr][p.Name] = make(PackageAddrs)
-	}
-
-	pkgAddrs := f.values[addr][p.Name]
-
-	// determine if we should overwrite the old value
-	// or just ignore the new one
-	if old, ok := pkgAddrs[src]; !ok {
-		// never recorded, just insert
-		pkgAddrs[src] = cur
+	pkgOnAddr, ok := f.memory[addr]
+	if !ok {
+		f.memory[addr] = NewPackagesOnAddr(&cur)
 		return
-	} else {
-		if src != AddrSourceDisasm {
-			// unrecoverable error
-			log.Fatalf("Addr %x already recorded, old:%s new:%s", addr, old, cur)
-		} else {
-			// disasm can have multiple results for the same string, use the longer one
-			if cur.Size > old.Size {
-				pkgAddrs[src] = cur
-			}
-		}
+	}
+	err := pkgOnAddr.Insert(&cur)
+	if err != nil {
+		log.Fatalf("Insert addr failed: %s %v", err, cur)
 	}
 }
 

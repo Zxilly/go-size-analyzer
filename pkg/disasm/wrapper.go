@@ -16,6 +16,6 @@ func buildWrapper(file *gore.GoFile) rawFileWrapper {
 	case *macho.File:
 		return &machoWrapper{file: f}
 	default:
-		panic("This should not happened :(")
+		panic("unreachable")
 	}
 }

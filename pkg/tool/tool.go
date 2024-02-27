@@ -20,6 +20,6 @@ func GetImageBase(file *pe.File) uint64 {
 	case *pe.OptionalHeader64:
 		return hdr.ImageBase
 	default:
-		panic("This should not happened :(")
+		panic("unknown optional header type")
 	}
 }

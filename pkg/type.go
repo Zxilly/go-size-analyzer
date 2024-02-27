@@ -31,10 +31,10 @@ type DisasmMeta struct {
 	DisasmString string
 }
 
-type AddrSource string
+type AddrSourceType string
 
 const (
-	AddrSourceGoPclntab AddrSource = "pclntab"
-	AddrSourceSymbol               = "symbol"
-	AddrSourceDisasm               = "disasm"
+	AddrSourceGoPclntab AddrSourceType = "pclntab"
+	AddrSourceSymbol                   = "symbol"
+	AddrSourceDisasm                   = "disasm"
 )

@@ -51,7 +51,7 @@ func (k *KnownInfo) LoadSectionMap() {
 	case *macho.File:
 		sections.loadFromMacho(f)
 	default:
-		panic("This should not happened :(")
+		panic("unreachable")
 	}
 
 	log.Println("Loading sections done")
@@ -73,7 +73,7 @@ func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
 	case *macho.File:
 		err = analyzeMachoSymbol(f, k)
 	default:
-		panic("This should not happened :(")
+		panic("unreachable")
 	}
 
 	if err != nil {
