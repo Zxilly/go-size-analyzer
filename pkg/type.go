@@ -31,23 +31,10 @@ type DisasmMeta struct {
 	DisasmString string
 }
 
-type AddrParseType int
+type AddrSource string
 
 const (
-	AddrPassGoPclntab AddrParseType = iota
-	AddrPassSymbol
-	AddrPassDisasm
+	AddrSourceGoPclntab AddrSource = "pclntab"
+	AddrSourceSymbol               = "symbol"
+	AddrSourceDisasm               = "disasm"
 )
-
-func (p AddrParseType) String() string {
-	switch p {
-	case AddrPassGoPclntab:
-		return "pclntab"
-	case AddrPassSymbol:
-		return "symbol"
-	case AddrPassDisasm:
-		return "disasm"
-	default:
-		return "unknown"
-	}
-}

@@ -31,6 +31,8 @@ func NewKnownInfo(file *gore.GoFile) *KnownInfo {
 		KnownAddr: NewFoundAddr(),
 		Size:      tool.GetFileSize(file.GetFile()),
 		BuildInfo: file.BuildInfo,
+
+		gore: file,
 	}
 	k.UpdateVersionFlag()
 	return k
@@ -87,7 +89,7 @@ func (k *KnownInfo) Validate() error {
 	return k.KnownAddr.Validate()
 }
 
-func (k *KnownInfo) MarkSymbol(name string, addr, size uint64) error {
+func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ AddrType) error {
 	pkgName := k.ExtractPackageFromSymbol(name)
 	if pkgName == "" {
 		return nil // no package or compiler-generated symbol, skip
@@ -98,7 +100,7 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64) error {
 		return nil // no package found, skip
 	}
 
-	k.KnownAddr.Insert(addr, size, pkg, AddrPassSymbol, SymbolMeta{
+	k.KnownAddr.Insert(addr, size, pkg, AddrSourceSymbol, typ, SymbolMeta{
 		SymbolName:  Deduplicate(name),
 		PackageName: Deduplicate(pkgName),
 	})

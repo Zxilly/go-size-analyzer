@@ -61,7 +61,8 @@ func (k *KnownInfo) Disasm(f *gore.GoFile) error {
 		collectLock.Lock()
 		defer collectLock.Unlock()
 		for r := range resultChan {
-			k.KnownAddr.Insert(r.addr, r.size, r.pkg, AddrPassDisasm, r.meta)
+			// disasm can only get a data type
+			k.KnownAddr.Insert(r.addr, r.size, r.pkg, AddrSourceDisasm, AddrTypeData, r.meta)
 		}
 	}
 

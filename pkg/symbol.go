@@ -29,6 +29,7 @@ func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 		Name string
 		Addr uint64
 		Size uint64
+		Typ  AddrType
 	}
 
 	peSyms := make([]*pe.Symbol, 0)
@@ -56,15 +57,23 @@ func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 
 		sect := f.Sections[s.SectionNumber-1]
 		ch := sect.Characteristics
-		if ch&text == 0 && ch&data == 0 {
-			continue // not text/data, skip
-		}
 
 		addr := uint64(s.Value) + imageBase + uint64(sect.VirtualAddress)
+
+		typ := AddrTypeUnknown
+		switch {
+		case ch&text != 0:
+			typ = AddrTypeText
+		case ch&data != 0:
+			typ = AddrTypeData
+		default:
+			continue // not text/data, skip
+		}
 
 		syms = append(syms, sym{
 			Name: s.Name,
 			Addr: addr,
+			Typ:  typ,
 			Size: 0, // will be filled later
 		})
 
@@ -83,7 +92,7 @@ func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 
 		s.Size = size
 
-		err := b.MarkSymbol(s.Name, s.Addr, size)
+		err := b.MarkSymbol(s.Name, s.Addr, size, s.Typ)
 		if err != nil {
 			return err
 		}
@@ -127,15 +136,17 @@ func analyzeElfSymbol(f *elf.File, b *KnownInfo) error {
 			continue
 		}
 		sect := f.Sections[i]
+		typ := AddrTypeUnknown
 		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
 		case elf.SHF_ALLOC | elf.SHF_EXECINSTR:
+			typ = AddrTypeText
 		case elf.SHF_ALLOC:
-		case elf.SHF_ALLOC | elf.SHF_WRITE:
+			typ = AddrTypeData
 		default:
-			continue // not text/data, skip
+			continue // wtf?
 		}
 
-		err = b.MarkSymbol(s.Name, s.Value, s.Size)
+		err = b.MarkSymbol(s.Name, s.Value, s.Size, typ)
 		if err != nil {
 			return err
 		}
@@ -179,10 +190,15 @@ func analyzeMachoSymbol(f *macho.File, b *KnownInfo) error {
 			continue // unknown
 		}
 
+		typ := AddrTypeUnknown
 		if int(s.Sect) <= len(f.Sections) {
 			sect := f.Sections[s.Sect-1]
-			if sect.Seg != "__TEXT" && sect.Seg != "__DATA" && sect.Seg != "__DATA_CONST" {
-				continue // not text/data, skip
+
+			switch sect.Seg {
+			case "__DATA_CONST", "__DATA":
+				typ = AddrTypeData
+			case "__TEXT":
+				typ = AddrTypeText
 			}
 
 			if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
@@ -192,7 +208,7 @@ func analyzeMachoSymbol(f *macho.File, b *KnownInfo) error {
 			continue // broken index
 		}
 
-		err := b.MarkSymbol(s.Name, s.Value, size)
+		err := b.MarkSymbol(s.Name, s.Value, size, typ)
 		if err != nil {
 			return err
 		}

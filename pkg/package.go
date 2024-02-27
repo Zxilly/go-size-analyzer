@@ -107,7 +107,8 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 	}
 
 	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
-		k.KnownAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
+		// everything in the pclntab is text
+		k.KnownAddr.Insert(addr, size, ret, AddrSourceGoPclntab, AddrTypeText, meta)
 	}
 
 	for _, m := range pkg.Methods {

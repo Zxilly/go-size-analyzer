@@ -61,6 +61,9 @@ func (s *SectionMap) GetSection(addr, size uint64) *Section {
 func (s *SectionMap) AssertSize(size uint64) error {
 	sectionsSize := uint64(0)
 	for _, section := range s.Sections {
+		if section.OnlyInMemory {
+			continue
+		}
 		sectionsSize += section.Size
 	}
 
