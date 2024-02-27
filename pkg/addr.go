@@ -29,17 +29,17 @@ func NewPackageAddr() PackageAddr {
 	return make(PackageAddr)
 }
 
-type FoundAddr struct {
+type KnownAddr struct {
 	values map[uint64]PackageAddr
 }
 
-func NewFoundAddr() *FoundAddr {
-	return &FoundAddr{
+func NewFoundAddr() *KnownAddr {
+	return &KnownAddr{
 		values: make(map[uint64]PackageAddr),
 	}
 }
 
-func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParseType, meta any) {
+func (f *KnownAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParseType, meta any) {
 	cur := Addr{
 		Addr: addr,
 		Size: size,
@@ -76,6 +76,6 @@ func (f *FoundAddr) Insert(addr uint64, size uint64, p *Package, pass AddrParseT
 	}
 }
 
-func (f *FoundAddr) Validate() error {
+func (f *KnownAddr) Validate() error {
 	return nil
 }

@@ -2,34 +2,21 @@ package pkg
 
 import (
 	"errors"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
 	"log"
 )
 
 func analyze(file *gore.GoFile) (*KnownInfo, error) {
-	b := &KnownInfo{}
+	b := NewKnownInfo(file)
 
-	b.FoundAddr = NewFoundAddr()
+	b.LoadSectionMap()
 
-	b.SectionMap = loadSectionMap(file)
-	b.Size = tool.GetFileSize(file.GetFile())
-	b.BuildInfo = file.BuildInfo
-
-	b.updateVersionFlag()
-
-	err := b.SectionMap.AssertSize(b.Size)
+	err := b.LoadPackages(file)
 	if err != nil {
 		return nil, err
 	}
 
-	pkgs, err := b.loadPackages(file)
-	if err != nil {
-		return nil, err
-	}
-	b.Packages = pkgs
-
-	err = b.analyzeSymbol(file)
+	err = b.AnalyzeSymbol(file)
 	if err != nil {
 		if errors.Is(err, ErrNoSymbolTable) {
 			log.Println("Warning: no symbol table found, this can lead to inaccurate results")
@@ -38,12 +25,12 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 		}
 	}
 
-	err = b.tryDisasm(file)
+	err = b.Disasm(file)
 	if err != nil {
 		return nil, err
 	}
 
-	err = b.FoundAddr.Validate()
+	err = b.Validate()
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
-	"log"
 )
 
 type Section struct {
@@ -35,27 +34,6 @@ func (f *File) GetSize() uint64 {
 		size += fn.End - fn.Offset
 	}
 	return size
-}
-
-func loadSectionMap(gofile *gore.GoFile) (sections *SectionMap) {
-	log.Println("Loading sections...")
-
-	sections = &SectionMap{Sections: make(map[string]*Section)}
-
-	switch f := gofile.GetParsedFile().(type) {
-	case *pe.File:
-		sections.loadFromPe(f)
-	case *elf.File:
-		sections.loadFromElf(f)
-	case *macho.File:
-		sections.loadFromMacho(f)
-	default:
-		panic("This should not happened :(")
-	}
-
-	log.Println("Loading sections done")
-
-	return
 }
 
 type SectionMap struct {

@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
+func (k *KnownInfo) Disasm(f *gore.GoFile) error {
 	log.Println("Disassemble...")
 
 	pkgs, cnt := k.Packages.GetPackageAndCountFn()
@@ -61,7 +61,7 @@ func (k *KnownInfo) tryDisasm(f *gore.GoFile) error {
 		collectLock.Lock()
 		defer collectLock.Unlock()
 		for r := range resultChan {
-			k.FoundAddr.Insert(r.addr, r.size, r.pkg, AddrPassDisasm, r.meta)
+			k.KnownAddr.Insert(r.addr, r.size, r.pkg, AddrPassDisasm, r.meta)
 		}
 	}
 

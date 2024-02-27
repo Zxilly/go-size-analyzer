@@ -7,58 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
-	"github.com/goretk/gore"
-	"log"
 	"slices"
 )
 
 var ErrNoSymbolTable = errors.New("no symbol table found")
-
-func (k *KnownInfo) analyzeSymbol(file *gore.GoFile) error {
-	log.Println("Analyzing symbols...")
-	var err error
-
-	switch f := file.GetParsedFile().(type) {
-	case *pe.File:
-		err = analyzePeSymbol(f, k)
-	case *elf.File:
-		err = analyzeElfSymbol(f, k)
-	case *macho.File:
-		err = analyzeMachoSymbol(f, k)
-	default:
-		panic("This should not happened :(")
-	}
-
-	if err != nil {
-		return err
-	}
-
-	log.Println("Analyzing symbols done")
-
-	return nil
-}
-
-func markSymbolWithAddr(b *KnownInfo, name string, addr, size uint64) error {
-	pkgName := b.ExtractPackageFromSymbol(name)
-	if pkgName == "" {
-		return nil // no package or compiler-generated symbol, skip
-	}
-
-	pkgPtr, ok := b.Packages.NameToPkg[pkgName]
-	if !ok {
-		return nil // no package found, skip
-	}
-
-	// golang devs are happy to create the same thing everywhere, example: internal/godebug and io both have stderr
-	// and the smart linker can recognize them and only keep one in the final binary, ignore
-	// it hard to say the size belongs to which package :(
-	b.FoundAddr.Insert(addr, size, pkgPtr, AddrPassSymbol, SymbolMeta{
-		SymbolName:  Deduplicate(name),
-		PackageName: Deduplicate(pkgName),
-	})
-
-	return nil
-}
 
 func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 	if len(f.Symbols) == 0 {
@@ -131,7 +83,7 @@ func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 
 		s.Size = size
 
-		err := markSymbolWithAddr(b, s.Name, s.Addr, size)
+		err := b.MarkSymbol(s.Name, s.Addr, size)
 		if err != nil {
 			return err
 		}
@@ -183,7 +135,7 @@ func analyzeElfSymbol(f *elf.File, b *KnownInfo) error {
 			continue // not text/data, skip
 		}
 
-		err = markSymbolWithAddr(b, s.Name, s.Value, s.Size)
+		err = b.MarkSymbol(s.Name, s.Value, s.Size)
 		if err != nil {
 			return err
 		}
@@ -240,7 +192,7 @@ func analyzeMachoSymbol(f *macho.File, b *KnownInfo) error {
 			continue // broken index
 		}
 
-		err := markSymbolWithAddr(b, s.Name, s.Value, size)
+		err := b.MarkSymbol(s.Name, s.Value, size)
 		if err != nil {
 			return err
 		}

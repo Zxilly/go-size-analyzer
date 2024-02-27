@@ -7,7 +7,7 @@ import (
 	"maps"
 )
 
-func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
+func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	log.Println("Loading packages...")
 
 	pkgs := new(TypedPackages)
@@ -16,16 +16,16 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 
 	pclntab, err := file.PCLNTab()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	self, err := file.GetPackages()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	selfPkgs, n, err := loadGorePackages(self, k, pclntab)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	pkgs.Self = selfPkgs
 	maps.Copy(pkgs.NameToPkg, n)
@@ -33,7 +33,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	grStd, _ := file.GetSTDLib()
 	std, n, err := loadGorePackages(grStd, k, pclntab)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	pkgs.Std = std
 	maps.Copy(pkgs.NameToPkg, n)
@@ -41,7 +41,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	grVendor, _ := file.GetVendors()
 	vendor, n, err := loadGorePackages(grVendor, k, pclntab)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	pkgs.Vendor = vendor
 	maps.Copy(pkgs.NameToPkg, n)
@@ -49,7 +49,7 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	grGenerated, _ := file.GetGeneratedPackages()
 	generated, n, err := loadGorePackages(grGenerated, k, pclntab)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	pkgs.Generated = generated
 	maps.Copy(pkgs.NameToPkg, n)
@@ -57,14 +57,16 @@ func (k *KnownInfo) loadPackages(file *gore.GoFile) (*TypedPackages, error) {
 	grUnknown, _ := file.GetUnknown()
 	unknown, n, err := loadGorePackages(grUnknown, k, pclntab)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	pkgs.Unknown = unknown
 	maps.Copy(pkgs.NameToPkg, n)
 
 	log.Println("Loading packages done")
 
-	return pkgs, nil
+	k.Packages = pkgs
+
+	return nil
 }
 
 func loadGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Package, map[string]*Package, error) {
@@ -105,7 +107,7 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 	}
 
 	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
-		k.FoundAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
+		k.KnownAddr.Insert(addr, size, ret, AddrPassGoPclntab, meta)
 	}
 
 	for _, m := range pkg.Methods {
@@ -153,7 +155,7 @@ type TypedPackages struct {
 	Generated []*Package
 	Unknown   []*Package
 
-	NameToPkg map[string]*Package // available after loadPackages, loadPackagesFromGorePackage[s]
+	NameToPkg map[string]*Package // available after LoadPackages, loadPackagesFromGorePackage[s]
 }
 
 func (tp *TypedPackages) GetPackages() []*Package {

@@ -1,7 +1,12 @@
 package pkg
 
 import (
+	"debug/elf"
+	"debug/macho"
+	"debug/pe"
+	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 	"github.com/goretk/gore"
+	"log"
 	"strings"
 )
 
@@ -10,9 +15,9 @@ type KnownInfo struct {
 	BuildInfo  *gore.BuildInfo
 	SectionMap *SectionMap
 	Packages   *TypedPackages
-	FoundAddr  *FoundAddr
+	KnownAddr  *KnownAddr
 
-	IsDynamicLink bool
+	gore *gore.GoFile
 
 	VersionFlag struct {
 		Leq118 bool
@@ -20,13 +25,95 @@ type KnownInfo struct {
 	}
 }
 
-func (k *KnownInfo) updateVersionFlag() {
-	if k.BuildInfo != nil && k.BuildInfo.Compiler != nil {
-		k.VersionFlag.Leq118 = gore.GoVersionCompare(k.BuildInfo.Compiler.Name, "go1.18") <= 0
-		k.VersionFlag.Meq120 = gore.GoVersionCompare(k.BuildInfo.Compiler.Name, "go1.20") >= 0
-	} else {
+func NewKnownInfo(file *gore.GoFile) *KnownInfo {
+	// ensure we have the version
+	k := &KnownInfo{
+		KnownAddr: NewFoundAddr(),
+		Size:      tool.GetFileSize(file.GetFile()),
+		BuildInfo: file.BuildInfo,
+	}
+	k.UpdateVersionFlag()
+	return k
+}
+
+func (k *KnownInfo) LoadSectionMap() {
+	log.Println("Loading sections...")
+
+	sections := &SectionMap{Sections: make(map[string]*Section)}
+
+	switch f := k.gore.GetParsedFile().(type) {
+	case *pe.File:
+		sections.loadFromPe(f)
+	case *elf.File:
+		sections.loadFromElf(f)
+	case *macho.File:
+		sections.loadFromMacho(f)
+	default:
+		panic("This should not happened :(")
+	}
+
+	log.Println("Loading sections done")
+
+	k.SectionMap = sections
+
+	return
+}
+
+func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
+	log.Println("Analyzing symbols...")
+	var err error
+
+	switch f := file.GetParsedFile().(type) {
+	case *pe.File:
+		err = analyzePeSymbol(f, k)
+	case *elf.File:
+		err = analyzeElfSymbol(f, k)
+	case *macho.File:
+		err = analyzeMachoSymbol(f, k)
+	default:
+		panic("This should not happened :(")
+	}
+
+	if err != nil {
+		return err
+	}
+
+	log.Println("Analyzing symbols done")
+
+	return nil
+}
+
+func (k *KnownInfo) Validate() error {
+	return k.KnownAddr.Validate()
+}
+
+func (k *KnownInfo) MarkSymbol(name string, addr, size uint64) error {
+	pkgName := k.ExtractPackageFromSymbol(name)
+	if pkgName == "" {
+		return nil // no package or compiler-generated symbol, skip
+	}
+
+	pkg, ok := k.Packages.NameToPkg[pkgName]
+	if !ok {
+		return nil // no package found, skip
+	}
+
+	k.KnownAddr.Insert(addr, size, pkg, AddrPassSymbol, SymbolMeta{
+		SymbolName:  Deduplicate(name),
+		PackageName: Deduplicate(pkgName),
+	})
+
+	return nil
+}
+
+func (k *KnownInfo) UpdateVersionFlag() {
+	ver, err := k.gore.GetCompilerVersion()
+	if err != nil {
 		// if we can't get build info, we assume it's go1.20 plus
 		k.VersionFlag.Meq120 = true
+	} else {
+		k.VersionFlag.Leq118 = gore.GoVersionCompare(ver.Name, "go1.18.10") <= 0
+		k.VersionFlag.Meq120 = gore.GoVersionCompare(ver.Name, "go1.20rc1") >= 0
 	}
 }
 
