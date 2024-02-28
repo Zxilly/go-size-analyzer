@@ -85,25 +85,9 @@ func loadGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([
 
 func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
 	ret := &Package{
-		Name:  pkg.Name,
-		Addrs: make([]*Addr, 0),
-		grPkg: pkg,
-	}
-
-	files := map[string]*File{}
-
-	getFile := func(path string) *File {
-		f, ok := files[path]
-		if !ok {
-			nf := &File{
-				Path:      path,
-				Functions: make([]*gore.Function, 0),
-				Methods:   make([]*gore.Method, 0),
-			}
-			files[path] = nf
-			return nf
-		}
-		return f
+		Name:      pkg.Name,
+		Methods:   pkg.Methods,
+		Functions: pkg.Functions,
 	}
 
 	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
@@ -119,10 +103,8 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 			PackageName: Deduplicate(m.PackageName),
 			Type:        FuncTypeMethod,
 			Receiver:    Deduplicate(m.Receiver),
+			Filepath:    Deduplicate(src),
 		})
-
-		mf := getFile(src)
-		mf.Methods = append(mf.Methods, m)
 	}
 
 	for _, f := range pkg.Functions {
@@ -133,18 +115,9 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 			PackageName: Deduplicate(f.PackageName),
 			Type:        FuncTypeFunction,
 			Receiver:    Deduplicate(""),
+			Filepath:    Deduplicate(src),
 		})
-
-		ff := getFile(src)
-		ff.Functions = append(ff.Functions, f)
 	}
-
-	filesSlice := make([]*File, 0, len(files))
-	for _, f := range files {
-		filesSlice = append(filesSlice, f)
-	}
-
-	ret.Files = filesSlice
 
 	return ret, nil
 }
@@ -182,24 +155,16 @@ func (tp *TypedPackages) GetPackageAndCountFn() ([]*Package, int) {
 }
 
 type Package struct {
-	Name  string
-	Files []*File
-	Addrs []*Addr // from symbols and disasm result
-	grPkg *gore.Package
+	Name      string
+	Functions []*gore.Function
+	Methods   []*gore.Method
+	grPkg     *gore.Package
 }
 
 func (p *Package) GetFunctions() []*gore.Function {
-	var fns []*gore.Function
-	for _, f := range p.Files {
-		fns = append(fns, f.Functions...)
-	}
-	return fns
+	return p.Functions
 }
 
 func (p *Package) GetMethods() []*gore.Method {
-	var mds []*gore.Method
-	for _, f := range p.Files {
-		mds = append(mds, f.Methods...)
-	}
-	return mds
+	return p.Methods
 }

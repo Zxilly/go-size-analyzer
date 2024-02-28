@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-func (k *KnownInfo) Disasm(f *gore.GoFile) error {
+func (k *KnownInfo) Disasm() error {
 	log.Println("Disassemble...")
 
 	pkgs, cnt := k.Packages.GetPackageAndCountFn()
@@ -18,7 +18,7 @@ func (k *KnownInfo) Disasm(f *gore.GoFile) error {
 	wg := sync.WaitGroup{}
 	wg.Add(cnt)
 
-	e, err := disasm.NewExtractor(f)
+	e, err := disasm.NewExtractor(k.wrapper, k.Size)
 	if err != nil {
 		return err
 	}

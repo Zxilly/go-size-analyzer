@@ -1,5 +1,11 @@
-kubectl
-gsa
 *.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
 .idea/
-tmp/
+research/bins/

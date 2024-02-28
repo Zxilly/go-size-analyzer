@@ -1,4 +1,4 @@
-package disasm
+package wrapper
 
 import (
 	"debug/elf"
@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-type elfWrapper struct {
+type ElfWrapper struct {
 	file *elf.File
 }
 
-func (e *elfWrapper) readAddr(addr, size uint64) ([]byte, error) {
+func (e *ElfWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	ef := e.file
 	for _, prog := range ef.Progs {
 		if prog.Type != elf.PT_LOAD {
@@ -27,7 +27,7 @@ func (e *elfWrapper) readAddr(addr, size uint64) ([]byte, error) {
 	return nil, fmt.Errorf("address not found")
 }
 
-func (e *elfWrapper) text() (textStart uint64, text []byte, err error) {
+func (e *ElfWrapper) Text() (textStart uint64, text []byte, err error) {
 	sect := e.file.Section(".text")
 	if sect == nil {
 		return 0, nil, fmt.Errorf("text section not found")
@@ -37,7 +37,7 @@ func (e *elfWrapper) text() (textStart uint64, text []byte, err error) {
 	return
 }
 
-func (e *elfWrapper) goarch() string {
+func (e *ElfWrapper) GoArch() string {
 	switch e.file.Machine {
 	case elf.EM_386:
 		return "386"

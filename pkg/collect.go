@@ -25,7 +25,7 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 		}
 	}
 
-	err = b.Disasm(file)
+	err = b.Disasm()
 	if err != nil {
 		return nil, err
 	}

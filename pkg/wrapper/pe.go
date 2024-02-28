@@ -1,4 +1,4 @@
-package disasm
+package wrapper
 
 import (
 	"debug/pe"
@@ -6,11 +6,11 @@ import (
 	"github.com/Zxilly/go-size-analyzer/pkg/tool"
 )
 
-type peWrapper struct {
+type PeWrapper struct {
 	file *pe.File
 }
 
-func (p *peWrapper) readAddr(addr, size uint64) ([]byte, error) {
+func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	pf := p.file
 	for _, sect := range pf.Sections {
 		if uint64(sect.VirtualAddress) <= addr && addr+size <= uint64(sect.VirtualAddress+sect.VirtualSize) {
@@ -24,7 +24,7 @@ func (p *peWrapper) readAddr(addr, size uint64) ([]byte, error) {
 	return nil, fmt.Errorf("address not found")
 }
 
-func (p *peWrapper) text() (textStart uint64, text []byte, err error) {
+func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
 	imageBase := tool.GetImageBase(p.file)
 
 	sect := p.file.Section(".text")
@@ -36,7 +36,7 @@ func (p *peWrapper) text() (textStart uint64, text []byte, err error) {
 	return
 }
 
-func (p *peWrapper) goarch() string {
+func (p *PeWrapper) GoArch() string {
 	switch p.file.Machine {
 	case pe.IMAGE_FILE_MACHINE_I386:
 		return "386"

@@ -18,6 +18,7 @@ type GoPclntabMeta struct {
 	PackageName string
 	Type        FuncType
 	Receiver    string // for method only
+	Filepath    string
 }
 
 type SymbolMeta struct {

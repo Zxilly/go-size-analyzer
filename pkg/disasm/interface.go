@@ -2,8 +2,7 @@ package disasm
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
-	"github.com/goretk/gore"
+	"github.com/Zxilly/go-size-analyzer/pkg/wrapper"
 	"unicode/utf8"
 )
 
@@ -15,7 +14,7 @@ type PossibleStr struct {
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
 
 type Extractor struct {
-	raw       rawFileWrapper
+	raw       wrapper.RawFileWrapper
 	size      uint64
 	text      []byte        // bytes of text segment (actual instructions)
 	textStart uint64        // start PC of text
@@ -24,23 +23,13 @@ type Extractor struct {
 	extractor extractorFunc // disassembler function for goarch
 }
 
-type rawFileWrapper interface {
-	text() (textStart uint64, text []byte, err error)
-	goarch() string
-	readAddr(addr, size uint64) ([]byte, error)
-}
-
-func NewExtractor(f *gore.GoFile) (*Extractor, error) {
-	rawFile := buildWrapper(f)
-
-	size := tool.GetFileSize(f.GetFile())
-
-	textStart, text, err := rawFile.text()
+func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, error) {
+	textStart, text, err := rawFile.Text()
 	if err != nil {
 		return nil, err
 	}
 
-	goarch := rawFile.goarch()
+	goarch := rawFile.GoArch()
 	if goarch == "" {
 		return nil, fmt.Errorf("unknown GOARCH")
 	}
@@ -80,11 +69,11 @@ func (e *Extractor) AddrIsString(addr uint64, size int64) (string, bool) {
 	}
 
 	if size > int64(e.size) {
-		// it's obviously a string can not larger than file size
+		// it's obviously a string cannot larger than file size
 		return "", false
 	}
 
-	data, err := e.raw.readAddr(addr, uint64(size))
+	data, err := e.raw.ReadAddr(addr, uint64(size))
 	if err != nil {
 		return "", false
 	}

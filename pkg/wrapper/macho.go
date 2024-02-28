@@ -1,15 +1,15 @@
-package disasm
+package wrapper
 
 import (
 	"debug/macho"
 	"fmt"
 )
 
-type machoWrapper struct {
+type MachoWrapper struct {
 	file *macho.File
 }
 
-func (m *machoWrapper) readAddr(addr, size uint64) ([]byte, error) {
+func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	mf := m.file
 	for _, sect := range mf.Sections {
 		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
@@ -23,7 +23,7 @@ func (m *machoWrapper) readAddr(addr, size uint64) ([]byte, error) {
 	return nil, fmt.Errorf("address not found")
 }
 
-func (m *machoWrapper) text() (textStart uint64, text []byte, err error) {
+func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {
 	sect := m.file.Section("__text")
 	if sect == nil {
 		return 0, nil, fmt.Errorf("text section not found")
@@ -33,7 +33,7 @@ func (m *machoWrapper) text() (textStart uint64, text []byte, err error) {
 	return
 }
 
-func (m *machoWrapper) goarch() string {
+func (m *MachoWrapper) GoArch() string {
 	switch m.file.Cpu {
 	case macho.Cpu386:
 		return "386"
