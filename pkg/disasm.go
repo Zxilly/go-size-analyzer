@@ -61,8 +61,7 @@ func (k *KnownInfo) Disasm() error {
 		collectLock.Lock()
 		defer collectLock.Unlock()
 		for r := range resultChan {
-			// disasm can only get a data type
-			k.KnownAddr.Insert(r.addr, r.size, r.pkg, AddrSourceDisasm, AddrTypeData, r.meta)
+			k.KnownAddr.InsertDisasm(r.addr, r.size, r.pkg, r.meta)
 		}
 	}
 

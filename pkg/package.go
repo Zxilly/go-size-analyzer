@@ -84,7 +84,7 @@ func loadGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([
 }
 
 func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
-	ret := &Package{
+	p := &Package{
 		Name:      pkg.Name,
 		Methods:   pkg.Methods,
 		Functions: pkg.Functions,
@@ -92,7 +92,7 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 
 	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
 		// everything in the pclntab is text
-		k.KnownAddr.Insert(addr, size, ret, AddrSourceGoPclntab, AddrTypeText, meta)
+		k.KnownAddr.InsertPclntab(addr, size, p, meta)
 	}
 
 	for _, m := range pkg.Methods {
@@ -119,7 +119,7 @@ func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Pa
 		})
 	}
 
-	return ret, nil
+	return p, nil
 }
 
 type TypedPackages struct {

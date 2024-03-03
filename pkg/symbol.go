@@ -12,6 +12,29 @@ import (
 
 var ErrNoSymbolTable = errors.New("no symbol table found")
 
+func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ AddrType) error {
+	var pkg *Package
+	pkgName := k.ExtractPackageFromSymbol(name)
+	if pkgName == "" {
+		// we assume it's a cgo symbol
+		pkgName = "cgo"
+		pkg = nil
+	} else {
+		var ok bool
+		pkg, ok = k.Packages.NameToPkg[pkgName]
+		if !ok {
+			return nil // no package found, skip
+		}
+	}
+
+	k.KnownAddr.InsertSymbol(addr, size, pkg, typ, SymbolMeta{
+		SymbolName:  Deduplicate(name),
+		PackageName: Deduplicate(pkgName),
+	})
+
+	return nil
+}
+
 func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 	if len(f.Symbols) == 0 {
 		return ErrNoSymbolTable

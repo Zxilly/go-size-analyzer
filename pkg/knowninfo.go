@@ -89,25 +89,7 @@ func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
 }
 
 func (k *KnownInfo) Validate() error {
-	return k.KnownAddr.ValidateOverlap()
-}
-
-func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ AddrType) error {
-	pkgName := k.ExtractPackageFromSymbol(name)
-	if pkgName == "" {
-		return nil // no package or compiler-generated symbol, skip
-	}
-
-	pkg, ok := k.Packages.NameToPkg[pkgName]
-	if !ok {
-		return nil // no package found, skip
-	}
-
-	k.KnownAddr.Insert(addr, size, pkg, AddrSourceSymbol, typ, SymbolMeta{
-		SymbolName:  Deduplicate(name),
-		PackageName: Deduplicate(pkgName),
-	})
-
+	// TODO: validate the result
 	return nil
 }
 
