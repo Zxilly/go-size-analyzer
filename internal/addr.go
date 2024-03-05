@@ -1,4 +1,4 @@
-package pkg
+package internal
 
 import (
 	"fmt"
@@ -7,9 +7,9 @@ import (
 type AddrType string
 
 const (
-	AddrTypeUnknown AddrType = "unknown"
-	AddrTypeText             = "text" // for text section
-	AddrTypeData             = "data" // data / rodata section
+	AddrTypeUnknown AddrType = "unknown" // it exists, but should never be collected
+	AddrTypeText             = "text"    // for text section
+	AddrTypeData             = "data"    // data / rodata section
 )
 
 type Addr struct {

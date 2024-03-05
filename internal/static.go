@@ -1,4 +1,4 @@
-package pkg
+package internal
 
 import (
 	mapset "github.com/deckarep/golang-set/v2"

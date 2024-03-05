@@ -1,4 +1,4 @@
-package pkg
+package internal
 
 import (
 	"debug/elf"
@@ -6,7 +6,7 @@ import (
 	"debug/pe"
 	"errors"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/tool"
 	"slices"
 )
 

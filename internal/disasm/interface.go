@@ -2,7 +2,7 @@ package disasm
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/pkg/wrapper"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"unicode/utf8"
 )
 

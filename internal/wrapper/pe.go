@@ -3,7 +3,7 @@ package wrapper
 import (
 	"debug/pe"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/tool"
 )
 
 type PeWrapper struct {

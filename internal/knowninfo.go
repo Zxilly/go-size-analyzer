@@ -1,11 +1,11 @@
-package pkg
+package internal
 
 import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
-	"github.com/Zxilly/go-size-analyzer/pkg/wrapper"
+	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log"
 	"strings"

@@ -1,11 +1,11 @@
-package pkg
+package internal
 
 import (
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/tool"
 	"github.com/goretk/gore"
 )
 

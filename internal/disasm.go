@@ -1,8 +1,8 @@
-package pkg
+package internal
 
 import (
-	"github.com/Zxilly/go-size-analyzer/pkg/disasm"
-	"github.com/Zxilly/go-size-analyzer/pkg/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/disasm"
+	"github.com/Zxilly/go-size-analyzer/internal/tool"
 	"github.com/goretk/gore"
 	"log"
 	"sync"
