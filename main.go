@@ -1,7 +1,7 @@
 package main
 
 import (
-	analyzer "github.com/Zxilly/go-size-analyzer/pkg"
+	analyzer "github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/spf13/cobra"
 	"log"
 )

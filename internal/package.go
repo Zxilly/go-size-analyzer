@@ -4,15 +4,144 @@ import (
 	"debug/gosym"
 	"github.com/goretk/gore"
 	"log"
-	"maps"
+	"strings"
 )
+
+type PackageMap = map[string]*Package
+
+// MainPackages a pres-udo package for the whole binary
+type MainPackages struct {
+	link     PackageMap
+	Packages PackageMap
+}
+
+func NewMainPackages() *MainPackages {
+	return &MainPackages{
+		Packages: make(PackageMap),
+		link:     make(PackageMap),
+	}
+}
+
+func (m *MainPackages) GetPackage(name string) (*Package, bool) {
+	p, ok := m.link[name]
+	return p, ok
+}
+
+func (m *MainPackages) GetFunctions() []*Function {
+	funcs := make([]*Function, 0)
+	for _, p := range m.Packages {
+		funcs = append(funcs, p.GetFunctions()...)
+	}
+	return funcs
+}
+
+func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
+	parts := strings.Split(gp.Name, "/")
+	if len(parts) == 0 {
+		panic("empty package name " + gp.Name)
+	}
+	var container = m.Packages
+	for i, p := range parts {
+		if i == len(parts)-1 {
+			break
+		}
+
+		if _, ok := container[p]; !ok {
+			container[p] = NewPackage()
+		}
+		container = container[p].SubPackages
+	}
+
+	id := parts[len(parts)-1]
+	subs := make(PackageMap)
+	if c, ok := container[id]; ok {
+		if c.loaded {
+			panic("duplicate package " + gp.Name)
+		}
+		subs = c.SubPackages
+	}
+	p := &Package{
+		Name:        Deduplicate(gp.Name),
+		Functions:   make([]*Function, 0, len(gp.Functions)+len(gp.Methods)),
+		Type:        typ,
+		SubPackages: subs,
+		loaded:      true,
+		grPkg:       gp,
+	}
+
+	for _, f := range gp.Functions {
+		src, _, _ := pclntab.PCToLine(f.Offset)
+		p.Functions = append(p.Functions, &Function{
+			Name:     Deduplicate(f.Name),
+			Addr:     f.Offset,
+			Size:     f.End - f.Offset,
+			Type:     FuncTypeFunction,
+			Receiver: Deduplicate(""),
+			Filepath: Deduplicate(src),
+			Pkg:      p,
+		})
+	}
+	for _, mf := range gp.Methods {
+		src, _, _ := pclntab.PCToLine(mf.Offset)
+		p.Functions = append(p.Functions, &Function{
+			Name:     Deduplicate(mf.Name),
+			Addr:     mf.Offset,
+			Size:     mf.End - mf.Offset,
+			Type:     FuncTypeMethod,
+			Receiver: Deduplicate(mf.Receiver),
+			Filepath: Deduplicate(src),
+			Pkg:      p,
+		})
+	}
+
+	container[id] = p
+
+	// also update the link
+	m.link[gp.Name] = p
+}
+
+type PackageType string
+
+const (
+	PackageTypeSelf      PackageType = "self"
+	PackageTypeStd       PackageType = "std"
+	PackageTypeVendor    PackageType = "vendor"
+	PackageTypeGenerated PackageType = "generated"
+	PackageTypeUnknown   PackageType = "unknown"
+)
+
+type Package struct {
+	Name        string              `json:"name"`
+	Functions   []*Function         `json:"functions"`
+	Type        PackageType         `json:"type"`
+	SubPackages map[string]*Package `json:"subPackages"`
+
+	loaded bool // mean it has the meaningful data
+	grPkg  *gore.Package
+}
+
+func NewPackage() *Package {
+	return &Package{
+		SubPackages: make(map[string]*Package),
+	}
+}
+
+func (p *Package) GetFunctions() []*Function {
+	funcs := make([]*Function, 0, len(p.Functions))
+	for _, f := range p.Functions {
+		funcs = append(funcs, f)
+	}
+	for _, sp := range p.SubPackages {
+		funcs = append(funcs, sp.GetFunctions()...)
+	}
+	return funcs
+}
 
 func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	log.Println("Loading packages...")
 
-	pkgs := new(TypedPackages)
-
-	pkgs.NameToPkg = make(map[string]*Package)
+	pkgs := NewMainPackages()
+	k.Packages = pkgs
 
 	pclntab, err := file.PCLNTab()
 	if err != nil {
@@ -23,148 +152,31 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	if err != nil {
 		return err
 	}
-	selfPkgs, n, err := loadGorePackages(self, k, pclntab)
-	if err != nil {
-		return err
+	for _, p := range self {
+		pkgs.Add(p, PackageTypeSelf, pclntab)
 	}
-	pkgs.Self = selfPkgs
-	maps.Copy(pkgs.NameToPkg, n)
 
 	grStd, _ := file.GetSTDLib()
-	std, n, err := loadGorePackages(grStd, k, pclntab)
-	if err != nil {
-		return err
+	for _, p := range grStd {
+		pkgs.Add(p, PackageTypeStd, pclntab)
 	}
-	pkgs.Std = std
-	maps.Copy(pkgs.NameToPkg, n)
 
 	grVendor, _ := file.GetVendors()
-	vendor, n, err := loadGorePackages(grVendor, k, pclntab)
-	if err != nil {
-		return err
+	for _, p := range grVendor {
+		pkgs.Add(p, PackageTypeVendor, pclntab)
 	}
-	pkgs.Vendor = vendor
-	maps.Copy(pkgs.NameToPkg, n)
 
 	grGenerated, _ := file.GetGeneratedPackages()
-	generated, n, err := loadGorePackages(grGenerated, k, pclntab)
-	if err != nil {
-		return err
+	for _, p := range grGenerated {
+		pkgs.Add(p, PackageTypeGenerated, pclntab)
 	}
-	pkgs.Generated = generated
-	maps.Copy(pkgs.NameToPkg, n)
 
 	grUnknown, _ := file.GetUnknown()
-	unknown, n, err := loadGorePackages(grUnknown, k, pclntab)
-	if err != nil {
-		return err
+	for _, p := range grUnknown {
+		pkgs.Add(p, PackageTypeUnknown, pclntab)
 	}
-	pkgs.Unknown = unknown
-	maps.Copy(pkgs.NameToPkg, n)
 
 	log.Println("Loading packages done")
 
-	k.Packages = pkgs
-
 	return nil
-}
-
-func loadGorePackages(gr []*gore.Package, k *KnownInfo, pclntab *gosym.Table) ([]*Package, map[string]*Package, error) {
-	pkgs := make([]*Package, 0, len(gr))
-	nameToPkg := make(map[string]*Package)
-	for _, g := range gr {
-		pkg, err := loadGorePackage(g, k, pclntab)
-		if err != nil {
-			return nil, nil, err
-		}
-		pkgs = append(pkgs, pkg)
-		nameToPkg[pkg.Name] = pkg
-	}
-	return pkgs, nameToPkg, nil
-}
-
-func loadGorePackage(pkg *gore.Package, k *KnownInfo, pclntab *gosym.Table) (*Package, error) {
-	p := &Package{
-		Name:      pkg.Name,
-		Methods:   pkg.Methods,
-		Functions: pkg.Functions,
-	}
-
-	setAddrMark := func(addr, size uint64, meta GoPclntabMeta) {
-		// everything in the pclntab is text
-		k.KnownAddr.InsertPclntab(addr, size, p, meta)
-	}
-
-	for _, m := range pkg.Methods {
-		src, _, _ := pclntab.PCToLine(m.Offset)
-
-		setAddrMark(m.Offset, m.End-m.Offset, GoPclntabMeta{
-			FuncName:    Deduplicate(m.Name),
-			PackageName: Deduplicate(m.PackageName),
-			Type:        FuncTypeMethod,
-			Receiver:    Deduplicate(m.Receiver),
-			Filepath:    Deduplicate(src),
-		})
-	}
-
-	for _, f := range pkg.Functions {
-		src, _, _ := pclntab.PCToLine(f.Offset)
-
-		setAddrMark(f.Offset, f.End-f.Offset, GoPclntabMeta{
-			FuncName:    Deduplicate(f.Name),
-			PackageName: Deduplicate(f.PackageName),
-			Type:        FuncTypeFunction,
-			Receiver:    Deduplicate(""),
-			Filepath:    Deduplicate(src),
-		})
-	}
-
-	return p, nil
-}
-
-type TypedPackages struct {
-	Self      []*Package
-	Std       []*Package
-	Vendor    []*Package
-	Generated []*Package
-	Unknown   []*Package
-
-	NameToPkg map[string]*Package // available after LoadPackages, loadPackagesFromGorePackage[s]
-}
-
-func (tp *TypedPackages) GetPackages() []*Package {
-	var pkgs []*Package
-
-	// use this order to make it more likely to set the disasm result to the right package
-	pkgs = append(pkgs, tp.Unknown...)
-	pkgs = append(pkgs, tp.Generated...)
-	pkgs = append(pkgs, tp.Std...)
-	pkgs = append(pkgs, tp.Vendor...)
-	pkgs = append(pkgs, tp.Self...)
-	return pkgs
-}
-
-func (tp *TypedPackages) GetPackageAndCountFn() ([]*Package, int) {
-	pkgs := tp.GetPackages()
-	cnt := 0
-	for _, p := range pkgs {
-		cnt += len(p.GetFunctions())
-		cnt += len(p.GetMethods())
-	}
-	return pkgs, cnt
-}
-
-type Package struct {
-	Name      string
-	Functions []*gore.Function
-	Methods   []*gore.Method
-	grPkg     *gore.Package
-}
-
-func (p *Package) GetFunctions() []*gore.Function {
-	return p.Functions
-}
-
-func (p *Package) GetMethods() []*gore.Method {
-	return p.Methods
 }

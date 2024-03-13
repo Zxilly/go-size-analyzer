@@ -6,13 +6,6 @@ func Deduplicate(s string) string {
 	return intern.GetByString(s).Get().(string)
 }
 
-type FuncType string
-
-const (
-	FuncTypeFunction FuncType = "function"
-	FuncTypeMethod   FuncType = "method"
-)
-
 type GoPclntabMeta struct {
 	FuncName    string
 	PackageName string
@@ -27,9 +20,8 @@ type SymbolMeta struct {
 }
 
 type DisasmMeta struct {
-	Source       GoPclntabMeta // disasm all functions from pclntab, so it has all info from pclntab
-	DisasmIndex  int
-	DisasmString string
+	Source      GoPclntabMeta // disasm all functions from pclntab, so it has all info from pclntab
+	DisasmIndex int
 }
 
 type AddrSourceType string

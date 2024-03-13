@@ -15,7 +15,7 @@ type KnownInfo struct {
 	Size       uint64
 	BuildInfo  *gore.BuildInfo
 	SectionMap *SectionMap
-	Packages   *TypedPackages
+	Packages   *MainPackages
 	KnownAddr  *KnownAddr
 
 	gore    *gore.GoFile
@@ -82,6 +82,8 @@ func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
 	if err != nil {
 		return err
 	}
+
+	k.KnownAddr.BuildSymbolCoverage()
 
 	log.Println("Analyzing symbols done")
 

@@ -1,13 +1,5 @@
 package internal
 
-const (
-	ResultUnknownPackage = "unknown"
-	ResultStdPackage     = "std"
-	ResultVendorPackage  = "vendor"
-	ResultSelfPackage    = "main"
-	ResultGenerated      = "generated"
-)
-
 type Result struct {
 	Name     string          `json:"name"`
 	Size     uint64          `json:"size"`

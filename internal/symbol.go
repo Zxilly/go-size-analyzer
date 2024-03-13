@@ -21,8 +21,9 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ AddrType) err
 		pkg = nil
 	} else {
 		var ok bool
-		pkg, ok = k.Packages.NameToPkg[pkgName]
+		pkg, ok = k.Packages.GetPackage(pkgName)
 		if !ok {
+			// $64 / $32 / cgo symbols
 			return nil // no package found, skip
 		}
 	}
