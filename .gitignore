@@ -8,4 +8,5 @@
 go.work
 
 .idea/
+vendor/
 research/bins/

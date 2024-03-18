@@ -1,7 +1,7 @@
 package main
 
 import (
-	analyzer "github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -17,7 +17,7 @@ var cmd = &cobra.Command{
 func execute(_ *cobra.Command, args []string) {
 	path := args[0]
 
-	err := analyzer.Analyze(path)
+	err := internal.Analyze(path)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}

@@ -154,3 +154,9 @@ func (k *KnownInfo) GetPaddingSize() uint64 {
 	}
 	return k.Size - sectionSize
 }
+
+func (k *KnownInfo) RequireModInfo() {
+	if k.BuildInfo == nil || len(k.BuildInfo.ModInfo.Deps) == 0 {
+		log.Fatal("mod info is required for this operation")
+	}
+}

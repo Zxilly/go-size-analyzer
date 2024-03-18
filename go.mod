@@ -2,6 +2,8 @@ module github.com/Zxilly/go-size-analyzer
 
 go 1.22
 
+toolchain go1.22.1
+
 require (
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/goretk/gore v0.11.5
@@ -21,4 +23,4 @@ require (
 	golang.org/x/term v0.18.0 // indirect
 )
 
-replace github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240309185721-69aee4944d5a
+replace github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf

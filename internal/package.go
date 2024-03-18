@@ -4,10 +4,12 @@ import (
 	"debug/gosym"
 	"github.com/goretk/gore"
 	"log"
+	"runtime/debug"
+	"slices"
 	"strings"
 )
 
-type PackageMap = map[string]*Package
+type PackageMap map[string]*Package
 
 // MainPackages a pres-udo package for the whole binary
 type MainPackages struct {
@@ -35,8 +37,142 @@ func (m *MainPackages) GetFunctions() []*Function {
 	return funcs
 }
 
+func loadType(m PackageMap) PackageType {
+	typ := ""
+	load := func(packageType PackageType) {
+		if packageType == "" {
+			return
+		}
+
+		if typ == "" {
+			typ = packageType
+			return
+		} else {
+			if typ != packageType {
+				panic("inconsistent package type")
+			}
+		}
+	}
+	for _, p := range m {
+		load(p.Type)
+		load(loadType(p.SubPackages))
+	}
+	return typ
+}
+
+func (m *MainPackages) MergePseudoPacakge(modules []*debug.Module) {
+	for _, module := range modules {
+		parts := strings.Split(module.Path, "/")
+		if len(parts) == 0 {
+			continue
+		}
+		firstPart := parts[0]
+		if _, ok := m.Packages[firstPart]; !ok {
+			continue // can this happen?
+		}
+		p := m.Packages[firstPart]
+		for _, part := range parts[1:] {
+			if _, ok := p.SubPackages[part]; !ok {
+				goto next
+			}
+			p = p.SubPackages[part]
+		}
+		p.loaded = true
+		p.Name = module.Path
+	next:
+	}
+
+	partMerge := func(part ...string) string {
+		return strings.Join(part, "/")
+	}
+
+	var expand func(p *Package, part string) (shouldExpand bool, expanded PackageMap)
+	expand = func(p *Package, part string) (bool, PackageMap) {
+		newSubs := make(PackageMap)
+		for subPart, subPackage := range p.SubPackages {
+			shouldExpand, expanded := expand(subPackage, subPart)
+			if !shouldExpand {
+				newSubs[subPart] = subPackage
+			} else {
+				for ek, ev := range expanded {
+					newSubs[partMerge(subPart, ek)] = ev
+				}
+			}
+		}
+
+		if p.loaded {
+			p.SubPackages = newSubs
+			return false, nil
+		} else {
+			return true, newSubs
+		}
+	}
+	newPackages := make(PackageMap)
+	for part, p := range m.Packages {
+		shouldExpand, expanded := expand(p, part)
+		if shouldExpand {
+			for k, v := range expanded {
+				newPackages[partMerge(part, k)] = v
+			}
+		} else {
+			newPackages[part] = p
+		}
+	}
+
+	// create pseudo package for types
+	typs := make(PackageMap)
+	for _, t := range []PackageType{
+		PackageTypeStd,
+		PackageTypeVendor,
+		PackageTypeGenerated,
+		PackageTypeUnknown,
+		PackageTypeSelf} {
+		typs[t] = &Package{
+			Name:        t,
+			Functions:   make([]*Function, 0),
+			Type:        t,
+			SubPackages: make(PackageMap),
+			loaded:      true,
+		}
+	}
+	for k, v := range newPackages {
+		typ := v.Type
+		if typ == "" {
+			typ = loadType(v.SubPackages)
+		}
+		if typ == "" {
+			panic("no type for package " + k)
+		}
+
+		typs[typ].SubPackages[k] = v
+	}
+
+	for k, v := range typs {
+		if len(v.SubPackages) == 0 {
+			delete(typs, k)
+		}
+	}
+
+	m.Packages = typs
+}
+
 func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
-	parts := strings.Split(gp.Name, "/")
+	name, err := PrefixToPath(gp.Name)
+	if err != nil {
+		panic(err)
+	}
+
+	parts := strings.Split(name, "/")
+
+	// an ugly hack for a known issue about golang compiler
+	// sees https://github.com/golang/go/issues/66313
+	if strings.Count(name, ".") >= 3 {
+		// we met something like
+		// github.com/ZNotify/server/app/api/common.(*Context).github.com/gin-gonic/gin
+		// no way to process this kind of package as for now
+		return
+	}
+
 	if len(parts) == 0 {
 		panic("empty package name " + gp.Name)
 	}
@@ -56,12 +192,12 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 	subs := make(PackageMap)
 	if c, ok := container[id]; ok {
 		if c.loaded {
-			panic("duplicate package " + gp.Name)
+			panic("duplicate package " + name)
 		}
 		subs = c.SubPackages
 	}
 	p := &Package{
-		Name:        Deduplicate(gp.Name),
+		Name:        Deduplicate(name),
 		Functions:   make([]*Function, 0, len(gp.Functions)+len(gp.Methods)),
 		Type:        typ,
 		SubPackages: subs,
@@ -100,7 +236,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 	m.link[gp.Name] = p
 }
 
-type PackageType string
+type PackageType = string
 
 const (
 	PackageTypeSelf      PackageType = "self"
@@ -111,10 +247,10 @@ const (
 )
 
 type Package struct {
-	Name        string              `json:"name"`
-	Functions   []*Function         `json:"functions"`
-	Type        PackageType         `json:"type"`
-	SubPackages map[string]*Package `json:"subPackages"`
+	Name        string      `json:"name"`
+	Functions   []*Function `json:"functions"`
+	Type        PackageType `json:"type"`
+	SubPackages PackageMap  `json:"subPackages"`
 
 	loaded bool // mean it has the meaningful data
 	grPkg  *gore.Package
@@ -175,6 +311,11 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	for _, p := range grUnknown {
 		pkgs.Add(p, PackageTypeUnknown, pclntab)
 	}
+
+	k.RequireModInfo()
+	modules := slices.Clone(k.BuildInfo.ModInfo.Deps)
+	modules = append(modules, &k.BuildInfo.ModInfo.Main)
+	pkgs.MergePseudoPacakge(modules)
 
 	log.Println("Loading packages done")
 

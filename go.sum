@@ -1,5 +1,7 @@
-github.com/Zxilly/gore v0.0.0-20240309185721-69aee4944d5a h1:6rx0J255dSqLWzAmuqvC63RRa0+D3T4ryQ1EHovYumA=
-github.com/Zxilly/gore v0.0.0-20240309185721-69aee4944d5a/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
+github.com/Zxilly/gore v0.0.0-20240318143734-655377c7537c h1:VHamYLhQQosCYcsql9eV7Qqcyq56WbcSKNywULIKCxk=
+github.com/Zxilly/gore v0.0.0-20240318143734-655377c7537c/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
+github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf h1:7j4UDU64LA8HztL1Yq4sEVTFd74Y7aI7JIljNXMkiLA=
+github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

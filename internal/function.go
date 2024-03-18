@@ -1,10 +1,10 @@
 package internal
 
-type FuncType string
+type FuncType = string
 
 const (
 	FuncTypeFunction FuncType = "function"
-	FuncTypeMethod   FuncType = "method"
+	FuncTypeMethod            = "method"
 )
 
 type Function struct {

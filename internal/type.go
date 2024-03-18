@@ -24,7 +24,7 @@ type DisasmMeta struct {
 	DisasmIndex int
 }
 
-type AddrSourceType string
+type AddrSourceType = string
 
 const (
 	AddrSourceGoPclntab AddrSourceType = "pclntab"
