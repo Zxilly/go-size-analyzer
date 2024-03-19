@@ -2,6 +2,8 @@ package internal
 
 import (
 	"debug/gosym"
+	"errors"
+	"fmt"
 	"github.com/goretk/gore"
 	"log"
 	"runtime/debug"
@@ -11,16 +13,60 @@ import (
 
 type PackageMap map[string]*Package
 
+func (m PackageMap) GetType() (typ PackageType, err error) {
+	load := func(packageType PackageType) error {
+		if packageType == "" {
+			return nil
+		}
+
+		if typ == "" {
+			typ = packageType
+			return nil
+		} else {
+			if typ != packageType {
+				return errors.New("multiple package type found")
+			}
+		}
+		return nil
+	}
+	for _, p := range m {
+		err = load(p.Type)
+		if err != nil {
+			return
+		}
+		if len(p.SubPackages) > 0 {
+			var st PackageType
+			st, err = p.SubPackages.GetType()
+			if err != nil {
+				return
+			}
+			err = load(st)
+			if err != nil {
+				return
+			}
+		}
+	}
+
+	if typ == "" {
+		return "", errors.New("no package type found")
+	}
+
+	return
+}
+
 // MainPackages a pres-udo package for the whole binary
 type MainPackages struct {
-	link     PackageMap
+	link PackageMap
+	k    *KnownInfo
+
 	Packages PackageMap
 }
 
-func NewMainPackages() *MainPackages {
+func NewMainPackages(k *KnownInfo) *MainPackages {
 	return &MainPackages{
 		Packages: make(PackageMap),
 		link:     make(PackageMap),
+		k:        k,
 	}
 }
 
@@ -37,30 +83,8 @@ func (m *MainPackages) GetFunctions() []*Function {
 	return funcs
 }
 
-func loadType(m PackageMap) PackageType {
-	typ := ""
-	load := func(packageType PackageType) {
-		if packageType == "" {
-			return
-		}
-
-		if typ == "" {
-			typ = packageType
-			return
-		} else {
-			if typ != packageType {
-				panic("inconsistent package type")
-			}
-		}
-	}
-	for _, p := range m {
-		load(p.Type)
-		load(loadType(p.SubPackages))
-	}
-	return typ
-}
-
-func (m *MainPackages) MergePseudoPacakge(modules []*debug.Module) {
+func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
+	noTypPkgs := make([]*Package, 0)
 	for _, module := range modules {
 		parts := strings.Split(module.Path, "/")
 		if len(parts) == 0 {
@@ -77,8 +101,11 @@ func (m *MainPackages) MergePseudoPacakge(modules []*debug.Module) {
 			}
 			p = p.SubPackages[part]
 		}
-		p.loaded = true
+		p.pseudo = true
 		p.Name = module.Path
+
+		// after subpackages are load, need to determine type for these
+		noTypPkgs = append(noTypPkgs, p)
 	next:
 	}
 
@@ -100,13 +127,14 @@ func (m *MainPackages) MergePseudoPacakge(modules []*debug.Module) {
 			}
 		}
 
-		if p.loaded {
+		if p.loaded || p.pseudo {
 			p.SubPackages = newSubs
 			return false, nil
 		} else {
 			return true, newSubs
 		}
 	}
+
 	newPackages := make(PackageMap)
 	for part, p := range m.Packages {
 		shouldExpand, expanded := expand(p, part)
@@ -119,41 +147,25 @@ func (m *MainPackages) MergePseudoPacakge(modules []*debug.Module) {
 		}
 	}
 
-	// create pseudo package for types
-	typs := make(PackageMap)
-	for _, t := range []PackageType{
-		PackageTypeStd,
-		PackageTypeVendor,
-		PackageTypeGenerated,
-		PackageTypeUnknown,
-		PackageTypeSelf} {
-		typs[t] = &Package{
-			Name:        t,
-			Functions:   make([]*Function, 0),
-			Type:        t,
-			SubPackages: make(PackageMap),
-			loaded:      true,
+	// We can load type now
+	for _, p := range noTypPkgs {
+		if len(p.SubPackages) > 0 {
+			typ, err := p.SubPackages.GetType()
+			if err != nil {
+				panic(fmt.Errorf("package %s has %s", p.Name, err))
+			}
+			if p.Type == "" {
+				p.Type = typ
+			} else if p.Type != typ {
+				panic(fmt.Errorf("package %s has multiple type %s and %s", p.Name, p.Type, typ))
+			}
 		}
-	}
-	for k, v := range newPackages {
-		typ := v.Type
-		if typ == "" {
-			typ = loadType(v.SubPackages)
-		}
-		if typ == "" {
-			panic("no type for package " + k)
-		}
-
-		typs[typ].SubPackages[k] = v
-	}
-
-	for k, v := range typs {
-		if len(v.SubPackages) == 0 {
-			delete(typs, k)
+		if p.Type == "" {
+			panic(fmt.Errorf("package %s has no type", p.Name))
 		}
 	}
 
-	m.Packages = typs
+	m.Packages = newPackages
 }
 
 func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
@@ -234,6 +246,17 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 
 	// also update the link
 	m.link[gp.Name] = p
+
+	// update addrs
+	for _, f := range p.Functions {
+		m.k.KnownAddr.InsertPclntab(f.Addr, f.Size, f, GoPclntabMeta{
+			FuncName:    Deduplicate(f.Name),
+			PackageName: Deduplicate(p.Name),
+			Type:        f.Type, // const string, no need to intern it
+			Receiver:    Deduplicate(f.Receiver),
+			Filepath:    Deduplicate(f.Filepath),
+		})
+	}
 }
 
 type PackageType = string
@@ -253,7 +276,9 @@ type Package struct {
 	SubPackages PackageMap  `json:"subPackages"`
 
 	loaded bool // mean it has the meaningful data
-	grPkg  *gore.Package
+	pseudo bool // mean it's a pseudo package
+
+	grPkg *gore.Package
 }
 
 func NewPackage() *Package {
@@ -276,7 +301,7 @@ func (p *Package) GetFunctions() []*Function {
 func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	log.Println("Loading packages...")
 
-	pkgs := NewMainPackages()
+	pkgs := NewMainPackages(k)
 	k.Packages = pkgs
 
 	pclntab, err := file.PCLNTab()
@@ -315,7 +340,7 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	k.RequireModInfo()
 	modules := slices.Clone(k.BuildInfo.ModInfo.Deps)
 	modules = append(modules, &k.BuildInfo.ModInfo.Main)
-	pkgs.MergePseudoPacakge(modules)
+	pkgs.MergeEmptyPacakge(modules)
 
 	log.Println("Loading packages done")
 

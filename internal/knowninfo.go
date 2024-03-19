@@ -2,13 +2,16 @@ package internal
 
 import (
 	"debug/elf"
+	"debug/gosym"
 	"debug/macho"
 	"debug/pe"
 	"github.com/Zxilly/go-size-analyzer/internal/tool"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log"
+	"reflect"
 	"strings"
+	"unsafe"
 )
 
 type KnownInfo struct {
@@ -108,43 +111,30 @@ func (k *KnownInfo) UpdateVersionFlag() {
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
 func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
-	nameWithoutInst := func(name string) string {
-		start := strings.Index(name, "[")
-		if start < 0 {
-			return name
-		}
-		end := strings.LastIndex(name, "]")
-		if end < 0 {
-			// Malformed name should contain closing bracket too.
-			return name
-		}
-		return name[0:start] + name[end+1:]
+	sym := &gosym.Sym{
+		Name: s,
 	}
 
-	name := nameWithoutInst(s)
+	val := reflect.ValueOf(sym).Elem()
+	ver := val.FieldByName("goVersion")
 
-	// Since go1.20, a prefix of "type:" and "go:" is a compiler-generated symbol,
-	// they do not belong to any package.
-	//
-	// See cmd/compile/internal/base/link.go: ReservedImports variable.
-	if k.VersionFlag.Meq120 && (strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:")) {
+	set := func(i int) {
+		reflect.NewAt(ver.Type(), unsafe.Pointer(ver.UnsafeAddr())).Elem().SetInt(int64(i))
+	}
+
+	if k.VersionFlag.Meq120 {
+		set(5) // ver120
+	} else if k.VersionFlag.Leq118 {
+		set(4) // ver118
+	}
+
+	pn := sym.PackageName()
+
+	if strings.Count(pn, ".") >= 3 {
+		// see MainPackages.Add
 		return ""
 	}
-
-	// For go1.18 and below, the prefix is "type." and "go." instead.
-	if k.VersionFlag.Leq118 && (strings.HasPrefix(name, "go.") || strings.HasPrefix(name, "type.")) {
-		return ""
-	}
-
-	pathEnd := strings.LastIndex(name, "/")
-	if pathEnd < 0 {
-		pathEnd = 0
-	}
-
-	if i := strings.Index(name[pathEnd:], "."); i != -1 {
-		return name[:pathEnd+i]
-	}
-	return ""
+	return pn
 }
 
 func (k *KnownInfo) GetPaddingSize() uint64 {
