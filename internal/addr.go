@@ -26,14 +26,14 @@ type Addr struct {
 	Pkg      *Package
 	Function *Function // for symbol source it will be a nil
 
-	Source AddrSourceType
-	Type   AddrType
+	SourceType AddrSourceType
+	Type       AddrType
 
 	Meta any
 }
 
 func (a Addr) String() string {
-	msg := fmt.Sprintf("Addr: %x Size: %x Pkg: %s Source: %s", a.Addr, a.Size, a.Pkg.Name, a.Source)
+	msg := fmt.Sprintf("Addr: %x Size: %x Pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
 	msg += fmt.Sprintf(" Meta: %#v", a.Meta)
 	return msg
 }
@@ -122,11 +122,11 @@ func (f *KnownAddr) InsertPclntab(addr uint64, size uint64, fn *Function, meta G
 			Addr: addr,
 			Size: size,
 		},
-		Pkg:      fn.Pkg,
-		Function: fn,
-		Source:   AddrSourceGoPclntab,
-		Type:     AddrTypeText,
-		Meta:     meta,
+		Pkg:        fn.Pkg,
+		Function:   fn,
+		SourceType: AddrSourceGoPclntab,
+		Type:       AddrTypeText,
+		Meta:       meta,
 	}
 	f.pclntab.Insert(&cur)
 }
@@ -137,11 +137,11 @@ func (f *KnownAddr) InsertSymbol(addr uint64, size uint64, p *Package, typ AddrT
 			Addr: addr,
 			Size: size,
 		},
-		Pkg:      p,
-		Function: nil, // TODO: try to find the function?
-		Source:   AddrSourceSymbol,
-		Type:     typ,
-		Meta:     meta,
+		Pkg:        p,
+		Function:   nil, // TODO: try to find the function?
+		SourceType: AddrSourceSymbol,
+		Type:       typ,
+		Meta:       meta,
 	}
 	if typ == AddrTypeText {
 		if _, ok := f.pclntab.Get(addr); ok {
@@ -169,17 +169,17 @@ func (f *KnownAddr) SymbolCovHas(addr uint64, size uint64) bool {
 	return ok
 }
 
-func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function, meta DisasmMeta) {
+func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function) {
 	cur := Addr{
 		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
 		},
-		Pkg:      fn.Pkg,
-		Function: fn,
-		Source:   AddrSourceDisasm,
-		Type:     AddrTypeData,
-		Meta:     meta,
+		Pkg:        fn.Pkg,
+		Function:   fn,
+		SourceType: AddrSourceDisasm,
+		Type:       AddrTypeData,
+		Meta:       nil,
 	}
 
 	// symbol type check

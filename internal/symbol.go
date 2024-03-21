@@ -6,7 +6,7 @@ import (
 	"debug/pe"
 	"errors"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"slices"
 )
 
@@ -41,7 +41,7 @@ func analyzePeSymbol(f *pe.File, b *KnownInfo) error {
 		return ErrNoSymbolTable
 	}
 
-	imageBase := tool.GetImageBase(f)
+	imageBase := utils.GetImageBase(f)
 
 	const (
 		NUndef = 0

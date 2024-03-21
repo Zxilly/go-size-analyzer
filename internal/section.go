@@ -5,7 +5,7 @@ import (
 	"debug/macho"
 	"debug/pe"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/goretk/gore"
 )
 
@@ -84,7 +84,7 @@ func (s *SectionMap) AssertSize(size uint64) error {
 }
 
 func (s *SectionMap) loadFromPe(file *pe.File) {
-	imageBase := tool.GetImageBase(file)
+	imageBase := utils.GetImageBase(file)
 
 	for _, section := range file.Sections {
 		s.Sections[section.Name] = &Section{

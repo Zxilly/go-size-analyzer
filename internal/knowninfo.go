@@ -5,7 +5,7 @@ import (
 	"debug/gosym"
 	"debug/macho"
 	"debug/pe"
-	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log"
@@ -33,7 +33,7 @@ type KnownInfo struct {
 func NewKnownInfo(file *gore.GoFile) *KnownInfo {
 	// ensure we have the version
 	k := &KnownInfo{
-		Size:      tool.GetFileSize(file.GetFile()),
+		Size:      utils.GetFileSize(file.GetFile()),
 		BuildInfo: file.BuildInfo,
 
 		gore:    file,

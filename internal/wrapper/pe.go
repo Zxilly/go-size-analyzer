@@ -3,7 +3,7 @@ package wrapper
 import (
 	"debug/pe"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 type PeWrapper struct {
@@ -25,7 +25,7 @@ func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 }
 
 func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
-	imageBase := tool.GetImageBase(p.file)
+	imageBase := utils.GetImageBase(p.file)
 
 	sect := p.file.Section(".text")
 	if sect == nil {

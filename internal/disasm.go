@@ -3,8 +3,9 @@ package internal
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/samber/lo"
+	lop "github.com/samber/lo/parallel"
 	"log"
-	"sync"
 )
 
 func (k *KnownInfo) Disasm() error {
@@ -14,9 +15,6 @@ func (k *KnownInfo) Disasm() error {
 
 	pb := tool.NewPb(int64(len(fns)), "Disassembling...")
 
-	wg := sync.WaitGroup{}
-	wg.Add(len(fns))
-
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
 	if err != nil {
 		return err
@@ -25,57 +23,26 @@ func (k *KnownInfo) Disasm() error {
 	type result struct {
 		addr, size uint64
 		fn         *Function
-		meta       DisasmMeta
 	}
 
-	resultChan := make(chan result, 1000)
-
-	processWorker := func(fn *Function) {
-		possible := e.Extract(fn.Addr, fn.Addr+fn.Size)
-		for i, p := range possible {
-			if ok := e.AddrIsString(p.Addr, int64(p.Size)); ok {
-				resultChan <- result{
-					addr: p.Addr,
-					size: p.Size,
-					fn:   fn,
-					meta: DisasmMeta{
-						Source: GoPclntabMeta{
-							FuncName:    Deduplicate(fn.Name),
-							PackageName: Deduplicate(fn.Pkg.Name),
-							Type:        fn.Type,
-							Receiver:    Deduplicate(fn.Receiver),
-							Filepath:    Deduplicate(fn.Filepath),
-						},
-						DisasmIndex: i,
-					},
-				}
-			}
-		}
+	possibles := lo.Flatten(lop.Map(fns, func(fn *Function, index int) []result {
+		candidates := e.Extract(fn.Addr, fn.Addr+fn.Size)
+		candidates = lo.Filter(candidates, func(p disasm.PossibleStr, _ int) bool {
+			return e.AddrIsString(p.Addr, int64(p.Size))
+		})
 		_ = pb.Add(1)
-		wg.Done()
-	}
+		return lo.Map(candidates, func(p disasm.PossibleStr, _ int) result {
+			return result{
+				addr: p.Addr,
+				size: p.Size,
+				fn:   fn,
+			}
+		})
+	}))
 
-	collectLock := sync.Mutex{}
-	collectResult := func() {
-		collectLock.Lock()
-		defer collectLock.Unlock()
-		for r := range resultChan {
-			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn, r.meta)
-		}
-	}
-
-	go collectResult()
-
-	for _, fn := range fns {
-		go processWorker(fn)
-	}
-
-	wg.Wait()
-	close(resultChan)
-
-	// wait for collectResult to release the lock
-	collectLock.Lock()
-	collectLock.Unlock()
+	lo.ForEach(possibles, func(p result, _ int) {
+		k.KnownAddr.InsertDisasm(p.addr, p.size, p.fn)
+	})
 
 	log.Println("Disassemble done")
 

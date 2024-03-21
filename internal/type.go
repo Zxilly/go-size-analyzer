@@ -19,11 +19,6 @@ type SymbolMeta struct {
 	PackageName string
 }
 
-type DisasmMeta struct {
-	Source      GoPclntabMeta // disasm all functions from pclntab, so it has all info from pclntab
-	DisasmIndex int
-}
-
 type AddrSourceType = string
 
 const (
