@@ -3,6 +3,7 @@ package internal
 import (
 	"cmp"
 	"fmt"
+
 	"slices"
 )
 
@@ -14,20 +15,13 @@ const (
 	AddrTypeData             = "data"    // data / rodata section
 )
 
-type AddrCov struct {
+type AddrPos struct {
 	Addr uint64
 	Size uint64
 }
 
-func AddrCovCmp(a, b AddrCov) int {
-	if a.Addr != b.Addr {
-		return cmp.Compare(a.Addr, b.Addr)
-	}
-	return cmp.Compare(a.Size, b.Size)
-}
-
 type Addr struct {
-	AddrCov
+	AddrPos
 
 	Pkg      *Package
 	Function *Function // for symbol source it will be a nil
@@ -44,80 +38,87 @@ func (a Addr) String() string {
 	return msg
 }
 
-type DisasmAddrs map[uint64]*Addr
+type AddrCoverage []AddrPos
 
-func NewDisasmAddrs() DisasmAddrs {
-	return make(DisasmAddrs)
+type AddrSpace map[uint64]*Addr
+
+func (a AddrSpace) Get(addr uint64) (ret *Addr, ok bool) {
+	ret, ok = a[addr]
+	return
 }
 
-func (a DisasmAddrs) Add(addr *Addr) {
-	if pre, ok := a[addr.Addr]; ok {
-		// keep the larger one
-		if pre.Size < addr.Size {
+func (a AddrSpace) Insert(addr *Addr) {
+	old, ok := a.Get(addr.Addr)
+	if ok {
+		// use the larger one
+		if old.Size < addr.Size {
 			a[addr.Addr] = addr
 		}
-	} else {
-		a[addr.Addr] = addr
+		return
 	}
+	a[addr.Addr] = addr
 }
 
-type AddrMap map[uint64]*Addr
-
-func (a AddrMap) LinearMerged() []AddrCov {
-	ranges := make([]AddrCov, 0)
+func (a AddrSpace) Coverage() AddrCoverage {
+	ranges := make([]*Addr, 0)
 	for _, addr := range a {
-		if addr.Type != AddrTypeData {
-			// only data type can be merged
-			continue
-		}
-
-		ranges = append(ranges, AddrCov{
-			Addr: addr.Addr,
-			Size: addr.Size,
-		})
+		ranges = append(ranges, addr)
 	}
 
-	slices.SortFunc(ranges, AddrCovCmp)
+	slices.SortFunc(ranges, func(a, b *Addr) int {
+		if a.Addr != b.Addr {
+			return cmp.Compare(a.Addr, b.Addr)
+		}
+		return cmp.Compare(a.Size, b.Size)
+	})
 
-	cover := make([]AddrCov, 0)
+	cover := make([]AddrPos, 0)
+	var last *Addr
 	for _, r := range ranges {
 		if len(cover) == 0 {
-			cover = append(cover, r)
+			cover = append(cover, r.AddrPos)
+			last = r
 			continue
 		}
-		last := cover[len(cover)-1]
+
 		if last.Addr+last.Size >= r.Addr {
 			// merge
+			if last.Type != r.Type {
+				panic(fmt.Errorf("addr %x type %s and %s conflict", r.Addr, last.Type, r.Type))
+			}
+
 			if last.Addr+last.Size < r.Addr+r.Size {
 				last.Size = r.Addr + r.Size - last.Addr
 			}
 		} else {
-			cover = append(cover, r)
+			cover = append(cover, r.AddrPos)
 		}
+		last = r
 	}
+
 	return cover
 }
 
 type KnownAddr struct {
-	pclntab AddrMap
+	pclntab AddrSpace
 
-	symbol         AddrMap // package can be nil for cgo symbols
-	symbolCoverage []AddrCov
+	symbol         AddrSpace // package can be nil for cgo symbols
+	symbolCoverage []AddrPos
 
-	disasms map[string]DisasmAddrs // each package has their own addr space
+	k *KnownInfo
 }
 
-func NewFoundAddr() *KnownAddr {
+func NewKnownAddr(k *KnownInfo) *KnownAddr {
 	return &KnownAddr{
 		pclntab: make(map[uint64]*Addr),
 		symbol:  make(map[uint64]*Addr),
-		disasms: make(map[string]DisasmAddrs),
+		k:       k,
 	}
 }
 
 func (f *KnownAddr) InsertPclntab(addr uint64, size uint64, fn *Function, meta GoPclntabMeta) {
 	cur := Addr{
-		AddrCov: AddrCov{
+		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
 		},
@@ -127,12 +128,12 @@ func (f *KnownAddr) InsertPclntab(addr uint64, size uint64, fn *Function, meta G
 		Type:     AddrTypeText,
 		Meta:     meta,
 	}
-	f.pclntab[addr] = &cur
+	f.pclntab.Insert(&cur)
 }
 
 func (f *KnownAddr) InsertSymbol(addr uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) {
 	cur := Addr{
-		AddrCov: AddrCov{
+		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
 		},
@@ -143,20 +144,20 @@ func (f *KnownAddr) InsertSymbol(addr uint64, size uint64, p *Package, typ AddrT
 		Meta:     meta,
 	}
 	if typ == AddrTypeText {
-		if _, ok := f.pclntab[addr]; ok {
+		if _, ok := f.pclntab.Get(addr); ok {
 			// pclntab always more accurate
 			return
 		}
 	}
-	f.symbol[addr] = &cur
+	f.symbol.Insert(&cur)
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
-	f.symbolCoverage = f.symbol.LinearMerged()
+	f.symbolCoverage = f.symbol.Coverage()
 }
 
 func (f *KnownAddr) SymbolCovHas(addr uint64, size uint64) bool {
-	_, ok := slices.BinarySearchFunc(f.symbolCoverage, AddrCov{Addr: addr}, func(cur AddrCov, target AddrCov) int {
+	_, ok := slices.BinarySearchFunc(f.symbolCoverage, AddrPos{Addr: addr}, func(cur AddrPos, target AddrPos) int {
 		if cur.Addr+cur.Size <= target.Addr {
 			return -1
 		}
@@ -170,7 +171,7 @@ func (f *KnownAddr) SymbolCovHas(addr uint64, size uint64) bool {
 
 func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function, meta DisasmMeta) {
 	cur := Addr{
-		AddrCov: AddrCov{
+		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
 		},
@@ -182,7 +183,7 @@ func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function, meta Di
 	}
 
 	// symbol type check
-	if sv, ok := f.symbol[addr]; ok {
+	if sv, ok := f.symbol.Get(addr); ok {
 		if sv.Type != AddrTypeData {
 			panic(fmt.Errorf("addr %x already in symbol, but not data type", addr))
 		}
@@ -196,10 +197,5 @@ func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function, meta Di
 		return
 	}
 
-	// create a new disasm addr space if not exists
-	if _, ok := f.disasms[fn.Pkg.Name]; !ok {
-		f.disasms[fn.Pkg.Name] = NewDisasmAddrs()
-	}
-
-	f.disasms[fn.Pkg.Name].Add(&cur)
+	fn.Disasm.Insert(&cur)
 }

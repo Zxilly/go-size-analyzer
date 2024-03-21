@@ -4,6 +4,7 @@ import (
 	"debug/gosym"
 	"errors"
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/goretk/gore"
 	"log"
 	"runtime/debug"
@@ -169,7 +170,7 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 }
 
 func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
-	name, err := PrefixToPath(gp.Name)
+	name, err := utils.PrefixToPath(gp.Name)
 	if err != nil {
 		panic(err)
 	}
@@ -226,6 +227,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 			Type:     FuncTypeFunction,
 			Receiver: Deduplicate(""),
 			Filepath: Deduplicate(src),
+			Disasm:   AddrSpace{},
 			Pkg:      p,
 		})
 	}
@@ -238,6 +240,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 			Type:     FuncTypeMethod,
 			Receiver: Deduplicate(mf.Receiver),
 			Filepath: Deduplicate(src),
+			Disasm:   AddrSpace{},
 			Pkg:      p,
 		})
 	}
@@ -252,7 +255,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 		m.k.KnownAddr.InsertPclntab(f.Addr, f.Size, f, GoPclntabMeta{
 			FuncName:    Deduplicate(f.Name),
 			PackageName: Deduplicate(p.Name),
-			Type:        f.Type, // const string, no need to intern it
+			Type:        Deduplicate(f.Type),
 			Receiver:    Deduplicate(f.Receiver),
 			Filepath:    Deduplicate(f.Filepath),
 		})

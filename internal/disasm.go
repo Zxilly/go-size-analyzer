@@ -42,7 +42,7 @@ func (k *KnownInfo) Disasm() error {
 						Source: GoPclntabMeta{
 							FuncName:    Deduplicate(fn.Name),
 							PackageName: Deduplicate(fn.Pkg.Name),
-							Type:        fn.Type, // const string, no need to intern it
+							Type:        fn.Type,
 							Receiver:    Deduplicate(fn.Receiver),
 							Filepath:    Deduplicate(fn.Filepath),
 						},

@@ -33,13 +33,13 @@ type KnownInfo struct {
 func NewKnownInfo(file *gore.GoFile) *KnownInfo {
 	// ensure we have the version
 	k := &KnownInfo{
-		KnownAddr: NewFoundAddr(),
 		Size:      tool.GetFileSize(file.GetFile()),
 		BuildInfo: file.BuildInfo,
 
 		gore:    file,
 		wrapper: wrapper.NewWrapper(file.GetParsedFile()),
 	}
+	k.KnownAddr = NewKnownAddr(k)
 	k.UpdateVersionFlag()
 	return k
 }
@@ -90,11 +90,6 @@ func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
 
 	log.Println("Analyzing symbols done")
 
-	return nil
-}
-
-func (k *KnownInfo) Validate() error {
-	// TODO: validate the result
 	return nil
 }
 

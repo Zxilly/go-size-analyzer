@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"encoding/json"
 	"github.com/goretk/gore"
+	"os"
 )
 
 func Analyze(path string) error {
@@ -10,7 +12,19 @@ func Analyze(path string) error {
 		return err
 	}
 
-	_, err = analyze(file)
+	k, err := analyze(file)
+	if err != nil {
+		return err
+	}
 
-	return err
+	r := BuildResult(path, k)
+
+	b, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	os.WriteFile("result.json", b, 0644)
+
+	return nil
 }

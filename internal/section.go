@@ -40,6 +40,15 @@ type SectionMap struct {
 	Sections map[string]*Section
 }
 
+func (s *SectionMap) CheckValid(addr AddrPos) bool {
+	for _, section := range s.Sections {
+		if addr.Addr >= section.Addr && addr.Addr+addr.Size <= section.AddrEnd {
+			return true
+		}
+	}
+	return false
+}
+
 func (s *SectionMap) GetSectionName(addr uint64) string {
 	for _, section := range s.Sections {
 		if addr >= section.Addr && addr < section.AddrEnd {

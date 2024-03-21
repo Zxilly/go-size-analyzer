@@ -1,9 +1,13 @@
-package internal
+package utils
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"os"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 // PrefixToPath is the inverse of PathToPrefix, replacing escape sequences with
@@ -39,3 +43,23 @@ func PrefixToPath(s string) (string, error) {
 	}
 	return string(p), nil
 }
+
+type SyncStdout struct {
+	sync.Mutex
+}
+
+func init() {
+	log.SetOutput(Stdout)
+}
+
+func (s *SyncStdout) Write(p []byte) (n int, err error) {
+	s.Lock()
+	defer s.Unlock()
+	return os.Stdout.Write(p)
+}
+
+var Stdout = &SyncStdout{
+	Mutex: sync.Mutex{},
+}
+
+var _ io.Writer = Stdout

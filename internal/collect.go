@@ -30,10 +30,5 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 		return nil, err
 	}
 
-	err = b.Validate()
-	if err != nil {
-		return nil, err
-	}
-
 	return b, nil
 }
