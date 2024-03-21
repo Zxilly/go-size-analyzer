@@ -3,7 +3,7 @@ package internal
 import (
 	"cmp"
 	"fmt"
-
+	"github.com/samber/lo"
 	"slices"
 )
 
@@ -18,6 +18,7 @@ const (
 type AddrPos struct {
 	Addr uint64
 	Size uint64
+	Type AddrType
 }
 
 type Addr struct {
@@ -27,7 +28,6 @@ type Addr struct {
 	Function *Function // for symbol source it will be a nil
 
 	SourceType AddrSourceType
-	Type       AddrType
 
 	Meta any
 }
@@ -38,7 +38,7 @@ func (a Addr) String() string {
 	return msg
 }
 
-type AddrCoverage []AddrPos
+type AddrCoverage = []AddrPos
 
 type AddrSpace map[uint64]*Addr
 
@@ -59,13 +59,24 @@ func (a AddrSpace) Insert(addr *Addr) {
 	a[addr.Addr] = addr
 }
 
-func (a AddrSpace) Coverage() AddrCoverage {
-	ranges := make([]*Addr, 0)
-	for _, addr := range a {
-		ranges = append(ranges, addr)
+func (a AddrSpace) Merge(other AddrSpace) {
+	for _, addr := range other {
+		a.Insert(addr)
 	}
+}
 
-	slices.SortFunc(ranges, func(a, b *Addr) int {
+// GetCoverage get the coverage of the current address space
+func (a AddrSpace) GetCoverage(coverages ...AddrCoverage) AddrCoverage {
+	ranges := lo.MapToSlice(a, func(k uint64, v *Addr) AddrPos {
+		return v.AddrPos
+	})
+
+	fromCoverage := lo.Flatten(coverages)
+
+	ranges = append(ranges, fromCoverage...)
+	ranges = lo.Uniq(ranges)
+
+	slices.SortFunc(ranges, func(a, b AddrPos) int {
 		if a.Addr != b.Addr {
 			return cmp.Compare(a.Addr, b.Addr)
 		}
@@ -73,14 +84,13 @@ func (a AddrSpace) Coverage() AddrCoverage {
 	})
 
 	cover := make([]AddrPos, 0)
-	var last *Addr
 	for _, r := range ranges {
 		if len(cover) == 0 {
-			cover = append(cover, r.AddrPos)
-			last = r
+			cover = append(cover, r)
 			continue
 		}
 
+		last := &cover[len(cover)-1]
 		if last.Addr+last.Size >= r.Addr {
 			// merge
 			if last.Type != r.Type {
@@ -91,9 +101,8 @@ func (a AddrSpace) Coverage() AddrCoverage {
 				last.Size = r.Addr + r.Size - last.Addr
 			}
 		} else {
-			cover = append(cover, r.AddrPos)
+			cover = append(cover, r)
 		}
-		last = r
 	}
 
 	return cover
@@ -121,12 +130,13 @@ func (f *KnownAddr) InsertPclntab(addr uint64, size uint64, fn *Function, meta G
 		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
+			Type: AddrTypeText,
 		},
 		Pkg:        fn.Pkg,
 		Function:   fn,
 		SourceType: AddrSourceGoPclntab,
-		Type:       AddrTypeText,
-		Meta:       meta,
+
+		Meta: meta,
 	}
 	f.pclntab.Insert(&cur)
 }
@@ -136,12 +146,13 @@ func (f *KnownAddr) InsertSymbol(addr uint64, size uint64, p *Package, typ AddrT
 		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
+			Type: typ,
 		},
 		Pkg:        p,
 		Function:   nil, // TODO: try to find the function?
 		SourceType: AddrSourceSymbol,
-		Type:       typ,
-		Meta:       meta,
+
+		Meta: meta,
 	}
 	if typ == AddrTypeText {
 		if _, ok := f.pclntab.Get(addr); ok {
@@ -153,7 +164,7 @@ func (f *KnownAddr) InsertSymbol(addr uint64, size uint64, p *Package, typ AddrT
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
-	f.symbolCoverage = f.symbol.Coverage()
+	f.symbolCoverage = f.symbol.GetCoverage()
 }
 
 func (f *KnownAddr) SymbolCovHas(addr uint64, size uint64) bool {
@@ -174,11 +185,11 @@ func (f *KnownAddr) InsertDisasm(addr uint64, size uint64, fn *Function) {
 		AddrPos: AddrPos{
 			Addr: addr,
 			Size: size,
+			Type: AddrTypeData,
 		},
 		Pkg:        fn.Pkg,
 		Function:   fn,
 		SourceType: AddrSourceDisasm,
-		Type:       AddrTypeData,
 		Meta:       nil,
 	}
 

@@ -3,32 +3,42 @@ package internal
 import (
 	"errors"
 	"github.com/goretk/gore"
-	"log"
+	"log/slog"
 )
 
 func analyze(file *gore.GoFile) (*KnownInfo, error) {
-	b := NewKnownInfo(file)
+	k := NewKnownInfo(file)
 
-	b.LoadSectionMap()
+	k.LoadSectionMap()
 
-	err := b.LoadPackages(file)
+	err := k.LoadPackages(file)
 	if err != nil {
 		return nil, err
 	}
 
-	err = b.AnalyzeSymbol(file)
+	err = k.AnalyzeSymbol(file)
 	if err != nil {
 		if errors.Is(err, ErrNoSymbolTable) {
-			log.Println("Warning: no symbol table found, this can lead to inaccurate results")
+			slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
 		} else {
 			return nil, err
 		}
 	}
 
-	err = b.Disasm()
+	err = k.Disasm()
 	if err != nil {
 		return nil, err
 	}
 
-	return b, nil
+	// we have collected everything, now we can calculate the size
+
+	// first, merge all disasm results to coverage
+	k.CollectCoverage()
+
+	// for sections
+	k.CalculateSectionSize()
+	// for packages
+	k.CalculatePackageSize()
+
+	return k, nil
 }

@@ -5,11 +5,11 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/tool"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
-	"log"
+	"log/slog"
 )
 
 func (k *KnownInfo) Disasm() error {
-	log.Println("Disassemble...")
+	slog.Info("Disassemble functions...")
 
 	fns := k.Packages.GetFunctions()
 
@@ -44,7 +44,7 @@ func (k *KnownInfo) Disasm() error {
 		k.KnownAddr.InsertDisasm(p.addr, p.size, p.fn)
 	})
 
-	log.Println("Disassemble done")
+	slog.Info("Disassemble done")
 
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/goretk/gore"
-	"log"
+	"log/slog"
 	"runtime/debug"
 	"slices"
 	"strings"
@@ -60,14 +60,14 @@ type MainPackages struct {
 	link PackageMap
 	k    *KnownInfo
 
-	Packages PackageMap
+	topPkgs PackageMap
 }
 
 func NewMainPackages(k *KnownInfo) *MainPackages {
 	return &MainPackages{
-		Packages: make(PackageMap),
-		link:     make(PackageMap),
-		k:        k,
+		topPkgs: make(PackageMap),
+		link:    make(PackageMap),
+		k:       k,
 	}
 }
 
@@ -78,7 +78,7 @@ func (m *MainPackages) GetPackage(name string) (*Package, bool) {
 
 func (m *MainPackages) GetFunctions() []*Function {
 	funcs := make([]*Function, 0)
-	for _, p := range m.Packages {
+	for _, p := range m.topPkgs {
 		funcs = append(funcs, p.GetFunctions()...)
 	}
 	return funcs
@@ -92,10 +92,10 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 			continue
 		}
 		firstPart := parts[0]
-		if _, ok := m.Packages[firstPart]; !ok {
+		if _, ok := m.topPkgs[firstPart]; !ok {
 			continue // can this happen?
 		}
-		p := m.Packages[firstPart]
+		p := m.topPkgs[firstPart]
 		for _, part := range parts[1:] {
 			if _, ok := p.SubPackages[part]; !ok {
 				goto next
@@ -137,7 +137,7 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 	}
 
 	newPackages := make(PackageMap)
-	for part, p := range m.Packages {
+	for part, p := range m.topPkgs {
 		shouldExpand, expanded := expand(p, part)
 		if shouldExpand {
 			for k, v := range expanded {
@@ -166,7 +166,7 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 		}
 	}
 
-	m.Packages = newPackages
+	m.topPkgs = newPackages
 }
 
 func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
@@ -189,7 +189,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 	if len(parts) == 0 {
 		panic("empty package name " + gp.Name)
 	}
-	var container = m.Packages
+	var container = m.topPkgs
 	for i, p := range parts {
 		if i == len(parts)-1 {
 			break
@@ -273,10 +273,15 @@ const (
 )
 
 type Package struct {
-	Name        string      `json:"name"`
-	Functions   []*Function `json:"functions"`
-	Type        PackageType `json:"type"`
+	Name string      `json:"name"`
+	Type PackageType `json:"type"`
+
 	SubPackages PackageMap  `json:"subPackages"`
+	Functions   []*Function `json:"functions"`
+
+	Size uint64 `json:"size"` // late filled
+
+	coverage AddrCoverage
 
 	loaded bool // mean it has the meaningful data
 	pseudo bool // mean it's a pseudo package
@@ -301,8 +306,16 @@ func (p *Package) GetFunctions() []*Function {
 	return funcs
 }
 
+func (p *Package) GetAddrSpace() AddrSpace {
+	ret := AddrSpace{}
+	for _, f := range p.Functions {
+		ret.Merge(f.Disasm)
+	}
+	return ret
+}
+
 func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
-	log.Println("Loading packages...")
+	slog.Info("Loading packages...")
 
 	pkgs := NewMainPackages(k)
 	k.Packages = pkgs
@@ -345,7 +358,7 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 	modules = append(modules, &k.BuildInfo.ModInfo.Main)
 	pkgs.MergeEmptyPacakge(modules)
 
-	log.Println("Loading packages done")
+	slog.Info("Loading packages done")
 
 	return nil
 }

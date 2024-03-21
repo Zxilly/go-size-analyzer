@@ -6,12 +6,13 @@ import (
 	"debug/pe"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/goretk/gore"
 )
 
 type Section struct {
 	Name string
 	Size uint64
+
+	KnownSize uint64
 
 	Offset uint64
 	End    uint64
@@ -22,31 +23,8 @@ type Section struct {
 	OnlyInMemory bool
 }
 
-type File struct {
-	Path      string
-	Functions []*gore.Function
-	Methods   []*gore.Method
-}
-
-func (f *File) GetSize() uint64 {
-	var size uint64 = 0
-	for _, fn := range f.Functions {
-		size += fn.End - fn.Offset
-	}
-	return size
-}
-
 type SectionMap struct {
 	Sections map[string]*Section
-}
-
-func (s *SectionMap) CheckValid(addr AddrPos) bool {
-	for _, section := range s.Sections {
-		if addr.Addr >= section.Addr && addr.Addr+addr.Size <= section.AddrEnd {
-			return true
-		}
-	}
-	return false
 }
 
 func (s *SectionMap) GetSectionName(addr uint64) string {

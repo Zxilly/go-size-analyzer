@@ -1,30 +1,19 @@
 package internal
 
 import (
-	"encoding/json"
 	"github.com/goretk/gore"
-	"os"
 )
 
-func Analyze(path string) error {
+func Analyze(path string) (*Result, error) {
 	file, err := gore.Open(path)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	k, err := analyze(file)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	r := BuildResult(path, k)
-
-	b, err := json.MarshalIndent(r, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	os.WriteFile("result.json", b, 0644)
-
-	return nil
+	return BuildResult(path, k), nil
 }

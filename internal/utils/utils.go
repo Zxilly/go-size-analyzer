@@ -4,7 +4,7 @@ import (
 	"debug/pe"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"os"
 	"strconv"
 	"strings"
@@ -64,22 +64,32 @@ func PrefixToPath(s string) (string, error) {
 	return string(p), nil
 }
 
-type SyncStdout struct {
-	sync.Mutex
-}
-
 func init() {
-	log.SetOutput(Stdout)
+	slog.SetDefault(slog.New(slog.NewTextHandler(Stdout, &slog.HandlerOptions{
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			// remove time
+			if a.Key == "time" {
+				return slog.Attr{}
+			}
+			return a
+		},
+	})))
 }
 
-func (s *SyncStdout) Write(p []byte) (n int, err error) {
+type SyncOutput struct {
+	sync.Mutex
+	output io.Writer
+}
+
+func (s *SyncOutput) Write(p []byte) (n int, err error) {
 	s.Lock()
 	defer s.Unlock()
-	return os.Stdout.Write(p)
+	return s.output.Write(p)
 }
 
-var Stdout = &SyncStdout{
-	Mutex: sync.Mutex{},
+var Stdout = &SyncOutput{
+	Mutex:  sync.Mutex{},
+	output: os.Stdout,
 }
 
 var _ io.Writer = Stdout
