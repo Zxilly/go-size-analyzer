@@ -28,7 +28,7 @@ func extractAmd64(code []byte, pc uint64) []PossibleStr {
 		pc += uint64(size)
 	}
 
-	for i := range insts {
+	for i := range len(insts) {
 		for _, p := range x86Patterns {
 			if len(insts) < i+p.windowSize {
 				continue
