@@ -140,8 +140,8 @@ func (k *KnownInfo) GetPaddingSize() uint64 {
 }
 
 func (k *KnownInfo) RequireModInfo() {
-	if k.BuildInfo == nil || len(k.BuildInfo.ModInfo.Deps) == 0 {
-		slog.Error("mod info is required for this operation")
+	if k.BuildInfo == nil {
+		slog.Error("buildinfo is required for this operation")
 		os.Exit(1)
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
@@ -37,7 +38,7 @@ func execute(_ *cobra.Command, args []string) {
 
 	result, err := internal.Analyze(path)
 	if err != nil {
-		slog.Error("Error: %v", err)
+		slog.Error(fmt.Sprintf("Error: %v", err))
 		os.Exit(1)
 	}
 
@@ -47,7 +48,7 @@ func execute(_ *cobra.Command, args []string) {
 	case "json":
 	case "html":
 	default:
-		slog.Error("Invalid format: %s", *format)
+		slog.Error(fmt.Sprintf("Invalid format: %s", *format))
 		os.Exit(1)
 	}
 
@@ -56,7 +57,7 @@ func execute(_ *cobra.Command, args []string) {
 func main() {
 	err := cmd.Execute()
 	if err != nil {
-		slog.Error("Error: %v", err)
+		slog.Error(fmt.Sprintf("Error: %v", err))
 		os.Exit(1)
 	}
 }
