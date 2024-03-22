@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/spf13/cobra"
 	"log/slog"
 	"os"
@@ -27,9 +28,9 @@ func init() {
 
 func execute(_ *cobra.Command, args []string) {
 	if *verbose {
-		slog.SetLogLoggerLevel(slog.LevelInfo)
+		utils.InitLogger(slog.LevelDebug)
 	} else {
-		slog.SetLogLoggerLevel(slog.LevelWarn)
+		utils.InitLogger(slog.LevelWarn)
 	}
 
 	path := args[0]

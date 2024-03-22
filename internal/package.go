@@ -30,6 +30,7 @@ func (m PackageMap) GetType() (typ PackageType, err error) {
 		}
 		return nil
 	}
+
 	for _, p := range m {
 		err = load(p.Type)
 		if err != nil {
@@ -105,8 +106,11 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 		p.pseudo = true
 		p.Name = module.Path
 
-		// after subpackages are load, need to determine type for these
+		// after subpackages are loaded, need to determine a type for these
 		noTypPkgs = append(noTypPkgs, p)
+		// should also update link for this
+		m.link[module.Path] = p
+
 	next:
 	}
 
@@ -148,7 +152,7 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 		}
 	}
 
-	// We can load type now
+	// We can load a type now
 	for _, p := range noTypPkgs {
 		if len(p.SubPackages) > 0 {
 			typ, err := p.SubPackages.GetType()
@@ -170,21 +174,12 @@ func (m *MainPackages) MergeEmptyPacakge(modules []*debug.Module) {
 }
 
 func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Table) {
-	name, err := utils.PrefixToPath(gp.Name)
-	if err != nil {
-		panic(err)
+	name := gp.Name
+	if typ == PackageTypeVendor {
+		name = utils.UglyGuess(gp.Name)
 	}
 
 	parts := strings.Split(name, "/")
-
-	// an ugly hack for a known issue about golang compiler
-	// sees https://github.com/golang/go/issues/66313
-	if strings.Count(name, ".") >= 3 {
-		// we met something like
-		// github.com/ZNotify/server/app/api/common.(*Context).github.com/gin-gonic/gin
-		// no way to process this kind of package as for now
-		return
-	}
 
 	if len(parts) == 0 {
 		panic("empty package name " + gp.Name)
@@ -202,53 +197,8 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 	}
 
 	id := parts[len(parts)-1]
-	subs := make(PackageMap)
-	if c, ok := container[id]; ok {
-		if c.loaded {
-			panic("duplicate package " + name)
-		}
-		subs = c.SubPackages
-	}
-	p := &Package{
-		Name:        Deduplicate(name),
-		Functions:   make([]*Function, 0, len(gp.Functions)+len(gp.Methods)),
-		Type:        typ,
-		SubPackages: subs,
-		loaded:      true,
-		grPkg:       gp,
-	}
 
-	for _, f := range gp.Functions {
-		src, _, _ := pclntab.PCToLine(f.Offset)
-		p.Functions = append(p.Functions, &Function{
-			Name:     Deduplicate(f.Name),
-			Addr:     f.Offset,
-			Size:     f.End - f.Offset,
-			Type:     FuncTypeFunction,
-			Receiver: Deduplicate(""),
-			Filepath: Deduplicate(src),
-			Disasm:   AddrSpace{},
-			Pkg:      p,
-		})
-	}
-	for _, mf := range gp.Methods {
-		src, _, _ := pclntab.PCToLine(mf.Offset)
-		p.Functions = append(p.Functions, &Function{
-			Name:     Deduplicate(mf.Name),
-			Addr:     mf.Offset,
-			Size:     mf.End - mf.Offset,
-			Type:     FuncTypeMethod,
-			Receiver: Deduplicate(mf.Receiver),
-			Filepath: Deduplicate(src),
-			Disasm:   AddrSpace{},
-			Pkg:      p,
-		})
-	}
-
-	container[id] = p
-
-	// also update the link
-	m.link[gp.Name] = p
+	p := NewPackageWithGorePackage(gp, name, typ, pclntab)
 
 	// update addrs
 	for _, f := range p.Functions {
@@ -260,6 +210,12 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 			Filepath:    Deduplicate(f.Filepath),
 		})
 	}
+
+	p.Merge(container[id])
+
+	container[id] = p
+	// also update the link
+	m.link[name] = p
 }
 
 type PackageType = string
@@ -293,6 +249,65 @@ func NewPackage() *Package {
 	return &Package{
 		SubPackages: make(map[string]*Package),
 	}
+}
+
+func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, pclntab *gosym.Table) *Package {
+	p := &Package{
+		Name:        Deduplicate(name),
+		Functions:   make([]*Function, 0, len(gp.Functions)+len(gp.Methods)),
+		Type:        typ,
+		loaded:      true,
+		SubPackages: make(PackageMap),
+		grPkg:       gp,
+	}
+
+	for _, f := range gp.Functions {
+		src, _, _ := pclntab.PCToLine(f.Offset)
+		p.Functions = append(p.Functions, &Function{
+			Name:     Deduplicate(f.Name),
+			Addr:     f.Offset,
+			Size:     f.End - f.Offset,
+			Type:     FuncTypeFunction,
+			Receiver: Deduplicate(""),
+			Filepath: Deduplicate(src),
+			Disasm:   AddrSpace{},
+			Pkg:      p,
+		})
+	}
+	for _, mf := range gp.Methods {
+		src, _, _ := pclntab.PCToLine(mf.Offset)
+		p.Functions = append(p.Functions, &Function{
+			Name:     Deduplicate(mf.Name),
+			Addr:     mf.Offset,
+			Size:     mf.End - mf.Offset,
+			Type:     FuncTypeMethod,
+			Receiver: Deduplicate(mf.Receiver),
+			Filepath: Deduplicate(src),
+			Disasm:   AddrSpace{},
+			Pkg:      p,
+		})
+	}
+
+	return p
+}
+
+// Merge p always hold an empty subpackage
+func (p *Package) Merge(rp *Package) {
+	if rp == nil {
+		return
+	}
+
+	if (rp.loaded || rp.pseudo) && p.Name != rp.Name {
+		panic(fmt.Errorf("package name not match %s %s", p.Name, rp.Name))
+	}
+
+	for _, f := range rp.Functions {
+		p.Functions = append(p.Functions, f)
+	}
+	for k, v := range rp.SubPackages {
+		p.SubPackages[k] = v
+	}
+
 }
 
 func (p *Package) GetFunctions() []*Function {

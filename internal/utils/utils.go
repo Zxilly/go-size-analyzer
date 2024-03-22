@@ -30,6 +30,48 @@ func GetImageBase(file *pe.File) uint64 {
 	}
 }
 
+// UglyGuess an ugly hack for a known issue about golang compiler
+// sees https://github.com/golang/go/issues/66313
+func UglyGuess(s string) string {
+	if s == "" {
+		return ""
+	}
+
+	// find all parts
+	parts := strings.Split(s, "/")
+
+	result := make([]string, 0, len(parts))
+
+	ignorePart := 1
+	if strings.HasPrefix(s, "vendor/") {
+		ignorePart = 2
+	}
+
+	// if any part contains more than 2 dots, we assume it's a receiver
+	for i, part := range parts {
+		if i < ignorePart {
+			result = append(result, part)
+			continue
+		}
+		if strings.Count(part, ".") >= 2 {
+			t := strings.Split(part, ".")[0]
+			result = append(result, t)
+			break
+		} else {
+			result = append(result, part)
+		}
+	}
+
+	s = strings.Join(result, "/")
+	ns, err := PrefixToPath(s)
+	if err != nil {
+		slog.Warn("failed to convert prefix to path", "error", err, "prefix", ns)
+		return ""
+	}
+
+	return ns
+}
+
 // PrefixToPath is the inverse of PathToPrefix, replacing escape sequences with
 // the original character.
 // from src/cmd/internal/objabi/path.go
@@ -64,7 +106,7 @@ func PrefixToPath(s string) (string, error) {
 	return string(p), nil
 }
 
-func init() {
+func InitLogger(level slog.Level) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(Stdout, &slog.HandlerOptions{
 		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
 			// remove time
@@ -73,6 +115,7 @@ func init() {
 			}
 			return a
 		},
+		Level: level,
 	})))
 }
 

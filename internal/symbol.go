@@ -7,23 +7,31 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"log/slog"
 	"slices"
+	"strings"
 )
 
 var ErrNoSymbolTable = errors.New("no symbol table found")
 
+var ignoreSize = uint64(0)
+
 func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ AddrType) error {
 	var pkg *Package
 	pkgName := k.ExtractPackageFromSymbol(name)
-	if pkgName == "" {
+
+	switch {
+	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		// we assume it's a cgo symbol
 		pkgName = "cgo"
 		pkg = nil
-	} else {
+	case pkgName == "$f64" || pkgName == "$f32":
+		return nil
+	default:
 		var ok bool
 		pkg, ok = k.Packages.GetPackage(pkgName)
 		if !ok {
-			// $64 / $32 / cgo symbols
+			slog.Debug("package not found", "name", pkgName, "symbol", name, "type", typ)
 			return nil // no package found, skip
 		}
 	}

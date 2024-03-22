@@ -11,7 +11,6 @@ import (
 	"log/slog"
 	"os"
 	"reflect"
-	"strings"
 	"unsafe"
 )
 
@@ -129,11 +128,7 @@ func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 
 	pn := sym.PackageName()
 
-	if strings.Count(pn, ".") >= 3 {
-		// see MainPackages.Add
-		return ""
-	}
-	return pn
+	return utils.UglyGuess(pn)
 }
 
 func (k *KnownInfo) GetPaddingSize() uint64 {

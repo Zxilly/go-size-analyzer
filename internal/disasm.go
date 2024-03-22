@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
-	"github.com/Zxilly/go-size-analyzer/internal/tool"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"log/slog"
@@ -13,7 +13,7 @@ func (k *KnownInfo) Disasm() error {
 
 	fns := k.Packages.GetFunctions()
 
-	pb := tool.NewPb(int64(len(fns)), "Disassembling...")
+	pb := utils.NewPb(int64(len(fns)), "Disassembling...")
 
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
 	if err != nil {
