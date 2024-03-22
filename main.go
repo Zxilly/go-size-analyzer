@@ -22,9 +22,25 @@ var cmd = &cobra.Command{
 var verbose *bool
 var format *string
 
+var hideSections *bool
+var hideMain *bool
+var hideStd *bool
+
+var jsonIndent *int
+
+var output *string
+
 func init() {
 	verbose = cmd.Flags().Bool("verbose", false, "verbose output")
 	format = cmd.Flags().StringP("format", "f", "text", "output format (text, json, html)")
+
+	hideSections = cmd.Flags().Bool("hide-sections", false, "hide sections")
+	hideMain = cmd.Flags().Bool("hide-main", false, "hide main package")
+	hideStd = cmd.Flags().Bool("hide-std", false, "hide standard library")
+
+	jsonIndent = cmd.Flags().Int("indent", 0, "indentation for json output")
+
+	output = cmd.Flags().StringP("output", "o", "", "write to file")
 }
 
 func execute(_ *cobra.Command, args []string) {
@@ -42,10 +58,19 @@ func execute(_ *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	option := &printer.Option{
+		HideSections: *hideSections,
+		HideMain:     *hideMain,
+		HideStd:      *hideStd,
+		Output:       *output,
+		JsonIndent:   *jsonIndent,
+	}
+
 	switch *format {
 	case "text":
-		printer.PrintResult(result)
+		printer.PrintResult(result, option)
 	case "json":
+		printer.JsonResult(result, option)
 	case "html":
 	default:
 		slog.Error(fmt.Sprintf("Invalid format: %s", *format))

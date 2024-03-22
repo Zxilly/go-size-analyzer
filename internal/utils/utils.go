@@ -130,9 +130,15 @@ func (s *SyncOutput) Write(p []byte) (n int, err error) {
 	return s.output.Write(p)
 }
 
+func (s *SyncOutput) SetOutput(output io.Writer) {
+	s.Lock()
+	defer s.Unlock()
+	s.output = output
+}
+
 var Stdout = &SyncOutput{
 	Mutex:  sync.Mutex{},
-	output: os.Stdout,
+	output: os.Stderr,
 }
 
 var _ io.Writer = Stdout
