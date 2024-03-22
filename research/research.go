@@ -71,7 +71,7 @@ func init() {
 	flag.Parse()
 }
 
-func main() {
+func loadFiles() {
 	for _, file := range files() {
 		name := filepath.Base(file)
 
@@ -95,6 +95,38 @@ func main() {
 		}
 		fmt.Println()
 	}
+}
+
+func main() {
+	f, err := elf.Open(filepath.Join(getSourceDir(), "bins/kubelet-linux-1.22-amd64"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	syms, err := f.Symbols()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	size := uint64(0)
+	for _, sym := range syms {
+		size += sym.Size
+		fmt.Printf("%#v\n", sym)
+	}
+
+	rf, err := os.Open(filepath.Join(getSourceDir(), "bins/kubelet-linux-1.22-amd64"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rf.Close()
+
+	fileinfo, err := rf.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	filesz := fileinfo.Size()
+
+	fmt.Printf("%f\n", float64(size)/float64(filesz))
 }
 
 const symName = "runtime.pclntab"

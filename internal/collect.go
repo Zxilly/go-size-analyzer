@@ -32,7 +32,7 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 
 	// we have collected everything, now we can calculate the size
 
-	// first, merge all disasm results to coverage
+	// first, merge all results to coverage
 	k.CollectCoverage()
 
 	// for sections

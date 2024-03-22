@@ -183,8 +183,11 @@ func (k *KnownInfo) CalculateSectionSize() {
 	for _, section := range k.SectionMap.Sections {
 		size := uint64(0)
 		for _, addr := range k.Coverage {
-			if section.Addr <= addr.Addr && addr.Addr < section.Addr+section.Size {
-				size += addr.Size
+			// calculate the overlapped size
+			start := max(section.Addr, addr.Addr)
+			end := min(section.Addr+section.Size, addr.Addr+addr.Size)
+			if start < end {
+				size += end - start
 			}
 		}
 		section.KnownSize = size

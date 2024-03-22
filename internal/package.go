@@ -221,7 +221,7 @@ func (m *MainPackages) Add(gp *gore.Package, typ PackageType, pclntab *gosym.Tab
 type PackageType = string
 
 const (
-	PackageTypeSelf      PackageType = "self"
+	PackageTypeMain      PackageType = "main"
 	PackageTypeStd       PackageType = "std"
 	PackageTypeVendor    PackageType = "vendor"
 	PackageTypeGenerated PackageType = "generated"
@@ -345,7 +345,7 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 		return err
 	}
 	for _, p := range self {
-		pkgs.Add(p, PackageTypeSelf, pclntab)
+		pkgs.Add(p, PackageTypeMain, pclntab)
 	}
 
 	grStd, _ := file.GetSTDLib()

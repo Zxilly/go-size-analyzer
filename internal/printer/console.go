@@ -23,32 +23,48 @@ func PrintResult(r *internal.Result) {
 	knownSize := uint64(0)
 
 	t.SetTitle("%#v", r.Name)
-	t.AppendHeader(table.Row{"Percent", "Package", "Size", "Type"})
+	t.AppendHeader(table.Row{"Percent", "Name", "Size", "Type"})
 
-	pkgs := maps.Values(r.Packages)
-	slices.SortFunc(pkgs, func(a, b *internal.Package) int {
-		return -cmp.Compare(a.Size, b.Size)
-	})
-	for _, p := range pkgs {
-		knownSize += p.Size
-		t.AppendRow(table.Row{percentString(float64(p.Size) / float64(r.Size) * 100), p.Name, humanize.Bytes(p.Size), p.Type})
+	type sizeEntry struct {
+		name    string
+		size    uint64
+		typ     string
+		percent string
 	}
 
-	t.Render()
-	t = table.NewWriter()
-	t.SetOutputMirror(utils.Stdout)
+	entries := make([]sizeEntry, 0)
 
-	t.AppendHeader(table.Row{"Percent", "Unknown section", "Size"})
+	pkgs := maps.Values(r.Packages)
+	for _, p := range pkgs {
+		knownSize += p.Size
+		entries = append(entries, sizeEntry{
+			name:    p.Name,
+			size:    p.Size,
+			typ:     p.Type,
+			percent: percentString(float64(p.Size) / float64(r.Size) * 100),
+		})
+	}
+
 	sections := lo.Filter(r.Sections, func(s *internal.Section, _ int) bool {
 		return s.Size > s.KnownSize && s.Size != s.KnownSize && !s.OnlyInMemory
-	})
-	slices.SortFunc(sections, func(a, b *internal.Section) int {
-		return -cmp.Compare(a.Size-a.KnownSize, b.Size-b.KnownSize)
 	})
 	for _, s := range sections {
 		unknownSize := s.Size - s.KnownSize
 		knownSize += unknownSize
-		t.AppendRow(table.Row{percentString(float64(unknownSize) / float64(r.Size) * 100), s.Name, humanize.Bytes(unknownSize)})
+		entries = append(entries, sizeEntry{
+			name:    s.Name,
+			size:    unknownSize,
+			typ:     "section",
+			percent: percentString(float64(unknownSize) / float64(r.Size) * 100),
+		})
+	}
+
+	slices.SortFunc(entries, func(a, b sizeEntry) int {
+		return -cmp.Compare(a.size, b.size)
+	})
+
+	for _, e := range entries {
+		t.AppendRow(table.Row{e.percent, e.name, humanize.Bytes(e.size), e.typ})
 	}
 
 	t.AppendFooter(table.Row{percentString(float64(knownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(knownSize)})
