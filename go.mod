@@ -14,7 +14,7 @@ require (
 	github.com/spf13/cobra v1.8.0
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
 	golang.org/x/arch v0.7.0
-	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17
+	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81
 )
 
 require (
