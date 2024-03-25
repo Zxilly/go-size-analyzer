@@ -8,8 +8,6 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
-	"log/slog"
-	"os"
 	"slices"
 )
 
@@ -17,11 +15,7 @@ func percentString(f float64) string {
 	return fmt.Sprintf("%.2f%%", f)
 }
 
-func PrintResult(r *internal.Result, options *Option) {
-	if options.JsonIndent > 0 {
-		slog.Warn("json indent is a no-op for text output")
-	}
-
+func Text(r *internal.Result, options *TextOption) string {
 	t := table.NewWriter()
 
 	knownSize := uint64(0)
@@ -40,6 +34,13 @@ func PrintResult(r *internal.Result, options *Option) {
 
 	pkgs := maps.Values(r.Packages)
 	for _, p := range pkgs {
+		if options.HideMain && p.Type == internal.PackageTypeMain {
+			continue
+		}
+		if options.HideStd && p.Type == internal.PackageTypeStd {
+			continue
+		}
+
 		knownSize += p.Size
 		entries = append(entries, sizeEntry{
 			name:    p.Name,
@@ -75,14 +76,6 @@ func PrintResult(r *internal.Result, options *Option) {
 
 	t.AppendFooter(table.Row{percentString(float64(knownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(knownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
-	s := t.Render()
-	if options.Output == "" {
-		fmt.Println(s)
-	} else {
-		err := os.WriteFile(options.Output, []byte(s), 0644)
-		if err != nil {
-			slog.Error(fmt.Sprintf("Error: %v", err))
-			os.Exit(1)
-		}
-	}
+
+	return t.Render()
 }

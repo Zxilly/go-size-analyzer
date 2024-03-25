@@ -8,5 +8,6 @@
 go.work
 
 .idea/
+data.json
 vendor/
 research/bins/

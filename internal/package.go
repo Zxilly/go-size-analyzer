@@ -233,7 +233,7 @@ type Package struct {
 	Type PackageType `json:"type"`
 
 	SubPackages PackageMap  `json:"subPackages"`
-	Functions   []*Function `json:"functions"`
+	Functions   []*Function `json:"functions,omitempty"`
 
 	Size uint64 `json:"size"` // late filled
 

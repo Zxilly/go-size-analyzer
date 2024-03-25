@@ -1,11 +1,12 @@
 package printer
 
-type Option struct {
+type JsonOption struct {
+	Indent        *int
+	HideFunctions bool
+}
+
+type TextOption struct {
 	HideSections bool
 	HideMain     bool
 	HideStd      bool
-
-	JsonIndent int
-
-	Output string
 }

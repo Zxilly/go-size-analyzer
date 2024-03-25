@@ -1,7 +1,26 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import {defineConfig, PluginOption} from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import {viteSingleFile} from "vite-plugin-singlefile"
+import * as fs from "fs"
 
-// https://vitejs.dev/config/
+const dataFiller: PluginOption = {
+    name: 'data-filler',
+    transformIndexHtml: async (html) => {
+        if (process.env.NODE_ENV === "production") {
+            return html
+        }
+        const data = await fs.promises.readFile("data.json", "utf-8")
+        return html.replace(`"GSA_PACKAGE_DATA"`, data)
+    }
+}
+
 export default defineConfig({
-  plugins: [react()],
+    plugins: [
+        react(),
+        viteSingleFile(
+            {removeViteModuleLoader: true}
+        ),
+        dataFiller,
+    ],
+    clearScreen: false,
 })

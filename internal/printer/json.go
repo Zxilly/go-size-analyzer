@@ -5,33 +5,31 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"log/slog"
-	"os"
 	"strings"
 )
 
-func JsonResult(r *internal.Result, options *Option) {
-	if options.HideStd {
-		slog.Warn("hide std is a no-op for json output")
+func removeFunctions(pkg internal.PackageMap) {
+	for _, p := range pkg {
+		p.Functions = nil
+		removeFunctions(p.SubPackages)
 	}
-	if options.HideMain {
-		slog.Warn("hide main is a no-op for json output")
-	}
-	if options.HideSections {
-		slog.Warn("hide sections is a no-op for json output")
+}
+
+func Json(r *internal.Result, options *JsonOption) string {
+	if options.HideFunctions {
+		removeFunctions(r.Packages)
 	}
 
-	s, err := json.MarshalIndent(r, "", strings.Repeat(" ", options.JsonIndent))
+	var s []byte
+	var err error
+	if options.Indent == nil {
+		s, err = json.Marshal(r)
+	} else {
+		s, err = json.MarshalIndent(r, "", strings.Repeat(" ", *options.Indent))
+	}
 	if err != nil {
 		slog.Error(fmt.Sprintf("Error: %v", err))
 	}
 
-	if options.Output == "" {
-		fmt.Println(string(s))
-	} else {
-		err = os.WriteFile(options.Output, s, 0644)
-		if err != nil {
-			slog.Error(fmt.Sprintf("Error: %v", err))
-			os.Exit(1)
-		}
-	}
+	return string(s)
 }
