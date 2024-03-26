@@ -11,7 +11,7 @@ import (
 
 func Json(r *internal.Result, options *JsonOption) string {
 	if options.minify {
-		global.UseMinifyFormatForFunc = true
+		global.IgnoreFunctions = true
 	}
 
 	var s []byte

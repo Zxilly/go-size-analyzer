@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
@@ -16,7 +17,7 @@ func NewKnownInfo(file *gore.GoFile) (*KnownInfo, error) {
 		gore:    file,
 		wrapper: wrapper.NewWrapper(file.GetParsedFile()),
 	}
-	k.KnownAddr = NewKnownAddr(k)
+	k.KnownAddr = entity.NewKnownAddr()
 	k.UpdateVersionFlag()
 
 	k.LoadSectionMap()

@@ -19,7 +19,6 @@ export default defineConfig({
         react(),
         viteSingleFile(
             {
-                useRecommendedBuildConfig: true,
                 removeViteModuleLoader: true
             }
         ),
@@ -28,15 +27,5 @@ export default defineConfig({
     clearScreen: false,
     build: {
         cssMinify: "lightningcss",
-        minify: "terser",
-        terserOptions: {
-            ecma: 2020,
-            compress: {
-                passes: 2,
-            },
-            format: {
-                comments: false,
-            }
-        },
     }
 })

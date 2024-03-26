@@ -18,7 +18,7 @@ type KnownInfo struct {
 	BuildInfo *gore.BuildInfo
 	Sects     *SectionMap
 	Deps      *Dependencies
-	KnownAddr *KnownAddr
+	KnownAddr *entity.KnownAddr
 
 	Coverage entity.AddrCoverage
 
@@ -161,14 +161,14 @@ func (k *KnownInfo) RequireModInfo() {
 
 func (k *KnownInfo) CollectCoverage() {
 	// load coverage for pclntab and symbol
-	pclntabCov := k.KnownAddr.pclntab.ToCoverage()
+	pclntabCov := k.KnownAddr.Pclntab.ToCoverage()
 
 	// merge all
 	covs := make([]entity.AddrCoverage, 0, len(k.Deps.topPkgs)+2)
 	for _, p := range k.Deps.topPkgs {
 		covs = append(covs, p.GetCoverage())
 	}
-	covs = append(covs, pclntabCov, k.KnownAddr.symbolCoverage)
+	covs = append(covs, pclntabCov, k.KnownAddr.SymbolCoverage)
 	k.Coverage = entity.MergeCoverage(covs...)
 }
 

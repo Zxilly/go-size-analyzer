@@ -16,7 +16,7 @@ type Addr struct {
 }
 
 func (a Addr) String() string {
-	msg := fmt.Sprintf("Addr: %x Size: %x Pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
+	msg := fmt.Sprintf("Addr: %x Size: %x pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
 	msg += fmt.Sprintf(" Meta: %#v", a.Meta)
 	return msg
 }

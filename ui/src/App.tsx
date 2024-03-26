@@ -8,7 +8,7 @@ function App() {
     document.title = data.name
   },[data])
 
-  
+
 
   return (
     <>

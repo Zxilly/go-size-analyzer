@@ -9,10 +9,16 @@ export interface Section {
     only_in_memory: boolean;
 }
 
+export interface File {
+    file_path: string;
+    size: number;
+}
+
 export interface Package {
     name: string;
     type: string;
     subPackages: {[key: string]: Package};
+    files: File[];
     size: number;
 }
 export interface Result {

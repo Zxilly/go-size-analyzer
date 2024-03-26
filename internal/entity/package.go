@@ -104,8 +104,8 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 			Size:     f.End - f.Offset,
 			Type:     FuncTypeFunction,
 			Receiver: utils.Deduplicate(""),
-			Disasm:   AddrSpace{},
-			Pkg:      p,
+			disasm:   AddrSpace{},
+			pkg:      p,
 		})
 	}
 	for _, mf := range gp.Methods {
@@ -116,8 +116,8 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 			Size:     mf.End - mf.Offset,
 			Type:     FuncTypeMethod,
 			Receiver: utils.Deduplicate(mf.Receiver),
-			Disasm:   AddrSpace{},
-			Pkg:      p,
+			disasm:   AddrSpace{},
+			pkg:      p,
 		})
 	}
 
@@ -152,7 +152,7 @@ func (p *Package) getOrInitFile(s string) *File {
 
 	f := &File{
 		FilePath:  utils.Deduplicate(s),
-		Pkg:       p,
+		pkg:       p,
 		Functions: make([]*Function, 0),
 	}
 
@@ -200,7 +200,7 @@ func (p *Package) GetFunctions(recursive bool) []*Function {
 func (p *Package) GetAddrSpace() AddrSpace {
 	spaces := make([]AddrSpace, 0)
 	for _, f := range p.GetFunctions(false) {
-		spaces = append(spaces, f.Disasm)
+		spaces = append(spaces, f.disasm)
 	}
 	return MergeAddrSpace(spaces...)
 }
