@@ -3,6 +3,7 @@ package utils
 import (
 	"debug/pe"
 	"fmt"
+	"go4.org/intern"
 	"io"
 	"log/slog"
 	"os"
@@ -28,6 +29,10 @@ func GetImageBase(file *pe.File) uint64 {
 	default:
 		panic("unknown optional header type")
 	}
+}
+
+func Deduplicate(s string) string {
+	return intern.GetByString(s).Get().(string)
 }
 
 // UglyGuess an ugly hack for a known issue about golang compiler

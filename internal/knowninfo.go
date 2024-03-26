@@ -1,27 +1,26 @@
 package internal
 
 import (
-	"debug/elf"
 	"debug/gosym"
-	"debug/macho"
-	"debug/pe"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log/slog"
 	"os"
 	"reflect"
+	"slices"
 	"unsafe"
 )
 
 type KnownInfo struct {
-	Size       uint64
-	BuildInfo  *gore.BuildInfo
-	SectionMap *SectionMap
-	Packages   *MainPackages
-	KnownAddr  *KnownAddr
+	Size      uint64
+	BuildInfo *gore.BuildInfo
+	Sects     *SectionMap
+	Deps      *Dependencies
+	KnownAddr *KnownAddr
 
-	Coverage AddrCoverage
+	Coverage entity.AddrCoverage
 
 	gore    *gore.GoFile
 	wrapper wrapper.RawFileWrapper
@@ -32,59 +31,24 @@ type KnownInfo struct {
 	}
 }
 
-func NewKnownInfo(file *gore.GoFile) *KnownInfo {
-	// ensure we have the version
-	k := &KnownInfo{
-		Size:      utils.GetFileSize(file.GetFile()),
-		BuildInfo: file.BuildInfo,
-
-		gore:    file,
-		wrapper: wrapper.NewWrapper(file.GetParsedFile()),
-	}
-	k.KnownAddr = NewKnownAddr(k)
-	k.UpdateVersionFlag()
-
-	return k
-}
-
 func (k *KnownInfo) LoadSectionMap() {
 	slog.Info("Loading sections...")
 
-	sections := &SectionMap{Sections: make(map[string]*Section)}
-
-	switch f := k.gore.GetParsedFile().(type) {
-	case *pe.File:
-		sections.loadFromPe(f)
-	case *elf.File:
-		sections.loadFromElf(f)
-	case *macho.File:
-		sections.loadFromMacho(f)
-	default:
-		panic("unreachable")
-	}
+	sections := k.wrapper.LoadSections()
 
 	slog.Info("Loading sections done")
 
-	k.SectionMap = sections
+	k.Sects = &SectionMap{
+		Sections: sections,
+	}
 
 	return
 }
 
 func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
 	slog.Info("Analyzing symbols...")
-	var err error
 
-	switch f := file.GetParsedFile().(type) {
-	case *pe.File:
-		err = analyzePeSymbol(f, k)
-	case *elf.File:
-		err = analyzeElfSymbol(f, k)
-	case *macho.File:
-		err = analyzeMachoSymbol(f, k)
-	default:
-		panic("unreachable")
-	}
-
+	err := k.wrapper.LoadSymbols(k.MarkSymbol)
 	if err != nil {
 		return err
 	}
@@ -131,9 +95,58 @@ func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	return utils.UglyGuess(pn)
 }
 
+func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
+	slog.Info("Loading packages...")
+
+	pkgs := NewDependencies(k)
+	k.Deps = pkgs
+
+	pclntab, err := file.PCLNTab()
+	if err != nil {
+		return err
+	}
+
+	self, err := file.GetPackages()
+	if err != nil {
+		return err
+	}
+	for _, p := range self {
+		pkgs.Add(p, entity.PackageTypeMain, pclntab)
+	}
+
+	grStd, _ := file.GetSTDLib()
+	for _, p := range grStd {
+		pkgs.Add(p, entity.PackageTypeStd, pclntab)
+	}
+
+	grVendor, _ := file.GetVendors()
+	for _, p := range grVendor {
+		pkgs.Add(p, entity.PackageTypeVendor, pclntab)
+	}
+
+	grGenerated, _ := file.GetGeneratedPackages()
+	for _, p := range grGenerated {
+		pkgs.Add(p, entity.PackageTypeGenerated, pclntab)
+	}
+
+	grUnknown, _ := file.GetUnknown()
+	for _, p := range grUnknown {
+		pkgs.Add(p, entity.PackageTypeUnknown, pclntab)
+	}
+
+	k.RequireModInfo()
+	modules := slices.Clone(k.BuildInfo.ModInfo.Deps)
+	modules = append(modules, &k.BuildInfo.ModInfo.Main)
+	pkgs.PushUpUnloadPacakge(modules)
+
+	slog.Info("Loading packages done")
+
+	return nil
+}
+
 func (k *KnownInfo) GetPaddingSize() uint64 {
 	var sectionSize uint64 = 0
-	for _, section := range k.SectionMap.Sections {
+	for _, section := range k.Sects.Sections {
 		sectionSize += section.Size
 	}
 	return k.Size - sectionSize
@@ -147,40 +160,20 @@ func (k *KnownInfo) RequireModInfo() {
 }
 
 func (k *KnownInfo) CollectCoverage() {
-	var load func(p *Package)
-	load = func(p *Package) {
-		// we always load leaf first
-		for _, sp := range p.SubPackages {
-			load(sp)
-		}
-
-		// then collect the coverage from the sub packages
-		covers := make([]AddrCoverage, 0, len(p.SubPackages))
-		for _, sp := range p.SubPackages {
-			covers = append(covers, sp.coverage)
-		}
-		p.coverage = p.GetAddrSpace().GetCoverage(covers...)
-	}
-
-	// load coverage for all top packages
-	for _, p := range k.Packages.topPkgs {
-		load(p)
-	}
-
 	// load coverage for pclntab and symbol
-	pclntabCov := k.KnownAddr.pclntab.GetCoverage()
+	pclntabCov := k.KnownAddr.pclntab.ToCoverage()
 
 	// merge all
-	covs := make([]AddrCoverage, 0, len(k.Packages.topPkgs)+2)
-	for _, p := range k.Packages.topPkgs {
-		covs = append(covs, p.coverage)
+	covs := make([]entity.AddrCoverage, 0, len(k.Deps.topPkgs)+2)
+	for _, p := range k.Deps.topPkgs {
+		covs = append(covs, p.GetCoverage())
 	}
 	covs = append(covs, pclntabCov, k.KnownAddr.symbolCoverage)
-	k.Coverage = AddrSpace{}.GetCoverage(covs...)
+	k.Coverage = entity.MergeCoverage(covs...)
 }
 
 func (k *KnownInfo) CalculateSectionSize() {
-	for _, section := range k.SectionMap.Sections {
+	for _, section := range k.Sects.Sections {
 		size := uint64(0)
 		for _, addr := range k.Coverage {
 			// calculate the overlapped size
@@ -195,13 +188,13 @@ func (k *KnownInfo) CalculateSectionSize() {
 }
 
 func (k *KnownInfo) CalculatePackageSize() {
-	for _, p := range k.Packages.link {
+	for _, p := range k.Deps.link {
 		size := uint64(0)
 
-		for _, addr := range p.coverage {
+		for _, addr := range p.GetCoverage() {
 			size += addr.Size
 		}
-		for _, fn := range p.GetFunctions() {
+		for _, fn := range p.GetFunctions(true) {
 			size += fn.Size
 		}
 		p.Size = size

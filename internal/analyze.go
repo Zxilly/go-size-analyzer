@@ -10,7 +10,7 @@ func Analyze(path string) (*Result, error) {
 		return nil, err
 	}
 
-	k, err := analyze(file)
+	k, err := NewKnownInfo(file)
 	if err != nil {
 		return nil, err
 	}

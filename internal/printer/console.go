@@ -4,10 +4,12 @@ import (
 	"cmp"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/dustin/go-humanize"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
+	"path/filepath"
 	"slices"
 )
 
@@ -20,7 +22,7 @@ func Text(r *internal.Result, options *TextOption) string {
 
 	knownSize := uint64(0)
 
-	t.SetTitle("%s", r.Name)
+	t.SetTitle("%s", filepath.Base(r.Name))
 	t.AppendHeader(table.Row{"Percent", "Name", "Size", "Type"})
 
 	type sizeEntry struct {
@@ -34,10 +36,10 @@ func Text(r *internal.Result, options *TextOption) string {
 
 	pkgs := maps.Values(r.Packages)
 	for _, p := range pkgs {
-		if options.HideMain && p.Type == internal.PackageTypeMain {
+		if options.HideMain && p.Type == entity.PackageTypeMain {
 			continue
 		}
-		if options.HideStd && p.Type == internal.PackageTypeStd {
+		if options.HideStd && p.Type == entity.PackageTypeStd {
 			continue
 		}
 
@@ -51,7 +53,7 @@ func Text(r *internal.Result, options *TextOption) string {
 	}
 
 	if !options.HideSections {
-		sections := lo.Filter(r.Sections, func(s *internal.Section, _ int) bool {
+		sections := lo.Filter(r.Sections, func(s *entity.Section, _ int) bool {
 			return s.Size > s.KnownSize && s.Size != s.KnownSize && !s.OnlyInMemory
 		})
 		for _, s := range sections {

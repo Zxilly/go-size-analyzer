@@ -1,8 +1,8 @@
 package printer
 
 type JsonOption struct {
-	Indent        *int
-	HideFunctions bool
+	Indent *int
+	minify bool
 }
 
 type TextOption struct {

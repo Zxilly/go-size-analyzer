@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"golang.org/x/exp/maps"
+	"path"
 )
 
 type ResultSection struct {
@@ -11,18 +13,18 @@ type ResultSection struct {
 }
 
 type Result struct {
-	Name     string     `json:"name"`
-	Size     uint64     `json:"size"`
-	Packages PackageMap `json:"packages"`
-	Sections []*Section `json:"sections"`
+	Name     string            `json:"name"`
+	Size     uint64            `json:"size"`
+	Packages entity.PackageMap `json:"packages"`
+	Sections []*entity.Section `json:"sections"`
 }
 
 func BuildResult(name string, k *KnownInfo) *Result {
 	r := &Result{
-		Name:     name,
+		Name:     path.Base(name),
 		Size:     k.Size,
-		Packages: k.Packages.topPkgs,
-		Sections: maps.Values(k.SectionMap.Sections),
+		Packages: k.Deps.topPkgs,
+		Sections: maps.Values(k.Sects.Sections),
 	}
 	return r
 }

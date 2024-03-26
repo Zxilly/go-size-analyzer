@@ -2,12 +2,22 @@ package internal
 
 import (
 	"errors"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log/slog"
 )
 
-func analyze(file *gore.GoFile) (*KnownInfo, error) {
-	k := NewKnownInfo(file)
+func NewKnownInfo(file *gore.GoFile) (*KnownInfo, error) {
+	k := &KnownInfo{
+		Size:      utils.GetFileSize(file.GetFile()),
+		BuildInfo: file.BuildInfo,
+
+		gore:    file,
+		wrapper: wrapper.NewWrapper(file.GetParsedFile()),
+	}
+	k.KnownAddr = NewKnownAddr(k)
+	k.UpdateVersionFlag()
 
 	k.LoadSectionMap()
 
@@ -18,7 +28,7 @@ func analyze(file *gore.GoFile) (*KnownInfo, error) {
 
 	err = k.AnalyzeSymbol(file)
 	if err != nil {
-		if errors.Is(err, ErrNoSymbolTable) {
+		if errors.Is(err, wrapper.ErrNoSymbolTable) {
 			slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
 		} else {
 			return nil, err

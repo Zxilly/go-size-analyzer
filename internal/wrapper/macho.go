@@ -3,10 +3,105 @@ package wrapper
 import (
 	"debug/macho"
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"slices"
 )
 
 type MachoWrapper struct {
 	file *macho.File
+}
+
+func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+	if m.file.Symtab == nil {
+		return ErrNoSymbolTable
+	}
+
+	const stabTypeMask = 0xe0
+
+	syms := make([]macho.Symbol, 0)
+	for _, s := range m.file.Symtab.Syms {
+		if ignoreSymbols.Contains(s.Name) {
+			continue
+		}
+		if s.Type&stabTypeMask != 0 {
+			continue // skip stab debug info
+		}
+	}
+
+	var addrs []uint64
+	for _, s := range syms {
+		addrs = append(addrs, s.Value)
+	}
+	slices.Sort(addrs)
+
+	for _, s := range syms {
+		i, ok := slices.BinarySearch(addrs, s.Value)
+		if !ok {
+			// maybe we met the last symbol, no way to get the Size
+			continue
+		}
+		size := addrs[i] - s.Value
+
+		if s.Sect == 0 {
+			continue // unknown
+		}
+
+		typ := entity.AddrTypeUnknown
+		if int(s.Sect) <= len(m.file.Sections) {
+			sect := m.file.Sections[s.Sect-1]
+
+			switch sect.Seg {
+			case "__DATA_CONST", "__DATA":
+				typ = entity.AddrTypeData
+			case "__TEXT":
+				typ = entity.AddrTypeText
+			}
+
+			if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
+				continue // bss section, skip
+			}
+		} else {
+			continue // broken index
+		}
+
+		err := marker(s.Name, s.Value, size, typ)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
+	ret := make(map[string]*entity.Section)
+	for _, section := range m.file.Sections {
+		if section.Size == 0 {
+			continue
+		}
+
+		if section.Offset == 0 {
+			// seems like .bss section
+			ret[section.Name] = &entity.Section{
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
+			}
+			continue
+		}
+
+		ret[section.Name] = &entity.Section{
+			Name:         section.Name,
+			Size:         section.Size,
+			Offset:       uint64(section.Offset),
+			End:          uint64(section.Offset) + section.Size,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
+		}
+	}
+	return ret
 }
 
 func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {

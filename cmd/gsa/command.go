@@ -22,8 +22,7 @@ type Options struct {
 	} `group:"Text Options"`
 
 	JsonOptions struct {
-		HideFunctions bool `long:"hide-functions" description:"Hide functions field in package"`
-		Indent        *int `long:"indent" description:"Indentation for json output"`
+		Indent *int `long:"indent" description:"Indentation for json output"`
 	} `group:"Json Options"`
 
 	Output  string `short:"o" long:"output" description:"Write to file"`
@@ -83,8 +82,7 @@ func main() {
 		})
 	case "json":
 		s = printer.Json(result, &printer.JsonOption{
-			Indent:        options.JsonOptions.Indent,
-			HideFunctions: options.JsonOptions.HideFunctions,
+			Indent: options.JsonOptions.Indent,
 		})
 	case "html":
 	default:

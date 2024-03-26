@@ -5,8 +5,11 @@ function App() {
   const data = loadData();
 
   useEffect(() => {
-    console.log(data)
+    document.title = data.name
   },[data])
+
+  
+
   return (
     <>
 

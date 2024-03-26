@@ -1,4 +1,4 @@
-package internal
+package entity
 
 type FuncType = string
 
@@ -13,7 +13,8 @@ type Function struct {
 	Size     uint64    `json:"size"`
 	Type     FuncType  `json:"type"`
 	Receiver string    `json:"receiver"` // only for methods
-	Filepath string    `json:"filepath"`
 	Disasm   AddrSpace `json:"-"`
 	Pkg      *Package  `json:"-"`
+
+	File *File
 }

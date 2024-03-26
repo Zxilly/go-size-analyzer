@@ -3,11 +3,99 @@ package wrapper
 import (
 	"debug/elf"
 	"encoding/binary"
+	"errors"
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 type ElfWrapper struct {
 	file *elf.File
+}
+
+func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+	symbols, err := e.file.Symbols()
+	if err != nil {
+		if errors.Is(err, elf.ErrNoSymbols) {
+			return ErrNoSymbolTable
+		}
+		return err
+	}
+
+	keep := make([]elf.Symbol, 0)
+	for _, s := range symbols {
+		if ignoreSymbols.Contains(s.Name) {
+			continue
+		}
+		keep = append(keep, s)
+	}
+	symbols = keep
+
+	for _, s := range symbols {
+		switch s.Section {
+		case elf.SHN_UNDEF, elf.SHN_ABS, elf.SHN_COMMON:
+			continue // not addr, skip
+		}
+
+		if s.Size == 0 {
+			// nothing to do
+			continue
+		}
+
+		i := int(s.Section)
+		if i < 0 || i >= len(e.file.Sections) {
+			// just ignore, exmaple: we met go.go
+			continue
+		}
+		sect := e.file.Sections[i]
+		typ := entity.AddrTypeUnknown
+		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
+		case elf.SHF_ALLOC | elf.SHF_EXECINSTR:
+			typ = entity.AddrTypeText
+		case elf.SHF_ALLOC:
+			typ = entity.AddrTypeData
+		default:
+			continue // wtf?
+		}
+
+		err = marker(s.Name, s.Value, s.Size, typ)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (e *ElfWrapper) LoadSections() map[string]*entity.Section {
+	ret := make(map[string]*entity.Section)
+	for _, section := range e.file.Sections {
+		// not exist in binary
+		if section.Type == elf.SHT_NULL || section.Size == 0 {
+			continue
+		}
+
+		if section.Type == elf.SHT_NOBITS {
+			// seems like .bss section
+			ret[section.Name] = &entity.Section{
+				Name:         section.Name,
+				Addr:         section.Addr,
+				AddrEnd:      section.Addr + section.Size,
+				OnlyInMemory: true,
+			}
+			continue
+		}
+
+		ret[section.Name] = &entity.Section{
+			Name:         section.Name,
+			Size:         section.FileSize,
+			Offset:       section.Offset,
+			End:          section.Offset + section.FileSize,
+			Addr:         section.Addr,
+			AddrEnd:      section.Addr + section.Size,
+			OnlyInMemory: false,
+		}
+	}
+	return ret
 }
 
 func (e *ElfWrapper) ReadAddr(addr, size uint64) ([]byte, error) {

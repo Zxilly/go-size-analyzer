@@ -4,20 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/global"
 	"log/slog"
 	"strings"
 )
 
-func removeFunctions(pkg internal.PackageMap) {
-	for _, p := range pkg {
-		p.Functions = nil
-		removeFunctions(p.SubPackages)
-	}
-}
-
 func Json(r *internal.Result, options *JsonOption) string {
-	if options.HideFunctions {
-		removeFunctions(r.Packages)
+	if options.minify {
+		global.UseMinifyFormatForFunc = true
 	}
 
 	var s []byte

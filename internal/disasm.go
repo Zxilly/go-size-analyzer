@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -11,7 +12,7 @@ import (
 func (k *KnownInfo) Disasm() error {
 	slog.Info("Disassemble functions...")
 
-	fns := k.Packages.GetFunctions()
+	fns := k.Deps.GetFunctions()
 
 	pb := utils.NewPb(int64(len(fns)), "Disassembling...")
 
@@ -22,10 +23,10 @@ func (k *KnownInfo) Disasm() error {
 
 	type result struct {
 		addr, size uint64
-		fn         *Function
+		fn         *entity.Function
 	}
 
-	possibles := lo.Flatten(lop.Map(fns, func(fn *Function, index int) []result {
+	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, index int) []result {
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.Size)
 		candidates = lo.Filter(candidates, func(p disasm.PossibleStr, _ int) bool {
 			return e.AddrIsString(p.Addr, int64(p.Size))
