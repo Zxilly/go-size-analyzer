@@ -9,21 +9,21 @@ import (
 	"strings"
 )
 
-func Json(r *internal.Result, options *JsonOption) string {
+func Json(r *internal.Result, options *JsonOption) []byte {
 	if options.minify {
-		global.IgnoreFunctions = true
+		global.ShowFileSizes = true
 	}
 
-	var s []byte
+	var b []byte
 	var err error
 	if options.Indent == nil {
-		s, err = json.Marshal(r)
+		b, err = json.Marshal(r)
 	} else {
-		s, err = json.MarshalIndent(r, "", strings.Repeat(" ", *options.Indent))
+		b, err = json.MarshalIndent(r, "", strings.Repeat(" ", *options.Indent))
 	}
 	if err != nil {
 		slog.Error(fmt.Sprintf("Error: %v", err))
 	}
 
-	return string(s)
+	return b
 }

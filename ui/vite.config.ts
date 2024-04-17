@@ -23,6 +23,7 @@ export default defineConfig({
             }
         ),
         devDataMocker,
+
     ],
     clearScreen: false,
     build: {

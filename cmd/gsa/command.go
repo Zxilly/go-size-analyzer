@@ -72,16 +72,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	var s string
+	var b []byte
 	switch options.Format {
 	case "text":
-		s = printer.Text(result, &printer.TextOption{
+		b = []byte(printer.Text(result, &printer.TextOption{
 			HideSections: options.TextOptions.HideSections,
 			HideMain:     options.TextOptions.HideMain,
 			HideStd:      options.TextOptions.HideStd,
-		})
+		}))
 	case "json":
-		s = printer.Json(result, &printer.JsonOption{
+		b = printer.Json(result, &printer.JsonOption{
 			Indent: options.JsonOptions.Indent,
 		})
 	case "html":
@@ -91,12 +91,12 @@ func main() {
 	}
 
 	if options.Output != "" {
-		err := os.WriteFile(options.Output, []byte(s), 0644)
+		err := os.WriteFile(options.Output, b, 0644)
 		if err != nil {
 			slog.Error(fmt.Sprintf("Error: %v", err))
 			os.Exit(1)
 		}
 	} else {
-		fmt.Println(s)
+		fmt.Println(b)
 	}
 }

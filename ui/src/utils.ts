@@ -1,6 +1,7 @@
-import {Result} from "./schema.ts";
+import {Result} from "./schema/schema.ts";
+import {parseResult} from "./generated/schema.ts";
 
 export function loadData(): Result {
     const doc = document.querySelector("#data")!;
-    return JSON.parse(doc.textContent!) as Result;
+    return parseResult(doc.textContent!);
 }
