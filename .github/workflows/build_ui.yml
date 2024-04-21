@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     paths: 
       - 'ui/**'
+      - '.github/workflows/build-ui.yml'
 
 concurrency:
   group: ${{ github.ref }}
