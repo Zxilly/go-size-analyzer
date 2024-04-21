@@ -6,6 +6,7 @@ on:
     paths: 
       - 'ui/**'
       - '.github/workflows/build-ui.yml'
+  workflow_call:
 
 concurrency:
   group: ${{ github.ref }}-ui
@@ -43,6 +44,7 @@ jobs:
         run: pnpm build
 
       - name: Release
+        if: github.event_name == 'push'
         uses: ncipollo/release-action@v1
         with:
           artifactErrorsFailBuild: true
@@ -51,6 +53,14 @@ jobs:
           artifacts: 'ui/dist/index.html'
           tag: ui
           commit: master
+          prerelease: true
+
+      - name: Upload artifact
+        if: github.event_name == 'workflow_call'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui
+          path: ui/dist/index.html
 
 
       

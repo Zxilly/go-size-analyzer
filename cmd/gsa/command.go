@@ -5,7 +5,9 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/Zxilly/go-size-analyzer/internal/web"
 	"github.com/ZxillyFork/go-flags"
+	"github.com/pkg/browser"
 	"log/slog"
 	"os"
 	"runtime/debug"
@@ -24,6 +26,12 @@ type Options struct {
 	JsonOptions struct {
 		Indent *int `long:"indent" description:"Indentation for json output"`
 	} `group:"Json Options"`
+
+	HtmlOptions struct {
+		Web    bool   `long:"web" description:"Start web server for html output, this option will override format to html and ignore output option"`
+		Listen string `long:"listen" description:"Listen address" default:":8080"`
+		Open   bool   `long:"open" description:"Open browser"`
+	} `group:"Html Options"`
 
 	Output  string `short:"o" long:"output" description:"Write to file"`
 	Version bool   `long:"version" description:"Show version"`
@@ -85,9 +93,31 @@ func main() {
 			Indent: options.JsonOptions.Indent,
 		})
 	case "html":
+		b = printer.Html(result)
 	default:
 		slog.Error(fmt.Sprintf("Invalid format: %s", options.Format))
 		os.Exit(1)
+	}
+
+	if options.Format == "html" {
+		if options.HtmlOptions.Web {
+			go web.HostServer(string(b), options.HtmlOptions.Listen)
+
+			url := utils.GetUrlFromListen(options.HtmlOptions.Listen)
+
+			fmt.Println("Server started at", url)
+
+			if options.HtmlOptions.Open {
+				err = browser.OpenURL(url)
+				if err != nil {
+					slog.Error(fmt.Sprintf("Error: %v", err))
+					return
+				}
+			}
+
+			utils.WaitSignal()
+			return
+		}
 	}
 
 	if options.Output != "" {
@@ -97,6 +127,6 @@ func main() {
 			os.Exit(1)
 		}
 	} else {
-		fmt.Println(b)
+		fmt.Println(string(b))
 	}
 }

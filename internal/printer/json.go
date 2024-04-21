@@ -10,8 +10,8 @@ import (
 )
 
 func Json(r *internal.Result, options *JsonOption) []byte {
-	if options.minify {
-		global.ShowFileSizes = true
+	if options.hideDetail {
+		global.HideDetail = true
 	}
 
 	var b []byte

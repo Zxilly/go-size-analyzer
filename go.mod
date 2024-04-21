@@ -10,6 +10,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goretk/gore v0.11.5
 	github.com/jedib0t/go-pretty/v6 v6.5.5
+	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/samber/lo v1.39.0
 	github.com/schollz/progressbar/v3 v3.14.2
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb

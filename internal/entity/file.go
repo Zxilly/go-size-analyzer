@@ -13,7 +13,7 @@ type File struct {
 }
 
 func (f *File) MarshalJSON() ([]byte, error) {
-	if global.ShowFileSizes {
+	if global.HideDetail {
 		size := uint64(0)
 		for _, fn := range f.Functions {
 			size += fn.Size

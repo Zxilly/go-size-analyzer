@@ -1,0 +1,30 @@
+name: goreleaser
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  build-ui:
+    uses: ./.github/workflows/build-ui.yml
+
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      - name: Download UI file
+        uses: actions/download-artifact@v4
+        with:
+          name: ui
+
+      - name: Move UI file
+        run: mv index.html internal/ui/index.html
+
+      - name: Run goreleaser
