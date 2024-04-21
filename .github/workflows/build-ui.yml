@@ -8,7 +8,7 @@ on:
       - '.github/workflows/build-ui.yml'
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.ref }}-ui
   cancel-in-progress: true
 
 permissions:
