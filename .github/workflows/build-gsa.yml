@@ -17,8 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-tags: true
+
+      - name: Get tags
+        run: git fetch --tags
 
       - uses: actions/setup-go@v4
         with:
