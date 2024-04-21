@@ -25,6 +25,7 @@ jobs:
         with:
           standalone: true
           package_json_file: 'ui/package.json'
+          version: latest
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
