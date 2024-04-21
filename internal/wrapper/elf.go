@@ -43,7 +43,7 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 
 		i := int(s.Section)
 		if i < 0 || i >= len(e.file.Sections) {
-			// just ignore, exmaple: we met go.go
+			// just ignore, example: we met go.go
 			continue
 		}
 		sect := e.file.Sections[i]
