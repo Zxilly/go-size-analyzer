@@ -1,58 +1,55 @@
 # go-size-analyzer
 
-English | [简体中文](./README_zh-CN.md)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zxilly/go-size-analyzer)](https://goreportcard.com/report/github.com/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
 
-A simple tool to analyze the size of a Go compiled binary. 
+一个简单的工具，用于分析 Go 编译二进制文件的大小。
 
-## Installation
+## 安装
 
-Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
+从[发布页面](https://github.com/Zxilly/go-size-analyzer/releases)下载最新版本。
 
-Use `go install` is not recommended, because it won't include the embed ui template, which is required for the web mode.
+不推荐使用 `go install` 进行安装，因为它不会包含嵌入的 UI 模板，该模板对于网络模式是必需的。
 
-## Usage
+## 使用
 
-you can use `gsa` to analyze the binary:
+您可以使用 `gsa` 来分析二进制文件：
 
 ```bash
-Usage:
-  gsa [OPTIONS] [file]
+用法：
+  gsa [选项] [文件]
 
-Application Options:
-      --verbose                 Verbose output
-  -f, --format=[text|json|html] Output format (default: text)
-  -o, --output=                 Write to file
-      --version                 Show version
+应用选项：
+      --verbose                 详细输出
+  -f, --format=[text|json|html] 输出格式 (默认: text)
+  -o, --output=                 写入文件
+      --version                 显示版本
 
-Text Options:
-      --hide-sections           Hide sections
-      --hide-main               Hide main package
-      --hide-std                Hide standard library
+文本选项：
+      --hide-sections           隐藏 sections
+      --hide-main               隐藏主包
+      --hide-std                隐藏标准库
 
-Json Options:
-      --indent=                 Indentation for json output
+Json 选项：
+      --indent=                 Json 输出的缩进
 
-Html Options:
-      --web                     Start web server for html output, this option
-                                will override format to html and ignore output
-                                option
-      --listen=                 Listen address (default: :8080)
-      --open                    Open browser
+Html 选项：
+      --web                     启动用于 html 输出的 web 服务器，此选项
+                                会将格式覆盖为 html 并忽略输出
+                                选项
+      --listen=                 监听地址 (默认: :8080)
+      --open                    打开浏览器
 
-Help Options:
-  -h, --help                    Show this help message
+帮助选项：
+  -h, --help                    显示此帮助消息
 
-Arguments:
-  file:                         Binary file to analyze
+参数：
+  file:                         要分析的二进制文件
 ```
 
 > [!CAUTION]
-> 
-> The tool can work with stripped binaries, but it may lead to inaccurate results.
-
+>
+> 该工具可以分析剥离 symbol 的二进制文件，但可能导致结果不准确。
 
 ### Example
 
@@ -62,16 +59,16 @@ Arguments:
 $ gsa --web golang-compiled-binary
 ```
 
-Will start a web server on port 8080, you can view the result in your browser.
+将在 8080 端口启动一个 web 服务器，您可以在浏览器中查看结果。
 
-The web page will look like this:
+网页将如下所示：
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/78bb8105-fc5a-4852-8704-8c2fac3bf475)
 
 
-You can click to expand the package to see the details.
+您可以点击以展开包以查看详细信息。
 
-#### Text mode 
+#### 文本模式
 
 ```bash
 $ gsa docker-compose-linux-x86_64
@@ -122,16 +119,16 @@ $ gsa docker-compose-linux-x86_64
 
 ## TODO
 
-- [ ] Add more pattern for disassembling the binary
-- [ ] Extract the information from the dwarf section
-- [ ] Count the symbol size itself to package
-- [ ] Add other chart like flame graph, pie chart etc.
-- [ ] Support C++/Rust symbol demangling in cgo
+- [ ] 添加更多用于反汇编二进制文件的模式
+- [ ] 从 dwarf 段提取信息
+- [ ] 计算符号本身的大小到包中
+- [ ] 添加其他图表，如火焰图、饼图等
+- [ ] 支持 demangle cgo 中的 C++/Rust 符号
 
 ## Contribution
 
-Any contribution is welcome, feel free to open an issue or a pull request.
+欢迎任何形式的贡献，随时提出问题或拉取请求。
 
 ## LICENSE
 
-Published under the [AGPL-3.0](./LICENSE).
+根据 [AGPL-3.0](./LICENSE) 发布。
