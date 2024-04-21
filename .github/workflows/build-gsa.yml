@@ -13,6 +13,7 @@ jobs:
     uses: ./.github/workflows/build-ui.yml
 
   goreleaser:
+    needs: build-ui
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
