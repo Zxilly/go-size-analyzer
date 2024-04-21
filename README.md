@@ -115,6 +115,14 @@ $ gsa docker-compose-linux-x86_64
 
 ```
 
+## TODO
+
+- [ ] Add more pattern for disassembling the binary
+- [ ] Extract the information from the dwarf section
+- [ ] Count the symbol size itself to package
+- [ ] Add other chart like flame graph, pie chart etc.
+- [ ] Support C++/Rust symbol demangling in cgo
+
 ## Contribution
 
 Any contribution is welcome, feel free to open an issue or a pull request.
