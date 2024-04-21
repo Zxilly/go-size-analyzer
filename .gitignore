@@ -7,8 +7,14 @@
 *.out
 go.work
 
-.idea/
-ui/data.json
+dist/
+
 vendor/
+
+.idea/
+.vscode/
+
+ui/data.json
+
 research/bins/
 research/__pycache__/
