@@ -1,25 +1,81 @@
 import {File, isFile, isPackage, isResult, isSection, Package, Result, Section} from "./generated/schema.ts";
 import {id} from "./id.ts";
+import {formatBytes} from "./utils.ts";
+import {max} from "d3-array";
 
 type Candidate = Section | File | Package | Result;
 
-type EntryType = "section" | "file" | "package" | "result";
+interface Disasm {
+    name: string;
+    size: number;
+}
 
+type EntryType = "section" | "file" | "package" | "result" | "disasm" | "unknown";
 
 export class Entry {
     private readonly type: EntryType;
-    private readonly data: Candidate;
+    private readonly data: Candidate | Disasm;
     private readonly size: number;
     private readonly name: string;
     private readonly children: Entry[] = [];
     private readonly uid = id();
 
-    constructor(data: Candidate) {
-        this.type = Entry.checkType(data);
-        this.data = data;
-        this.size = data.size;
-        this.name = candidateName(data, this.type);
-        this.children = childrenFromData(data, this.type);
+    constructor(data: Candidate)
+    constructor(name: string, size: number, type: EntryType)
+    constructor(data_or_name: Candidate | string, size?: number, type?: EntryType) {
+        if (typeof data_or_name === "string") {
+            this.type = type!;
+            this.data = {name: data_or_name, size: size!};
+            this.size = size!;
+            this.name = data_or_name;
+            this.children = [];
+            return
+        }
+
+        this.type = Entry.checkType(data_or_name);
+        this.data = data_or_name;
+        this.size = Entry.loadSize(data_or_name);
+        this.name = Entry.candidateName(data_or_name, this.type);
+        this.children = Entry.childrenFromData(data_or_name, this.type);
+    }
+
+    static childrenFromData(data: Candidate, type: EntryType): Entry[] {
+        switch (type) {
+            case "section":
+            case "file":
+                return []; // no children for section or file
+            case "package":
+                return childrenFromPackage(data as Package);
+            case "result":
+                return childrenFromResult(data as Result);
+            default:
+                throw new Error("Unknown candidate type");
+        }
+    }
+
+    static candidateName(candidate: Candidate, type: EntryType): string {
+        switch (type) {
+            case "section":
+            case "result":
+            case "package":
+                return (<Section | Result | Package>candidate).name;
+
+            case "file":
+                return (<File>candidate).file_path.split("/").pop()!;
+
+            default:
+                throw new Error("Unknown candidate type");
+        }
+
+    }
+
+    static loadSize(data: Candidate): number {
+        switch (true) {
+            case isSection(data):
+                return data.size - data.known_size;
+            default:
+                return data.size;
+        }
     }
 
     static checkType(candidate: Candidate): EntryType {
@@ -38,7 +94,67 @@ export class Entry {
     }
 
     public toString(): string {
-        return candidateStringify(this.data);
+        const align = new aligner();
+
+        function assertTyp<T extends Candidate | Disasm>(_c: Candidate | Disasm): asserts _c is T {
+        }
+
+        switch (this.type) {
+            case "section":
+                assertTyp<Section>(this.data);
+                align.add("Section:", this.name);
+                align.add("Size:", formatBytes(this.size));
+                align.add("Known size:", formatBytes(this.data.known_size));
+                align.add("Unknown size:", formatBytes(this.data.size - this.data.known_size));
+                align.add("Offset:", `${this.data.offset.toString(16)} - ${this.data.end.toString(16)}`);
+                align.add("Address:", `${this.data.addr.toString(16)} - ${this.data.addr_end.toString(16)}`);
+                align.add("Memory:", this.data.only_in_memory.toString());
+                return align.toString();
+
+            case "file":
+                assertTyp<File>(this.data);
+                align.add("File:", this.data.file_path);
+                align.add("Path:", this.data.file_path);
+                align.add("Size:", formatBytes(this.data.size));
+                return align.toString();
+
+            case "package":
+                assertTyp<Package>(this.data);
+                align.add("Package:", this.data.name);
+                align.add("Type:", this.data.type);
+                align.add("Size:", formatBytes(this.data.size));
+                return align.toString();
+
+            case "result":
+                assertTyp<Result>(this.data);
+                align.add("Result:", this.data.name);
+                align.add("Size:", formatBytes(this.data.size));
+                return align.toString();
+
+            case "disasm": {
+                align.add("Disasm:", this.name);
+                align.add("Size:", formatBytes(this.size));
+                let ret = align.toString();
+                ret += "\n" +
+                    "This size was not accurate." +
+                    "The real size determined by disassembling can be larger.";
+                return ret;
+            }
+
+            case "unknown": {
+                align.add("Unknown:", this.name);
+                align.add("Size:", formatBytes(this.size));
+                let ret = align.toString();
+                ret += "\n" +
+                    "The unknown part in the binary.\n" +
+                    "Can be ELF Header, Program Header, align offset...\n" +
+                    "We just don't know.";
+                return ret;
+            }
+
+            default:
+                throw new Error("Unknown candidate type");
+        }
     }
 
     public getSize(): number {
@@ -53,26 +169,12 @@ export class Entry {
         return this.children;
     }
 
-    public getData(): Candidate {
+    public getData(): Candidate | Disasm {
         return this.data;
     }
 
     public getID(): string {
         return this.uid.toString(16);
-    }
-}
-
-function childrenFromData(data: Candidate, type: EntryType): Entry[] {
-    switch (type) {
-        case "section":
-        case "file":
-            return []; // no children for section or file
-        case "package":
-            return childrenFromPackage(data as Package);
-        case "result":
-            return childrenFromResult(data as Result);
-        default:
-            throw new Error("Unknown candidate type");
     }
 }
 
@@ -84,6 +186,13 @@ function childrenFromPackage(pkg: Package): Entry[] {
     for (const subPackage of Object.values(pkg.subPackages)) {
         children.push(new Entry(subPackage));
     }
+
+    const leftSize = pkg.size - children.reduce((acc, child) => acc + child.getSize(), 0);
+    if (leftSize > 0) {
+        const name = `${pkg.name} Disasm`
+        children.push(new Entry(name, leftSize, "disasm"));
+    }
+
     return children;
 }
 
@@ -95,58 +204,32 @@ function childrenFromResult(result: Result): Entry[] {
     for (const pkg of Object.values(result.packages)) {
         children.push(new Entry(pkg));
     }
+    const leftSize = result.size - children.reduce((acc, child) => acc + child.getSize(), 0);
+    if (leftSize > 0) {
+        const name = `${result.name} Unknown`
+        children.push(new Entry(name, leftSize, "unknown"));
+    }
+
     return children;
 }
 
-function formatBytes(bytes: number) {
-    if (bytes == 0) return '0 B';
-    const k = 1024,
-        dm = 2,
-        sizes = ['B', 'KB', 'MB', 'GB'],
-        i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
+class aligner {
+    private pre: string[] = [];
+    private post: string[] = [];
 
-function candidateName(candidate: Candidate, type: EntryType): string {
-    switch (type) {
-        case "section":
-        case "result":
-        case "package":
-            return (<Section | Result | Package>candidate).name;
-
-        case "file":
-            return (<File>candidate).file_path.split("/").pop()!;
-
-        default:
-            throw new Error("Unknown candidate type");
+    public add(pre: string, post: string): void {
+        this.pre.push(pre);
+        this.post.push(post);
     }
 
-}
-
-function candidateStringify(candidate: Candidate): string {
-    switch (true) {
-        case isSection(candidate):
-            return `Section: ${candidate.name}\n` +
-                `Size: ${formatBytes(candidate.size)}\n` +
-                `Known size: ${formatBytes(candidate.known_size)}\n` +
-                `Offset: ${candidate.offset.toString(16)} - ${candidate.end.toString(16)}\n` +
-                `Address: ${candidate.addr.toString(16)} - ${candidate.addr_end.toString(16)}\n` +
-                `Only in memory: ${candidate.only_in_memory}\n`;
-
-        case isFile(candidate):
-            return `File: ${candidate.file_path}\n` +
-                `Path: ${candidate.file_path}\n` +
-                `Size: ${formatBytes(candidate.size)}\n`;
-
-        case isPackage(candidate):
-            return `Package: ${candidate.name}\n` +
-                `Type: ${candidate.type}\n` +
-                `Size: ${formatBytes(candidate.size)}\n`;
-
-        case isResult(candidate):
-            return `Result: ${candidate.name}\n` +
-                `Size: ${formatBytes(candidate.size)}\n`;
-        default:
-            throw new Error("Unknown candidate type");
+    public toString(): string {
+        // determine the maximum length of the pre strings
+        const maxPreLength = max(this.pre, (d) => d.length) ?? 0;
+        let ret = "";
+        for (let i = 0; i < this.pre.length; i++) {
+            ret += this.pre[i].padEnd(maxPreLength + 1) + this.post[i] + "\n";
+        }
+        ret = ret.trimEnd();
+        return ret;
     }
 }
