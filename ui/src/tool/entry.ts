@@ -1,4 +1,4 @@
-import {File, isFile, isPackage, isResult, isSection, Package, Result, Section} from "./generated/schema.ts";
+import {File, isFile, isPackage, isResult, isSection, Package, Result, Section} from "../generated/schema.ts";
 import {id} from "./id.ts";
 import {formatBytes} from "./utils.ts";
 import {max} from "d3-array";
@@ -106,8 +106,8 @@ export class Entry {
                 align.add("Size:", formatBytes(this.size));
                 align.add("Known size:", formatBytes(this.data.known_size));
                 align.add("Unknown size:", formatBytes(this.data.size - this.data.known_size));
-                align.add("Offset:", `${this.data.offset.toString(16)} - ${this.data.end.toString(16)}`);
-                align.add("Address:", `${this.data.addr.toString(16)} - ${this.data.addr_end.toString(16)}`);
+                align.add("Offset:", `0x${this.data.offset.toString(16)} - 0x${this.data.end.toString(16)}`);
+                align.add("Address:", `0x${this.data.addr.toString(16)} - 0x${this.data.addr_end.toString(16)}`);
                 align.add("Memory:", this.data.only_in_memory.toString());
                 return align.toString();
 
@@ -142,10 +142,9 @@ export class Entry {
             }
 
             case "unknown": {
-                align.add("Unknown:", this.name);
                 align.add("Size:", formatBytes(this.size));
                 let ret = align.toString();
-                ret += "\n" +
+                ret += "\n\n" +
                     "The unknown part in the binary.\n" +
                     "Can be ELF Header, Program Header, align offset...\n" +
                     "We just don't know.";
@@ -206,7 +205,7 @@ function childrenFromResult(result: Result): Entry[] {
     }
     const leftSize = result.size - children.reduce((acc, child) => acc + child.getSize(), 0);
     if (leftSize > 0) {
-        const name = `${result.name} Unknown`
+        const name = `Unknown`
         children.push(new Entry(name, leftSize, "unknown"));
     }
 

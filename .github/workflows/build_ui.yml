@@ -1,0 +1,52 @@
+name: Build UI
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - 'ui/**'
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          standalone: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        working-directory: ./ui
+        run: pnpm install
+
+      - name: Build
+        working-directory: ./ui
+        run: pnpm build
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifactErrorsFailBuild: true
+          allowUpdates: true
+          artifactContentType: 'text/html'
+          artifacts: 'ui/dist/index.html'
+          tag: ui
+          commit: master
+
+
+      

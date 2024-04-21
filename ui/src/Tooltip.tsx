@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {HierarchyRectangularNode} from "d3-hierarchy";
-import {Entry} from "./entry.ts";
+import {Entry} from "./tool/entry.ts";
 
 const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
@@ -15,30 +15,25 @@ export const Tooltip: React.FC<TooltipProps> =
          node,
          visible,
      }) => {
-
         const ref = useRef<HTMLDivElement>(null);
         const [style, setStyle] = useState({});
 
-        const content = useMemo(() => {
-            if (!node) return null;
+        const path = useMemo(() => {
+            if (!node) return "";
 
-            const path = node
+            return node
                 .ancestors()
                 .reverse()
+                .slice(1)
                 .map((d) => d.data.getName())
                 .join("/");
+        }, [node])
 
-            return (
-                <>
-                    <div>{path}</div>
-                    <pre>
-                        {node.data.toString()}
-                    </pre>
-                </>
-            );
+        const content = useMemo(() => {
+            return node?.data.toString() ?? "";
         }, [node]);
 
-        const updatePosition = (mouseCoords: { x: number; y: number }) => {
+        const updatePosition = useCallback((mouseCoords: { x: number; y: number }) => {
             if (!ref.current) return;
 
             const pos = {
@@ -59,7 +54,7 @@ export const Tooltip: React.FC<TooltipProps> =
             }
 
             setStyle(pos);
-        };
+        }, []);
 
         useEffect(() => {
             const handleMouseMove = (event: MouseEvent) => {
@@ -77,7 +72,10 @@ export const Tooltip: React.FC<TooltipProps> =
 
         return (
             <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>
-                {content}
+                <div>{path}</div>
+                <pre>
+                    {content}
+                </pre>
             </div>
         );
     };

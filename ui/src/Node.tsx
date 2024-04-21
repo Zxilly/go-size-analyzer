@@ -1,8 +1,8 @@
 import {HierarchyRectangularNode} from "d3-hierarchy";
 import React, {useLayoutEffect, useRef} from "react";
-import {Entry} from "./entry.ts";
-import {NodeColorGetter} from "./color.ts";
-import {PADDING, TOP_PADDING} from "./const.ts";
+import {Entry} from "./tool/entry.ts";
+import {NodeColorGetter} from "./tool/color.ts";
+import {PADDING, TOP_PADDING} from "./tool/const.ts";
 
 type NodeEventHandler = (event: HierarchyRectangularNode<Entry>) => void;
 
@@ -33,9 +33,9 @@ export const Node: React.FC<NodeProps> = (
     const height = y1 - y0;
 
     const textProps: Record<string, number | string | null | undefined> = {
-        "font-size": "0.7em",
-        "dominant-baseline": "middle",
-        "text-anchor": "middle",
+        "fontSize": "0.7em",
+        "dominantBaseline": "middle",
+        "textAnchor": "middle",
         x: width / 2,
     };
     if (children != null) {
@@ -53,7 +53,7 @@ export const Node: React.FC<NodeProps> = (
             textRectRef.current = textRef.current.getBoundingClientRect();
         }
 
-        let scale = 1;
+        let scale: number;
         if (children != null) {
             scale = Math.min(
                 (width * 0.9) / textRectRef.current.width,

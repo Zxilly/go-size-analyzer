@@ -11,3 +11,4 @@ go.work
 data.json
 vendor/
 research/bins/
+research/__pycache__/

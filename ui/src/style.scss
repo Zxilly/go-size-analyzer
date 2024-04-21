@@ -45,10 +45,10 @@ svg {
   max-height: 100vh;
 }
 
-main {
+#root {
   flex-grow: 1;
   height: 100vh;
-  padding: 20px;
+  padding: 10px;
 }
 
 .tooltip {
@@ -75,4 +75,5 @@ main {
 
 .node {
   cursor: pointer;
+  margin: 2px;
 }

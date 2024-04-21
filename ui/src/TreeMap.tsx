@@ -1,10 +1,10 @@
-import {loadData} from "./utils.ts";
+import {loadData} from "./tool/utils.ts";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {Entry} from "./entry.ts";
+import {Entry} from "./tool/entry.ts";
 import {useWindowSize} from "usehooks-ts";
-import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapResquarify} from "d3-hierarchy";
+import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapSquarify} from "d3-hierarchy";
 import {group} from "d3-array";
-import createRainbowColor from "./color.ts";
+import createRainbowColor from "./tool/color.ts";
 import {Tooltip} from "./Tooltip.tsx";
 import {Node} from "./Node.tsx";
 
@@ -31,21 +31,27 @@ function TreeMap() {
         return treemap<Entry>()
             .size([width, height])
             .paddingInner(2)
-            .paddingOuter(2)
+            //.paddingOuter(2)
             .paddingTop(20)
             .round(true)
-            .tile(treemapResquarify);
+            .tile(treemapSquarify);
     }, [height, width])
 
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)
+    const selectedNodeLeaveSet = useMemo(() => {
+        if (selectedNode === null) {
+            return new Set<Entry>()
+        }
+
+        return new Set(selectedNode.leaves().map((d) => d.data))
+    }, [selectedNode])
 
     const getZoomMultiplier = useCallback((node: Entry) => {
         if (selectedNode === null) {
             return 1
         }
 
-        const leaves = new Set(selectedNode.leaves().map((d) => d.data))
-        return leaves.has(node) ? 1 : 0
+        return selectedNodeLeaveSet.has(node) ? 1 : 0
     }, [selectedNode])
 
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
