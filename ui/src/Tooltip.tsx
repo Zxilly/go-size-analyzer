@@ -21,12 +21,20 @@ export const Tooltip: React.FC<TooltipProps> =
         const path = useMemo(() => {
             if (!node) return "";
 
+            const typ = node.data.getType()
+
+            if (typ === "container" || typ === "result") {
+                return node.data.getName();
+            }
+
             return node
                 .ancestors()
                 .reverse()
-                .slice(1)
-                .map((d) => d.data.getName())
-                .join("/");
+                .filter((d) => {
+                    const typ = d.data.getType();
+                    return typ !== "container" && typ !== "result"
+                }).map((d) => d.data.getName()).join("/");
+
         }, [node])
 
         const content = useMemo(() => {

@@ -8,7 +8,7 @@
 go.work
 
 .idea/
-data.json
+ui/data.json
 vendor/
 research/bins/
 research/__pycache__/

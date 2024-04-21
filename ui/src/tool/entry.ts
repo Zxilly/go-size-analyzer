@@ -1,34 +1,29 @@
 import {File, isFile, isPackage, isResult, isSection, Package, Result, Section} from "../generated/schema.ts";
 import {id} from "./id.ts";
-import {formatBytes} from "./utils.ts";
+import {formatBytes, title} from "./utils.ts";
 import {max} from "d3-array";
 
 type Candidate = Section | File | Package | Result;
 
-interface Disasm {
-    name: string;
-    size: number;
-}
-
-type EntryType = "section" | "file" | "package" | "result" | "disasm" | "unknown";
+type EntryType = "section" | "file" | "package" | "result" | "disasm" | "unknown" | "container";
 
 export class Entry {
     private readonly type: EntryType;
-    private readonly data: Candidate | Disasm;
+    private readonly data?: Candidate;
     private readonly size: number;
     private readonly name: string;
     private readonly children: Entry[] = [];
     private readonly uid = id();
+    explain: string = ""; // should only be used by the container type
 
     constructor(data: Candidate)
-    constructor(name: string, size: number, type: EntryType)
-    constructor(data_or_name: Candidate | string, size?: number, type?: EntryType) {
+    constructor(name: string, size: number, type: EntryType, children?: Entry[])
+    constructor(data_or_name: Candidate | string, size?: number, type?: EntryType, children: Entry[] = []) {
         if (typeof data_or_name === "string") {
             this.type = type!;
-            this.data = {name: data_or_name, size: size!};
             this.size = size!;
             this.name = data_or_name;
-            this.children = [];
+            this.children = children;
             return
         }
 
@@ -96,7 +91,7 @@ export class Entry {
     public toString(): string {
         const align = new aligner();
 
-        function assertTyp<T extends Candidate | Disasm>(_c: Candidate | Disasm): asserts _c is T {
+        function assertTyp<T extends Candidate>(_c?: Candidate): asserts _c is T {
         }
 
         switch (this.type) {
@@ -135,7 +130,7 @@ export class Entry {
                 align.add("Disasm:", this.name);
                 align.add("Size:", formatBytes(this.size));
                 let ret = align.toString();
-                ret += "\n" +
+                ret += "\n\n" +
                     "This size was not accurate." +
                     "The real size determined by disassembling can be larger.";
                 return ret;
@@ -151,6 +146,13 @@ export class Entry {
                 return ret;
             }
 
+            case "container": {
+                let ret = this.explain + "\n"
+                align.add("Size:", formatBytes(this.size));
+                ret += "\n" + align.toString();
+                return ret;
+            }
+
             default:
                 throw new Error("Unknown candidate type");
         }
@@ -160,16 +162,16 @@ export class Entry {
         return this.size;
     }
 
+    public getType(): EntryType {
+        return this.type;
+    }
+
     public getName(): string {
         return this.name;
     }
 
     public getChildren(): Entry[] {
         return this.children;
-    }
-
-    public getData(): Candidate | Disasm {
-        return this.data;
     }
 
     public getID(): string {
@@ -197,12 +199,40 @@ function childrenFromPackage(pkg: Package): Entry[] {
 
 function childrenFromResult(result: Result): Entry[] {
     const children: Entry[] = [];
+
+    const sectionContainerChildren: Entry[] = []
     for (const section of result.sections) {
-        children.push(new Entry(section));
+        sectionContainerChildren.push(new Entry(section));
     }
+    const sectionContainerSize = sectionContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
+    const sectionContainer = new Entry("Unknown Sections Size", sectionContainerSize, "container", sectionContainerChildren);
+    sectionContainer.explain = "The unknown size of the sections in the binary."
+    children.push(sectionContainer);
+
+
+    let typedPackages: Record<string, Package[]> = {};
     for (const pkg of Object.values(result.packages)) {
-        children.push(new Entry(pkg));
+        if (typedPackages[pkg.type] == null) {
+            typedPackages[pkg.type] = [];
+        }
+        typedPackages[pkg.type].push(pkg);
     }
+    const typedPackagesChildren: Entry[] = []
+    for (const [type, packages] of Object.entries(typedPackages)) {
+        const packageContainerChildren: Entry[] = [];
+        for (const pkg of packages) {
+            packageContainerChildren.push(new Entry(pkg));
+        }
+        const packageContainerSize = packageContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
+        const packageContainer = new Entry(`${title(type)} Packages Size`, packageContainerSize, "container", packageContainerChildren);
+        packageContainer.explain = `The size of the ${type} packages in the binary.`
+        typedPackagesChildren.push(packageContainer);
+    }
+    const packageContainerSize = typedPackagesChildren.reduce((acc, child) => acc + child.getSize(), 0);
+    const packageContainer = new Entry("Packages Size", packageContainerSize, "container", typedPackagesChildren);
+    packageContainer.explain = "The size of the packages in the binary."
+    children.push(packageContainer);
+
     const leftSize = result.size - children.reduce((acc, child) => acc + child.getSize(), 0);
     if (leftSize > 0) {
         const name = `Unknown`

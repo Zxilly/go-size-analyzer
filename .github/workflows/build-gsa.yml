@@ -2,6 +2,8 @@ name: goreleaser
 
 on:
   push:
+    tags:
+      - "*"
 
 permissions:
   contents: write
@@ -27,4 +29,10 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/ui/index.html
 
-      - name: Run goreleaser
+      - uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
