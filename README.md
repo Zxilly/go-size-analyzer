@@ -1,84 +1,117 @@
-# gsv
+# go-size-analyzer
 
+A simple tool to analyze the size of a Go compiled binary. 
 
-A simple tool to view the size of a Go compiled binary. 
+## Installation
 
-> [!CAUTION]
-> The GSV is currently being refactored for implementation in Golang. As part of this process, search functionality based on the pclntab table will be added, which will eliminate the need for debug information.
->
-> If you wish to view the code of the previous version, it is available on the 'rust' branch.
+Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
+
+Use `go install` is not recommended, because it won't include the embed ui template, which is required for the web mode.
+
 ## Usage
 
-you can use `gsv` to analyze the binary:
+you can use `gsa` to analyze the binary:
 
 ```bash
-Analysis golang compiled binary size
+Usage:
+  gsa [OPTIONS] [file]
 
-Usage: gsv [OPTIONS] <BINARY>
+Application Options:
+      --verbose                 Verbose output
+  -f, --format=[text|json|html] Output format (default: text)
+  -o, --output=                 Write to file
+      --version                 Show version
+
+Text Options:
+      --hide-sections           Hide sections
+      --hide-main               Hide main package
+      --hide-std                Hide standard library
+
+Json Options:
+      --indent=                 Indentation for json output
+
+Html Options:
+      --web                     Start web server for html output, this option
+                                will override format to html and ignore output
+                                option
+      --listen=                 Listen address (default: :8080)
+      --open                    Open browser
+
+Help Options:
+  -h, --help                    Show this help message
 
 Arguments:
-  <BINARY>  The binary to analysis
-
-Options:
-  -p, --port <PORT>  The port to listen on for web mode [default: 8888]
-  -w, --web          View the result in the browser
-  -h, --help         Print help
+  file:                         Binary file to analyze
 ```
 
 > [!CAUTION]
 > 
-> The tool can work with stripped binaries, but for those built with cgo enabled, a symbol table is required. Otherwise, the results can be completely inaccurate.
->
->The tool will display a warning message when it detects this situation. However, if you build the binary with static linking and cgo, it may be difficult to identify.
+> The tool can work with stripped binaries, but it may lead to inaccurate results.
+
 
 ### Example
 
 #### Web mode
 
 ```bash
-$ gsv --web golang-compiled-binary
+$ gsa --web golang-compiled-binary
 ```
 
-Will start a web server on port 8888, you can view the result in your browser.
+Will start a web server on port 8080, you can view the result in your browser.
 
 The web page will look like this:
 
-![image](https://user-images.githubusercontent.com/31370133/225002647-1e37e52f-dada-4adb-a33b-e806396621cf.png)
+![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/78bb8105-fc5a-4852-8704-8c2fac3bf475)
 
 
-You can click the darker part to see the detail, and click the top bar to return to the previous level.
+You can click to expand the package to see the details.
 
 #### Text mode 
 
 ```bash
-$ gsv golang-compiled-binary
-github.com/swaggo/files                             : 8.19MB
-.gopclntab                                          : 6.80MB
-Debug Section                                       : 6.34MB
-github.com/spf13/cobra                              : 4.16MB
-ariga.io/atlas/sql                                  : 1.40MB
-C                                                   : 1.14MB
-net/http                                            : 1.09MB
-google.golang.org/protobuf/internal                 : 1.07MB
-github.com/ZNotify/server                           : 1.03MB
-golang.org/x/net                                    : 965.35KB
+$ gsa docker-compose-linux-x86_64
++-------------------------------------------------------------------------------------------------------------+
+| docker-compose-linux-x86_64                                                                                 |
++---------+-----------------------------------------------+--------+-----------+
+| PERCENT | NAME                                          | SIZE   | TYPE      |
++---------+-----------------------------------------------+--------+-----------+
+| 27.76%  | .gopclntab                                    | 17 MB  | section   |
+| 15.17%  | .rodata                                       | 9.5 MB | section   |
+| 11.63%  | k8s.io/api                                    | 7.3 MB | vendor    |
+| 6.69%   | .strtab                                       | 4.2 MB | section   |
+| 3.47%   | k8s.io/client-go                              | 2.2 MB | vendor    |
+| 3.37%   | .symtab                                       | 2.1 MB | section   |
+| 2.28%   | github.com/moby/buildkit                      | 1.4 MB | vendor    |
+| 1.54%   | github.com/gogo/protobuf                      | 968 kB | vendor    |
+| 1.53%   | github.com/google/gnostic-models              | 958 kB | vendor    |
+| 1.33%   | github.com/aws/aws-sdk-go-v2                  | 836 kB | vendor    |
+| 1.26%   | crypto                                        | 790 kB | std       |
+| 1.25%   | google.golang.org/protobuf                    | 782 kB | vendor    |
+| 1.24%   | k8s.io/apimachinery                           | 779 kB | vendor    |
+| 1.24%   | net                                           | 777 kB | std       |
+| 1.20%   | github.com/docker/compose/v2                  | 752 kB | main      |
+| 0.95%   | .noptrdata                                    | 596 kB | section   |
+| 0.93%   | go.opentelemetry.io/otel                      | 582 kB | vendor    |
+| 0.85%   | google.golang.org/grpc                        | 533 kB | vendor    |
+| 0.71%   | runtime                                       | 442 kB | std       |
+| 0.59%   | github.com/docker/buildx                      | 371 kB | vendor    |
+| 0.55%   | github.com/docker/docker                      | 347 kB | vendor    |
+| 0.53%   |                                               | 331 kB | generated |
+| 0.52%   | golang.org/x/net                              | 326 kB | vendor    |
+| 0.47%   | github.com/theupdateframework/notary          | 294 kB | vendor    |
 
 ...[Collapsed]...
 
-runtime/cgo                                         : 78.00B
-internal/race                                       : 46.00B
-.comment                                            : 43.00B
-.note.gnu.build-id                                  : 36.00B
-.note.gnu.property                                  : 32.00B
-.interp                                             : 28.00B
-.eh_frame_hdr                                       : 28.00B
-.init                                               : 27.00B
-.rela.plt                                           : 24.00B
-.rela.dyn                                           : 24.00B
-.fini_array                                         : 8.00B
-.plt.got                                            : 8.00B
-.init_array                                         : 8.00B
-Total                                               : 55.08MB
+| 0.00%   | database/sql/driver                           | 128 B  | std       |
+| 0.00%   | .note.go.buildid                              | 100 B  | section   |
+| 0.00%   | hash/fnv                                      | 96 B   | std       |
+| 0.00%   | maps                                          | 96 B   | std       |
+| 0.00%   | github.com/moby/sys/sequential                | 64 B   | vendor    |
+| 0.00%   | .text                                         | 1 B    | section   |
++---------+-----------------------------------------------+--------+-----------+
+| 97.65%  | KNOWN                                         | 61 MB  |           |
+| 100%    | TOTAL                                         | 63 MB  |           |
++---------+-----------------------------------------------+--------+-----------+
 
 ```
 
