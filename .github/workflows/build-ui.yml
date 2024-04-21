@@ -7,6 +7,12 @@ on:
       - 'ui/**'
       - '.github/workflows/build-ui.yml'
   workflow_call:
+    inputs:
+      external_call:
+        description: 'To distinguish workflow_call from regular push'
+        type: boolean
+        required: false
+        default: true
 
 concurrency:
   group: ${{ github.ref }}-ui
@@ -44,7 +50,7 @@ jobs:
         run: pnpm build
 
       - name: Release
-        if: github.event_name == 'push'
+        if : ${{ !inputs.external_call }}
         uses: ncipollo/release-action@v1
         with:
           artifactErrorsFailBuild: true
@@ -56,7 +62,7 @@ jobs:
           prerelease: true
 
       - name: Upload artifact
-        if: github.event_name == 'workflow_call'
+        if: ${{ inputs.external_call }}
         uses: actions/upload-artifact@v4
         with:
           name: ui
