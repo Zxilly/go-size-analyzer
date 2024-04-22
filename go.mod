@@ -15,7 +15,7 @@ require (
 	github.com/schollz/progressbar/v3 v3.14.2
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
 	golang.org/x/arch v0.7.0
-	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 )
 
 require (
@@ -27,4 +27,4 @@ require (
 	golang.org/x/term v0.18.0 // indirect
 )
 
-replace github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf
+replace github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf

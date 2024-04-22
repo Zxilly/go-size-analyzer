@@ -207,11 +207,12 @@ func (p *Package) GetAddrSpace() AddrSpace {
 
 func (p *Package) GetCoverage() AddrCoverage {
 	p.disAsmCoverage.Do(func() {
-		this := p.GetAddrSpace().ToCoverage()
+		this := p.GetAddrSpace().ToDirtyCoverage()
 		subs := lo.Map(maps.Values(p.SubPackages), func(p *Package, _ int) AddrCoverage {
 			return p.GetCoverage()
 		})
-		p.disAsmCoverage.Set(MergeCoverage(append([]AddrCoverage{this}, subs...)...))
+		merged, _ := MergeCoverage(append(subs, this))
+		p.disAsmCoverage.Set(merged)
 	})
 	return p.disAsmCoverage.Get()
 }

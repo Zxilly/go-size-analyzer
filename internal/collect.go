@@ -22,12 +22,12 @@ func NewKnownInfo(file *gore.GoFile) (*KnownInfo, error) {
 
 	k.LoadSectionMap()
 
-	err := k.LoadPackages(file)
+	err := k.LoadPackages()
 	if err != nil {
 		return nil, err
 	}
 
-	err = k.AnalyzeSymbol(file)
+	err = k.AnalyzeSymbol()
 	if err != nil {
 		if errors.Is(err, wrapper.ErrNoSymbolTable) {
 			slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")

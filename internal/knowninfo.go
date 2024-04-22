@@ -2,6 +2,7 @@ package internal
 
 import (
 	"debug/gosym"
+	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
@@ -45,7 +46,7 @@ func (k *KnownInfo) LoadSectionMap() {
 	return
 }
 
-func (k *KnownInfo) AnalyzeSymbol(file *gore.GoFile) error {
+func (k *KnownInfo) AnalyzeSymbol() error {
 	slog.Info("Analyzing symbols...")
 
 	err := k.wrapper.LoadSymbols(k.MarkSymbol)
@@ -95,18 +96,18 @@ func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	return utils.UglyGuess(pn)
 }
 
-func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
+func (k *KnownInfo) LoadPackages() error {
 	slog.Info("Loading packages...")
 
 	pkgs := NewDependencies(k)
 	k.Deps = pkgs
 
-	pclntab, err := file.PCLNTab()
+	pclntab, err := k.gore.PCLNTab()
 	if err != nil {
 		return err
 	}
 
-	self, err := file.GetPackages()
+	self, err := k.gore.GetPackages()
 	if err != nil {
 		return err
 	}
@@ -114,22 +115,22 @@ func (k *KnownInfo) LoadPackages(file *gore.GoFile) error {
 		pkgs.Add(p, entity.PackageTypeMain, pclntab)
 	}
 
-	grStd, _ := file.GetSTDLib()
+	grStd, _ := k.gore.GetSTDLib()
 	for _, p := range grStd {
 		pkgs.Add(p, entity.PackageTypeStd, pclntab)
 	}
 
-	grVendor, _ := file.GetVendors()
+	grVendor, _ := k.gore.GetVendors()
 	for _, p := range grVendor {
 		pkgs.Add(p, entity.PackageTypeVendor, pclntab)
 	}
 
-	grGenerated, _ := file.GetGeneratedPackages()
+	grGenerated, _ := k.gore.GetGeneratedPackages()
 	for _, p := range grGenerated {
 		pkgs.Add(p, entity.PackageTypeGenerated, pclntab)
 	}
 
-	grUnknown, _ := file.GetUnknown()
+	grUnknown, _ := k.gore.GetUnknown()
 	for _, p := range grUnknown {
 		pkgs.Add(p, entity.PackageTypeUnknown, pclntab)
 	}
@@ -161,7 +162,7 @@ func (k *KnownInfo) RequireModInfo() {
 
 func (k *KnownInfo) CollectCoverage() {
 	// load coverage for pclntab and symbol
-	pclntabCov := k.KnownAddr.Pclntab.ToCoverage()
+	pclntabCov := k.KnownAddr.Pclntab.ToDirtyCoverage()
 
 	// merge all
 	covs := make([]entity.AddrCoverage, 0, len(k.Deps.topPkgs)+2)
@@ -169,7 +170,13 @@ func (k *KnownInfo) CollectCoverage() {
 		covs = append(covs, p.GetCoverage())
 	}
 	covs = append(covs, pclntabCov, k.KnownAddr.SymbolCoverage)
-	k.Coverage = entity.MergeCoverage(covs...)
+
+	var err *entity.ErrAddrCoverageConflict
+	k.Coverage, err = entity.MergeCoverage(covs)
+	if err != nil {
+		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))
+		os.Exit(1)
+	}
 }
 
 func (k *KnownInfo) CalculateSectionSize() {
@@ -177,8 +184,8 @@ func (k *KnownInfo) CalculateSectionSize() {
 		size := uint64(0)
 		for _, addr := range k.Coverage {
 			// calculate the overlapped size
-			start := max(section.Addr, addr.Addr)
-			end := min(section.Addr+section.Size, addr.Addr+addr.Size)
+			start := max(section.Addr, addr.Pos.Addr)
+			end := min(section.Addr+section.Size, addr.Pos.Addr+addr.Pos.Size)
 			if start < end {
 				size += end - start
 			}
@@ -192,7 +199,7 @@ func (k *KnownInfo) CalculatePackageSize() {
 		size := uint64(0)
 
 		for _, addr := range p.GetCoverage() {
-			size += addr.Size
+			size += addr.Pos.Size
 		}
 		for _, fn := range p.GetFunctions(true) {
 			size += fn.Size

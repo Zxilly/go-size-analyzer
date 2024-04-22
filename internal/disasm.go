@@ -29,6 +29,10 @@ func (k *KnownInfo) Disasm() error {
 	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, index int) []result {
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.Size)
 		candidates = lo.Filter(candidates, func(p disasm.PossibleStr, _ int) bool {
+			if p.Size <= 2 {
+				return false
+			}
+
 			return e.AddrIsString(p.Addr, int64(p.Size))
 		})
 		_ = pb.Add(1)

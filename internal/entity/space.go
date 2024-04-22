@@ -34,9 +34,12 @@ func MergeAddrSpace(others ...AddrSpace) AddrSpace {
 	return ret
 }
 
-// ToCoverage get the disAsmCoverage of the current address space
-func (a AddrSpace) ToCoverage() AddrCoverage {
-	return lo.MapToSlice(a, func(k uint64, v *Addr) AddrPos {
-		return v.AddrPos
+// ToDirtyCoverage get the disAsmCoverage of the current address space
+func (a AddrSpace) ToDirtyCoverage() AddrCoverage {
+	return lo.MapToSlice(a, func(k uint64, v *Addr) *CoveragePart {
+		return &CoveragePart{
+			Pos:   v.AddrPos,
+			Addrs: []*Addr{v},
+		}
 	})
 }

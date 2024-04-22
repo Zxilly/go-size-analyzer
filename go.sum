@@ -1,5 +1,5 @@
-github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf h1:7j4UDU64LA8HztL1Yq4sEVTFd74Y7aI7JIljNXMkiLA=
-github.com/Zxilly/gore v0.0.0-20240318154146-c4adda6837cf/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
+github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf h1:XwTMa7QFoxZTxgRzKeWnukI5AoWaMrnrk4Q1k+rrgWg=
+github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
 github.com/ZxillyFork/go-flags v0.0.0-20240325132113-057f93e1e1ff h1:OuVeRrJ/P1D9Ihxre9+V0ZMg0BTqNwA+f8rMPp5GuWQ=
 github.com/ZxillyFork/go-flags v0.0.0-20240325132113-057f93e1e1ff/go.mod h1:OGK3qX78jYPhFhhyc+QIabXoZhWm8TcpSJNHJM2qo+E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -39,8 +39,8 @@ go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 h1:lGdhQUN
 go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6/go.mod h1:FftLjUGFEDu5k8lt0ddY+HcrH/qU/0qk+H8j9/nTl3E=
 golang.org/x/arch v0.7.0 h1:pskyeJh/3AmoQ8CPE95vxHLqp1G1GfGNXTmcl9NEKTc=
 golang.org/x/arch v0.7.0/go.mod h1:FEVrYAQjsQXMVJ1nsMoVVXPZg6p2JE2mx8psSWTDQys=
-golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81 h1:6R2FC06FonbXQ8pK11/PDFY6N6LWlf9KlzibaCapmqc=
-golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81/go.mod h1:CQ1k9gNrJ50XIzaKCRR2hssIjF07kZFEiieALBM/ARQ=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f h1:99ci1mjWVBWwJiEKYY6jWa4d2nTQVIEhZIptnrVb1XY=
+golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f/go.mod h1:/lliqkxwWAhPjf5oSOIJup2XcqJaw8RGS6k3TGEc7GI=
 golang.org/x/sys v0.1.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.17.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
