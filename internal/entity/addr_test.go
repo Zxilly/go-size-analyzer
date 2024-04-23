@@ -1,10 +1,10 @@
 package entity_test
 
 import (
-	"github.com/samber/lo"
 	"testing"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 

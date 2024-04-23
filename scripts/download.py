@@ -56,6 +56,7 @@ def ensure_exist(filename: str):
         download(filename)
     else:
         print(f"{filename} exists.")
+    return p
 
 
 if __name__ == '__main__':

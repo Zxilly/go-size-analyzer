@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+
+jobs:
+  build-ui:
+    uses: ./.github/workflows/build-ui.yml
+
+  tests:
+    name: Tests
+    needs: build-ui
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      - name: Download UI file
+        uses: actions/download-artifact@v4
+        with:
+          name: ui
+  
+      - name: Move UI file
+        run: mv index.html internal/ui/index.html
+
+      - name: Run tests
+        run: go test -v -tags embed ./...
+
+      - name: Run integration tests
+        run: python scripts/tests.py

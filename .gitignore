@@ -16,5 +16,5 @@ vendor/
 
 ui/data.json
 
-research/bins/
-research/__pycache__/
+scripts/bins/
+scripts/__pycache__/
