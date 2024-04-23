@@ -6,7 +6,7 @@ import (
 	"runtime/debug"
 )
 
-const Version = "0.2.1"
+const Version = "0.2.2"
 
 func PrintVersionAndExit() {
 	fmt.Println("Version:", Version)
