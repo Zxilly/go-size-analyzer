@@ -13,44 +13,6 @@
 
 ## 使用
 
-您可以使用 `gsa` 来分析二进制文件：
-
-```bash
-用法：
-  gsa [选项] [文件]
-
-应用选项：
-      --verbose                 详细输出
-  -f, --format=[text|json|html] 输出格式 (默认: text)
-  -o, --output=                 写入文件
-      --version                 显示版本
-
-文本选项：
-      --hide-sections           隐藏 sections
-      --hide-main               隐藏主包
-      --hide-std                隐藏标准库
-
-Json 选项：
-      --indent=                 Json 输出的缩进
-
-Html 选项：
-      --web                     启动用于 html 输出的 web 服务器，此选项
-                                会将格式覆盖为 html 并忽略输出
-                                选项
-      --listen=                 监听地址 (默认: :8080)
-      --open                    打开浏览器
-
-帮助选项：
-  -h, --help                    显示此帮助消息
-
-参数：
-  file:                         要分析的二进制文件
-```
-
-> [!CAUTION]
->
-> 该工具可以分析剥离 symbol 的二进制文件，但可能导致结果不准确。
-
 ### Example
 
 #### Web mode
@@ -64,7 +26,6 @@ $ gsa --web golang-compiled-binary
 网页将如下所示：
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/78bb8105-fc5a-4852-8704-8c2fac3bf475)
-
 
 您可以点击以展开包以查看详细信息。
 
@@ -116,6 +77,44 @@ $ gsa docker-compose-linux-x86_64
 +---------+-----------------------------------------------+--------+-----------+
 
 ```
+
+### 完整选项
+
+```bash
+用法：
+  gsa [选项] [文件]
+
+应用选项：
+      --verbose                 详细输出
+  -f, --format=[text|json|html] 输出格式 (默认: text)
+  -o, --output=                 写入文件
+      --version                 显示版本
+
+文本选项：
+      --hide-sections           隐藏 sections
+      --hide-main               隐藏主包
+      --hide-std                隐藏标准库
+
+Json 选项：
+      --indent=                 Json 输出的缩进
+
+Html 选项：
+      --web                     启动用于 html 输出的 web 服务器，此选项
+                                会将格式覆盖为 html 并忽略输出
+                                选项
+      --listen=                 监听地址 (默认: :8080)
+      --open                    打开浏览器
+
+帮助选项：
+  -h, --help                    显示此帮助消息
+
+参数：
+  file:                         要分析的二进制文件
+```
+
+> [!CAUTION]
+>
+> 该工具可以分析剥离 symbol 的二进制文件，但可能导致结果不准确。
 
 ## TODO
 

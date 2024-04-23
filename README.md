@@ -15,45 +15,6 @@ Use `go install` is not recommended, because it won't include the embed ui templ
 
 ## Usage
 
-you can use `gsa` to analyze the binary:
-
-```bash
-Usage:
-  gsa [OPTIONS] [file]
-
-Application Options:
-      --verbose                 Verbose output
-  -f, --format=[text|json|html] Output format (default: text)
-  -o, --output=                 Write to file
-      --version                 Show version
-
-Text Options:
-      --hide-sections           Hide sections
-      --hide-main               Hide main package
-      --hide-std                Hide standard library
-
-Json Options:
-      --indent=                 Indentation for json output
-
-Html Options:
-      --web                     Start web server for html output, this option
-                                will override format to html and ignore output
-                                option
-      --listen=                 Listen address (default: :8080)
-      --open                    Open browser
-
-Help Options:
-  -h, --help                    Show this help message
-
-Arguments:
-  file:                         Binary file to analyze
-```
-
-> [!CAUTION]
-> 
-> The tool can work with stripped binaries, but it may lead to inaccurate results.
-
-
 ### Example
 
 #### Web mode
@@ -119,6 +80,44 @@ $ gsa docker-compose-linux-x86_64
 +---------+-----------------------------------------------+--------+-----------+
 
 ```
+
+### Full options
+
+```bash
+Usage:
+  gsa [OPTIONS] [file]
+
+Application Options:
+      --verbose                 Verbose output
+  -f, --format=[text|json|html] Output format (default: text)
+  -o, --output=                 Write to file
+      --version                 Show version
+
+Text Options:
+      --hide-sections           Hide sections
+      --hide-main               Hide main package
+      --hide-std                Hide standard library
+
+Json Options:
+      --indent=                 Indentation for json output
+
+Html Options:
+      --web                     Start web server for html output, this option
+                                will override format to html and ignore output
+                                option
+      --listen=                 Listen address (default: :8080)
+      --open                    Open browser
+
+Help Options:
+  -h, --help                    Show this help message
+
+Arguments:
+  file:                         Binary file to analyze
+```
+
+> [!CAUTION]
+>
+> The tool can work with stripped binaries, but it may lead to inaccurate results.
 
 ## TODO
 
