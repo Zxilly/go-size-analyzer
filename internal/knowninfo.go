@@ -171,7 +171,7 @@ func (k *KnownInfo) CollectCoverage() {
 	}
 	covs = append(covs, pclntabCov, k.KnownAddr.SymbolCoverage)
 
-	var err *entity.ErrAddrCoverageConflict
+	var err error
 	k.Coverage, err = entity.MergeCoverage(covs)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))

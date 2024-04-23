@@ -4,7 +4,7 @@ type FuncType = string
 
 const (
 	FuncTypeFunction FuncType = "function"
-	FuncTypeMethod            = "method"
+	FuncTypeMethod   FuncType = "method"
 )
 
 type Function struct {

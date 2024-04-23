@@ -1,6 +1,6 @@
 package entity
 
-type AddrType string
+type AddrType = string
 
 const (
 	AddrTypeUnknown AddrType = "unknown" // it exists, but should never be collected

@@ -13,7 +13,7 @@ type AddrPos struct {
 }
 
 type Addr struct {
-	AddrPos
+	*AddrPos
 
 	Pkg      *Package  // package can be nil for cgo symbols
 	Function *Function // for symbol source it will be a nil
@@ -33,7 +33,7 @@ func (a Addr) String() string {
 type AddrCoverage []*CoveragePart
 
 type CoveragePart struct {
-	Pos   AddrPos
+	Pos   *AddrPos
 	Addrs []*Addr
 }
 
@@ -43,12 +43,12 @@ type ErrAddrCoverageConflict struct {
 	Pos2 *CoveragePart
 }
 
-func (e ErrAddrCoverageConflict) Error() string {
+func (e *ErrAddrCoverageConflict) Error() string {
 	return fmt.Sprintf("addr %x pos %#v and %#v conflict", e.Addr, e.Pos1, e.Pos2)
 }
 
 // MergeCoverage merge multiple AddrCoverage
-func MergeCoverage(coves []AddrCoverage) (AddrCoverage, *ErrAddrCoverageConflict) {
+func MergeCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 	size := 0
 	for _, cov := range coves {
 		size += len(cov)
