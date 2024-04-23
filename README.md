@@ -4,6 +4,7 @@ English | [简体中文](./README_zh-CN.md)
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zxilly/go-size-analyzer)](https://goreportcard.com/report/github.com/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
+[![codebeat badge](https://codebeat.co/badges/1c911d47-6e4d-4f30-becb-939406fd8998)](https://codebeat.co/projects/github-com-zxilly-go-size-analyzer-master)
 
 A simple tool to analyze the size of a Go compiled binary. 
 
@@ -124,7 +125,7 @@ Arguments:
 - [ ] Add more pattern for disassembling the binary
 - [ ] Extract the information from the dwarf section
 - [ ] Count the symbol size itself to package
-- [ ] Add other chart like flame graph, pie chart etc.
+- [ ] Add other charts like flame graph, pie chart, etc.
 - [ ] Support C++/Rust symbol demangling in cgo
 
 ## Contribution

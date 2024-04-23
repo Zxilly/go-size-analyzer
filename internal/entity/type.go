@@ -15,9 +15,3 @@ const (
 	AddrSourceSymbol                   = "symbol"
 	AddrSourceDisasm                   = "disasm"
 )
-
-type AddrPos struct {
-	Addr uint64
-	Size uint64
-	Type AddrType
-}
