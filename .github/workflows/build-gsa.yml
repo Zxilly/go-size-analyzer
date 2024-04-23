@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: stable
+          cache: true
+          check-latest: true
 
       - name: Download UI file
         uses: actions/download-artifact@v4
