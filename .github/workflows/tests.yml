@@ -47,3 +47,5 @@ jobs:
 
       - name: Run integration tests
         run: python scripts/tests.py
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

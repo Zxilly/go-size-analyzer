@@ -20,7 +20,14 @@ release_info_cache = None
 def get_release_info():
     global release_info_cache
     if release_info_cache is None:
-        response = requests.get(f'https://api.github.com/repos/{BIN_REPO}/releases/tags/{TARGET_TAG}')
+        # read github token if possible
+        token = os.getenv('GITHUB_TOKEN')
+        headers = {}
+        if token:
+            headers['Authorization'] = f'Bearer {token}'
+
+
+        response = requests.get(f'https://api.github.com/repos/{BIN_REPO}/releases/tags/{TARGET_TAG}', headers=headers)
         response.raise_for_status()
         release_info_cache = response.json()
     return release_info_cache
