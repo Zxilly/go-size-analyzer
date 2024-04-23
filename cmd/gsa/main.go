@@ -33,9 +33,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	if options.HtmlOptions.Web {
+		if options.Format != "" && options.Format != "html" {
+			slog.Warn("set --web option will override format to html")
+		}
+
+		options.Format = "html"
+	}
+
 	var b []byte
 	switch options.Format {
-	case "text":
+	case "text", "":
 		b = []byte(printer.Text(result, &printer.TextOption{
 			HideSections: options.TextOptions.HideSections,
 			HideMain:     options.TextOptions.HideMain,

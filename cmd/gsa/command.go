@@ -6,7 +6,7 @@ import (
 
 type Options struct {
 	Verbose bool   `long:"verbose" description:"Verbose output"`
-	Format  string `short:"f" long:"format" description:"Output format" default:"text" choice:"text" choice:"json" choice:"html"`
+	Format  string `short:"f" long:"format" description:"Output format" choice:"text" choice:"json" choice:"html"`
 
 	TextOptions struct {
 		HideSections bool `long:"hide-sections" description:"Hide sections"`
