@@ -43,7 +43,11 @@ def download(filename: str):
     response = requests.get(file_info['browser_download_url'])
     response.raise_for_status()
 
-    with open(get_bin_path(filename), 'wb') as f:
+    bin_path = get_bin_path(filename)
+
+    os.makedirs(os.path.dirname(bin_path), exist_ok=True)
+
+    with open(bin_path, 'wb') as f:
         f.write(response.content)
 
     print(f"Downloaded {filename}")
