@@ -75,16 +75,12 @@ def get_result_file(name: str) -> str:
     return os.path.join(get_result_dir(), name)
 
 
-def get_coverage_dir() -> str:
-    return os.path.join(get_project_root(), "coverage")
-
 
 def init_dirs():
     paths: List[str] = [
         get_result_dir(),
         get_covdata_integration_dir(),
         get_covdata_unit_dir(),
-        get_coverage_dir(),
     ]
 
     for p in paths:

@@ -59,4 +59,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Zxilly/go-size-analyzer
           verbose: true
-          directory: coverage
+          file: coverage.profile
