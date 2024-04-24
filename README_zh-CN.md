@@ -3,6 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zxilly/go-size-analyzer)](https://goreportcard.com/report/github.com/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
 [![codebeat badge](https://codebeat.co/badges/1c911d47-6e4d-4f30-becb-939406fd8998)](https://codebeat.co/projects/github-com-zxilly-go-size-analyzer-master)
+[![codecov](https://codecov.io/github/Zxilly/go-size-analyzer/graph/badge.svg?token=Q4TDH6RFZN)](https://codecov.io/github/Zxilly/go-size-analyzer)
 
 一个简单的工具，用于分析 Go 编译二进制文件的大小。
 
