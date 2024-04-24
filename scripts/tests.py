@@ -168,10 +168,10 @@ def merge_covdata():
             "go",
             "tool",
             "covdata",
-            "merge",
+            "textfmt",
             "-i=./covdata/unit,./covdata/integration",
             "-o",
-            "coverage",
+            "coverage.profile",
         ],
         check=True,
     )
