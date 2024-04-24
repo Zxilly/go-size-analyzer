@@ -35,6 +35,7 @@ def build_gsa():
             go,
             "build",
             "-cover",
+            "-covermode=atomic",
             "-tags",
             "embed",
             "-o",
