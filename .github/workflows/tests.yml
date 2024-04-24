@@ -42,10 +42,21 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/ui/index.html
 
-      - name: Run tests
-        run: go test -v -tags embed ./...
+      - name: Prepare covrage dir
+        run: |
+          mkdir -p covdata
+          mkdir -p covdata/unit
+          mkdir -p covdata/integration
 
-      - name: Run integration tests
+      - name: Run tests
         run: python scripts/tests.py
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: Zxilly/go-size-analyzer
+          verbose: true
+          directory: coverage

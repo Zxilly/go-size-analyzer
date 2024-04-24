@@ -18,3 +18,7 @@ ui/data.json
 
 scripts/bins/
 scripts/__pycache__/
+
+results/
+covdata/
+coverage/
