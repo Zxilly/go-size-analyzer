@@ -51,7 +51,7 @@ jobs:
       - name: Cache test binaries
         uses: actions/cache@v4
         with:
-          path: ${{ runner.workspace }}/scripts/bins
+          path: scripts/bins
           key: ${{ hashFiles('scripts/tests.py') }}
           enableCrossOsArchive: true
 
