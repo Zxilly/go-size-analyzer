@@ -32,7 +32,7 @@ jobs:
       - name: Add python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install -r scripts/requirements.txt
 
       - name: Download UI file
         uses: actions/download-artifact@v4
@@ -42,14 +42,21 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/ui/index.html
 
-      - name: Prepare covrage dir
+      - name: Prepare coverage dir
         run: |
           mkdir -p covdata
           mkdir -p covdata/unit
           mkdir -p covdata/integration
 
+      - name: Cache test binaries
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.workspace }}/scripts/bins
+          key: ${{ hashFiles('scripts/tests.py') }}
+          enableCrossOsArchive: true
+
       - name: Run tests
-        run: python scripts/tests.py
+        run: python scripts/tests.py --cockroachdb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

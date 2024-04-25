@@ -1,9 +1,17 @@
+import io
 import os
 import shutil
 import subprocess
+import tarfile
 import tempfile
-from typing import List, Tuple
-from download import ensure_exist
+import zipfile
+from argparse import ArgumentParser
+from typing import List
+
+import requests
+from tqdm import tqdm
+
+from download import ensure_exist as ensure_example_bin_exist
 
 
 def require_go() -> str:
@@ -44,6 +52,8 @@ def build_gsa():
         ],
         text=True,
         capture_output=True,
+        cwd=get_project_root(),
+        encoding="utf-8",
     )
 
     if ret.returncode != 0:
@@ -76,7 +86,6 @@ def get_result_file(name: str) -> str:
     return os.path.join(get_result_dir(), name)
 
 
-
 def init_dirs():
     paths: List[str] = [
         get_result_dir(),
@@ -90,7 +99,7 @@ def init_dirs():
             os.remove(os.path.join(p, f))
 
 
-def get_example_data() -> Tuple[str, str]:
+def ensure_example_data() -> list[tuple[str, str]]:
     print("Getting example data...")
     test = []
     for v in ["1.18", "1.19", "1.20", "1.21"]:
@@ -98,7 +107,7 @@ def get_example_data() -> Tuple[str, str]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
                     name = f"bin-{o}-{v}-amd64{pie}{cgo}"
-                    p = ensure_exist(name)
+                    p = ensure_example_bin_exist(name)
                     test.append((name, p))
     print("Got example data.")
     return test
@@ -118,21 +127,35 @@ def extract_output(p: subprocess.CompletedProcess) -> str:
     return ret
 
 
-def eval_test(gsa: str, target: Tuple[str, str]):
-    name, path = target
-
+def eval_test(gsa: str, name: str, path: str):
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
 
     ret = subprocess.run(
-        [gsa, "-f", "text", path], env=env, text=True, capture_output=True
+        [gsa, "-f", "text", path],
+        env=env, text=True, capture_output=True, cwd=get_project_root(),
+        encoding="utf-8",
     )
+    output_name = get_result_file(f"{name}.txt")
 
-    with open(get_result_file(f"{name}.txt"), "w") as f:
+    with open(output_name, "w", encoding="utf-8") as f:
         f.write(extract_output(ret))
 
     if ret.returncode != 0:
-        raise Exception(f"Failed to run gsa on {name}.")
+        raise Exception(f"Failed to run gsa on {name}. Check {output_name}.")
+
+    ret = subprocess.run(
+        [gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json"), "--hide-progress"],
+        env=env, text=True, capture_output=True, cwd=get_project_root(),
+        encoding="utf-8",
+    )
+    output_name = get_result_file(f"{name}.json.txt")
+
+    with open(output_name, "w", encoding="utf-8") as f:
+        f.write(extract_output(ret))
+
+    if ret.returncode != 0:
+        raise Exception(f"Failed to run gsa on {name}. Check {output_name}.")
 
 
 def run_unit_tests():
@@ -153,6 +176,24 @@ def run_unit_tests():
             f"-test.gocoverdir={unit_path}",
         ],
         check=True,
+        cwd=get_project_root(),
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            "go",
+            "test",
+            "-v",
+            "-race",
+            "-covermode=atomic",
+            "-cover",
+            "./...",
+            f"-test.gocoverdir={unit_path}",
+        ],
+        check=True,
+        cwd=get_project_root(),
+        encoding="utf-8",
     )
     print("Unit tests passed.")
 
@@ -171,32 +212,131 @@ def merge_covdata():
             "coverage.profile",
         ],
         check=True,
+        cwd=get_project_root(),
+        encoding="utf-8",
     )
 
     print("Merged coverage data.")
 
 
-if __name__ == "__main__":
-    init_dirs()
-
-    gsa = build_gsa()
-
-    tests: List[Tuple[str, str]] = []
-    tests.extend(get_example_data())
-
-    count = len(tests)
-
+def run_integration_tests(gsa: str, tests: list[tuple[str, str]]):
+    all_tests = len(tests)
     for i, t in enumerate(tests):
+        count = int(i) + 1
+        cur = str(count) + "/" + str(all_tests)
         try:
-            eval_test(gsa, t)
-            print(f"[{i+1}/{count}]Test {t[0]} passed.")
+            name, path = t
+            eval_test(gsa, name, path)
+            print(f"[{cur}]Test {t[0]} passed.")
         except Exception as e:
-            print(f"[{i+1}/{count}]Test {t[0]} failed: {e}")
+            print(f"[{cur}]Test {t[0]} failed: {e}")
             exit(1)
 
     os.remove(gsa)
 
+
+def load_files_from_tar(tar: bytes, target_name: str) -> bytes:
+    with io.BytesIO(tar) as f:
+        with tarfile.open(fileobj=f) as tar:
+            for member in tar.getmembers():
+                real_name = os.path.basename(member.name)
+                if real_name == target_name:
+                    return tar.extractfile(member).read()
+    raise Exception(f"File {target_name} not found in tar.")
+
+
+def load_files_from_zip(zb: bytes, target_name: str) -> bytes:
+    with io.BytesIO(zb) as f:
+        with zipfile.ZipFile(f) as z:
+            for name in z.namelist():
+                real_name = os.path.basename(name)
+                if real_name == target_name:
+                    return z.read(name)
+    raise Exception(f"File {target_name} not found in zip.")
+
+
+def get_bin_path(name: str) -> str:
+    return os.path.join(get_project_root(), "scripts", "bins", name)
+
+
+def ensure_cockroachdb_data() -> list[tuple[str, str]]:
+    # from https://www.cockroachlabs.com/docs/releases/
+    # https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-amd64.tgz
+    # https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-arm64.tgz
+    # https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-10.9-amd64.tgz
+    # https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-11.0-arm64.tgz
+    # https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.windows-6.2-amd64.zip
+
+    def dne(u: str):
+        response = requests.get(u, stream=True)
+        response.raise_for_status()
+
+        total_size = int(response.headers.get("content-length", 0))
+
+        out = io.BytesIO()
+
+        with tqdm(total=total_size, unit="B", unit_scale=True) as progress_bar:
+            for data in response.iter_content(8196):
+                progress_bar.update(len(data))
+                out.write(data)
+        content = out.getvalue()
+
+        if u.endswith(".tgz"):
+            ucf = load_files_from_tar(content, "cockroach")
+        else:
+            ucf = load_files_from_zip(content, "cockroach.exe")
+        return ucf
+
+    urls = [
+        ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-amd64.tgz", "linux-amd64"),
+        ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-arm64.tgz", "linux-arm64"),
+        ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-10.9-amd64.tgz", "darwin-amd64"),
+        ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-11.0-arm64.tgz", "darwin-arm64"),
+        ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.windows-6.2-amd64.zip", "windows-amd64"),
+    ]
+
+    ret = []
+
+    for url in urls:
+        file_name = f"cockroach-{url[1]}"
+        file_path = get_bin_path(file_name)
+        if not os.path.exists(file_path):
+            print(f"Downloading {url[0]}...")
+            file_byte = dne(url[0])
+            with open(file_path, "wb") as f:
+                f.write(file_byte)
+            print(f"Downloaded {url[0]}.")
+        else:
+            print(f"File {file_path} already exists.")
+        ret.append((file_name, file_path))
+
+    return ret
+
+
+if __name__ == "__main__":
+    ap = ArgumentParser()
+    ap.add_argument("--cockroachdb", action="store_true", default=False)
+
+    args = ap.parse_args()
+
+    init_dirs()
+
+    gsa = build_gsa()
+
+    print("Running tests...")
     run_unit_tests()
+    print("Unit tests passed.")
+
+    print("Downloading example data...")
+    tests = ensure_example_data()
+    print("Downloaded example data.")
+
+    if args.cockroachdb:
+        print("Downloading CockroachDB data...")
+        tests.extend(ensure_cockroachdb_data())
+        print("Downloaded CockroachDB data.")
+
+    run_integration_tests(gsa, tests)
 
     merge_covdata()
 

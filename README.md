@@ -128,6 +128,7 @@ Arguments:
 - [ ] Count the symbol size itself to package
 - [ ] Add other charts like flame graph, pie chart, etc.
 - [ ] Support C++/Rust symbol demangling in cgo
+- [ ] Add a TUI mode for exploring details
 
 ## Contribution
 

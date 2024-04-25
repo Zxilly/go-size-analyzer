@@ -20,12 +20,11 @@ release_info_cache = None
 def get_release_info():
     global release_info_cache
     if release_info_cache is None:
-        # read github token if possible
+        # read GitHub token if possible
         token = os.getenv('GITHUB_TOKEN')
         headers = {}
         if token:
             headers['Authorization'] = f'Bearer {token}'
-
 
         response = requests.get(f'https://api.github.com/repos/{BIN_REPO}/releases/tags/{TARGET_TAG}', headers=headers)
         response.raise_for_status()
@@ -36,7 +35,6 @@ def get_release_info():
 def download(filename: str):
     release_info = get_release_info()
 
-    # 查找指定的文件
     file_info = None
     for asset in release_info['assets']:
         if asset['name'] == filename:

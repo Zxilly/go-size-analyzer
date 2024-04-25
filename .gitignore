@@ -22,4 +22,4 @@ scripts/__pycache__/
 results/
 covdata/
 
-profile.txt
+coverage.profile
