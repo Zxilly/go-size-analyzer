@@ -67,3 +67,9 @@ jobs:
           slug: Zxilly/go-size-analyzer
           verbose: true
           file: profile.txt
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: results/
