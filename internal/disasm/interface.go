@@ -23,6 +23,8 @@ type Extractor struct {
 	extractor extractorFunc // disassembler function for goarch
 }
 
+var ErrArchNotSupported = fmt.Errorf("unsupported GOARCH")
+
 func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, error) {
 	textStart, text, err := rawFile.Text()
 	if err != nil {
@@ -35,7 +37,7 @@ func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, erro
 	}
 	extractFunc := extractFuncs[goarch]
 	if extractFunc == nil {
-		return nil, fmt.Errorf("unsupported GOARCH %s", goarch)
+		return nil, fmt.Errorf("%w %s", ErrArchNotSupported, goarch)
 	}
 
 	return &Extractor{

@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
@@ -9,15 +10,20 @@ import (
 	"log/slog"
 )
 
-func (k *KnownInfo) Disasm() error {
+func (k *KnownInfo) Disasm(nopb bool) error {
 	slog.Info("Disassemble functions...")
 
 	fns := k.Deps.GetFunctions()
 
-	pb := utils.NewPb(int64(len(fns)), "Disassembling...")
+	pb := utils.NewPb(int64(len(fns)), "Disassembling...", nopb)
 
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
 	if err != nil {
+		_ = pb.Finish()
+		if errors.Is(err, disasm.ErrArchNotSupported) {
+			slog.Warn("Warning: disassembler not supported for this architecture")
+			return nil
+		}
 		return err
 	}
 

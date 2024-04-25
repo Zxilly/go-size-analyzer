@@ -9,7 +9,7 @@ import (
 	"log/slog"
 )
 
-func NewKnownInfo(file *gore.GoFile) (*KnownInfo, error) {
+func CollectKnownInfo(file *gore.GoFile, options Options) (*KnownInfo, error) {
 	k := &KnownInfo{
 		Size:      utils.GetFileSize(file.GetFile()),
 		BuildInfo: file.BuildInfo,
@@ -36,7 +36,7 @@ func NewKnownInfo(file *gore.GoFile) (*KnownInfo, error) {
 		}
 	}
 
-	err = k.Disasm()
+	err = k.Disasm(options.HideDisasmProgress)
 	if err != nil {
 		return nil, err
 	}

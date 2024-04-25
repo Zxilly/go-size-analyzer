@@ -4,13 +4,17 @@ import (
 	"github.com/goretk/gore"
 )
 
-func Analyze(path string) (*Result, error) {
+type Options struct {
+	HideDisasmProgress bool
+}
+
+func Analyze(path string, options Options) (*Result, error) {
 	file, err := gore.Open(path)
 	if err != nil {
 		return nil, err
 	}
 
-	k, err := NewKnownInfo(file)
+	k, err := CollectKnownInfo(file, options)
 	if err != nil {
 		return nil, err
 	}

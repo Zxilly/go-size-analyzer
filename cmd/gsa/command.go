@@ -8,6 +8,8 @@ type Options struct {
 	Verbose bool   `long:"verbose" description:"Verbose output"`
 	Format  string `short:"f" long:"format" description:"Output format" choice:"text" choice:"json" choice:"html"`
 
+	HideProgress bool `long:"hide-progress" description:"Hide progress bar for disassembly"`
+
 	TextOptions struct {
 		HideSections bool `long:"hide-sections" description:"Hide sections"`
 		HideMain     bool `long:"hide-main" description:"Hide main package"`

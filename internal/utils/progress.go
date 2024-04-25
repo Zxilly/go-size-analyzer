@@ -2,14 +2,20 @@ package utils
 
 import (
 	"github.com/schollz/progressbar/v3"
+	"io"
 	"time"
 )
 
-func NewPb(max int64, desc string) *progressbar.ProgressBar {
+func NewPb(max int64, desc string, disable bool) *progressbar.ProgressBar {
+	var out io.Writer = Stdout
+	if disable {
+		out = io.Discard
+	}
+
 	return progressbar.NewOptions64(
 		max,
 		progressbar.OptionSetDescription(desc),
-		progressbar.OptionSetWriter(Stdout),
+		progressbar.OptionSetWriter(out),
 		progressbar.OptionSetWidth(10),
 		progressbar.OptionThrottle(65*time.Millisecond),
 		progressbar.OptionShowCount(),

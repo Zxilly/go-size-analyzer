@@ -27,7 +27,9 @@ func main() {
 		PrintVersionAndExit()
 	}
 
-	result, err := internal.Analyze(options.Arg.Binary)
+	result, err := internal.Analyze(options.Arg.Binary, internal.Options{
+		HideDisasmProgress: options.HideProgress,
+	})
 	if err != nil {
 		slog.Error(fmt.Sprintf("Error: %v", err))
 		os.Exit(1)
