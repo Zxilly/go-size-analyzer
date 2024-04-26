@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.1
 
 require (
-	github.com/ZxillyFork/go-flags v0.0.0-20240325132113-057f93e1e1ff
+	github.com/alecthomas/kong v0.9.0
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goretk/gore v0.11.5

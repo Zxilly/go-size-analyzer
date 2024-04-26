@@ -1,38 +1,55 @@
 package main
 
 import (
-	"github.com/ZxillyFork/go-flags"
+	"github.com/alecthomas/kong"
 )
 
-type Options struct {
-	Verbose bool   `long:"verbose" description:"Verbose output"`
-	Format  string `short:"f" long:"format" description:"Output format" choice:"text" choice:"json" choice:"html"`
+var Options struct {
+	Verbose      bool   `help:"Verbose output"`
+	Format       string `enum:"text,json,html" default:"text" help:"Output format, possible values: ${enum}"`
+	HideProgress bool   `help:"Hide progress bar for disassembly"`
 
-	HideProgress bool `long:"hide-progress" description:"Hide progress bar for disassembly"`
+	HideSections bool `help:"Hide sections" group:"text"`
+	HideMain     bool `help:"Hide main package" group:"text"`
+	HideStd      bool `help:"Hide standard library" group:"text"`
 
-	TextOptions struct {
-		HideSections bool `long:"hide-sections" description:"Hide sections"`
-		HideMain     bool `long:"hide-main" description:"Hide main package"`
-		HideStd      bool `long:"hide-std" description:"Hide standard library"`
-	} `group:"Text Options"`
+	Indent *int `help:"Indentation for json output" group:"json"`
 
-	JsonOptions struct {
-		Indent *int `long:"indent" description:"Indentation for json output"`
-	} `group:"Json Options"`
+	Web    bool   `long:"web" help:"use web interface to explore the details" group:"web"`
+	Listen string `long:"listen" help:"listen address" default:":8080" group:"web"`
+	Open   bool   `long:"open" help:"Open browser" group:"web"`
 
-	HtmlOptions struct {
-		Web    bool   `long:"web" description:"Start web server for html output, this option will override format to html and ignore output option"`
-		Listen string `long:"listen" description:"Listen address" default:":8080"`
-		Open   bool   `long:"open" description:"Open browser"`
-	} `group:"Html Options"`
+	Output  string `help:"Write to file"`
+	Version bool   `help:"Show version"`
 
-	Output  string `short:"o" long:"output" description:"Write to file"`
-	Version bool   `long:"version" description:"Show version"`
-
-	Arg struct {
-		Binary string `positional-arg-name:"file" description:"Binary file to analyze"`
-	} `positional-args:"yes"`
+	Binary string `arg:"" name:"file" required:"" help:"Binary file to analyze" type:"existingfile"`
 }
 
-var options Options
-var parser = flags.NewParser(&options, flags.Default)
+var cli = kong.Parse(&Options,
+	kong.Name("gsa"),
+	kong.Description("A tool for analysing the size of dependencies in compiled Golang binaries, "+
+		"providing insight into their impact on the final build."),
+	kong.UsageOnError(),
+	kong.ConfigureHelp(kong.HelpOptions{
+		Compact: true,
+		Summary: true,
+		Tree:    true,
+	}),
+	kong.ExplicitGroups([]kong.Group{
+		{
+			Key:         "text",
+			Title:       "Text output options",
+			Description: "Options for text output",
+		},
+		{
+			Key:         "json",
+			Title:       "Json output options",
+			Description: "Options for json output",
+		},
+		{
+			Key:         "web",
+			Title:       "Web output options",
+			Description: "Options for web output",
+		},
+	}),
+)
