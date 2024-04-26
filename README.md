@@ -87,35 +87,34 @@ $ gsa docker-compose-linux-x86_64
 ### Full options
 
 ```bash
-Usage:
-  gsa [OPTIONS] [file]
+Usage: gsa <file> [flags]
 
-Application Options:
-      --verbose                 Verbose output
-  -f, --format=[text|json|html] Output format (default: text)
-  -o, --output=                 Write to file
-      --version                 Show version
-
-Text Options:
-      --hide-sections           Hide sections
-      --hide-main               Hide main package
-      --hide-std                Hide standard library
-
-Json Options:
-      --indent=                 Indentation for json output
-
-Html Options:
-      --web                     Start web server for html output, this option
-                                will override format to html and ignore output
-                                option
-      --listen=                 Listen address (default: :8080)
-      --open                    Open browser
-
-Help Options:
-  -h, --help                    Show this help message
+A tool for analysing the size of dependencies in compiled Golang binaries,
+providing insight into their impact on the final build.
 
 Arguments:
-  file:                         Binary file to analyze
+  <file>    Binary file to analyze
+
+Flags:
+  -h, --help             Show context-sensitive help.
+      --verbose          Verbose output
+  -f, --format="text"    Output format, possible values: text,json,html
+      --hide-progress    Hide progress bar for disassembly
+  -o, --output=STRING    Write to file
+      --version          Show version
+
+Text output options
+  --hide-sections    Hide sections
+  --hide-main        Hide main package
+  --hide-std         Hide standard library
+
+Json output options
+  --indent=INDENT    Indentation for json output
+
+Web explorer options
+  --web               use web interface to explore the details
+  --listen=":8080"    listen address
+  --open              Open browser
 ```
 
 > [!CAUTION]

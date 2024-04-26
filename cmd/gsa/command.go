@@ -4,7 +4,7 @@ import "github.com/alecthomas/kong"
 
 var Options struct {
 	Verbose      bool   `help:"Verbose output"`
-	Format       string `enum:"text,json,html" default:"text" help:"Output format, possible values: ${enum}"`
+	Format       string `short:"f" enum:"text,json,html" default:"text" help:"Output format, possible values: ${enum}"`
 	HideProgress bool   `help:"Hide progress bar for disassembly"`
 
 	HideSections bool `help:"Hide sections" group:"text"`
