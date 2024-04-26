@@ -18,10 +18,6 @@ func main() {
 		utils.InitLogger(slog.LevelWarn)
 	}
 
-	if Options.Version {
-		PrintVersionAndExit()
-	}
-
 	result, err := internal.Analyze(Options.Binary, internal.Options{
 		HideDisasmProgress: Options.HideProgress,
 	})

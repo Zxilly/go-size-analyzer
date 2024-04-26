@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/alecthomas/kong"
-)
+import "github.com/alecthomas/kong"
 
 var Options struct {
 	Verbose      bool   `help:"Verbose output"`
@@ -19,37 +17,38 @@ var Options struct {
 	Listen string `long:"listen" help:"listen address" default:":8080" group:"web"`
 	Open   bool   `long:"open" help:"Open browser" group:"web"`
 
-	Output  string `help:"Write to file"`
-	Version bool   `help:"Show version"`
+	Output string `short:"o" help:"Write to file"`
+
+	Version kong.VersionFlag `help:"Show version"`
 
 	Binary string `arg:"" name:"file" required:"" help:"Binary file to analyze" type:"existingfile"`
 }
 
-var cli = kong.Parse(&Options,
-	kong.Name("gsa"),
-	kong.Description("A tool for analysing the size of dependencies in compiled Golang binaries, "+
-		"providing insight into their impact on the final build."),
-	kong.UsageOnError(),
-	kong.ConfigureHelp(kong.HelpOptions{
-		Compact: true,
-		Summary: true,
-		Tree:    true,
-	}),
-	kong.ExplicitGroups([]kong.Group{
-		{
-			Key:         "text",
-			Title:       "Text output options",
-			Description: "Options for text output",
+func init() {
+	kong.Parse(&Options,
+		kong.Name("gsa"),
+		kong.Description("A tool for analysing the size of dependencies in compiled Golang binaries, "+
+			"providing insight into their impact on the final build."),
+		kong.UsageOnError(),
+		kong.ConfigureHelp(kong.HelpOptions{
+			Summary: true,
+		}),
+		kong.ExplicitGroups([]kong.Group{
+			{
+				Key:   "text",
+				Title: "Text output options",
+			},
+			{
+				Key:   "json",
+				Title: "Json output options",
+			},
+			{
+				Key:   "web",
+				Title: "Web explorer options",
+			},
+		}),
+		kong.Vars{
+			"version": GetVersion(),
 		},
-		{
-			Key:         "json",
-			Title:       "Json output options",
-			Description: "Options for json output",
-		},
-		{
-			Key:         "web",
-			Title:       "Web output options",
-			Description: "Options for web output",
-		},
-	}),
-)
+	)
+}
