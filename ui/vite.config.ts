@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "fs"
 import {createHtmlPlugin} from "vite-plugin-html";
+import {codecovVitePlugin} from "@codecov/vite-plugin";
 
 const devDataMocker: PluginOption = {
     name: 'devDataMocker',
@@ -31,8 +32,12 @@ export default defineConfig({
         devDataMocker,
         createHtmlPlugin({
             minify: true,
-        })
-
+        }),
+        codecovVitePlugin({
+            enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+            bundleName: "gsa-ui",
+            uploadToken: process.env.CODECOV_TOKEN,
+        }),
     ],
     clearScreen: false,
     esbuild: {

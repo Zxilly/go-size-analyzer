@@ -48,6 +48,8 @@ jobs:
       - name: Build
         working-directory: ./ui
         run: pnpm build
+        with:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Release
         if : ${{ !inputs.external_call }}
