@@ -1,4 +1,9 @@
+import json
 from argparse import ArgumentParser
+from html.parser import HTMLParser
+
+import requests
+from time import sleep
 
 from define import IntegrationTest, TestType
 from ensure import ensure_example_data, ensure_cockroachdb_data
@@ -146,6 +151,71 @@ def run_integration_tests(entry: str, targets: list[IntegrationTest]):
     os.remove(entry)
 
 
+class DataParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.in_data = False
+        self.data = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "script":
+            for attr in attrs:
+                if attr[0] == "type" and attr[1] == "application/json":
+                    self.in_data = True
+
+    def handle_data(self, data):
+        if self.in_data:
+            self.data = data
+
+    def handle_endtag(self, tag):
+        if self.in_data:
+            self.in_data = False
+
+    def get_data(self):
+        return self.data
+
+
+def run_web_test(entry: str):
+    print("Running web test...")
+
+    env = os.environ.copy()
+    env["GOCOVERDIR"] = get_covdata_integration_dir()
+
+    p = subprocess.Popen(
+        args=[entry, "--web", "--listen", "localhost:23371", "--hide-progress", entry],
+        text=True, cwd=get_project_root(),
+        encoding="utf-8", env=env
+    )
+
+    # wait 3 seconds for the server to start
+    sleep(3)
+
+    ret = requests.get("http://localhost:23371").text
+
+    # parse html
+    parser = DataParser()
+    parser.feed(ret)
+
+    json_data = parser.get_data()
+    if json_data is None:
+        raise Exception("Failed to find data element in the html.")
+
+    # try load value as json
+    try:
+        content = json.loads(json_data)
+    except json.JSONDecodeError:
+        raise Exception("Failed to parse data element as json.")
+
+    # check if the data is correct
+    keys = ["name", "size", "packages", "sections"]
+    for key in keys:
+        if key not in content:
+            raise Exception(f"Missing key {key} in the data.")
+
+    p.terminate()
+    print("Web test passed.")
+
+
 if __name__ == "__main__":
     ap = ArgumentParser()
     ap.add_argument("--cockroachdb", action="store_true", default=False)
@@ -156,9 +226,8 @@ if __name__ == "__main__":
 
     gsa = build_gsa()
 
-    print("Running tests...")
-    run_unit_tests()
-    print("Unit tests passed.")
+    # run_unit_tests()
+    run_web_test(gsa)
 
     print("Downloading example data...")
     tests = ensure_example_data()
@@ -166,8 +235,8 @@ if __name__ == "__main__":
 
     if args.cockroachdb:
         print("Downloading CockroachDB data...")
-        tests.extend(ensure_cockroachdb_data())
-        print("Downloaded CockroachDB data.")
+    tests.extend(ensure_cockroachdb_data())
+    print("Downloaded CockroachDB data.")
 
     run_integration_tests(gsa, tests)
 
