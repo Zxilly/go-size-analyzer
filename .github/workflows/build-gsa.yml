@@ -11,6 +11,8 @@ permissions:
 jobs:
   build-ui:
     uses: ./.github/workflows/build-ui.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   goreleaser:
     needs: build-ui
