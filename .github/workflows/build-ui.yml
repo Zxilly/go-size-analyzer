@@ -17,10 +17,6 @@ on:
       CODECOV_TOKEN:
         required: true
 
-concurrency:
-  group: ${{ github.ref }}-ui
-  cancel-in-progress: true
-
 permissions:
   contents: write
 
