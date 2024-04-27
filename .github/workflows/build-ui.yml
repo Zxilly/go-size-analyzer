@@ -48,7 +48,7 @@ jobs:
       - name: Build
         working-directory: ./ui
         run: pnpm build
-        with:
+        env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Release
