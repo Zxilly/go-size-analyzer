@@ -6,10 +6,15 @@ on:
       - master
   pull_request:
 
+concurrency:
+  group: ${{ github.ref }}-gsa-tests
+  cancel-in-progress: true
 
 jobs:
   build-ui:
     uses: ./.github/workflows/build-ui.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   tests:
     name: Tests

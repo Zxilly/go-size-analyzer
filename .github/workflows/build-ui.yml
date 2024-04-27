@@ -13,6 +13,9 @@ on:
         type: boolean
         required: false
         default: true
+    secrets:
+      CODECOV_TOKEN:
+        required: true
 
 concurrency:
   group: ${{ github.ref }}-ui
