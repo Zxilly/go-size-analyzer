@@ -42,6 +42,11 @@ func (k *KnownInfo) LoadSectionMap() {
 	k.Sects = &SectionMap{
 		Sections: sections,
 	}
+	err := k.Sects.AssertSize(k.Size)
+	if err != nil {
+		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))
+		os.Exit(1)
+	}
 
 	return
 }
