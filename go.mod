@@ -18,7 +18,7 @@ require (
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
 	golang.org/x/arch v0.7.0
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
-	golang.org/x/net v0.21.0
+	golang.org/x/net v0.24.0
 )
 
 require (
