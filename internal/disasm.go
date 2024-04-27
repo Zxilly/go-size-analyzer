@@ -11,15 +11,10 @@ import (
 )
 
 func (k *KnownInfo) Disasm(nopb bool) error {
-	slog.Info("Disassemble functions...")
-
 	fns := k.Deps.GetFunctions()
-
-	pb := utils.NewPb(int64(len(fns)), "Disassembling...", nopb)
 
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
 	if err != nil {
-		_ = pb.Finish()
 		if errors.Is(err, disasm.ErrArchNotSupported) {
 			slog.Warn("Warning: disassembler not supported for this architecture")
 			return nil
@@ -31,6 +26,9 @@ func (k *KnownInfo) Disasm(nopb bool) error {
 		addr, size uint64
 		fn         *entity.Function
 	}
+
+	slog.Info("Disassemble functions...")
+	pb := utils.NewPb(int64(len(fns)), "Disassembling...", nopb)
 
 	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, index int) []result {
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.Size)
