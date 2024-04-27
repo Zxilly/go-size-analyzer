@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
+
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/web"
 	"github.com/pkg/browser"
-	"log/slog"
-	"os"
 )
 
 func main() {
@@ -50,7 +51,8 @@ func main() {
 	}
 
 	if Options.Web {
-		go web.HostServer(string(b), Options.Listen)
+		server := web.HostServer(b, Options.Listen)
+		defer server.Close()
 
 		url := utils.GetUrlFromListen(Options.Listen)
 

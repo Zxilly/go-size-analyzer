@@ -1,21 +1,25 @@
 package web
 
 import (
-	"fmt"
-	"log/slog"
 	"net/http"
-	"os"
 )
 
-func HostServer(content string, listen string) {
-	// return string as html
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+func getHTMLHandler(content []byte) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		_, _ = w.Write([]byte(content))
-	})
-	err := http.ListenAndServe(listen, nil)
-	if err != nil {
-		slog.Error(fmt.Sprintf("Error: %v", err))
-		os.Exit(1)
 	}
+}
+
+func HostServer(content []byte, listen string) *http.Server {
+	server := &http.Server{
+		Addr:    listen,
+		Handler: getHTMLHandler(content),
+	}
+
+	go func() {
+		_ = server.ListenAndServe()
+	}()
+
+	return server
 }
