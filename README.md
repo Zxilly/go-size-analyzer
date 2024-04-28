@@ -16,8 +16,6 @@ Download the latest release from the [release page](https://github.com/Zxilly/go
 
 Don't use `go install`, because gsa uses modded dependencies and `replace` directive was not allowed by `go install`.
 
-```bash
-
 ## Usage
 
 ### Example
