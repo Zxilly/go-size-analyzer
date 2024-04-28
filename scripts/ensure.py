@@ -77,7 +77,7 @@ def ensure_cockroachdb_data() -> list[IntegrationTest]:
             print(f"File {file_path} already exists.")
         ret.append(IntegrationTest(
             file_name, file_path,
-            TestType.JSON_TEST
+            TestType.JSON_TEST | TestType.SVG_TEST
         ))
 
     return ret

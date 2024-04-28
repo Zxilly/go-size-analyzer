@@ -5,6 +5,7 @@ class TestType(Flag):
     TEXT_TEST = auto()
     JSON_TEST = auto()
     HTML_TEST = auto()
+    SVG_TEST = auto()
 
 
 class IntegrationTest:

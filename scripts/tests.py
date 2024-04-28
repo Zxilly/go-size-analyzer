@@ -74,6 +74,9 @@ def eval_test(gsa: str, target: IntegrationTest):
     if TestType.HTML_TEST in test_type:
         run_gsa([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html"), "--hide-progress"], ".html.txt")
 
+    if TestType.SVG_TEST in test_type:
+        run_gsa([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg"), "--hide-progress"], ".svg.txt")
+
 
 def run_unit_tests():
     print("Running unit tests...")
@@ -226,7 +229,7 @@ if __name__ == "__main__":
 
     gsa = build_gsa()
 
-    # run_unit_tests()
+    run_unit_tests()
     run_web_test(gsa)
 
     print("Downloading example data...")
