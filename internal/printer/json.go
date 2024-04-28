@@ -3,13 +3,18 @@ package printer
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/global"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"log/slog"
 	"strings"
 )
 
-func Json(r *internal.Result, options *JsonOption) []byte {
+type JsonOption struct {
+	Indent     *int
+	HideDetail bool
+}
+
+func Json(r *result.Result, options *JsonOption) []byte {
 	if options.HideDetail {
 		global.HideDetail = true
 	}

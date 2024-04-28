@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/server"
 	"log/slog"
 	"os"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/Zxilly/go-size-analyzer/internal/web"
 	"github.com/pkg/browser"
 )
 
@@ -34,13 +34,15 @@ func main() {
 	}
 
 	var b []byte
+	common := printer.CommonOption{
+		HideSections: Options.HideSections,
+		HideMain:     Options.HideMain,
+		HideStd:      Options.HideStd,
+	}
+
 	switch Options.Format {
 	case "text":
-		b = []byte(printer.Text(result, &printer.TextOption{
-			HideSections: Options.HideSections,
-			HideMain:     Options.HideMain,
-			HideStd:      Options.HideStd,
-		}))
+		b = []byte(printer.Text(result, &common))
 	case "json":
 		b = printer.Json(result, &printer.JsonOption{
 			Indent:     Options.Indent,
@@ -48,14 +50,23 @@ func main() {
 		})
 	case "html":
 		b = printer.Html(result)
+	case "svg":
+		b = printer.Svg(result, &printer.SvgOption{
+			CommonOption: common,
+			Width:        Options.Width,
+			Height:       Options.Height,
+			MarginBox:    Options.MarginBox,
+			PaddingBox:   Options.PaddingBox,
+			PaddingRoot:  Options.PaddingRoot,
+		})
 	default:
 		slog.Error(fmt.Sprintf("Invalid format: %s", Options.Format))
 		os.Exit(1)
 	}
 
 	if Options.Web {
-		server := web.HostServer(b, Options.Listen)
-		defer server.Close()
+		s := server.HostServer(b, Options.Listen)
+		defer s.Close()
 
 		url := utils.GetUrlFromListen(Options.Listen)
 

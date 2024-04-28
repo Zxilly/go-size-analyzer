@@ -1,7 +1,7 @@
 import { scaleSequential, scaleLinear } from "d3-scale";
 import { hsl, RGBColor } from "d3-color";
-
 import { HierarchyNode } from "d3-hierarchy";
+
 import {Entry} from "./entry.ts";
 
 type CssColor = string;

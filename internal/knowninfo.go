@@ -217,7 +217,7 @@ func (k *KnownInfo) CalculatePackageSize() {
 		}
 		p.AssignPackageSize()
 	}
-	for _, p := range k.Deps.topPkgs {
+	for _, p := range k.Deps.TopPkgs {
 		dive(p)
 	}
 }

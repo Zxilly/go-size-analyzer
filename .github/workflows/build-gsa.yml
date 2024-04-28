@@ -37,7 +37,7 @@ jobs:
           name: ui
 
       - name: Move UI file
-        run: mv index.html internal/ui/index.html
+        run: mv index.html internal/webui/index.html
 
       - uses: goreleaser/goreleaser-action@v5
         with:

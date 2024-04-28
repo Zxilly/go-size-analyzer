@@ -3,10 +3,13 @@ package internal
 import (
 	"errors"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
+	"golang.org/x/exp/maps"
 	"log/slog"
+	"path"
 )
 
 type Options struct {
@@ -16,8 +19,8 @@ type Options struct {
 	SkipDisasm bool
 }
 
-func Analyze(path string, options Options) (*Result, error) {
-	file, err := gore.Open(path)
+func Analyze(bin string, options Options) (*result.Result, error) {
+	file, err := gore.Open(bin)
 	if err != nil {
 		return nil, err
 	}
@@ -67,5 +70,10 @@ func Analyze(path string, options Options) (*Result, error) {
 	// for packages
 	k.CalculatePackageSize()
 
-	return BuildResult(path, k), nil
+	return &result.Result{
+		Name:     path.Base(bin),
+		Size:     k.Size,
+		Packages: k.Deps.TopPkgs,
+		Sections: maps.Values(k.Sects.Sections),
+	}, nil
 }

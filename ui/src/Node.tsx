@@ -33,17 +33,15 @@ export const Node: React.FC<NodeProps> = (
     const width = x1 - x0;
     const height = y1 - y0;
 
-    const textProps: Record<string, number | string | null | undefined> = {
-        "fontSize": "0.7em",
-        "dominantBaseline": "middle",
-        "textAnchor": "middle",
-        x: width / 2,
-    };
-    if (children != null) {
-        textProps.y = (TOP_PADDING + PADDING) / 2;
-    } else {
-        textProps.y = height / 2;
-    }
+    const textProps = useMemo(() => {
+        return {
+            "fontSize": "0.9em",
+            "dominantBaseline": "middle",
+            "textAnchor": "middle",
+            x: width / 2,
+            y: children != null ? (TOP_PADDING + PADDING) / 2 : height / 2
+        }
+    }, [])
 
     const title = useMemo(() => {
         const t = trimPrefix(node.data.getName(), node.parent?.data.getName() ?? "")

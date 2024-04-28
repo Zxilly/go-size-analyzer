@@ -4,7 +4,7 @@ import "github.com/alecthomas/kong"
 
 var Options struct {
 	Verbose bool   `help:"Verbose output"`
-	Format  string `short:"f" enum:"text,json,html" default:"text" help:"Output format, possible values: ${enum}"`
+	Format  string `short:"f" enum:"text,json,html,svg" default:"text" help:"Output format, possible values: ${enum}"`
 
 	HideProgress bool `help:"Hide progress bar for disassembly"`
 	NoDisasm     bool `help:"Skip disassembly pass"`
@@ -16,6 +16,12 @@ var Options struct {
 
 	Indent  *int `help:"Indentation for json output" group:"json"`
 	Compact bool `help:"Hide function details, replacement with size" group:"json"`
+
+	Width       int `help:"Width of the svg treemap" default:"1028" group:"svg"`
+	Height      int `help:"Height of the svg treemap" default:"640" group:"svg"`
+	MarginBox   int `help:"Margin between boxes" default:"4" group:"svg"`
+	PaddingBox  int `help:"Padding between box border and content" default:"4" group:"svg"`
+	PaddingRoot int `help:"Padding around root content" default:"32" group:"svg"`
 
 	Web    bool   `long:"web" help:"use web interface to explore the details" group:"web"`
 	Listen string `long:"listen" help:"listen address" default:":8080" group:"web"`
@@ -49,6 +55,10 @@ func init() {
 			{
 				Key:   "web",
 				Title: "Web explorer options",
+			},
+			{
+				Key:   "svg",
+				Title: "Svg output options",
 			},
 		}),
 		kong.Vars{

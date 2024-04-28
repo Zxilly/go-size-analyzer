@@ -1,6 +1,6 @@
 //go:build !embed
 
-package ui
+package webui
 
 import (
 	"fmt"

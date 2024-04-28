@@ -3,8 +3,8 @@ package printer
 import (
 	"cmp"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/dustin/go-humanize"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/samber/lo"
@@ -17,7 +17,13 @@ func percentString(f float64) string {
 	return fmt.Sprintf("%.2f%%", f)
 }
 
-func Text(r *internal.Result, options *TextOption) string {
+type CommonOption struct {
+	HideSections bool
+	HideMain     bool
+	HideStd      bool
+}
+
+func Text(r *result.Result, options *CommonOption) string {
 	t := table.NewWriter()
 
 	allKnownSize := uint64(0)

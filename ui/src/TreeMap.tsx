@@ -2,7 +2,13 @@ import {loadData} from "./tool/utils.ts";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {Entry} from "./tool/entry.ts";
 import {useWindowSize} from "usehooks-ts";
-import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapSquarify} from "d3-hierarchy";
+import {
+    hierarchy,
+    HierarchyNode,
+    HierarchyRectangularNode,
+    treemap,
+    treemapResquarify
+} from "d3-hierarchy";
 import {group} from "d3-array";
 import createRainbowColor from "./tool/color.ts";
 import {Tooltip} from "./Tooltip.tsx";
@@ -34,7 +40,7 @@ function TreeMap() {
             //.paddingOuter(2)
             .paddingTop(20)
             .round(true)
-            .tile(treemapSquarify);
+            .tile(treemapResquarify);
     }, [height, width])
 
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)

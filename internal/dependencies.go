@@ -13,13 +13,13 @@ import (
 type Dependencies struct {
 	k *KnownInfo
 
-	topPkgs entity.PackageMap
+	TopPkgs entity.PackageMap
 	trie    *trie.PathTrie
 }
 
 func NewDependencies(k *KnownInfo) *Dependencies {
 	return &Dependencies{
-		topPkgs: make(entity.PackageMap),
+		TopPkgs: make(entity.PackageMap),
 		k:       k,
 		trie:    trie.NewPathTrie(),
 	}
@@ -66,10 +66,10 @@ func (m *Dependencies) FinishLoad() {
 
 	// load generated packages, they don't have a path
 	if m.trie.Value != nil {
-		m.topPkgs[""] = m.trie.Value.(*entity.Package)
+		m.TopPkgs[""] = m.trie.Value.(*entity.Package)
 	}
 
-	pending := []pair{{m.topPkgs, m.trie}}
+	pending := []pair{{m.TopPkgs, m.trie}}
 
 	load := func(packageMap entity.PackageMap, p *trie.PathTrie) {
 		for part, nxt := range p.RecursiveDirectChildren() {

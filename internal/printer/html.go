@@ -1,14 +1,14 @@
 package printer
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal"
-	"github.com/Zxilly/go-size-analyzer/internal/ui"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"strings"
 )
 
 const ReplacedStr = `"GSA_PACKAGE_DATA"`
 
-func Html(r *internal.Result) []byte {
+func Html(r *result.Result) []byte {
 	json := Json(r, &JsonOption{HideDetail: true})
-	return []byte(strings.Replace(ui.GetTemplate(), ReplacedStr, string(json), 1))
+	return []byte(strings.Replace(webui.GetTemplate(), ReplacedStr, string(json), 1))
 }

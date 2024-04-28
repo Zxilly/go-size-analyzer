@@ -98,7 +98,7 @@ Arguments:
 Flags:
   -h, --help             Show context-sensitive help.
       --verbose          Verbose output
-  -f, --format="text"    Output format, possible values: text,json,html
+  -f, --format="text"    Output format, possible values: text,json,html,svg
       --hide-progress    Hide progress bar for disassembly
       --no-disasm        Skip disassembly pass
       --no-symbol        Skip symbol pass
@@ -113,6 +113,13 @@ Text output options
 Json output options
   --indent=INDENT    Indentation for json output
   --compact          Hide function details, replacement with size
+
+Svg output options
+  --width=1028         Width of the svg treemap
+  --height=640         Height of the svg treemap
+  --margin-box=4       Margin between boxes
+  --padding-box=4      Padding between box border and content
+  --padding-root=32    Padding around root content
 
 Web explorer options
   --web               use web interface to explore the details
