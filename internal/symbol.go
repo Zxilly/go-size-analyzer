@@ -20,7 +20,7 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	switch {
 	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		// we assume it's a cgo symbol
-		return nil // fixme: implement cgo analysis in the future
+		return nil // todo: implement cgo analysis in the future
 	case pkgName == "$f64" || pkgName == "$f32":
 		return nil
 	default:
