@@ -12,7 +12,7 @@
 
 从[发布页面](https://github.com/Zxilly/go-size-analyzer/releases)下载最新版本。
 
-不推荐使用 `go install` 进行安装，因为它不会包含嵌入的 UI 模板，该模板对于网络模式是必需的。
+不要使用 `go install`，因为 gsa 使用修改后的依赖项，而 `go install`不允许使用 `replace` 指令。
 
 ## 使用
 

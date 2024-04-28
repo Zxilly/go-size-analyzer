@@ -14,7 +14,9 @@ A simple tool to analyze the size of a Go compiled binary.
 
 Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
 
-Use `go install` is not recommended, because it won't include the embed ui template, which is required for the web mode.
+Don't use `go install`, because gsa uses modded dependencies and `replace` directive was not allowed by `go install`.
+
+```bash
 
 ## Usage
 
