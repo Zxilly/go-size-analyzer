@@ -14,7 +14,8 @@ var Options struct {
 	HideMain     bool `help:"Hide main package" group:"text"`
 	HideStd      bool `help:"Hide standard library" group:"text"`
 
-	Indent *int `help:"Indentation for json output" group:"json"`
+	Indent  *int `help:"Indentation for json output" group:"json"`
+	Compact bool `help:"Hide function details, replacement with size" group:"json"`
 
 	Web    bool   `long:"web" help:"use web interface to explore the details" group:"web"`
 	Listen string `long:"listen" help:"listen address" default:":8080" group:"web"`

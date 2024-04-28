@@ -2,7 +2,7 @@ package printer
 
 type JsonOption struct {
 	Indent     *int
-	hideDetail bool
+	HideDetail bool
 }
 
 type TextOption struct {

@@ -1,8 +1,9 @@
 import {HierarchyRectangularNode} from "d3-hierarchy";
-import React, {useLayoutEffect, useRef} from "react";
+import React, {useLayoutEffect, useMemo, useRef} from "react";
 import {Entry} from "./tool/entry.ts";
 import {NodeColorGetter} from "./tool/color.ts";
 import {PADDING, TOP_PADDING} from "./tool/const.ts";
+import {trimPrefix} from "./tool/utils.ts";
 
 type NodeEventHandler = (event: HierarchyRectangularNode<Entry>) => void;
 
@@ -24,7 +25,7 @@ export const Node: React.FC<NodeProps> = (
     }
 ) => {
     const {backgroundColor, fontColor} = getModuleColor(node);
-    const {x0, x1, y1, y0, data, children = null} = node;
+    const {x0, x1, y1, y0, children = null} = node;
 
     const textRef = useRef<SVGTextElement>(null);
     const textRectRef = useRef<DOMRect>();
@@ -43,6 +44,11 @@ export const Node: React.FC<NodeProps> = (
     } else {
         textProps.y = height / 2;
     }
+
+    const title = useMemo(() => {
+        const t = trimPrefix(node.data.getName(), node.parent?.data.getName() ?? "")
+        return trimPrefix(t, "/")
+    }, [node.data, node.parent?.data])
 
     useLayoutEffect(() => {
         if (width == 0 || height == 0 || !textRef.current) {
@@ -114,7 +120,7 @@ export const Node: React.FC<NodeProps> = (
                 }}
                 {...textProps}
             >
-                {data.getName()}
+                {title}
             </text>
         </g>
     );

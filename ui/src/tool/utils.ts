@@ -3,7 +3,11 @@ import {parseResult} from "../generated/schema.ts";
 
 export function loadData(): Result {
     const doc = document.querySelector("#data")!;
-    return parseResult(doc.textContent!);
+    const ret = parseResult(doc.textContent!);
+    if (ret === null) {
+        throw new Error("Failed to parse data");
+    }
+    return ret;
 }
 
 
@@ -18,4 +22,12 @@ export function formatBytes(bytes: number) {
 
 export function title(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
+}
+
+export function trimPrefix(str: string, prefix: string) {
+    if (str.startsWith(prefix)) {
+        return str.slice(prefix.length)
+    } else {
+        return str
+    }
 }

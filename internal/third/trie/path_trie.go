@@ -196,3 +196,17 @@ func (trie *PathTrie) Merge() {
 		}
 	}
 }
+
+func (trie *PathTrie) RecursiveDirectChildren() map[string]*PathTrie {
+	children := map[string]*PathTrie{}
+	for part, child := range trie.Children {
+		if child.Value != nil {
+			children[part] = child
+			continue
+		}
+		for cPart, cChild := range child.RecursiveDirectChildren() {
+			children[part+cPart] = cChild
+		}
+	}
+	return children
+}

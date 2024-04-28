@@ -31,7 +31,7 @@ type Package struct {
 
 	Size uint64 `json:"size"` // late filled
 
-	Loaded bool `json:"-"` // mean it comes from gore
+	loaded bool // mean it comes from gore
 
 	// should not be used to calculate size,
 	// since linker can create overlapped symbols.
@@ -40,8 +40,7 @@ type Package struct {
 	Symbols []*Symbol `json:"symbols"`
 
 	symbolAddrSpace AddrSpace
-
-	Coverage *utils.ValueOnce[AddrCoverage]
+	coverage        *utils.ValueOnce[AddrCoverage]
 
 	// should have at least one of them
 	GorePkg  *gore.Package `json:"-"`
@@ -52,7 +51,8 @@ func NewPackage() *Package {
 	return &Package{
 		SubPackages:     make(map[string]*Package),
 		Files:           make([]*File, 0),
-		Coverage:        utils.NewOnce[AddrCoverage](),
+		Symbols:         make([]*Symbol, 0),
+		coverage:        utils.NewOnce[AddrCoverage](),
 		symbolAddrSpace: AddrSpace{},
 	}
 }
@@ -61,7 +61,7 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	p := NewPackage()
 	p.Name = utils.Deduplicate(name)
 	p.Type = typ
-	p.Loaded = true
+	p.loaded = true
 	p.GorePkg = gp
 
 	for _, f := range gp.Functions {
@@ -135,7 +135,7 @@ func (p *Package) Merge(rp *Package) {
 		panic(fmt.Errorf("nil package"))
 	}
 
-	if (rp.Loaded) && p.Name != rp.Name {
+	if (rp.loaded) && p.Name != rp.Name {
 		panic(fmt.Errorf("package name not match %s %s", p.Name, rp.Name))
 	}
 
@@ -180,7 +180,7 @@ func (p *Package) GetFunctionSizeRecursive() uint64 {
 }
 
 func (p *Package) GetPackageCoverage() AddrCoverage {
-	p.Coverage.Do(func() {
+	p.coverage.Do(func() {
 		disasmcov := p.GetDisasmAddrSpace().ToDirtyCoverage()
 		symbolcov := p.symbolAddrSpace.ToDirtyCoverage()
 
@@ -195,9 +195,9 @@ func (p *Package) GetPackageCoverage() AddrCoverage {
 			panic(err)
 		}
 
-		p.Coverage.Set(cov)
+		p.coverage.Set(cov)
 	})
-	return p.Coverage.Get()
+	return p.coverage.Get()
 }
 
 func (p *Package) AssignPackageSize() {
@@ -213,10 +213,6 @@ func (p *Package) AddSymbol(addr uint64, size uint64, typ AddrType, name string,
 	p.symbolAddrSpace.Insert(ap)
 
 	// then, add to the symbol list
-	p.Symbols = append(p.Symbols, &Symbol{
-		Name: name,
-		Addr: addr,
-		Size: size,
-		Type: typ,
-	})
+	p.Symbols = append(p.Symbols, NewSymbol(name, addr, size, typ))
+	// fmt.Println("AddSymbol", p.Name, name, addr, size, typ, len(p.Symbols))
 }

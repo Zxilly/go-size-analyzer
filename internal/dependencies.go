@@ -5,7 +5,6 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/third/trie"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/brunoga/deep"
 	"github.com/goretk/gore"
 	"runtime/debug"
 )
@@ -56,15 +55,9 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 }
 
 func (m *Dependencies) FinishLoad() {
-	tmpTrie, err := deep.CopySkipUnsupported[*trie.PathTrie](m.trie)
-	if err != nil {
-		panic(err)
-	}
-	tmpTrie.Merge()
-
 	type pair struct {
 		m  entity.PackageMap
-		tc map[string]*trie.PathTrie
+		tc *trie.PathTrie
 	}
 
 	// load generated packages, they don't have a path
@@ -72,14 +65,14 @@ func (m *Dependencies) FinishLoad() {
 		m.topPkgs[""] = m.trie.Value.(*entity.Package)
 	}
 
-	pending := []pair{{m.topPkgs, tmpTrie.Children}}
+	pending := []pair{{m.topPkgs, m.trie}}
 
-	load := func(m entity.PackageMap, tc map[string]*trie.PathTrie) {
-		for part, nxt := range tc {
-			np := nxt.Value.(*entity.Package)
-			m[utils.Deduplicate(part)] = np
-			if len(nxt.Children) > 0 {
-				pending = append(pending, pair{np.SubPackages, nxt.Children})
+	load := func(packageMap entity.PackageMap, p *trie.PathTrie) {
+		for part, nxt := range p.RecursiveDirectChildren() {
+			packageMap[part] = nxt.Value.(*entity.Package)
+			cc := nxt.RecursiveDirectChildren()
+			if len(cc) > 0 {
+				pending = append(pending, pair{packageMap[part].SubPackages, nxt})
 			}
 		}
 	}
@@ -89,7 +82,6 @@ func (m *Dependencies) FinishLoad() {
 		pending = pending[1:]
 		load(p.m, p.tc)
 	}
-	print()
 }
 
 func (m *Dependencies) Add(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table) {

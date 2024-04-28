@@ -20,21 +20,7 @@ export const Tooltip: React.FC<TooltipProps> =
 
         const path = useMemo(() => {
             if (!node) return "";
-
-            const typ = node.data.getType()
-
-            if (typ === "container" || typ === "result") {
-                return node.data.getName();
-            }
-
-            return node
-                .ancestors()
-                .reverse()
-                .filter((d) => {
-                    const typ = d.data.getType();
-                    return typ !== "container" && typ !== "result"
-                }).map((d) => d.data.getName()).join("/");
-
+            return node.data.getName();
         }, [node])
 
         const content = useMemo(() => {
@@ -76,7 +62,7 @@ export const Tooltip: React.FC<TooltipProps> =
             return () => {
                 document.removeEventListener("mousemove", handleMouseMove, true);
             };
-        }, []);
+        }, [updatePosition]);
 
         return (
             <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>

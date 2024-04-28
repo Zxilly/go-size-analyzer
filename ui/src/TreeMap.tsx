@@ -52,7 +52,7 @@ function TreeMap() {
         }
 
         return selectedNodeLeaveSet.has(node) ? 1 : 0
-    }, [selectedNode])
+    }, [selectedNode, selectedNodeLeaveSet])
 
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
     const [tooltipNode, setTooltipNode] = useState<

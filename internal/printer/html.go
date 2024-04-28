@@ -9,6 +9,6 @@ import (
 const ReplacedStr = `"GSA_PACKAGE_DATA"`
 
 func Html(r *internal.Result) []byte {
-	json := Json(r, &JsonOption{hideDetail: true})
+	json := Json(r, &JsonOption{HideDetail: true})
 	return []byte(strings.Replace(ui.GetTemplate(), ReplacedStr, string(json), 1))
 }

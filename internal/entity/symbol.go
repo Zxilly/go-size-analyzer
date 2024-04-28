@@ -6,10 +6,10 @@ import (
 )
 
 type Symbol struct {
-	Name string
-	Addr uint64
-	Size uint64
-	Type AddrType
+	Name string   `json:"name"`
+	Addr uint64   `json:"addr"`
+	Size uint64   `json:"size"`
+	Type AddrType `json:"type"`
 }
 
 func NewSymbol(name string, addr, size uint64, typ AddrType) *Symbol {

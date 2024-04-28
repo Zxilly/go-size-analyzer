@@ -34,7 +34,7 @@ func (a Addr) String() string {
 	return msg
 }
 
-// AddrCoverage is a list of AddrPos, describe the Coverage of the address space
+// AddrCoverage is a list of AddrPos, describe the coverage of the address space
 type AddrCoverage []*CoveragePart
 
 type CoveragePart struct {

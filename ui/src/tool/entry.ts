@@ -1,11 +1,22 @@
-import {File, isFile, isPackage, isResult, isSection, Package, Result, Section} from "../generated/schema.ts";
+import {
+    File,
+    isFile,
+    isPackage,
+    isResult,
+    isSection,
+    isSymbol,
+    Package,
+    Result,
+    Section,
+    Symbol as FileSymbol
+} from "../generated/schema.ts";
 import {id} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";
 import {max} from "d3-array";
 
-type Candidate = Section | File | Package | Result;
+type Candidate = Section | File | Package | Result | FileSymbol;
 
-type EntryType = "section" | "file" | "package" | "result" | "disasm" | "unknown" | "container";
+type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
 
 export class Entry {
     private readonly type: EntryType;
@@ -38,13 +49,14 @@ export class Entry {
         switch (type) {
             case "section":
             case "file":
+            case "symbol":
                 return []; // no children for section or file
             case "package":
                 return childrenFromPackage(data as Package);
             case "result":
                 return childrenFromResult(data as Result);
             default:
-                throw new Error("Unknown candidate type");
+                throw new Error(`Unknown type: ${type} in childrenFromData`);
         }
     }
 
@@ -53,13 +65,14 @@ export class Entry {
             case "section":
             case "result":
             case "package":
-                return (<Section | Result | Package>candidate).name;
+            case "symbol":
+                return (<Section | Result | Package | FileSymbol>candidate).name;
 
             case "file":
                 return (<File>candidate).file_path.split("/").pop()!;
 
             default:
-                throw new Error("Unknown candidate type");
+                throw new Error(`Unknown type: ${type} in candidateName`);
         }
 
     }
@@ -83,8 +96,10 @@ export class Entry {
                 return "package";
             case isResult(candidate):
                 return "result";
+            case isSymbol(candidate):
+                return "symbol";
             default:
-                throw new Error("Unknown candidate type");
+                throw new Error(`Unknown type in checkType`);
         }
     }
 
@@ -99,11 +114,13 @@ export class Entry {
                 assertTyp<Section>(this.data);
                 align.add("Section:", this.name);
                 align.add("Size:", formatBytes(this.size));
+                align.add("File Size:", formatBytes(this.data.file_size));
                 align.add("Known size:", formatBytes(this.data.known_size));
                 align.add("Unknown size:", formatBytes(this.data.size - this.data.known_size));
                 align.add("Offset:", `0x${this.data.offset.toString(16)} - 0x${this.data.end.toString(16)}`);
                 align.add("Address:", `0x${this.data.addr.toString(16)} - 0x${this.data.addr_end.toString(16)}`);
                 align.add("Memory:", this.data.only_in_memory.toString());
+                align.add("Debug:", this.data.debug.toString());
                 return align.toString();
 
             case "file":
@@ -136,6 +153,15 @@ export class Entry {
                 return ret;
             }
 
+            case "symbol": {
+                assertTyp<FileSymbol>(this.data);
+                align.add("Symbol:", this.data.name);
+                align.add("Size:", formatBytes(this.size));
+                align.add("Address:", `0x${this.data.addr.toString(16)}`);
+                align.add("Type:", this.data.type);
+                return align.toString();
+            }
+
             case "unknown": {
                 align.add("Size:", formatBytes(this.size));
                 let ret = align.toString();
@@ -152,9 +178,6 @@ export class Entry {
                 ret += "\n" + align.toString();
                 return ret;
             }
-
-            default:
-                throw new Error("Unknown candidate type");
         }
     }
 
@@ -188,6 +211,10 @@ function childrenFromPackage(pkg: Package): Entry[] {
         children.push(new Entry(subPackage));
     }
 
+    for (const s of pkg.symbols) {
+        children.push(new Entry(s));
+    }
+
     const leftSize = pkg.size - children.reduce((acc, child) => acc + child.getSize(), 0);
     if (leftSize > 0) {
         const name = `${pkg.name} Disasm`
@@ -209,8 +236,7 @@ function childrenFromResult(result: Result): Entry[] {
     sectionContainer.explain = "The unknown size of the sections in the binary."
     children.push(sectionContainer);
 
-
-    let typedPackages: Record<string, Package[]> = {};
+    const typedPackages: Record<string, Package[]> = {};
     for (const pkg of Object.values(result.packages)) {
         if (typedPackages[pkg.type] == null) {
             typedPackages[pkg.type] = [];
@@ -252,7 +278,7 @@ class aligner {
     }
 
     public toString(): string {
-        // determine the maximum length of the pre strings
+        // determine the maximum length of the pre-strings
         const maxPreLength = max(this.pre, (d) => d.length) ?? 0;
         let ret = "";
         for (let i = 0; i < this.pre.length; i++) {

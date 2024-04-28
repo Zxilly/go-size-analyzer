@@ -43,7 +43,8 @@ func main() {
 		}))
 	case "json":
 		b = printer.Json(result, &printer.JsonOption{
-			Indent: Options.Indent,
+			Indent:     Options.Indent,
+			HideDetail: Options.Compact,
 		})
 	case "html":
 		b = printer.Html(result)

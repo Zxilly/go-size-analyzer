@@ -10,7 +10,7 @@ import (
 )
 
 func Json(r *internal.Result, options *JsonOption) []byte {
-	if options.hideDetail {
+	if options.HideDetail {
 		global.HideDetail = true
 	}
 
