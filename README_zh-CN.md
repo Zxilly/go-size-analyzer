@@ -81,6 +81,14 @@ $ gsa docker-compose-linux-x86_64
 
 ```
 
+#### Svg 模式
+
+```bash
+gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
+```
+
+![image](./assets/example.svg)
+
 ### 完整选项
 
 ```bash

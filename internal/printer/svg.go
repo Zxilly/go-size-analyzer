@@ -8,6 +8,7 @@ import (
 	"github.com/nikolaydubina/treemap/parser"
 	"github.com/nikolaydubina/treemap/render"
 	"image/color"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -25,11 +26,12 @@ func Svg(r *result.Result, options *SvgOption) []byte {
 	s := new(strings.Builder)
 	c := csv.NewWriter(s)
 
+	baseName := filepath.Base(r.Name)
 	// write file
-	_ = c.Write([]string{r.Name, strconv.Itoa(int(r.Size)), "0"})
+	_ = c.Write([]string{baseName, strconv.Itoa(int(r.Size)), "0"})
 
 	merge := func(s string) string {
-		return r.Name + "/" + s
+		return baseName + "/" + s
 	}
 
 	// write sections
