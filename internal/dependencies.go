@@ -35,7 +35,11 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 
 func (m *Dependencies) GetFunctions() []*entity.Function {
 	funcs := make([]*entity.Function, 0)
-
+	_ = m.trie.Walk(func(key string, value interface{}) error {
+		p := value.(*entity.Package)
+		funcs = append(funcs, p.GetFunctions()...)
+		return nil
+	})
 	return funcs
 }
 
