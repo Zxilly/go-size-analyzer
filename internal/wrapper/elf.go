@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"strings"
 )
 
 type ElfWrapper struct {
@@ -74,6 +75,9 @@ func (e *ElfWrapper) LoadSections() map[string]*entity.Section {
 			continue
 		}
 
+		// check if debug
+		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
+
 		if section.Type == elf.SHT_NOBITS {
 			// seems like .bss section
 			ret[section.Name] = &entity.Section{
@@ -81,18 +85,21 @@ func (e *ElfWrapper) LoadSections() map[string]*entity.Section {
 				Addr:         section.Addr,
 				AddrEnd:      section.Addr + section.Size,
 				OnlyInMemory: true,
+				Debug:        d,
 			}
 			continue
 		}
 
 		ret[section.Name] = &entity.Section{
 			Name:         section.Name,
-			Size:         section.FileSize,
+			Size:         section.Size,
+			FileSize:     section.FileSize,
 			Offset:       section.Offset,
 			End:          section.Offset + section.FileSize,
 			Addr:         section.Addr,
 			AddrEnd:      section.Addr + section.Size,
 			OnlyInMemory: false,
+			Debug:        d,
 		}
 	}
 	return ret

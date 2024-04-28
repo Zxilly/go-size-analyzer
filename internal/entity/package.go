@@ -2,57 +2,15 @@ package entity
 
 import (
 	"debug/gosym"
-	"errors"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/goretk/gore"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
+	"runtime/debug"
 )
 
 type PackageMap map[string]*Package
-
-func (m PackageMap) GetType() (typ PackageType, err error) {
-	load := func(packageType PackageType) error {
-		if packageType == "" {
-			return nil
-		}
-
-		if typ == "" {
-			typ = packageType
-			return nil
-		} else {
-			if typ != packageType {
-				return errors.New("multiple package type found")
-			}
-		}
-		return nil
-	}
-
-	for _, p := range m {
-		err = load(p.Type)
-		if err != nil {
-			return
-		}
-		if len(p.SubPackages) > 0 {
-			var st PackageType
-			st, err = p.SubPackages.GetType()
-			if err != nil {
-				return
-			}
-			err = load(st)
-			if err != nil {
-				return
-			}
-		}
-	}
-
-	if typ == "" {
-		return "", errors.New("no package type found")
-	}
-
-	return
-}
 
 type PackageType = string
 
@@ -73,19 +31,29 @@ type Package struct {
 
 	Size uint64 `json:"size"` // late filled
 
-	Loaded bool `json:"-"` // mean it has the meaningful data
-	Pseudo bool `json:"-"` // mean it's a Pseudo package
+	Loaded bool `json:"-"` // mean it comes from gore
 
-	disAsmCoverage *utils.ValueOnce[AddrCoverage]
+	// should not be used to calculate size,
+	// since linker can create overlapped symbols.
+	// relies on coverage.
+	// currently only data symbol
+	Symbols []*Symbol `json:"symbols"`
 
-	grPkg *gore.Package
+	symbolAddrSpace AddrSpace
+
+	Coverage *utils.ValueOnce[AddrCoverage]
+
+	// should have at least one of them
+	GorePkg  *gore.Package `json:"-"`
+	DebugMod *debug.Module `json:"-"`
 }
 
 func NewPackage() *Package {
 	return &Package{
-		SubPackages:    make(map[string]*Package),
-		Files:          make([]*File, 0),
-		disAsmCoverage: utils.NewOnce[AddrCoverage](),
+		SubPackages:     make(map[string]*Package),
+		Files:           make([]*File, 0),
+		Coverage:        utils.NewOnce[AddrCoverage](),
+		symbolAddrSpace: AddrSpace{},
 	}
 }
 
@@ -94,7 +62,7 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	p.Name = utils.Deduplicate(name)
 	p.Type = typ
 	p.Loaded = true
-	p.grPkg = gp
+	p.GorePkg = gp
 
 	for _, f := range gp.Functions {
 		src, _, _ := pclntab.PCToLine(f.Offset)
@@ -133,6 +101,7 @@ func (p *Package) fileEnsureUnique() {
 			seen[f.FilePath] = f
 		}
 	}
+	p.Files = maps.Values(seen)
 }
 
 func (p *Package) addFunction(path string, fn *Function) {
@@ -163,10 +132,10 @@ func (p *Package) getOrInitFile(s string) *File {
 // Merge p always hold an empty subpackage
 func (p *Package) Merge(rp *Package) {
 	if rp == nil {
-		return
+		panic(fmt.Errorf("nil package"))
 	}
 
-	if (rp.Loaded || rp.Pseudo) && p.Name != rp.Name {
+	if (rp.Loaded) && p.Name != rp.Name {
 		panic(fmt.Errorf("package name not match %s %s", p.Name, rp.Name))
 	}
 
@@ -182,37 +151,72 @@ func (p *Package) Merge(rp *Package) {
 
 }
 
-func (p *Package) GetFunctions(recursive bool) []*Function {
-	funcs := make([]*Function, 0)
-	for _, file := range p.Files {
-		for _, fn := range file.Functions {
-			funcs = append(funcs, fn)
-		}
-	}
-	if recursive {
-		for _, sp := range p.SubPackages {
-			funcs = append(funcs, sp.GetFunctions(true)...)
-		}
-	}
+func (p *Package) GetFunctions() []*Function {
+	funcs := lo.Reduce(p.Files,
+		func(agg []*Function, item *File, index int) []*Function {
+			return append(agg, item.Functions...)
+		}, make([]*Function, 0))
+
 	return funcs
 }
 
-func (p *Package) GetAddrSpace() AddrSpace {
+func (p *Package) GetDisasmAddrSpace() AddrSpace {
 	spaces := make([]AddrSpace, 0)
-	for _, f := range p.GetFunctions(false) {
+	for _, f := range p.GetFunctions() {
 		spaces = append(spaces, f.disasm)
 	}
 	return MergeAddrSpace(spaces...)
 }
 
-func (p *Package) GetCoverage() AddrCoverage {
-	p.disAsmCoverage.Do(func() {
-		this := p.GetAddrSpace().ToDirtyCoverage()
-		subs := lo.Map(maps.Values(p.SubPackages), func(p *Package, _ int) AddrCoverage {
-			return p.GetCoverage()
-		})
-		merged, _ := MergeCoverage(append(subs, this))
-		p.disAsmCoverage.Set(merged)
+func (p *Package) GetFunctionSizeRecursive() uint64 {
+	size := uint64(0)
+	for _, f := range p.GetFunctions() {
+		size += f.Size
+	}
+	for _, sp := range p.SubPackages {
+		size += sp.GetFunctionSizeRecursive()
+	}
+	return size
+}
+
+func (p *Package) GetPackageCoverage() AddrCoverage {
+	p.Coverage.Do(func() {
+		disasmcov := p.GetDisasmAddrSpace().ToDirtyCoverage()
+		symbolcov := p.symbolAddrSpace.ToDirtyCoverage()
+
+		covs := []AddrCoverage{disasmcov, symbolcov}
+
+		for _, sp := range p.SubPackages {
+			covs = append(covs, sp.GetPackageCoverage())
+		}
+
+		cov, err := MergeAndCleanCoverage(covs)
+		if err != nil {
+			panic(err)
+		}
+
+		p.Coverage.Set(cov)
 	})
-	return p.disAsmCoverage.Get()
+	return p.Coverage.Get()
+}
+
+func (p *Package) AssignPackageSize() {
+	fnSize := p.GetFunctionSizeRecursive()
+	for _, cp := range p.GetPackageCoverage() {
+		fnSize += cp.Pos.Size
+	}
+	p.Size = fnSize
+}
+
+func (p *Package) AddSymbol(addr uint64, size uint64, typ AddrType, name string, ap *Addr) {
+	// first, load as coverage
+	p.symbolAddrSpace.Insert(ap)
+
+	// then, add to the symbol list
+	p.Symbols = append(p.Symbols, &Symbol{
+		Name: name,
+		Addr: addr,
+		Size: size,
+		Type: typ,
+	})
 }

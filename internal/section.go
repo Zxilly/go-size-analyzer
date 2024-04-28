@@ -9,23 +9,28 @@ type SectionMap struct {
 	Sections map[string]*entity.Section
 }
 
-//func (s *SectionMap) GetSectionName(addr uint64) string {
-//	for _, section := range s.Sections {
-//		if addr >= section.Addr && addr < section.AddrEnd {
-//			return section.Name
-//		}
-//	}
-//	return ""
-//}
-//
-//func (s *SectionMap) GetSection(addr, size uint64) *entity.Section {
-//	for _, section := range s.Sections {
-//		if addr >= section.Addr && addr < section.AddrEnd && addr+size <= section.AddrEnd {
-//			return section
-//		}
-//	}
-//	return nil
-//}
+func (s *SectionMap) GetSectionName(addr uint64) string {
+	for _, section := range s.Sections {
+		if addr >= section.Addr && addr < section.AddrEnd {
+			return section.Name
+		}
+	}
+	return ""
+}
+
+func (s *SectionMap) FindSection(addr, size uint64) *entity.Section {
+	for _, section := range s.Sections {
+		if section.Debug {
+			// we can't find things in debug sections
+			continue
+		}
+
+		if section.Addr <= addr && addr+size <= section.AddrEnd {
+			return section
+		}
+	}
+	return nil
+}
 
 func (s *SectionMap) AssertSize(size uint64) error {
 	sectionsSize := uint64(0)
@@ -33,7 +38,7 @@ func (s *SectionMap) AssertSize(size uint64) error {
 		if section.OnlyInMemory {
 			continue
 		}
-		sectionsSize += section.Size
+		sectionsSize += section.FileSize
 	}
 
 	if sectionsSize > size {

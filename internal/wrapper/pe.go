@@ -6,6 +6,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"slices"
+	"strings"
 )
 
 type PeWrapper struct {
@@ -106,14 +107,18 @@ func (p *PeWrapper) LoadSections() map[string]*entity.Section {
 
 	ret := make(map[string]*entity.Section)
 	for _, section := range p.file.Sections {
+		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
+
 		ret[section.Name] = &entity.Section{
 			Name:         section.Name,
-			Size:         uint64(section.Size),
+			Size:         uint64(section.VirtualSize),
+			FileSize:     uint64(section.Size),
 			Offset:       uint64(section.Offset),
 			End:          uint64(section.Offset + section.Size),
 			Addr:         imageBase + uint64(section.VirtualAddress),
 			AddrEnd:      imageBase + uint64(section.VirtualAddress+section.VirtualSize),
 			OnlyInMemory: false, // pe file didn't have an only-in-memory section
+			Debug:        d,
 		}
 	}
 	return ret

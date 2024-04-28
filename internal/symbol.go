@@ -8,14 +8,19 @@ import (
 )
 
 func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrType) error {
+	if typ != entity.AddrTypeData {
+		// todo: support text symbols, cross check with pclntab
+		// and further work on cgo symbols
+		return nil
+	}
+
 	var pkg *entity.Package
 	pkgName := k.ExtractPackageFromSymbol(name)
 
 	switch {
 	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		// we assume it's a cgo symbol
-		pkgName = "cgo"
-		pkg = nil
+		return nil // fixme: implement cgo analysis in the future
 	case pkgName == "$f64" || pkgName == "$f32":
 		return nil
 	default:
@@ -27,10 +32,15 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 		}
 	}
 
-	k.KnownAddr.InsertSymbol(addr, size, pkg, typ, entity.SymbolMeta{
+	ap := k.KnownAddr.InsertSymbol(addr, size, pkg, typ, entity.SymbolMeta{
 		SymbolName:  utils.Deduplicate(name),
 		PackageName: utils.Deduplicate(pkgName),
 	})
+	if ap == nil {
+		return nil
+	}
+
+	pkg.AddSymbol(addr, size, typ, name, ap)
 
 	return nil
 }

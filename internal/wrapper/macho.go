@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"slices"
+	"strings"
 )
 
 type MachoWrapper struct {
@@ -80,6 +81,8 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 			continue
 		}
 
+		d := strings.HasPrefix(section.Name, "__debug_") || strings.HasPrefix(section.Name, "__zdebug_")
+
 		if section.Offset == 0 {
 			// seems like .bss section
 			ret[section.Name] = &entity.Section{
@@ -87,6 +90,7 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 				Addr:         section.Addr,
 				AddrEnd:      section.Addr + section.Size,
 				OnlyInMemory: true,
+				Debug:        d,
 			}
 			continue
 		}
@@ -94,11 +98,13 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 		ret[section.Name] = &entity.Section{
 			Name:         section.Name,
 			Size:         section.Size,
+			FileSize:     section.Size,
 			Offset:       uint64(section.Offset),
 			End:          uint64(section.Offset) + section.Size,
 			Addr:         section.Addr,
 			AddrEnd:      section.Addr + section.Size,
 			OnlyInMemory: false,
+			Debug:        d,
 		}
 	}
 	return ret

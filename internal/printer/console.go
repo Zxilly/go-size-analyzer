@@ -20,7 +20,7 @@ func percentString(f float64) string {
 func Text(r *internal.Result, options *TextOption) string {
 	t := table.NewWriter()
 
-	knownSize := uint64(0)
+	allKnownSize := uint64(0)
 
 	t.SetTitle("%s", filepath.Base(r.Name))
 	t.AppendHeader(table.Row{"Percent", "Name", "Size", "Type"})
@@ -43,7 +43,7 @@ func Text(r *internal.Result, options *TextOption) string {
 			continue
 		}
 
-		knownSize += p.Size
+		allKnownSize += p.Size
 		entries = append(entries, sizeEntry{
 			name:    p.Name,
 			size:    p.Size,
@@ -57,8 +57,8 @@ func Text(r *internal.Result, options *TextOption) string {
 			return s.Size > s.KnownSize && s.Size != s.KnownSize && !s.OnlyInMemory
 		})
 		for _, s := range sections {
-			unknownSize := s.Size - s.KnownSize
-			knownSize += unknownSize
+			unknownSize := s.FileSize - s.KnownSize
+			allKnownSize += unknownSize
 			entries = append(entries, sizeEntry{
 				name:    s.Name,
 				size:    unknownSize,
@@ -76,7 +76,7 @@ func Text(r *internal.Result, options *TextOption) string {
 		t.AppendRow(table.Row{e.percent, e.name, humanize.Bytes(e.size), e.typ})
 	}
 
-	t.AppendFooter(table.Row{percentString(float64(knownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(knownSize)})
+	t.AppendFooter(table.Row{percentString(float64(allKnownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(allKnownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
 
 	return t.Render()

@@ -2,7 +2,9 @@ package entity
 
 type Section struct {
 	Name string `json:"name"`
-	Size uint64 `json:"size"`
+
+	Size     uint64 `json:"size"`
+	FileSize uint64 `json:"file_size"`
 
 	KnownSize uint64 `json:"known_size"`
 
@@ -13,4 +15,5 @@ type Section struct {
 	AddrEnd uint64 `json:"addr_end"`
 
 	OnlyInMemory bool `json:"only_in_memory"`
+	Debug        bool `json:"debug"`
 }

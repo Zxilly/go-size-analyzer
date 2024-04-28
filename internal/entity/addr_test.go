@@ -29,7 +29,7 @@ func TestMergeCoverage(t *testing.T) {
 		},
 	}
 
-	result, err := entity.MergeCoverage([]entity.AddrCoverage{cov1, cov2})
+	result, err := entity.MergeAndCleanCoverage([]entity.AddrCoverage{cov1, cov2})
 	assert.NoError(t, err)
 
 	// reset result Addrs
@@ -52,6 +52,6 @@ func TestMergeCoverage(t *testing.T) {
 		},
 	}
 
-	_, err = entity.MergeCoverage([]entity.AddrCoverage{cov3, cov4})
+	_, err = entity.MergeAndCleanCoverage([]entity.AddrCoverage{cov3, cov4})
 	assert.Error(t, err)
 }

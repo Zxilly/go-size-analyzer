@@ -6,6 +6,7 @@ toolchain go1.22.1
 
 require (
 	github.com/alecthomas/kong v0.9.0
+	github.com/brunoga/deep v1.2.1
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goretk/gore v0.11.5

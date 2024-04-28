@@ -14,8 +14,9 @@ type KnownAddr struct {
 
 func NewKnownAddr() *KnownAddr {
 	return &KnownAddr{
-		Pclntab: make(map[uint64]*Addr),
-		Symbol:  make(map[uint64]*Addr),
+		Pclntab:        make(map[uint64]*Addr),
+		Symbol:         make(map[uint64]*Addr),
+		SymbolCoverage: make(AddrCoverage, 0),
 	}
 }
 
@@ -35,8 +36,8 @@ func (f *KnownAddr) InsertPclntab(entry uint64, size uint64, fn *Function, meta 
 	f.Pclntab.Insert(&cur)
 }
 
-func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) {
-	cur := Addr{
+func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
+	cur := &Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
 			Size: size,
@@ -48,13 +49,8 @@ func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ Addr
 
 		Meta: meta,
 	}
-	if typ == AddrTypeText {
-		if _, ok := f.Pclntab.Get(entry); ok {
-			// pclntab always more accurate
-			return
-		}
-	}
-	f.Symbol.Insert(&cur)
+	f.Symbol.Insert(cur)
+	return cur
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
@@ -62,6 +58,10 @@ func (f *KnownAddr) BuildSymbolCoverage() {
 }
 
 func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
+	if len(f.SymbolCoverage) == 0 {
+		return "", false
+	}
+
 	c, ok := slices.BinarySearchFunc(f.SymbolCoverage, &CoveragePart{Pos: &AddrPos{Addr: entry}}, func(cur *CoveragePart, target *CoveragePart) int {
 		if cur.Pos.Addr+cur.Pos.Size <= target.Pos.Addr {
 			return -1

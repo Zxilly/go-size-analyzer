@@ -21,6 +21,8 @@ func main() {
 
 	result, err := internal.Analyze(Options.Binary, internal.Options{
 		HideDisasmProgress: Options.HideProgress,
+		SkipSymbol:         Options.NoSymbol,
+		SkipDisasm:         Options.NoDisasm,
 	})
 	if err != nil {
 		slog.Error(fmt.Sprintf("Error: %v", err))

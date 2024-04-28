@@ -4,12 +4,17 @@ import (
 	"cmp"
 	"fmt"
 	"slices"
+	"strings"
 )
 
 type AddrPos struct {
 	Addr uint64
 	Size uint64
 	Type AddrType
+}
+
+func (a *AddrPos) String() string {
+	return fmt.Sprintf("Addr: %x Size: %x Type: %s", a.Addr, a.Size, a.Type)
 }
 
 type Addr struct {
@@ -29,12 +34,21 @@ func (a Addr) String() string {
 	return msg
 }
 
-// AddrCoverage is a list of AddrPos, describe the disAsmCoverage of the address space
+// AddrCoverage is a list of AddrPos, describe the Coverage of the address space
 type AddrCoverage []*CoveragePart
 
 type CoveragePart struct {
 	Pos   *AddrPos
 	Addrs []*Addr
+}
+
+func (c *CoveragePart) String() string {
+	sb := new(strings.Builder)
+	sb.WriteString(fmt.Sprintf("Pos: %s\n", c.Pos))
+	for _, addr := range c.Addrs {
+		sb.WriteString(fmt.Sprintf("  %s\n", addr))
+	}
+	return sb.String()
 }
 
 type ErrAddrCoverageConflict struct {
@@ -47,8 +61,12 @@ func (e *ErrAddrCoverageConflict) Error() string {
 	return fmt.Sprintf("addr %x pos %#v and %#v conflict", e.Addr, e.Pos1, e.Pos2)
 }
 
-// MergeCoverage merge multiple AddrCoverage
-func MergeCoverage(coves []AddrCoverage) (AddrCoverage, error) {
+func CleanCoverage(cov AddrCoverage) (AddrCoverage, error) {
+	return MergeAndCleanCoverage([]AddrCoverage{cov})
+}
+
+// MergeAndCleanCoverage merge multiple AddrCoverage
+func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 	size := 0
 	for _, cov := range coves {
 		size += len(cov)

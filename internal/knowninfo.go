@@ -8,9 +8,10 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"github.com/goretk/gore"
 	"log/slog"
+	"math"
 	"os"
 	"reflect"
-	"slices"
+	"runtime/debug"
 	"unsafe"
 )
 
@@ -141,21 +142,15 @@ func (k *KnownInfo) LoadPackages() error {
 	}
 
 	k.RequireModInfo()
-	modules := slices.Clone(k.BuildInfo.ModInfo.Deps)
-	modules = append(modules, &k.BuildInfo.ModInfo.Main)
-	pkgs.PushUpUnloadPacakge(modules)
+
+	pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
+	pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
+
+	pkgs.FinishLoad()
 
 	slog.Info("Loading packages done")
 
 	return nil
-}
-
-func (k *KnownInfo) GetPaddingSize() uint64 {
-	var sectionSize uint64 = 0
-	for _, section := range k.Sects.Sections {
-		sectionSize += section.Size
-	}
-	return k.Size - sectionSize
 }
 
 func (k *KnownInfo) RequireModInfo() {
@@ -170,14 +165,19 @@ func (k *KnownInfo) CollectCoverage() {
 	pclntabCov := k.KnownAddr.Pclntab.ToDirtyCoverage()
 
 	// merge all
-	covs := make([]entity.AddrCoverage, 0, len(k.Deps.topPkgs)+2)
-	for _, p := range k.Deps.topPkgs {
-		covs = append(covs, p.GetCoverage())
-	}
+	covs := make([]entity.AddrCoverage, 0)
+
+	// collect packages coverage
+	_ = k.Deps.trie.Walk(func(_ string, value interface{}) error {
+		p := value.(*entity.Package)
+		covs = append(covs, p.GetPackageCoverage())
+		return nil
+	})
+
 	covs = append(covs, pclntabCov, k.KnownAddr.SymbolCoverage)
 
 	var err error
-	k.Coverage, err = entity.MergeCoverage(covs)
+	k.Coverage, err = entity.MergeAndCleanCoverage(covs)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))
 		os.Exit(1)
@@ -185,30 +185,38 @@ func (k *KnownInfo) CollectCoverage() {
 }
 
 func (k *KnownInfo) CalculateSectionSize() {
-	for _, section := range k.Sects.Sections {
-		size := uint64(0)
-		for _, addr := range k.Coverage {
-			// calculate the overlapped size
-			start := max(section.Addr, addr.Pos.Addr)
-			end := min(section.Addr+section.Size, addr.Pos.Addr+addr.Pos.Size)
-			if start < end {
-				size += end - start
-			}
+	t := make(map[*entity.Section]uint64)
+	for _, cp := range k.Coverage {
+		section := k.Sects.FindSection(cp.Pos.Addr, cp.Pos.Size)
+		if section == nil {
+			slog.Debug(fmt.Sprintf("section not found for coverage part %s", cp))
 		}
-		section.KnownSize = size
+		t[section] += cp.Pos.Size
+	}
+
+	for section, size := range t {
+		mapper := 1.0
+		if section.Size != section.FileSize {
+			// need to map to file size
+			mapper = float64(section.FileSize) / float64(section.Size)
+		}
+		section.KnownSize = uint64(math.Floor(float64(size) * mapper))
 	}
 }
 
+// CalculatePackageSize calculate the size of each package
+// Happens after disassembly
 func (k *KnownInfo) CalculatePackageSize() {
-	for _, p := range k.Deps.link {
-		size := uint64(0)
-
-		for _, addr := range p.GetCoverage() {
-			size += addr.Pos.Size
+	var dive func(p *entity.Package)
+	dive = func(p *entity.Package) {
+		if len(p.SubPackages) > 0 {
+			for _, sp := range p.SubPackages {
+				dive(sp)
+			}
 		}
-		for _, fn := range p.GetFunctions(true) {
-			size += fn.Size
-		}
-		p.Size = size
+		p.AssignPackageSize()
+	}
+	for _, p := range k.Deps.topPkgs {
+		dive(p)
 	}
 }
