@@ -3,8 +3,8 @@ package internal
 import (
 	"debug/gosym"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/third/trie"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/dghubble/trie"
 	"github.com/goretk/gore"
 	"runtime/debug"
 )

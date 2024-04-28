@@ -6,8 +6,8 @@ toolchain go1.22.1
 
 require (
 	github.com/alecthomas/kong v0.9.0
-	github.com/brunoga/deep v1.2.1
 	github.com/deckarep/golang-set/v2 v2.6.0
+	github.com/dghubble/trie v0.1.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goretk/gore v0.11.5
 	github.com/jedib0t/go-pretty/v6 v6.5.8
@@ -20,6 +20,11 @@ require (
 	golang.org/x/arch v0.7.0
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 	golang.org/x/net v0.24.0
+)
+
+replace (
+	github.com/dghubble/trie v0.1.0 => github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179
+	github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf
 )
 
 require (
@@ -56,5 +61,3 @@ require (
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/goretk/gore v0.11.5 => github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf
