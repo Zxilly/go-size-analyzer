@@ -100,6 +100,8 @@ Flags:
       --verbose          Verbose output
   -f, --format="text"    Output format, possible values: text,json,html
       --hide-progress    Hide progress bar for disassembly
+      --no-disasm        Skip disassembly pass
+      --no-symbol        Skip symbol pass
   -o, --output=STRING    Write to file
       --version          Show version
 
@@ -110,6 +112,7 @@ Text output options
 
 Json output options
   --indent=INDENT    Indentation for json output
+  --compact          Hide function details, replacement with size
 
 Web explorer options
   --web               use web interface to explore the details
