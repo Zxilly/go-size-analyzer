@@ -78,6 +78,10 @@ func (e *ElfWrapper) LoadSections() map[string]*entity.Section {
 		// check if debug
 		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
 
+		if _, ok := ret[section.Name]; ok {
+			panic(fmt.Sprintf("section %s already exists", section.Name))
+		}
+
 		if section.Type == elf.SHT_NOBITS {
 			// seems like .bss section
 			ret[section.Name] = &entity.Section{

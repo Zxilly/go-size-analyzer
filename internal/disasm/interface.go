@@ -2,6 +2,7 @@ package disasm
 
 import (
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 	"unicode/utf8"
 )
@@ -64,23 +65,23 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	return e.extractor(code, start)
 }
 
-func (e *Extractor) AddrIsString(addr uint64, size int64) bool {
+func (e *Extractor) LoadAddrString(addr uint64, size int64) (string, bool) {
 	if size <= 0 {
 		// wtf?
-		return false
+		return "", false
 	}
 
 	if size > int64(e.size) {
 		// it's obviously a string cannot larger than file size
-		return false
+		return "", false
 	}
 
 	data, err := e.raw.ReadAddr(addr, uint64(size))
 	if err != nil {
-		return false
+		return "", false
 	}
 	if !utf8.Valid(data) {
-		return false
+		return "", false
 	}
-	return true
+	return utils.Deduplicate(string(data)), true
 }

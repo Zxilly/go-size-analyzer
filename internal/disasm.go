@@ -37,7 +37,8 @@ func (k *KnownInfo) Disasm(nopb bool) error {
 				return false
 			}
 
-			return e.AddrIsString(p.Addr, int64(p.Size))
+			_, ok := e.LoadAddrString(p.Addr, int64(p.Size))
+			return ok
 		})
 		_ = pb.Add(1)
 		return lo.Map(candidates, func(p disasm.PossibleStr, _ int) result {
@@ -50,7 +51,8 @@ func (k *KnownInfo) Disasm(nopb bool) error {
 	}))
 
 	lo.ForEach(possibles, func(p result, _ int) {
-		k.KnownAddr.InsertDisasm(p.addr, p.size, p.fn)
+		s, _ := e.LoadAddrString(p.addr, int64(p.size))
+		k.KnownAddr.InsertDisasm(p.addr, p.size, p.fn, entity.DisasmMeta{Value: s})
 	})
 
 	slog.Info("Disassemble done")

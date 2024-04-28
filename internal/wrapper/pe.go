@@ -109,6 +109,10 @@ func (p *PeWrapper) LoadSections() map[string]*entity.Section {
 	for _, section := range p.file.Sections {
 		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
 
+		if _, ok := ret[section.Name]; ok {
+			panic(fmt.Sprintf("section %s already exists", section.Name))
+		}
+
 		ret[section.Name] = &entity.Section{
 			Name:         section.Name,
 			Size:         uint64(section.VirtualSize),

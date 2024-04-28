@@ -78,7 +78,7 @@ func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
 	return f.SymbolCoverage[c].Pos.Type, ok
 }
 
-func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
+func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, meta DisasmMeta) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -88,7 +88,7 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
 		Pkg:        fn.pkg,
 		Function:   fn,
 		SourceType: AddrSourceDisasm,
-		Meta:       nil,
+		Meta:       meta,
 	}
 
 	// symbol coverage check

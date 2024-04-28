@@ -9,15 +9,6 @@ type SectionMap struct {
 	Sections map[string]*entity.Section
 }
 
-func (s *SectionMap) GetSectionName(addr uint64) string {
-	for _, section := range s.Sections {
-		if addr >= section.Addr && addr < section.AddrEnd {
-			return section.Name
-		}
-	}
-	return ""
-}
-
 func (s *SectionMap) FindSection(addr, size uint64) *entity.Section {
 	for _, section := range s.Sections {
 		if section.Debug {

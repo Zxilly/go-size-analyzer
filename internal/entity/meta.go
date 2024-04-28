@@ -12,3 +12,7 @@ type SymbolMeta struct {
 	SymbolName  string
 	PackageName string
 }
+
+type DisasmMeta struct {
+	Value string
+}

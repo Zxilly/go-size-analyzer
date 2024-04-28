@@ -95,8 +95,14 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 			continue
 		}
 
-		ret[section.Name] = &entity.Section{
-			Name:         section.Name,
+		name := section.Name + " " + section.Seg
+
+		if _, ok := ret[name]; ok {
+			panic(fmt.Sprintf("section %s already exists", name))
+		}
+
+		ret[name] = &entity.Section{
+			Name:         name,
 			Size:         section.Size,
 			FileSize:     section.Size,
 			Offset:       uint64(section.Offset),

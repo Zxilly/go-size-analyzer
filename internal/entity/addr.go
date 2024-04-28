@@ -29,7 +29,7 @@ type Addr struct {
 }
 
 func (a Addr) String() string {
-	msg := fmt.Sprintf("Addr: %x Size: %x pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
+	msg := fmt.Sprintf("Addr: 0x%x Size: %d pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
 	msg += fmt.Sprintf(" Meta: %#v", a.Meta)
 	return msg
 }
@@ -44,9 +44,9 @@ type CoveragePart struct {
 
 func (c *CoveragePart) String() string {
 	sb := new(strings.Builder)
-	sb.WriteString(fmt.Sprintf("Pos: %s\n", c.Pos))
+	sb.WriteString(fmt.Sprintf("Pos: %s", c.Pos))
 	for _, addr := range c.Addrs {
-		sb.WriteString(fmt.Sprintf("  %s\n", addr))
+		sb.WriteString(fmt.Sprintf("  %s", addr))
 	}
 	return sb.String()
 }

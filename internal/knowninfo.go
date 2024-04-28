@@ -190,6 +190,7 @@ func (k *KnownInfo) CalculateSectionSize() {
 		section := k.Sects.FindSection(cp.Pos.Addr, cp.Pos.Size)
 		if section == nil {
 			slog.Debug(fmt.Sprintf("section not found for coverage part %s", cp))
+			continue
 		}
 		t[section] += cp.Pos.Size
 	}
