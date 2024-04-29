@@ -5,7 +5,7 @@ from utils import *
 
 @contextlib.contextmanager
 def build_gsa():
-    print("Building gsa...")
+    log("Building gsa...")
 
     go = require_go()
     temp_binary = get_new_temp_binary()
@@ -33,12 +33,12 @@ def build_gsa():
         output = extract_output(ret)
         raise Exception(f"Failed to build gsa. Output: {output}")
 
-    print("Built gsa.")
+    log("Built gsa.")
 
     yield temp_binary
 
-    print("Cleaning up...")
+    log("Cleaning up...")
     os.remove(temp_binary)
-    print("Cleaned up.")
+    log("Cleaned up.")
 
 

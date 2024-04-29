@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from utils import log
+
 TARGET_TAG = "latest"
 BIN_REPO = "Zxilly/go-testdata"
 versions = ["1.16", "1.18", "1.21"]
@@ -42,7 +44,7 @@ def download(filename: str):
             break
 
     if file_info is None:
-        print(f'File {filename} not found.')
+        log(f'File {filename} not found.')
         return
 
     response = requests.get(file_info['browser_download_url'])
@@ -55,7 +57,7 @@ def download(filename: str):
     with open(bin_path, 'wb') as f:
         f.write(response.content)
 
-    print(f"Downloaded {filename}")
+    log(f"Downloaded {filename}")
 
 
 def ensure_exist(filename: str):
@@ -64,7 +66,7 @@ def ensure_exist(filename: str):
     if not e:
         download(filename)
     else:
-        print(f"{filename} exists.")
+        log(f"{filename} exists.")
     return p
 
 

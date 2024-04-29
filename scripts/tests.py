@@ -47,7 +47,7 @@ def eval_test(gsa: str, target: IntegrationTest):
 
 
 def run_unit_tests():
-    print("Running unit tests...")
+    log("Running unit tests...")
     unit_path = os.path.join(get_project_root(), "covdata", "unit")
 
     subprocess.run(
@@ -83,11 +83,11 @@ def run_unit_tests():
         cwd=get_project_root(),
         encoding="utf-8",
     )
-    print("Unit tests passed.")
+    log("Unit tests passed.")
 
 
 def merge_covdata():
-    print("Merging coverage data...")
+    log("Merging coverage data...")
 
     subprocess.run(
         [
@@ -104,7 +104,7 @@ def merge_covdata():
         encoding="utf-8",
     )
 
-    print("Merged coverage data.")
+    log("Merged coverage data.")
 
 
 def run_integration_tests(targets: list[IntegrationTest]):
@@ -120,9 +120,9 @@ def run_integration_tests(targets: list[IntegrationTest]):
                 try:
                     future.result()  # This will raise an exception if the test failed
                     completed_tests += 1
-                    print(f"[{completed_tests}/{all_tests}] Test {test.name} passed.")
+                    log(f"[{completed_tests}/{all_tests}] Test {test.name} passed.")
                 except Exception as e:
-                    print(f"[{completed_tests}/{all_tests}] Test {test.name} failed: {e}")
+                    log(f"[{completed_tests}/{all_tests}] Test {test.name} failed: {e}")
                     exit(1)
 
 
@@ -158,7 +158,7 @@ class DataParser(HTMLParser):
 
 
 def run_web_test(entry: str):
-    print("Running web test...")
+    log("Running web test...")
 
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
@@ -195,7 +195,7 @@ def run_web_test(entry: str):
             raise Exception(f"Missing key {key} in the data.")
 
     p.terminate()
-    print("Web test passed.")
+    log("Web test passed.")
 
 
 if __name__ == "__main__":
@@ -208,17 +208,17 @@ if __name__ == "__main__":
 
     run_unit_tests()
 
-    print("Downloading example data...")
+    log("Downloading example data...")
     tests = ensure_example_data()
-    print("Downloaded example data.")
+    log("Downloaded example data.")
 
     if args.cockroachdb:
-        print("Downloading CockroachDB data...")
+        log("Downloading CockroachDB data...")
     tests.extend(ensure_cockroachdb_data())
-    print("Downloaded CockroachDB data.")
+    log("Downloaded CockroachDB data.")
 
     run_integration_tests(tests)
 
     merge_covdata()
 
-    print("All tests passed.")
+    log("All tests passed.")

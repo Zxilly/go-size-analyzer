@@ -7,11 +7,11 @@ from tqdm import tqdm
 from define import TestType
 from download import ensure_exist as ensure_example_bin_exist
 from define import IntegrationTest
-from utils import load_files_from_tar, load_files_from_zip, get_bin_path
+from utils import load_files_from_tar, load_files_from_zip, get_bin_path, log
 
 
 def ensure_example_data() -> list[IntegrationTest]:
-    print("Getting example data...")
+    log("Getting example data...")
     test = []
     for v in ["1.18", "1.19", "1.20", "1.21"]:
         for o in ["linux", "windows", "darwin"]:
@@ -22,7 +22,7 @@ def ensure_example_data() -> list[IntegrationTest]:
                     test.append(
                         IntegrationTest(name, p, TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST)
                     )
-    print("Got example data.")
+    log("Got example data.")
     return test
 
 
@@ -68,13 +68,13 @@ def ensure_cockroachdb_data() -> list[IntegrationTest]:
         file_name = f"cockroach-{url[1]}"
         file_path = get_bin_path(file_name)
         if not os.path.exists(file_path):
-            print(f"Downloading {url[0]}...")
+            log(f"Downloading {url[0]}...")
             file_byte = dne(url[0])
             with open(file_path, "wb") as f:
                 f.write(file_byte)
-            print(f"Downloaded {url[0]}.")
+            log(f"Downloaded {url[0]}.")
         else:
-            print(f"File {file_path} already exists.")
+            log(f"File {file_path} already exists.")
         ret.append(IntegrationTest(
             file_name, file_path,
             TestType.JSON_TEST | TestType.SVG_TEST

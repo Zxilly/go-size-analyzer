@@ -7,6 +7,8 @@ import tempfile
 import zipfile
 from typing import List
 
+import time
+
 
 def get_new_temp_binary() -> str:
     suffix = ".exe" if os.name == "nt" else ""
@@ -95,3 +97,18 @@ def require_go() -> str:
     if go is None:
         raise Exception("Go is not installed. Please install Go and try again.")
     return go
+
+
+base_time = 0
+
+
+def set_base_time():
+    global base_time
+    base_time = time.clock()
+
+
+def log(msg: str):
+    global base_time
+
+    start_ms = int((time.time() - base_time) * 1000)
+    print(f"[{start_ms}ms] {msg}")
