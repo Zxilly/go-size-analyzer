@@ -1,6 +1,9 @@
 package main
 
-import "github.com/alecthomas/kong"
+import (
+	gsv "github.com/Zxilly/go-size-analyzer"
+	"github.com/alecthomas/kong"
+)
 
 var Options struct {
 	Verbose bool   `help:"Verbose output"`
@@ -61,7 +64,7 @@ func init() {
 			},
 		}),
 		kong.Vars{
-			"version": GetVersion(),
+			"version": gsv.SprintVersion(),
 		},
 	)
 }
