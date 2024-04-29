@@ -27,6 +27,8 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 		if s.Type&stabTypeMask != 0 {
 			continue // skip stab debug info
 		}
+
+		syms = append(syms, s)
 	}
 
 	var addrs []uint64
