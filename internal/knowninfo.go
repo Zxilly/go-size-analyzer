@@ -9,7 +9,6 @@ import (
 	"github.com/goretk/gore"
 	"log/slog"
 	"math"
-	"os"
 	"reflect"
 	"runtime/debug"
 	"unsafe"
@@ -45,8 +44,7 @@ func (k *KnownInfo) LoadSectionMap() {
 	}
 	err := k.Sects.AssertSize(k.Size)
 	if err != nil {
-		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))
-		os.Exit(1)
+		utils.FatalError(err)
 	}
 
 	return
@@ -155,8 +153,7 @@ func (k *KnownInfo) LoadPackages() error {
 
 func (k *KnownInfo) RequireModInfo() {
 	if k.BuildInfo == nil {
-		slog.Error("buildinfo is required for this operation")
-		os.Exit(1)
+		utils.FatalError(fmt.Errorf("no build info"))
 	}
 }
 
@@ -179,8 +176,7 @@ func (k *KnownInfo) CollectCoverage() {
 	var err error
 	k.Coverage, err = entity.MergeAndCleanCoverage(covs)
 	if err != nil {
-		slog.Error(fmt.Sprintf("Fatal error: %s", err.Error()))
-		os.Exit(1)
+		utils.FatalError(err)
 	}
 }
 

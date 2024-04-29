@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"log/slog"
 	"os"
+	"runtime"
 	"sync"
 )
 
@@ -18,6 +20,17 @@ func InitLogger(level slog.Level) {
 		},
 		Level: level,
 	})))
+}
+
+func FatalError(err error) {
+	slog.Error(fmt.Sprintf("Fatal error: %v", err))
+
+	// print stack
+	b := make([]byte, 1024)
+	runtime.Stack(b, true)
+	slog.Error(string(b))
+
+	os.Exit(1)
 }
 
 type SyncOutput struct {

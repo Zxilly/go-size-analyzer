@@ -2,9 +2,8 @@ package server
 
 import (
 	"errors"
-	"log/slog"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"net/http"
-	"os"
 )
 
 func getHTMLHandler(content []byte) http.HandlerFunc {
@@ -25,8 +24,7 @@ func HostServer(content []byte, listen string) *http.Server {
 		err := server.ListenAndServe()
 		if err != nil {
 			if !errors.Is(err, http.ErrServerClosed) {
-				slog.Error("Failed to start server", "error", err)
-				os.Exit(1)
+				utils.FatalError(err)
 			}
 		}
 	}()

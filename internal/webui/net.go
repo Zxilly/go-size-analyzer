@@ -3,11 +3,10 @@
 package webui
 
 import (
-	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"io"
 	"log/slog"
 	"net/http"
-	"os"
 )
 
 const BaseUrl = "https://github.com/Zxilly/go-size-analyzer/releases/download/ui/index.html"
@@ -16,8 +15,7 @@ func GetTemplate() string {
 	slog.Info("Downloading template")
 	resp, err := http.Get(BaseUrl)
 	if err != nil {
-		slog.Error(fmt.Sprintf("Error: %v", err))
-		os.Exit(1)
+		utils.FatalError(err)
 	}
 	defer func(Body io.ReadCloser) {
 		_ = Body.Close()
@@ -25,8 +23,7 @@ func GetTemplate() string {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		slog.Error(fmt.Sprintf("Error: %v", err))
-		os.Exit(1)
+		utils.FatalError(err)
 	}
 
 	return string(body)

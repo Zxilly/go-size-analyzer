@@ -25,8 +25,7 @@ func main() {
 		SkipDisasm:         Options.NoDisasm,
 	})
 	if err != nil {
-		slog.Error(fmt.Sprintf("Error: %v", err))
-		os.Exit(1)
+		utils.FatalError(err)
 	}
 
 	if Options.Web {
@@ -60,8 +59,7 @@ func main() {
 			PaddingRoot:  Options.PaddingRoot,
 		})
 	default:
-		slog.Error(fmt.Sprintf("Invalid format: %s", Options.Format))
-		os.Exit(1)
+		utils.FatalError(fmt.Errorf("Invalid format: %s", Options.Format))
 	}
 
 	if Options.Web {
@@ -87,8 +85,7 @@ func main() {
 	if Options.Output != "" {
 		err := os.WriteFile(Options.Output, b, 0644)
 		if err != nil {
-			slog.Error(fmt.Sprintf("Error: %v", err))
-			os.Exit(1)
+			utils.FatalError(err)
 		}
 	} else {
 		fmt.Println(string(b))
