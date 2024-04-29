@@ -1,3 +1,4 @@
+import concurrent.futures
 import json
 from argparse import ArgumentParser
 from html.parser import HTMLParser
@@ -7,41 +8,8 @@ from time import sleep
 
 from define import IntegrationTest, TestType
 from ensure import ensure_example_data, ensure_cockroachdb_data
+from gsa import build_gsa
 from utils import *
-
-
-def build_gsa():
-    print("Building gsa...")
-
-    go = require_go()
-    temp_binary = get_new_temp_binary()
-    project_root = get_project_root()
-
-    ret = subprocess.run(
-        [
-            go,
-            "build",
-            "-cover",
-            "-covermode=atomic",
-            "-tags",
-            "embed",
-            "-o",
-            temp_binary,
-            f"{project_root}/cmd/gsa",
-        ],
-        text=True,
-        capture_output=True,
-        cwd=get_project_root(),
-        encoding="utf-8",
-    )
-
-    if ret.returncode != 0:
-        output = extract_output(ret)
-        raise Exception(f"Failed to build gsa. Output: {output}")
-
-    print("Built gsa.")
-
-    return temp_binary
 
 
 def eval_test(gsa: str, target: IntegrationTest):
@@ -139,19 +107,30 @@ def merge_covdata():
     print("Merged coverage data.")
 
 
-def run_integration_tests(entry: str, targets: list[IntegrationTest]):
-    all_tests = len(targets)
-    for i, t in enumerate(targets):
-        count = int(i) + 1
-        cur = str(count) + "/" + str(all_tests)
-        try:
-            eval_test(entry, t)
-            print(f"[{cur}]Test {t.name} passed.")
-        except Exception as e:
-            print(f"[{cur}]Test {t.name} failed: {e}")
-            exit(1)
+def run_integration_tests(targets: list[IntegrationTest]):
+    with build_gsa() as gsa:
+        run_web_test(gsa)
 
-    os.remove(entry)
+        all_tests = len(targets)
+        completed_tests = 0
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = {executor.submit(task, gsa, t): t for i, t in enumerate(targets)}
+            for future in concurrent.futures.as_completed(futures):
+                test = futures[future]
+                try:
+                    future.result()  # This will raise an exception if the test failed
+                    completed_tests += 1
+                    print(f"[{completed_tests}/{all_tests}] Test {test.name} passed.")
+                except Exception as e:
+                    print(f"[{completed_tests}/{all_tests}] Test {test.name} failed: {e}")
+                    exit(1)
+
+
+def task(entry, test):
+    try:
+        eval_test(entry, test)
+    except Exception as e:
+        raise RuntimeError(f"Test {test.name} failed: {e}")
 
 
 class DataParser(HTMLParser):
@@ -227,10 +206,7 @@ if __name__ == "__main__":
 
     init_dirs()
 
-    gsa = build_gsa()
-
     run_unit_tests()
-    run_web_test(gsa)
 
     print("Downloading example data...")
     tests = ensure_example_data()
@@ -241,7 +217,7 @@ if __name__ == "__main__":
     tests.extend(ensure_cockroachdb_data())
     print("Downloaded CockroachDB data.")
 
-    run_integration_tests(gsa, tests)
+    run_integration_tests(tests)
 
     merge_covdata()
 
