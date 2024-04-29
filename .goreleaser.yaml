@@ -11,8 +11,8 @@ builds:
     main: ./cmd/gsa
     ldflags:
         - "-s -w"
-        - -X go.szostok.io/version.version={{.Version}}
-        - -X go.szostok.io/version.buildDate={{.Date}}
+        - -X github.com/Zxilly/go-size-analyzer.version={{.Version}}
+        - -X github.com/Zxilly/go-size-analyzer.buildDate={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
