@@ -104,7 +104,7 @@ base_time = 0
 
 def set_base_time():
     global base_time
-    base_time = time.clock()
+    base_time = time.time()
 
 
 def log(msg: str):
