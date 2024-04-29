@@ -2,28 +2,23 @@ package utils
 
 import (
 	"bytes"
-	"errors"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"os/exec"
+	"github.com/stretchr/testify/mock"
 	"testing"
 )
 
 func TestFatalError(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "1" {
-		FatalError(errors.New("test"))
-		return
+	m := &mock.Mock{}
+	m.On("os.Exit", 1).Return()
+	exitFunc = func(code int) {
+		m.MethodCalled("os.Exit", code)
 	}
 
-	cmd := exec.Command(os.Args[0], "-test.run=TestFatalError")
-	cmd.Env = append(os.Environ(), "BE_CRASHER=1")
-	err := cmd.Run()
-	var e *exec.ExitError
-	if errors.As(err, &e) && !e.Success() {
-		return
-	} else {
-		t.Fatalf("process ran with err %v, want exit status 1", err)
-	}
+	FatalError(nil)
+	assert.True(t, m.AssertNotCalled(t, "os.Exit", 1))
+
+	FatalError(assert.AnError)
+	assert.True(t, m.AssertCalled(t, "os.Exit", 1))
 }
 
 func TestSyncOutputWriteLocksAndWrites(t *testing.T) {

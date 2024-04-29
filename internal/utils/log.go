@@ -22,7 +22,13 @@ func InitLogger(level slog.Level) {
 	})))
 }
 
+var exitFunc = os.Exit
+
 func FatalError(err error) {
+	if err == nil {
+		return
+	}
+
 	slog.Error(fmt.Sprintf("Fatal error: %v", err))
 
 	// print stack
@@ -30,7 +36,7 @@ func FatalError(err error) {
 	runtime.Stack(b, true)
 	slog.Error(string(b))
 
-	os.Exit(1)
+	exitFunc(1)
 }
 
 type SyncOutput struct {
