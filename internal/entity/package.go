@@ -214,5 +214,4 @@ func (p *Package) AddSymbol(addr uint64, size uint64, typ AddrType, name string,
 
 	// then, add to the symbol list
 	p.Symbols = append(p.Symbols, NewSymbol(name, addr, size, typ))
-	// fmt.Println("AddSymbol", p.Name, name, addr, size, typ, len(p.Symbols))
 }

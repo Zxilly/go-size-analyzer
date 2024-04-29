@@ -8,6 +8,58 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestAddrPosString(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 4096,
+		Size: 256,
+		Type: entity.AddrTypeData,
+	}
+
+	expected := "Addr: 1000 Size: 100 Type: data"
+	result := addrPos.String()
+
+	assert.Equal(t, expected, result)
+}
+
+func TestAddrPosStringWithDifferentType(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 4096,
+		Size: 256,
+		Type: entity.AddrTypeText,
+	}
+
+	expected := "Addr: 1000 Size: 100 Type: text"
+	result := addrPos.String()
+
+	assert.Equal(t, expected, result)
+}
+
+func TestAddrPosStringWithZeroSize(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 4096,
+		Size: 0,
+		Type: entity.AddrTypeData,
+	}
+
+	expected := "Addr: 1000 Size: 0 Type: data"
+	result := addrPos.String()
+
+	assert.Equal(t, expected, result)
+}
+
+func TestAddrPosStringWithZeroAddr(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 0,
+		Size: 256,
+		Type: entity.AddrTypeData,
+	}
+
+	expected := "Addr: 0 Size: 100 Type: data"
+	result := addrPos.String()
+
+	assert.Equal(t, expected, result)
+}
+
 func TestMergeCoverage(t *testing.T) {
 	cov1 := entity.AddrCoverage{
 		&entity.CoveragePart{

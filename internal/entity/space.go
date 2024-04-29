@@ -43,7 +43,3 @@ func (a AddrSpace) ToDirtyCoverage() AddrCoverage {
 		}
 	})
 }
-
-func (a AddrSpace) ToCleanCoverage() (AddrCoverage, error) {
-	return CleanCoverage(a.ToDirtyCoverage())
-}
