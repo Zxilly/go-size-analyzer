@@ -6,9 +6,8 @@ var Options struct {
 	Verbose bool   `help:"Verbose output"`
 	Format  string `short:"f" enum:"text,json,html,svg" default:"text" help:"Output format, possible values: ${enum}"`
 
-	HideProgress bool `help:"Hide progress bar for disassembly"`
-	NoDisasm     bool `help:"Skip disassembly pass"`
-	NoSymbol     bool `help:"Skip symbol pass"`
+	NoDisasm bool `help:"Skip disassembly pass"`
+	NoSymbol bool `help:"Skip symbol pass"`
 
 	HideSections bool `help:"Hide sections" group:"text"`
 	HideMain     bool `help:"Hide main package" group:"text"`

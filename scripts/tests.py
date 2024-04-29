@@ -37,13 +37,13 @@ def eval_test(gsa: str, target: IntegrationTest):
         run_gsa([gsa, "-f", "text", path], ".txt")
 
     if TestType.JSON_TEST in test_type:
-        run_gsa([gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json"), "--hide-progress"], ".json.txt")
+        run_gsa([gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json")], ".json.txt")
 
     if TestType.HTML_TEST in test_type:
-        run_gsa([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html"), "--hide-progress"], ".html.txt")
+        run_gsa([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html")], ".html.txt")
 
     if TestType.SVG_TEST in test_type:
-        run_gsa([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg"), "--hide-progress"], ".svg.txt")
+        run_gsa([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg")], ".svg.txt")
 
 
 def run_unit_tests():
@@ -164,7 +164,7 @@ def run_web_test(entry: str):
     env["GOCOVERDIR"] = get_covdata_integration_dir()
 
     p = subprocess.Popen(
-        args=[entry, "--web", "--listen", "localhost:23371", "--hide-progress", entry],
+        args=[entry, "--web", "--listen", "localhost:23371", entry],
         text=True, cwd=get_project_root(),
         encoding="utf-8", env=env
     )

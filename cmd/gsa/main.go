@@ -20,9 +20,8 @@ func main() {
 	}
 
 	result, err := internal.Analyze(Options.Binary, internal.Options{
-		HideDisasmProgress: Options.HideProgress,
-		SkipSymbol:         Options.NoSymbol,
-		SkipDisasm:         Options.NoDisasm,
+		SkipSymbol: Options.NoSymbol,
+		SkipDisasm: Options.NoDisasm,
 	})
 	if err != nil {
 		utils.FatalError(err)

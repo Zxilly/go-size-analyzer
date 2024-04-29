@@ -104,7 +104,6 @@ Flags:
   -h, --help             Show context-sensitive help.
       --verbose          Verbose output
   -f, --format="text"    Output format, possible values: text,json,html,svg
-      --hide-progress    Hide progress bar for disassembly
       --no-disasm        Skip disassembly pass
       --no-symbol        Skip symbol pass
   -o, --output=STRING    Write to file

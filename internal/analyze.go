@@ -13,8 +13,6 @@ import (
 )
 
 type Options struct {
-	HideDisasmProgress bool
-
 	SkipSymbol bool
 	SkipDisasm bool
 }
@@ -54,7 +52,7 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	}
 
 	if !options.SkipDisasm {
-		err = k.Disasm(options.HideDisasmProgress)
+		err = k.Disasm()
 		if err != nil {
 			return nil, err
 		}

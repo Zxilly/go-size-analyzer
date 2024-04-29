@@ -14,7 +14,6 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/samber/lo v1.39.0
-	github.com/schollz/progressbar/v3 v3.14.2
 	github.com/stretchr/testify v1.9.0
 	go.szostok.io/version v1.2.0
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
@@ -46,7 +45,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
-	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/muesli/termenv v0.15.2 // indirect
@@ -59,7 +57,6 @@ require (
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/term v0.19.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

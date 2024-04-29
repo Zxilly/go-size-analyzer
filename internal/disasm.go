@@ -4,13 +4,12 @@ import (
 	"errors"
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"log/slog"
 )
 
-func (k *KnownInfo) Disasm(nopb bool) error {
+func (k *KnownInfo) Disasm() error {
 	fns := k.Deps.GetFunctions()
 
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
@@ -28,7 +27,6 @@ func (k *KnownInfo) Disasm(nopb bool) error {
 	}
 
 	slog.Info("Disassemble functions...")
-	pb := utils.NewPb(int64(len(fns)), "Disassembling...", nopb)
 
 	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, index int) []result {
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.Size)
@@ -40,7 +38,6 @@ func (k *KnownInfo) Disasm(nopb bool) error {
 			_, ok := e.LoadAddrString(p.Addr, int64(p.Size))
 			return ok
 		})
-		_ = pb.Add(1)
 		return lo.Map(candidates, func(p disasm.PossibleStr, _ int) result {
 			return result{
 				addr: p.Addr,
