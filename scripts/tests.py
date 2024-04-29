@@ -204,6 +204,8 @@ if __name__ == "__main__":
 
     args = ap.parse_args()
 
+    set_base_time()
+
     init_dirs()
 
     run_unit_tests()
