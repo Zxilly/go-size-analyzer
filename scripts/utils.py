@@ -109,6 +109,5 @@ def set_base_time():
 
 def log(msg: str):
     global base_time
-
-    start_ms = int((time.time() - base_time) * 1000)
-    print(f"[{start_ms}ms] {msg}")
+    t = "{:.2f}s".format((time.time() - base_time))
+    print(f"[{t}] {msg}")
