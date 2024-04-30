@@ -123,8 +123,10 @@ def run_process(pargs: list[str], name: str, suffix: str):
         encoding="utf-8",
     )
     output_name = get_result_file(f"{name}{suffix}")
+    content = extract_output(ret)
     with open(output_name, "w", encoding="utf-8") as f:
-        f.write(extract_output(ret))
+        f.write(content)
 
     if ret.returncode != 0:
-        raise Exception(f"Failed to run gsa on {name}. Check {output_name}.")
+        print(content)
+        raise Exception(f"Failed to run {name}. Check {output_name}.")

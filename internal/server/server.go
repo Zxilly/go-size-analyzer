@@ -10,7 +10,7 @@ const template = "" +
 	"HTTP/1.1 200 OK\r\n" +
 	"Content-Type: text/html\r\n" +
 	"Content-Length: %d\r\n" +
-	"Conection: close\r\n" +
+	"Connection: close\r\n" +
 	"Server: go-size-analyzer\r\n" +
 	"Cache-Control: no-cache, no-store, must-revalidate\r\n" +
 	"\r\n"
