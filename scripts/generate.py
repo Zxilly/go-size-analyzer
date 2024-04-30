@@ -2,6 +2,7 @@ import csv
 
 from define import RemoteBinary, RemoteBinaryType, TestType
 from example_download import get_example_download_url
+from utils import  get_binaries_path
 
 
 def generate_cockroachdb() -> list[RemoteBinary]:
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     tests.extend(generate_example())
     tests.extend(generate_cockroachdb())
 
-    with open("binaries.csv", "w", newline="") as f:
+    with open(get_binaries_path(), "w", newline="") as f:
         writer = csv.writer(f)
         for test in tests:
             writer.writerow(test.to_csv())

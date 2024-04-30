@@ -155,7 +155,7 @@ def run_web_test(entry: str):
 
 
 def load_remote_binaries() -> list[IntegrationTest]:
-    with open("binaries.csv", "r") as f:
+    with open(get_binaries_path(), "r") as f:
         reader = csv.reader(f)
         return [RemoteBinary.from_csv(line).to_test() for line in reader]
 

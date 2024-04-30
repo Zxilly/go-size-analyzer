@@ -130,3 +130,6 @@ def run_process(pargs: list[str], name: str, suffix: str):
     if ret.returncode != 0:
         print(content)
         raise Exception(f"Failed to run {name}. Check {output_name}.")
+
+def get_binaries_path():
+    return os.path.join(get_project_root(), "scripts", "binaries.csv")

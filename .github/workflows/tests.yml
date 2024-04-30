@@ -61,7 +61,7 @@ jobs:
           enableCrossOsArchive: true
 
       - name: Run tests
-        run: python scripts/tests.py --cockroachdb
+        run: python scripts/tests.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,7 +70,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Zxilly/go-size-analyzer
-          verbose: true
           file: profile.txt
 
       - name: Upload results
