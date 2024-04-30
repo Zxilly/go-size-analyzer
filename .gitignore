@@ -14,8 +14,6 @@ vendor/
 .idea/
 .vscode/
 
-ui/data.json
-
 scripts/bins/
 scripts/__pycache__/
 
