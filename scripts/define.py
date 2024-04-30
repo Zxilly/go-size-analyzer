@@ -1,6 +1,9 @@
 import os.path
 from enum import Flag, Enum, auto
 
+import requests
+from tqdm import tqdm
+
 from utils import *
 
 

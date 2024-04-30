@@ -2,6 +2,8 @@ import concurrent.futures
 import csv
 import json
 
+import requests
+
 from define import IntegrationTest, TestType, RemoteBinary
 from gsa import build_gsa
 from utils import *
