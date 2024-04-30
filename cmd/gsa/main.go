@@ -62,8 +62,7 @@ func main() {
 	}
 
 	if Options.Web {
-		s := server.HostServer(b, Options.Listen)
-		defer s.Close()
+		server.HostServer(b, Options.Listen)
 
 		url := utils.GetUrlFromListen(Options.Listen)
 

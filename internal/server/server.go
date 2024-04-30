@@ -1,33 +1,39 @@
 package server
 
 import (
-	"errors"
+	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"net/http"
+	"net"
 )
 
-func getHTMLHandler(content []byte) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/html")
-		w.Header().Set("Cache-Control", "no-cache")
-		_, _ = w.Write(content)
-	}
+const template = "" +
+	"HTTP/1.1 200 OK\r\n" +
+	"Content-Type: text/html\r\n" +
+	"Content-Length: %d\r\n" +
+	"Conection: close\r\n" +
+	"Server: go-size-analyzer\r\n" +
+	"Cache-Control: no-cache, no-store, must-revalidate\r\n" +
+	"\r\n"
+
+func handleConn(conn net.Conn, content []byte) {
+	raw := fmt.Sprintf(template, len(content)) + string(content)
+	_, _ = conn.Write([]byte(raw))
+	return
 }
 
-func HostServer(content []byte, listen string) *http.Server {
-	server := &http.Server{
-		Addr:    listen,
-		Handler: getHTMLHandler(content),
+func HostServer(content []byte, listen string) {
+	l, err := net.Listen("tcp", listen)
+	if err != nil {
+		utils.FatalError(err)
 	}
 
 	go func() {
-		err := server.ListenAndServe()
-		if err != nil {
-			if !errors.Is(err, http.ErrServerClosed) {
-				utils.FatalError(err)
+		for {
+			conn, err := l.Accept()
+			if err != nil {
+				return
 			}
+			go handleConn(conn, content)
 		}
 	}()
-
-	return server
 }

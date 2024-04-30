@@ -5,7 +5,6 @@ import (
 	"io"
 	"log/slog"
 	"os"
-	"runtime"
 	"sync"
 )
 
@@ -30,11 +29,6 @@ func FatalError(err error) {
 	}
 
 	slog.Error(fmt.Sprintf("Fatal error: %v", err))
-
-	// print stack
-	b := make([]byte, 1024)
-	runtime.Stack(b, true)
-	slog.Error(string(b))
 
 	exitFunc(1)
 }
