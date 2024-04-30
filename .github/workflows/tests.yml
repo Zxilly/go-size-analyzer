@@ -70,7 +70,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Zxilly/go-size-analyzer
-          file: profile.txt
+          file: coverage.profile
 
       - name: Upload results
         uses: actions/upload-artifact@v4
