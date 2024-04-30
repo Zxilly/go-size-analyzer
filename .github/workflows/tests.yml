@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: scripts/bins
-          key: test-bins-${{ hashFiles('scripts/tests.py') }}
+          key: test-bins-${{ hashFiles('scripts/binaries.csv') }}
           enableCrossOsArchive: true
 
       - name: Run tests

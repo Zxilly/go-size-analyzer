@@ -1,14 +1,10 @@
 import concurrent.futures
+import csv
 import json
-from argparse import ArgumentParser
-from html.parser import HTMLParser
 
-import requests
-from time import sleep
-
-from define import IntegrationTest, TestType
-from ensure import ensure_example_data, ensure_cockroachdb_data
+from define import IntegrationTest, TestType, RemoteBinary
 from gsa import build_gsa
+from parser import DataParser
 from utils import *
 
 
@@ -17,40 +13,24 @@ def eval_test(gsa: str, target: IntegrationTest):
     path = target.path
     test_type = target.type
 
-    env = os.environ.copy()
-    env["GOCOVERDIR"] = get_covdata_integration_dir()
-
-    def run_gsa(args: list[str], suffix: str):
-        ret = subprocess.run(
-            args=args,
-            env=env, text=True, capture_output=True, cwd=get_project_root(),
-            encoding="utf-8",
-        )
-        output_name = get_result_file(f"{name}{suffix}")
-        with open(output_name, "w", encoding="utf-8") as f:
-            f.write(extract_output(ret))
-
-        if ret.returncode != 0:
-            raise Exception(f"Failed to run gsa on {name}. Check {output_name}.")
-
     if TestType.TEXT_TEST in test_type:
-        run_gsa([gsa, "-f", "text", path], ".txt")
+        run_process([gsa, "-f", "text", path], name, ".txt")
 
     if TestType.JSON_TEST in test_type:
-        run_gsa([gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json")], ".json.txt")
+        run_process([gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json")], name, ".json.txt")
 
     if TestType.HTML_TEST in test_type:
-        run_gsa([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html")], ".html.txt")
+        run_process([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html")], name, ".html.txt")
 
     if TestType.SVG_TEST in test_type:
-        run_gsa([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg")], ".svg.txt")
+        run_process([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg")], name, ".svg.txt")
 
 
 def run_unit_tests():
     log("Running unit tests...")
     unit_path = os.path.join(get_project_root(), "covdata", "unit")
 
-    subprocess.run(
+    run_process(
         [
             "go",
             "test",
@@ -63,12 +43,11 @@ def run_unit_tests():
             "./...",
             f"-test.gocoverdir={unit_path}",
         ],
-        check=True,
-        cwd=get_project_root(),
-        encoding="utf-8",
+        "embed-unit",
+        ".txt",
     )
 
-    subprocess.run(
+    run_process(
         [
             "go",
             "test",
@@ -79,10 +58,10 @@ def run_unit_tests():
             "./...",
             f"-test.gocoverdir={unit_path}",
         ],
-        check=True,
-        cwd=get_project_root(),
-        encoding="utf-8",
+        "unit",
+        ".txt",
     )
+
     log("Unit tests passed.")
 
 
@@ -133,30 +112,6 @@ def task(entry, test):
         raise RuntimeError(f"Test {test.name} failed: {e}")
 
 
-class DataParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.in_data = False
-        self.data = None
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "script":
-            for attr in attrs:
-                if attr[0] == "type" and attr[1] == "application/json":
-                    self.in_data = True
-
-    def handle_data(self, data):
-        if self.in_data:
-            self.data = data
-
-    def handle_endtag(self, tag):
-        if self.in_data:
-            self.in_data = False
-
-    def get_data(self):
-        return self.data
-
-
 def run_web_test(entry: str):
     log("Running web test...")
 
@@ -166,11 +121,12 @@ def run_web_test(entry: str):
     p = subprocess.Popen(
         args=[entry, "--web", "--listen", "localhost:23371", entry],
         text=True, cwd=get_project_root(),
-        encoding="utf-8", env=env
+        encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
 
-    # wait 3 seconds for the server to start
-    sleep(3)
+    for line in iter(p.stdout.readline, ""):
+        if "localhost" in line:
+            break
 
     ret = requests.get("http://localhost:23371").text
 
@@ -198,26 +154,22 @@ def run_web_test(entry: str):
     log("Web test passed.")
 
 
+def load_remote_binaries() -> list[IntegrationTest]:
+    with open("binaries.csv", "r") as f:
+        reader = csv.reader(f)
+        return [RemoteBinary.from_csv(line).to_test() for line in reader]
+
+
 if __name__ == "__main__":
-    ap = ArgumentParser()
-    ap.add_argument("--cockroachdb", action="store_true", default=False)
-
-    args = ap.parse_args()
-
     set_base_time()
 
     init_dirs()
 
     run_unit_tests()
 
-    log("Downloading example data...")
-    tests = ensure_example_data()
-    log("Downloaded example data.")
+    log("Fetching remote binaries...")
 
-    if args.cockroachdb:
-        log("Downloading CockroachDB data...")
-    tests.extend(ensure_cockroachdb_data())
-    log("Downloaded CockroachDB data.")
+    tests = load_remote_binaries()
 
     run_integration_tests(tests)
 

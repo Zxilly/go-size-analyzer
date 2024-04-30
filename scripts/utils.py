@@ -7,7 +7,9 @@ import tempfile
 import zipfile
 from typing import List
 
+import requests
 import time
+from tqdm import tqdm
 
 
 def get_new_temp_binary() -> str:
@@ -68,23 +70,21 @@ def extract_output(p: subprocess.CompletedProcess) -> str:
     return ret
 
 
-def load_files_from_tar(tar: bytes, target_name: str) -> bytes:
-    with io.BytesIO(tar) as f:
-        with tarfile.open(fileobj=f) as tar:
-            for member in tar.getmembers():
-                real_name = os.path.basename(member.name)
-                if real_name == target_name:
-                    return tar.extractfile(member).read()
+def load_file_from_tar(f: io.BytesIO, target_name: str) -> bytes:
+    with tarfile.open(fileobj=f) as tar:
+        for member in tar.getmembers():
+            real_name = os.path.basename(member.name)
+            if real_name == target_name:
+                return tar.extractfile(member).read()
     raise Exception(f"File {target_name} not found in tar.")
 
 
-def load_files_from_zip(zb: bytes, target_name: str) -> bytes:
-    with io.BytesIO(zb) as f:
-        with zipfile.ZipFile(f) as z:
-            for name in z.namelist():
-                real_name = os.path.basename(name)
-                if real_name == target_name:
-                    return z.read(name)
+def load_file_from_zip(f: io.BytesIO, target_name: str) -> bytes:
+    with zipfile.ZipFile(f) as z:
+        for name in z.namelist():
+            real_name = os.path.basename(name)
+            if real_name == target_name:
+                return z.read(name)
     raise Exception(f"File {target_name} not found in zip.")
 
 
@@ -111,3 +111,20 @@ def log(msg: str):
     global base_time
     t = "{:.2f}s".format((time.time() - base_time))
     print(f"[{t}] {msg}")
+
+
+def run_process(pargs: list[str], name: str, suffix: str):
+    env = os.environ.copy()
+    env["GOCOVERDIR"] = get_covdata_integration_dir()
+
+    ret = subprocess.run(
+        args=pargs,
+        env=env, text=True, capture_output=True, cwd=get_project_root(),
+        encoding="utf-8",
+    )
+    output_name = get_result_file(f"{name}{suffix}")
+    with open(output_name, "w", encoding="utf-8") as f:
+        f.write(extract_output(ret))
+
+    if ret.returncode != 0:
+        raise Exception(f"Failed to run gsa on {name}. Check {output_name}.")

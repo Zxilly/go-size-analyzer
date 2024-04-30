@@ -21,7 +21,7 @@ func handleConn(conn net.Conn, content []byte) {
 	return
 }
 
-func HostServer(content []byte, listen string) {
+func HostServer(content []byte, listen string) net.Listener {
 	l, err := net.Listen("tcp", listen)
 	if err != nil {
 		utils.FatalError(err)
@@ -36,4 +36,6 @@ func HostServer(content []byte, listen string) {
 			go handleConn(conn, content)
 		}
 	}()
+
+	return l
 }

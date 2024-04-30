@@ -3,7 +3,6 @@ package server_test
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/server"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
@@ -14,21 +13,15 @@ func TestHostServer(t *testing.T) {
 	content := []byte("test content")
 	listen := "localhost:8080"
 
-	s := server.HostServer(content, listen)
-
-	assert.NotNil(t, s)
-	assert.Equal(t, listen, s.Addr)
+	l := server.HostServer(content, listen)
+	defer l.Close()
+	assert.NotNil(t, l)
 
 	// Send a test request to the server
 	req, err := http.NewRequest("GET", utils.GetUrlFromListen(listen), nil)
 	assert.NoError(t, err)
 
-	resp := httptest.NewRecorder()
-	s.Handler.ServeHTTP(resp, req)
-
-	assert.Equal(t, http.StatusOK, resp.Code)
-	assert.Equal(t, "test content", resp.Body.String())
-
-	// Stop the server
-	s.Close()
+	resp, err := http.DefaultClient.Do(req)
+	assert.NoError(t, err)
+	assert.Equal(t, 200, resp.StatusCode)
 }

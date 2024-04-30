@@ -34,7 +34,7 @@ def get_release_info():
     return release_info_cache
 
 
-def download(filename: str):
+def get_example_download_url(filename: str) -> None | str:
     release_info = get_release_info()
 
     file_info = None
@@ -45,9 +45,17 @@ def download(filename: str):
 
     if file_info is None:
         log(f'File {filename} not found.')
+        return None
+
+    return file_info['browser_download_url']
+
+
+def download(filename: str):
+    url = get_example_download_url(filename)
+    if url is None:
         return
 
-    response = requests.get(file_info['browser_download_url'])
+    response = requests.get(url)
     response.raise_for_status()
 
     bin_path = get_bin_path(filename)
@@ -83,5 +91,6 @@ if __name__ == '__main__':
     for arch in args.arch:
         for pos in args.os:
             for version in args.version:
-                name = f"bin-{pos}-{version}-{arch}" + ("-strip" if args.strip else "") + ("-cgo" if args.cgo else "") + ("-pie" if args.pie else "")
+                name = f"bin-{pos}-{version}-{arch}" + ("-strip" if args.strip else "") + (
+                    "-cgo" if args.cgo else "") + ("-pie" if args.pie else "")
                 ensure_exist(name)
