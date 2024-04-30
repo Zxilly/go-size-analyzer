@@ -5,11 +5,8 @@ import subprocess
 import tarfile
 import tempfile
 import zipfile
-from typing import List
-
-import requests
+from html.parser import HTMLParser
 import time
-from tqdm import tqdm
 
 
 def get_new_temp_binary() -> str:
@@ -44,7 +41,7 @@ def get_result_file(name: str) -> str:
 
 
 def init_dirs():
-    paths: List[str] = [
+    paths: list[str] = [
         get_result_dir(),
         get_covdata_integration_dir(),
         get_covdata_unit_dir(),
@@ -131,5 +128,30 @@ def run_process(pargs: list[str], name: str, suffix: str):
         print(content)
         raise Exception(f"Failed to run {name}. Check {output_name}.")
 
+
 def get_binaries_path():
     return os.path.join(get_project_root(), "scripts", "binaries.csv")
+
+
+class DataParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.in_data = False
+        self.data = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "script":
+            for attr in attrs:
+                if attr[0] == "type" and attr[1] == "application/json":
+                    self.in_data = True
+
+    def handle_data(self, data):
+        if self.in_data:
+            self.data = data
+
+    def handle_endtag(self, tag):
+        if self.in_data:
+            self.in_data = False
+
+    def get_data(self):
+        return self.data

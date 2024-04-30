@@ -4,7 +4,6 @@ import json
 
 from define import IntegrationTest, TestType, RemoteBinary
 from gsa import build_gsa
-from parser import DataParser
 from utils import *
 
 
