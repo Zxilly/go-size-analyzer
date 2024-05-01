@@ -50,18 +50,6 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Release
-        if : ${{ !inputs.external_call }}
-        uses: ncipollo/release-action@v1
-        with:
-          artifactErrorsFailBuild: true
-          allowUpdates: true
-          artifactContentType: 'text/html'
-          artifacts: 'ui/dist/index.html'
-          tag: ui
-          commit: master
-          prerelease: true
-
       - name: Upload artifact
         if: ${{ inputs.external_call }}
         uses: actions/upload-artifact@v4

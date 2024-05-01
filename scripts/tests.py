@@ -39,23 +39,6 @@ def run_unit_tests():
             "-race",
             "-covermode=atomic",
             "-cover",
-            "-tags",
-            "embed",
-            "./...",
-            f"-test.gocoverdir={unit_path}",
-        ],
-        "embed-unit",
-        ".txt",
-    )
-
-    run_process(
-        [
-            "go",
-            "test",
-            "-v",
-            "-race",
-            "-covermode=atomic",
-            "-cover",
             "./...",
             f"-test.gocoverdir={unit_path}",
         ],

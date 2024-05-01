@@ -23,8 +23,6 @@ builds:
       - amd64
       - arm64
     flags: -trimpath
-    tags:
-      - embed
 
 archives:
   - format: tar.gz
