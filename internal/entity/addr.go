@@ -28,16 +28,15 @@ type Addr struct {
 	Meta any
 }
 
-func (a Addr) String() string {
-	pkgName := "nil"
+func (a *Addr) String() string {
+	var pkgName, funcName string
 	if a.Pkg != nil {
 		pkgName = a.Pkg.Name
 	}
-	msg := fmt.Sprintf("Addr: 0x%x Size: %d pkg: %s SourceType: %s", a.Addr, a.Size, pkgName, a.SourceType)
-	if a.Meta != nil {
-		msg += fmt.Sprintf(" Meta: %#v", a.Meta)
+	if a.Function != nil {
+		funcName = a.Function.Name
 	}
-	return msg
+	return fmt.Sprintf("AddrPos: %s Pkg: %s Function: %s SourceType: %s", a.AddrPos, pkgName, funcName, a.SourceType)
 }
 
 // AddrCoverage is a list of AddrPos, describe the coverage of the address space

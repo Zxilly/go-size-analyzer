@@ -1,6 +1,7 @@
 package entity_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -123,6 +124,8 @@ func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
 	addr2 := &entity.Addr{
 		AddrPos:    addrPos,
 		SourceType: entity.AddrSourceSymbol,
+		Function:   &entity.Function{Name: "main"},
+		Pkg:        &entity.Package{Name: "main"},
 	}
 
 	coveragePart := &entity.CoveragePart{
@@ -131,8 +134,8 @@ func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
 	}
 
 	expected := "Pos: Addr: 1000 Size: 100 Type: data\n" +
-		"Addr: 0x1000 Size: 256 pkg: nil SourceType: disasm\n" +
-		"Addr: 0x1000 Size: 256 pkg: nil SourceType: symbol"
+		"AddrPos: Addr: 1000 Size: 100 Type: data Pkg:  Function:  SourceType: disasm\n" +
+		"AddrPos: Addr: 1000 Size: 100 Type: data Pkg: main Function: main SourceType: symbol"
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)
@@ -154,4 +157,25 @@ func TestCoveragePartStringWithNoAddrs(t *testing.T) {
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)
+}
+
+func TestErrorReturnsExpectedErrorMessage(t *testing.T) {
+	addr := uint64(4096)
+	pos1 := &entity.CoveragePart{
+		Pos:   &entity.AddrPos{Addr: 4096, Size: 256, Type: entity.AddrTypeData},
+		Addrs: []*entity.Addr{{}},
+	}
+	pos2 := &entity.CoveragePart{
+		Pos:   &entity.AddrPos{Addr: 4351, Size: 256, Type: entity.AddrTypeData},
+		Addrs: []*entity.Addr{{}},
+	}
+
+	err := &entity.ErrAddrCoverageConflict{
+		Addr: addr,
+		Pos1: pos1,
+		Pos2: pos2,
+	}
+
+	expected := fmt.Sprintf("addr %x pos %#v and %#v conflict", addr, pos1, pos2)
+	assert.Equal(t, expected, err.Error())
 }
