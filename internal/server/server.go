@@ -16,6 +16,8 @@ const template = "" +
 	"\r\n"
 
 func handleConn(conn net.Conn, content []byte) {
+	_, _ = conn.Read(make([]byte, 1024))
+
 	raw := fmt.Sprintf(template, len(content)) + string(content)
 	_, _ = conn.Write([]byte(raw))
 	return
