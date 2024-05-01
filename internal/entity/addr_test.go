@@ -107,3 +107,51 @@ func TestMergeCoverage(t *testing.T) {
 	_, err = entity.MergeAndCleanCoverage([]entity.AddrCoverage{cov3, cov4})
 	assert.Error(t, err)
 }
+
+func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 4096,
+		Size: 256,
+		Type: entity.AddrTypeData,
+	}
+
+	addr1 := &entity.Addr{
+		AddrPos:    addrPos,
+		SourceType: entity.AddrSourceDisasm,
+	}
+
+	addr2 := &entity.Addr{
+		AddrPos:    addrPos,
+		SourceType: entity.AddrSourceSymbol,
+	}
+
+	coveragePart := &entity.CoveragePart{
+		Pos:   addrPos,
+		Addrs: []*entity.Addr{addr1, addr2},
+	}
+
+	expected := "Pos: Addr: 1000 Size: 100 Type: data\n" +
+		"Addr: 0x1000 Size: 256 pkg: nil SourceType: disasm\n" +
+		"Addr: 0x1000 Size: 256 pkg: nil SourceType: symbol"
+	result := coveragePart.String()
+
+	assert.Equal(t, expected, result)
+}
+
+func TestCoveragePartStringWithNoAddrs(t *testing.T) {
+	addrPos := &entity.AddrPos{
+		Addr: 4096,
+		Size: 256,
+		Type: entity.AddrTypeData,
+	}
+
+	coveragePart := &entity.CoveragePart{
+		Pos:   addrPos,
+		Addrs: []*entity.Addr{},
+	}
+
+	expected := "Pos: Addr: 1000 Size: 100 Type: data"
+	result := coveragePart.String()
+
+	assert.Equal(t, expected, result)
+}

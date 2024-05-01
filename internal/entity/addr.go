@@ -29,8 +29,14 @@ type Addr struct {
 }
 
 func (a Addr) String() string {
-	msg := fmt.Sprintf("Addr: 0x%x Size: %d pkg: %s SourceType: %s", a.Addr, a.Size, a.Pkg.Name, a.SourceType)
-	msg += fmt.Sprintf(" Meta: %#v", a.Meta)
+	pkgName := "nil"
+	if a.Pkg != nil {
+		pkgName = a.Pkg.Name
+	}
+	msg := fmt.Sprintf("Addr: 0x%x Size: %d pkg: %s SourceType: %s", a.Addr, a.Size, pkgName, a.SourceType)
+	if a.Meta != nil {
+		msg += fmt.Sprintf(" Meta: %#v", a.Meta)
+	}
 	return msg
 }
 
@@ -43,12 +49,12 @@ type CoveragePart struct {
 }
 
 func (c *CoveragePart) String() string {
-	sb := new(strings.Builder)
-	sb.WriteString(fmt.Sprintf("Pos: %s", c.Pos))
+	var parts []string
+	parts = append(parts, fmt.Sprintf("Pos: %s", c.Pos))
 	for _, addr := range c.Addrs {
-		sb.WriteString(fmt.Sprintf("  %s", addr))
+		parts = append(parts, addr.String())
 	}
-	return sb.String()
+	return strings.Join(parts, "\n")
 }
 
 type ErrAddrCoverageConflict struct {
@@ -59,10 +65,6 @@ type ErrAddrCoverageConflict struct {
 
 func (e *ErrAddrCoverageConflict) Error() string {
 	return fmt.Sprintf("addr %x pos %#v and %#v conflict", e.Addr, e.Pos1, e.Pos2)
-}
-
-func CleanCoverage(cov AddrCoverage) (AddrCoverage, error) {
-	return MergeAndCleanCoverage([]AddrCoverage{cov})
 }
 
 // MergeAndCleanCoverage merge multiple AddrCoverage
