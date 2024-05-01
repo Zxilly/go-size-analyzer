@@ -2,14 +2,22 @@ package utils
 
 import (
 	"fmt"
-	"strings"
+	"log/slog"
+	"net"
 )
 
+const defaultURL = "http://localhost:8080"
+
 func GetUrlFromListen(listen string) string {
-	// get port from listen
-	parts := strings.Split(listen, ":")
-	if parts == nil || len(parts) < 2 {
-		FatalError(fmt.Errorf("invalid listen address: %s", listen))
+	addr, err := net.ResolveTCPAddr("tcp", listen)
+	if err != nil {
+		slog.Warn(fmt.Sprintf("Error resolving listen address: %v", err))
+		return defaultURL
 	}
-	return "http://localhost:" + parts[1]
+
+	if addr.Port == 0 {
+		addr.Port = 8080
+	}
+
+	return fmt.Sprintf("http://localhost:%d", addr.Port)
 }
