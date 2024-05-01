@@ -34,9 +34,15 @@ jobs:
           cache: true
           check-latest: true
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          check-latest: true
+          cache: 'pip'
+          cache-dependency-path: 'scripts/requirements.txt'
+
       - name: Add python dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r scripts/requirements.txt
 
       - name: Download UI file
