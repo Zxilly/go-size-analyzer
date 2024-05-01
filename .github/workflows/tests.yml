@@ -21,7 +21,7 @@ jobs:
     needs: build-ui
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-2019, macos-13, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
