@@ -2,7 +2,6 @@ package wrapper
 
 import (
 	"debug/elf"
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -138,21 +137,21 @@ func (e *ElfWrapper) Text() (textStart uint64, text []byte, err error) {
 
 func (e *ElfWrapper) GoArch() string {
 	switch e.file.Machine {
-	case elf.EM_386:
-		return "386"
+	//case elf.EM_386:
+	//	return "386"
 	case elf.EM_X86_64:
 		return "amd64"
-	case elf.EM_ARM:
-		return "arm"
-	case elf.EM_AARCH64:
-		return "arm64"
-	case elf.EM_PPC64:
-		if e.file.ByteOrder == binary.LittleEndian {
-			return "ppc64le"
-		}
-		return "ppc64"
-	case elf.EM_S390:
-		return "s390x"
+		//case elf.EM_ARM:
+		//	return "arm"
+		//case elf.EM_AARCH64:
+		//	return "arm64"
+		//case elf.EM_PPC64:
+		//	if e.file.ByteOrder == binary.LittleEndian {
+		//		return "ppc64le"
+		//	}
+		//	return "ppc64"
+		//case elf.EM_S390:
+		//	return "s390x"
 	}
 	return ""
 }

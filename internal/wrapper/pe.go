@@ -156,14 +156,14 @@ func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
 
 func (p *PeWrapper) GoArch() string {
 	switch p.file.Machine {
-	case pe.IMAGE_FILE_MACHINE_I386:
-		return "386"
+	//case pe.IMAGE_FILE_MACHINE_I386:
+	//	return "386"
 	case pe.IMAGE_FILE_MACHINE_AMD64:
 		return "amd64"
-	case pe.IMAGE_FILE_MACHINE_ARMNT:
-		return "arm"
-	case pe.IMAGE_FILE_MACHINE_ARM64:
-		return "arm64"
+	//case pe.IMAGE_FILE_MACHINE_ARMNT:
+	//	return "arm"
+	//case pe.IMAGE_FILE_MACHINE_ARM64:
+	//	return "arm64"
 	default:
 		return ""
 	}

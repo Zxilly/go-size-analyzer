@@ -34,7 +34,7 @@ func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, erro
 
 	goarch := rawFile.GoArch()
 	if goarch == "" {
-		return nil, fmt.Errorf("unknown GOARCH")
+		return nil, ErrArchNotSupported
 	}
 	extractFunc := extractFuncs[goarch]
 	if extractFunc == nil {
