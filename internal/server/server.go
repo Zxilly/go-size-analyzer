@@ -1,43 +1,23 @@
 package server
 
 import (
-	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"net"
+	"io"
+	"net/http"
 )
 
-const template = "" +
-	"HTTP/1.1 200 OK\r\n" +
-	"Content-Type: text/html\r\n" +
-	"Content-Length: %d\r\n" +
-	"Connection: close\r\n" +
-	"Server: go-size-analyzer\r\n" +
-	"Cache-Control: no-cache, no-store, must-revalidate\r\n" +
-	"\r\n"
-
-func handleConn(conn net.Conn, content []byte) {
-	_, _ = conn.Read(make([]byte, 1024))
-
-	raw := fmt.Sprintf(template, len(content)) + string(content)
-	_, _ = conn.Write([]byte(raw))
-	return
-}
-
-func HostServer(content []byte, listen string) net.Listener {
-	l, err := net.Listen("tcp", listen)
-	if err != nil {
-		utils.FatalError(err)
+func HostServer(content []byte, listen string) io.Closer {
+	server := &http.Server{
+		Addr: listen,
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "text/html")
+			w.Header().Set("Server", "go-size-analyzer")
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			_, _ = w.Write(content)
+		}),
 	}
-
+	server.SetKeepAlivesEnabled(false)
 	go func() {
-		for {
-			conn, err := l.Accept()
-			if err != nil {
-				return
-			}
-			go handleConn(conn, content)
-		}
+		_ = server.ListenAndServe()
 	}()
-
-	return l
+	return server
 }
