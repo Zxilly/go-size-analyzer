@@ -75,7 +75,7 @@ def run_integration_tests(targets: list[IntegrationTest]):
         run_web_test(gsa)
 
         all_tests = len(targets)
-        completed_tests = 0
+        completed_tests = 1
 
         for target in targets:
             try:
