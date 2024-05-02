@@ -40,8 +40,32 @@ func TestFile_MarshalJSON(t *testing.T) {
 
 		// Verify the result
 		assert.NoError(t, err)
-		expected := `{"file_path":"/path/to/file","functions":[{"name":"","addr":0,"size":10,"type":"","receiver":""}` +
-			`,{"name":"","addr":0,"size":20,"type":"","receiver":""},{"name":"","addr":0,"size":30,"type":"","receiver":""}]}`
+		expected := `
+{
+	"file_path": "/path/to/file",
+	"functions": [{
+		"name": "",
+		"addr": 0,
+		"size": 10,
+		"type": "",
+		"receiver": "",
+		"pcln_size": null
+	}, {
+		"name": "",
+		"addr": 0,
+		"size": 20,
+		"type": "",
+		"receiver": "",
+		"pcln_size": null
+	}, {
+		"name": "",
+		"addr": 0,
+		"size": 30,
+		"type": "",
+		"receiver": "",
+		"pcln_size": null
+	}]
+}`
 		assert.JSONEq(t, expected, string(data))
 	})
 }
