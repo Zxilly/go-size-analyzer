@@ -12,9 +12,9 @@ func TestFile_MarshalJSON(t *testing.T) {
 	file := &entity.File{
 		FilePath: "/path/to/file",
 		Functions: []*entity.Function{
-			{Size: 10},
-			{Size: 20},
-			{Size: 30},
+			{CodeSize: 10},
+			{CodeSize: 20},
+			{CodeSize: 30},
 		},
 	}
 

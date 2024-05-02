@@ -16,7 +16,7 @@ func TestAddrPosString(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 1000 Size: 100 Type: data"
+	expected := "Addr: 1000 CodeSize: 100 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -29,7 +29,7 @@ func TestAddrPosStringWithDifferentType(t *testing.T) {
 		Type: entity.AddrTypeText,
 	}
 
-	expected := "Addr: 1000 Size: 100 Type: text"
+	expected := "Addr: 1000 CodeSize: 100 Type: text"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -42,7 +42,7 @@ func TestAddrPosStringWithZeroSize(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 1000 Size: 0 Type: data"
+	expected := "Addr: 1000 CodeSize: 0 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -55,7 +55,7 @@ func TestAddrPosStringWithZeroAddr(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 0 Size: 100 Type: data"
+	expected := "Addr: 0 CodeSize: 100 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -133,9 +133,9 @@ func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
 		Addrs: []*entity.Addr{addr1, addr2},
 	}
 
-	expected := "Pos: Addr: 1000 Size: 100 Type: data\n" +
-		"AddrPos: Addr: 1000 Size: 100 Type: data Pkg:  Function:  SourceType: disasm\n" +
-		"AddrPos: Addr: 1000 Size: 100 Type: data Pkg: main Function: main SourceType: symbol"
+	expected := "Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
+		"AddrPos: Addr: 1000 CodeSize: 100 Type: data Pkg:  Function:  SourceType: disasm\n" +
+		"AddrPos: Addr: 1000 CodeSize: 100 Type: data Pkg: main Function: main SourceType: symbol"
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)
@@ -153,7 +153,7 @@ func TestCoveragePartStringWithNoAddrs(t *testing.T) {
 		Addrs: []*entity.Addr{},
 	}
 
-	expected := "Pos: Addr: 1000 Size: 100 Type: data"
+	expected := "Pos: Addr: 1000 CodeSize: 100 Type: data"
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)

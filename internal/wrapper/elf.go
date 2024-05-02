@@ -12,6 +12,10 @@ type ElfWrapper struct {
 	file *elf.File
 }
 
+func (e *ElfWrapper) PclntabSections() []string {
+	return []string{".gopclntab", ".data.rel.ro.gopclntab", ".data.rel.ro"}
+}
+
 func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	symbols, err := e.file.Symbols()
 	if err != nil {

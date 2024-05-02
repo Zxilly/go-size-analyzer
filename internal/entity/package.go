@@ -1,9 +1,9 @@
 package entity
 
 import (
-	"debug/gosym"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/ZxillyFork/gosym"
 	"github.com/goretk/gore"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
@@ -64,29 +64,30 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	p.loaded = true
 	p.GorePkg = gp
 
-	for _, f := range gp.Functions {
-		src, _, _ := pclntab.PCToLine(f.Offset)
-		p.addFunction(src, &Function{
+	getFunction := func(f *gore.Function) *Function {
+		return &Function{
 			Name:     utils.Deduplicate(f.Name),
 			Addr:     f.Offset,
-			Size:     f.End - f.Offset,
+			CodeSize: f.End - f.Offset,
+			PclnSize: NewPclnSymbolSize(f.Func),
 			Type:     FuncTypeFunction,
-			Receiver: utils.Deduplicate(""),
 			disasm:   AddrSpace{},
 			pkg:      p,
-		})
+		}
+	}
+
+	for _, f := range gp.Functions {
+		src, _, _ := pclntab.PCToLine(f.Offset)
+		sf := getFunction(f)
+		sf.Type = FuncTypeFunction
+		p.addFunction(src, sf)
 	}
 	for _, mf := range gp.Methods {
 		src, _, _ := pclntab.PCToLine(mf.Offset)
-		p.addFunction(src, &Function{
-			Name:     utils.Deduplicate(mf.Name),
-			Addr:     mf.Offset,
-			Size:     mf.End - mf.Offset,
-			Type:     FuncTypeMethod,
-			Receiver: utils.Deduplicate(mf.Receiver),
-			disasm:   AddrSpace{},
-			pkg:      p,
-		})
+		sf := getFunction(mf.Function)
+		sf.Type = FuncTypeMethod
+		sf.Receiver = utils.Deduplicate(mf.Receiver)
+		p.addFunction(src, sf)
 	}
 
 	return p
@@ -171,7 +172,8 @@ func (p *Package) GetDisasmAddrSpace() AddrSpace {
 func (p *Package) GetFunctionSizeRecursive() uint64 {
 	size := uint64(0)
 	for _, f := range p.GetFunctions() {
-		size += f.Size
+		size += f.CodeSize
+		size += f.PclnSize.Size()
 	}
 	for _, sp := range p.SubPackages {
 		size += sp.GetFunctionSizeRecursive()
@@ -201,11 +203,11 @@ func (p *Package) GetPackageCoverage() AddrCoverage {
 }
 
 func (p *Package) AssignPackageSize() {
-	fnSize := p.GetFunctionSizeRecursive()
+	pkgSize := p.GetFunctionSizeRecursive()
 	for _, cp := range p.GetPackageCoverage() {
-		fnSize += cp.Pos.Size
+		pkgSize += cp.Pos.Size
 	}
-	p.Size = fnSize
+	p.Size = pkgSize
 }
 
 func (p *Package) AddSymbol(addr uint64, size uint64, typ AddrType, name string, ap *Addr) {

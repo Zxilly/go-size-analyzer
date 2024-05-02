@@ -13,6 +13,10 @@ type PeWrapper struct {
 	file *pe.File
 }
 
+func (p *PeWrapper) PclntabSections() []string {
+	return []string{".rdata"} // FIXME: get real position from gore, can be .text
+}
+
 func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	if len(p.file.Symbols) == 0 {
 		return ErrNoSymbolTable
@@ -86,7 +90,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Addr)
 		if !ok {
-			// Maybe we met the last symbol, skip it, no way to get the Size
+			// Maybe we met the last symbol, skip it, no way to get the CodeSize
 			continue
 		}
 		size := addrs[i] - s.Addr

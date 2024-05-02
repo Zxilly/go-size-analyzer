@@ -1,11 +1,11 @@
 package internal
 
 import (
-	"debug/gosym"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
+	"github.com/ZxillyFork/gosym"
 	"github.com/goretk/gore"
 	"log/slog"
 	"math"
@@ -182,6 +182,7 @@ func (k *KnownInfo) CollectCoverage() {
 
 func (k *KnownInfo) CalculateSectionSize() {
 	t := make(map[*entity.Section]uint64)
+	// minus coverage part
 	for _, cp := range k.Coverage {
 		section := k.Sects.FindSection(cp.Pos.Addr, cp.Pos.Size)
 		if section == nil {
@@ -191,6 +192,29 @@ func (k *KnownInfo) CalculateSectionSize() {
 		t[section] += cp.Pos.Size
 	}
 
+	pclntabSize := uint64(0)
+	_ = k.Deps.trie.Walk(func(key string, value interface{}) error {
+		p := value.(*entity.Package)
+		for _, fn := range p.GetFunctions() {
+			pclntabSize += fn.PclnSize.Size()
+		}
+		return nil
+	})
+
+	// minus pclntab size
+	possibleNames := k.wrapper.PclntabSections()
+	for name, section := range k.Sects.Sections {
+		for _, possibleName := range possibleNames {
+			if possibleName == name {
+				t[section] += pclntabSize
+				goto foundPclntab
+			}
+		}
+	}
+	utils.FatalError(fmt.Errorf("pclntab section not found when calculate known size"))
+foundPclntab:
+
+	// linear map virtual size to file size
 	for section, size := range t {
 		mapper := 1.0
 		if section.Size != section.FileSize {
@@ -204,16 +228,9 @@ func (k *KnownInfo) CalculateSectionSize() {
 // CalculatePackageSize calculate the size of each package
 // Happens after disassembly
 func (k *KnownInfo) CalculatePackageSize() {
-	var dive func(p *entity.Package)
-	dive = func(p *entity.Package) {
-		if len(p.SubPackages) > 0 {
-			for _, sp := range p.SubPackages {
-				dive(sp)
-			}
-		}
+	_ = k.Deps.trie.Walk(func(key string, value interface{}) error {
+		p := value.(*entity.Package)
 		p.AssignPackageSize()
-	}
-	for _, p := range k.Deps.TopPkgs {
-		dive(p)
-	}
+		return nil
+	})
 }

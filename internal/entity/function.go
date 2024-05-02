@@ -10,10 +10,13 @@ const (
 type Function struct {
 	Name     string   `json:"name"`
 	Addr     uint64   `json:"addr"`
-	Size     uint64   `json:"size"`
+	CodeSize uint64   `json:"size"`
 	Type     FuncType `json:"type"`
 	Receiver string   `json:"receiver"` // only for methods
-	File     *File    `json:"-"`
+
+	PclnSize *PclnSymbolSize `json:"pcln_size"`
+
+	File *File `json:"-"`
 
 	disasm AddrSpace
 	pkg    *Package

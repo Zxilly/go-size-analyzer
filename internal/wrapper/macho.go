@@ -12,6 +12,10 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
+func (m *MachoWrapper) PclntabSections() []string {
+	return []string{"__gopclntab"}
+}
+
 func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	if m.file.Symtab == nil {
 		return ErrNoSymbolTable
@@ -40,7 +44,7 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Value)
 		if !ok {
-			// maybe we met the last symbol, no way to get the Size
+			// maybe we met the last symbol, no way to get the CodeSize
 			continue
 		}
 		size := addrs[i] - s.Value

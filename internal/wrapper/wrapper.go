@@ -16,6 +16,7 @@ type RawFileWrapper interface {
 	ReadAddr(addr, size uint64) ([]byte, error)
 	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType) error) error
 	LoadSections() map[string]*entity.Section
+	PclntabSections() []string
 }
 
 func NewWrapper(file any) RawFileWrapper {

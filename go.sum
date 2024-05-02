@@ -1,5 +1,7 @@
-github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf h1:XwTMa7QFoxZTxgRzKeWnukI5AoWaMrnrk4Q1k+rrgWg=
-github.com/Zxilly/gore v0.0.0-20240422132935-dedfb5d7e0cf/go.mod h1:+HNdF7hbFCpnde7NyUqAxtkJxSY5T0Aip2te6Ecb4yQ=
+github.com/ZxillyFork/gore v0.0.0-20240502204358-d7c6487cd6dd h1:jTpOqz+141VQAwqpV9XfQYz63cISBVSyb6pxFf5ok3o=
+github.com/ZxillyFork/gore v0.0.0-20240502204358-d7c6487cd6dd/go.mod h1:yoKJMpCQ6xJKO6ubDJ0vFsV+ENpc/2DEylTRWXpW4JE=
+github.com/ZxillyFork/gosym v0.0.0-20240502203903-893b93ea3210 h1:NEwH3T3GPWj/QIOYEPwo6uaBHdsoa0QHG/pgoQn5F1Y=
+github.com/ZxillyFork/gosym v0.0.0-20240502203903-893b93ea3210/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179 h1:uKuNlcces+jXDACj7KE4oxJdJM2nPdmaGK7QCD6ip1U=
 github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179/go.mod h1:sOmnzfBNH7H92ow2292dDFWNsVQuh/izuD7otCYb1ak=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=

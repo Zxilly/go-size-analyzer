@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"debug/gosym"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/ZxillyFork/gosym"
 	"github.com/dghubble/trie"
 	"github.com/goretk/gore"
 	"runtime/debug"
@@ -95,7 +95,7 @@ func (m *Dependencies) Add(gp *gore.Package, typ entity.PackageType, pclntab *go
 
 	// update addrs
 	for _, f := range p.GetFunctions() {
-		m.k.KnownAddr.InsertPclntab(f.Addr, f.Size, f, entity.GoPclntabMeta{
+		m.k.KnownAddr.InsertPclntab(f.Addr, f.CodeSize, f, entity.GoPclntabMeta{
 			FuncName:    utils.Deduplicate(f.Name),
 			PackageName: utils.Deduplicate(p.Name),
 			Type:        utils.Deduplicate(f.Type),

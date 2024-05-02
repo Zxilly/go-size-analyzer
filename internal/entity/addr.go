@@ -14,7 +14,7 @@ type AddrPos struct {
 }
 
 func (a *AddrPos) String() string {
-	return fmt.Sprintf("Addr: %x Size: %x Type: %s", a.Addr, a.Size, a.Type)
+	return fmt.Sprintf("Addr: %x CodeSize: %x Type: %s", a.Addr, a.Size, a.Type)
 }
 
 type Addr struct {

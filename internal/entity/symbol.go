@@ -22,5 +22,5 @@ func NewSymbol(name string, addr, size uint64, typ AddrType) *Symbol {
 }
 
 func (s *Symbol) String() string {
-	return fmt.Sprintf("Symbol: %s Addr: %x Size: %x Type: %s", s.Name, s.Addr, s.Size, s.Type)
+	return fmt.Sprintf("Symbol: %s Addr: %x CodeSize: %x Type: %s", s.Name, s.Addr, s.Size, s.Type)
 }
