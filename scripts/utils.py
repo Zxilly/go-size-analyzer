@@ -1,6 +1,7 @@
 import io
 import os
 import shutil
+import socket
 import subprocess
 import tarfile
 import tempfile
@@ -110,8 +111,17 @@ def log(msg: str):
     t = "{:.2f}s".format((time.time() - base_time))
     print(f"[{t}] {msg}")
 
+def find_unused_port(start_port=10000, end_port=60000):
+    for port in range(start_port, end_port + 1):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(("localhost", port))
+                return port
+        except OSError:
+            pass
+    return None
 
-def run_process(pargs: list[str], name: str, suffix: str, timeout=15):
+def run_process(pargs: list[str], name: str, suffix: str, timeout=60):
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
 

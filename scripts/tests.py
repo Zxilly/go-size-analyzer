@@ -92,8 +92,12 @@ def run_web_test(entry: str):
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
 
+    port = find_unused_port()
+    if port is None:
+        raise Exception("Failed to find an unused port.")
+
     p = subprocess.Popen(
-        args=[entry, "--web", "--listen", "localhost:23371", entry],
+        args=[entry, "--web", "--listen", f"127.0.0.1:{port}", entry],
         text=True, cwd=get_project_root(),
         encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
@@ -102,7 +106,7 @@ def run_web_test(entry: str):
         if "localhost" in line:
             break
 
-    ret = requests.get("http://localhost:23371").text
+    ret = requests.get(f"http://localhost:{port}").text
 
     # parse html
     parser = DataParser()

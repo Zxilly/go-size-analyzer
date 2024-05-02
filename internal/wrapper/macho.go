@@ -13,7 +13,7 @@ type MachoWrapper struct {
 }
 
 func (m *MachoWrapper) PclntabSections() []string {
-	return []string{"__gopclntab __TEXT"}
+	return []string{"__gopclntab __TEXT", "__gopclntab __DATA_CONST"}
 }
 
 func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
