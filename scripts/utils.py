@@ -109,7 +109,8 @@ def set_base_time():
 def log(msg: str):
     global base_time
     t = "{:.2f}s".format((time.time() - base_time))
-    print(f"[{t}] {msg}")
+    print(f"[{t}] {msg}", flush=True)
+
 
 def find_unused_port(start_port=10000, end_port=60000):
     for port in range(start_port, end_port + 1):
@@ -120,6 +121,7 @@ def find_unused_port(start_port=10000, end_port=60000):
         except OSError:
             pass
     return None
+
 
 def run_process(pargs: list[str], name: str, suffix: str, timeout=60):
     env = os.environ.copy()
