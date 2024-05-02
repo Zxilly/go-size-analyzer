@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.1
 
 require (
-	github.com/ZxillyFork/gosym v0.0.0-20240502203903-893b93ea3210
+	github.com/ZxillyFork/gosym v0.0.0-20240502221713-b6e6623d24a9
 	github.com/alecthomas/kong v0.9.0
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dghubble/trie v0.1.0
@@ -24,7 +24,7 @@ require (
 
 replace (
 	github.com/dghubble/trie v0.1.0 => github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179
-	github.com/goretk/gore v0.11.5 => github.com/ZxillyFork/gore v0.0.0-20240502204358-d7c6487cd6dd
+	github.com/goretk/gore v0.11.5 => github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689
 )
 
 require (
