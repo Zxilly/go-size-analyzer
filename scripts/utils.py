@@ -6,6 +6,7 @@ import tarfile
 import tempfile
 import zipfile
 from html.parser import HTMLParser
+
 import time
 
 
@@ -117,7 +118,7 @@ def run_process(pargs: list[str], name: str, suffix: str):
     ret = subprocess.run(
         args=pargs,
         env=env, text=True, capture_output=True, cwd=get_project_root(),
-        encoding="utf-8",
+        encoding="utf-8", timeout=15
     )
     output_name = get_result_file(f"{name}{suffix}")
     content = extract_output(ret)
@@ -125,8 +126,11 @@ def run_process(pargs: list[str], name: str, suffix: str):
         f.write(content)
 
     if ret.returncode != 0:
-        print(content)
-        raise Exception(f"Failed to run {name}. Check {output_name}.")
+        msg = (f"Failed to run {name}.\n"
+               f"Args: {pargs}\n"
+               f"Output: {content}\n")
+        print(msg)
+        raise Exception(f"Failed to run {name}.")
 
 
 def get_binaries_path():

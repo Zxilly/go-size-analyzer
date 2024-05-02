@@ -1,4 +1,3 @@
-import concurrent.futures
 import csv
 import json
 
@@ -76,24 +75,14 @@ def run_integration_tests(targets: list[IntegrationTest]):
 
         all_tests = len(targets)
         completed_tests = 0
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {executor.submit(task, gsa, t): t for i, t in enumerate(targets)}
-            for future in concurrent.futures.as_completed(futures):
-                test = futures[future]
-                try:
-                    future.result()  # This will raise an exception if the test failed
-                    completed_tests += 1
-                    log(f"[{completed_tests}/{all_tests}] Test {test.name} passed.")
-                except Exception as e:
-                    log(f"[{completed_tests}/{all_tests}] Test {test.name} failed: {e}")
-                    exit(1)
 
-
-def task(entry, test):
-    try:
-        eval_test(entry, test)
-    except Exception as e:
-        raise RuntimeError(f"Test {test.name} failed: {e}")
+        for target in targets:
+            try:
+                eval_test(gsa, target)
+                log(f"[{completed_tests}/{all_tests}] Test {target.name} passed.")
+            except Exception as e:
+                log(f"Test {target.name} failed: {e}")
+            completed_tests += 1
 
 
 def run_web_test(entry: str):
