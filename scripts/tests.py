@@ -43,6 +43,7 @@ def run_unit_tests():
         ],
         "unit",
         ".txt",
+        timeout=600,  # Windows runner is extremely slow
     )
 
     log("Unit tests passed.")

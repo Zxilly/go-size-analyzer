@@ -111,14 +111,14 @@ def log(msg: str):
     print(f"[{t}] {msg}")
 
 
-def run_process(pargs: list[str], name: str, suffix: str):
+def run_process(pargs: list[str], name: str, suffix: str, timeout=15):
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
 
     ret = subprocess.run(
         args=pargs,
         env=env, text=True, capture_output=True, cwd=get_project_root(),
-        encoding="utf-8", timeout=15
+        encoding="utf-8", timeout=timeout
     )
     output_name = get_result_file(f"{name}{suffix}")
     content = extract_output(ret)
