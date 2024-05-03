@@ -10,7 +10,7 @@ const (
 type Function struct {
 	Name     string   `json:"name"`
 	Addr     uint64   `json:"addr"`
-	CodeSize uint64   `json:"size"`
+	CodeSize uint64   `json:"code_size"`
 	Type     FuncType `json:"type"`
 	Receiver string   `json:"receiver"` // only for methods
 

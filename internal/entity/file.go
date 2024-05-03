@@ -16,7 +16,7 @@ func (f *File) MarshalJSON() ([]byte, error) {
 	if global.HideDetail {
 		size := uint64(0)
 		for _, fn := range f.Functions {
-			size += fn.CodeSize
+			size += fn.Size()
 		}
 		return json.Marshal(struct {
 			FilePath string `json:"file_path"`
