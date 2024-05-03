@@ -142,7 +142,7 @@ Web explorer options
 
 - [ ] Add more pattern for disassembling the binary
 - [ ] Extract the information from the dwarf section
-- [ ] Count the symbol size itself to package
+- [x] Count the symbol size itself to package
 - [ ] Add other charts like flame graph, pie chart, etc.
 - [ ] Support C++/Rust symbol demangling in cgo
 - [ ] Add a TUI mode for exploring details
