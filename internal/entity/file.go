@@ -15,15 +15,19 @@ type File struct {
 func (f *File) MarshalJSON() ([]byte, error) {
 	if global.HideDetail {
 		size := uint64(0)
+		pclnSize := uint64(0)
 		for _, fn := range f.Functions {
 			size += fn.Size()
+			pclnSize += fn.PclnSize.Size()
 		}
 		return json.Marshal(struct {
 			FilePath string `json:"file_path"`
 			Size     uint64 `json:"size"`
+			PclnSize uint64 `json:"pcln_size"`
 		}{
 			FilePath: f.FilePath,
 			Size:     size,
+			PclnSize: pclnSize,
 		})
 	} else {
 		return json.Marshal(struct {

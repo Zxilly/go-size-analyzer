@@ -2,7 +2,7 @@ import csv
 
 from define import RemoteBinary, RemoteBinaryType, TestType
 from example_download import get_example_download_url
-from utils import  get_binaries_path
+from utils import get_binaries_path
 
 
 def generate_cockroachdb() -> list[RemoteBinary]:
@@ -27,13 +27,20 @@ def generate_cockroachdb() -> list[RemoteBinary]:
         )
     return ret
 
+
 def generate_example() -> list[RemoteBinary]:
     ret = []
-    for v in ["1.18", "1.19", "1.20", "1.21"]:
+    for v in ["1.19", "1.20", "1.21", "1.22"]:
         for o in ["linux", "windows", "darwin"]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
                     name = f"bin-{o}-{v}-amd64{pie}{cgo}"
+                    url = get_example_download_url(name)
+
+                    if url is None:
+                        print(f"File {name} not found.")
+                        continue
+
                     ret.append(
                         RemoteBinary(
                             name,
@@ -42,6 +49,25 @@ def generate_example() -> list[RemoteBinary]:
                             RemoteBinaryType.RAW
                         )
                     )
+    for o in ["linux", "windows", "darwin"]:
+        for pie in ["-pie", ""]:
+            for cgo in ["-cgo", ""]:
+                name = f"bin-{o}-1.22-amd64-strip{pie}{cgo}"
+                url = get_example_download_url(name)
+
+                if url is None:
+                    print(f"File {name} not found.")
+                    continue
+
+                ret.append(
+                    RemoteBinary(
+                        name,
+                        get_example_download_url(name),
+                        TestType.TEXT_TEST,
+                        RemoteBinaryType.RAW
+                    )
+                )
+
     return ret
 
 

@@ -14,16 +14,29 @@ def eval_test(gsa: str, target: IntegrationTest):
     test_type = target.type
 
     if TestType.TEXT_TEST in test_type:
-        run_process([gsa, "-f", "text", path], name, ".txt")
+        run_process([gsa, "-f", "text", "--verbose", path], name, ".txt")
 
     if TestType.JSON_TEST in test_type:
-        run_process([gsa, "-f", "json", path, "-o", get_result_file(f"{name}.json")], name, ".json.txt")
+        run_process([gsa,
+                     "-f", "json",
+                     "--indent", "2",
+                     path,
+                     "-o", get_result_file(f"{name}.json")],
+                    name, ".json.txt")
 
     if TestType.HTML_TEST in test_type:
-        run_process([gsa, "-f", "html", path, "-o", get_result_file(f"{name}.html")], name, ".html.txt")
+        run_process([gsa,
+                     "-f", "html",
+                     path,
+                     "-o", get_result_file(f"{name}.html")],
+                    name, ".html.txt")
 
     if TestType.SVG_TEST in test_type:
-        run_process([gsa, "-f", "svg", path, "-o", get_result_file(f"{name}.svg")], name, ".svg.txt")
+        run_process([gsa,
+                     "-f", "svg",
+                     path,
+                     "-o", get_result_file(f"{name}.svg")],
+                    name, ".svg.txt")
 
 
 def run_unit_tests():
