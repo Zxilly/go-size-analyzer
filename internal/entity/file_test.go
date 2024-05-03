@@ -27,7 +27,7 @@ func TestFile_MarshalJSON(t *testing.T) {
 
 		// Verify the result
 		assert.NoError(t, err)
-		expected := `{"file_path":"/path/to/file","size":60}`
+		expected := `{"file_path":"/path/to/file","pcln_size":0,"size":60}`
 		assert.JSONEq(t, expected, string(data))
 	})
 
@@ -42,29 +42,57 @@ func TestFile_MarshalJSON(t *testing.T) {
 		assert.NoError(t, err)
 		expected := `
 {
-	"file_path": "/path/to/file",
-	"functions": [{
-		"name": "",
-		"addr": 0,
-		"size": 10,
-		"type": "",
-		"receiver": "",
-		"pcln_size": null
-	}, {
-		"name": "",
-		"addr": 0,
-		"size": 20,
-		"type": "",
-		"receiver": "",
-		"pcln_size": null
-	}, {
-		"name": "",
-		"addr": 0,
-		"size": 30,
-		"type": "",
-		"receiver": "",
-		"pcln_size": null
-	}]
+    "file_path": "/path/to/file",
+    "functions": [
+        {
+            "name": "",
+            "addr": 0,
+            "code_size": 10,
+            "type": "",
+            "receiver": "",
+            "pcln_size": {
+                "name": 0,
+                "pcfile": 0,
+                "pcsp": 0,
+                "pcln": 0,
+                "header": 0,
+                "funcdata": 0,
+                "pcdata": null
+            }
+        },
+        {
+            "name": "",
+            "addr": 0,
+            "code_size": 20,
+            "type": "",
+            "receiver": "",
+            "pcln_size": {
+                "name": 0,
+                "pcfile": 0,
+                "pcsp": 0,
+                "pcln": 0,
+                "header": 0,
+                "funcdata": 0,
+                "pcdata": null
+            }
+        },
+        {
+            "name": "",
+            "addr": 0,
+            "code_size": 30,
+            "type": "",
+            "receiver": "",
+            "pcln_size": {
+                "name": 0,
+                "pcfile": 0,
+                "pcsp": 0,
+                "pcln": 0,
+                "header": 0,
+                "funcdata": 0,
+                "pcdata": null
+            }
+        }
+    ]
 }`
 		assert.JSONEq(t, expected, string(data))
 	})

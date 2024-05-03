@@ -27,8 +27,8 @@ func (p *PclnSymbolSize) Size() uint64 {
 	return size
 }
 
-func NewPclnSymbolSize(s *gosym.Func) *PclnSymbolSize {
-	return &PclnSymbolSize{
+func NewPclnSymbolSize(s *gosym.Func) PclnSymbolSize {
+	return PclnSymbolSize{
 		Name:     uint64(s.FuncNameSize()),
 		PCFile:   uint64(s.TablePCFileSize()),
 		PCSP:     uint64(s.TablePCSPSize()),

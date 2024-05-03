@@ -14,7 +14,7 @@ type Function struct {
 	Type     FuncType `json:"type"`
 	Receiver string   `json:"receiver"` // only for methods
 
-	PclnSize *PclnSymbolSize `json:"pcln_size"`
+	PclnSize PclnSymbolSize `json:"pcln_size"`
 
 	File *File `json:"-"`
 
