@@ -4,6 +4,7 @@ import (
 	"debug/pe"
 	"fmt"
 	"go4.org/intern"
+	"golang.org/x/net/publicsuffix"
 	"log/slog"
 	"os"
 	"strconv"
@@ -50,19 +51,33 @@ func UglyGuess(s string) string {
 		ignorePart = 2
 	}
 
+	addPart := func(p string) {
+		if p != "" {
+			result = append(result, p)
+		}
+	}
+
 	// if any part contains more than 2 dots, we assume it's a receiver
 	for i, part := range parts {
 		if i < ignorePart {
-			result = append(result, part)
+			addPart(part)
 			continue
 		}
-		if strings.Count(part, ".") >= 2 {
-			t := strings.Split(part, ".")[0]
-			result = append(result, t)
+
+		pointCnt := strings.Count(part, ".")
+
+		if pointCnt == 2 {
+			_, icann := publicsuffix.PublicSuffix(part)
+			if icann {
+				addPart(part)
+				continue
+			}
+		} else if pointCnt > 2 {
+			addPart(strings.Split(part, ".")[0])
 			break
-		} else {
-			result = append(result, part)
 		}
+
+		addPart(part)
 	}
 
 	s = strings.Join(result, "/")

@@ -172,8 +172,7 @@ func (p *Package) GetDisasmAddrSpace() AddrSpace {
 func (p *Package) GetFunctionSizeRecursive() uint64 {
 	size := uint64(0)
 	for _, f := range p.GetFunctions() {
-		size += f.CodeSize
-		size += f.PclnSize.Size()
+		size += f.Size()
 	}
 	for _, sp := range p.SubPackages {
 		size += sp.GetFunctionSizeRecursive()

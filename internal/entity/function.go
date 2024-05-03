@@ -21,3 +21,7 @@ type Function struct {
 	disasm AddrSpace
 	pkg    *Package
 }
+
+func (f *Function) Size() uint64 {
+	return f.CodeSize + f.PclnSize.Size()
+}
