@@ -1,5 +1,6 @@
 import csv
 import json
+import time
 
 import requests
 
@@ -118,6 +119,8 @@ def run_web_test(entry: str):
     for line in iter(p.stdout.readline, ""):
         if "localhost" in line:
             break
+
+    time.sleep(1) # still need to wait for the server to start
 
     ret = requests.get(f"http://localhost:{port}").text
 
