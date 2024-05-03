@@ -17,7 +17,7 @@ func (m *MachoWrapper) PclntabSections() []string {
 }
 
 func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
-	if m.file.Symtab == nil {
+	if m.file.Symtab == nil || len(m.file.Symtab.Syms) == 0 {
 		return ErrNoSymbolTable
 	}
 
