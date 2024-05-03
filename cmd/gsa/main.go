@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/server"
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"log/slog"
 	"os"
 
@@ -62,7 +62,7 @@ func main() {
 	}
 
 	if Options.Web {
-		server.HostServer(b, Options.Listen)
+		webui.HostServer(b, Options.Listen)
 
 		url := utils.GetUrlFromListen(Options.Listen)
 

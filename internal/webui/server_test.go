@@ -1,24 +1,26 @@
-package server_test
+package webui_test
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/server"
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"net/http"
 	"testing"
+	"time"
 
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestHostServer(t *testing.T) {
 	content := []byte("test content")
-	listen := "localhost:8080"
+	listen := "127.0.0.1:8080"
 
-	l := server.HostServer(content, listen)
+	l := webui.HostServer(content, listen)
 	defer l.Close()
 	assert.NotNil(t, l)
 
+	// wait for the server to start
+	time.Sleep(1 * time.Second)
 	// Send a test request to the server
-	req, err := http.NewRequest("GET", utils.GetUrlFromListen(listen), nil)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:8080", nil)
 	assert.NoError(t, err)
 
 	resp, err := http.DefaultClient.Do(req)
