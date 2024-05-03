@@ -89,8 +89,8 @@ devDependencies:
     specifier: ^5.4.5
     version: 5.4.5
   typia:
-    specifier: ^5.5.10
-    version: 5.5.10(typescript@5.4.5)
+    specifier: ^6.0.3
+    version: 6.0.3(typescript@5.4.5)
   vite:
     specifier: ^5.2.11
     version: 5.2.11(@types/node@20.12.8)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
@@ -580,6 +580,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@samchon/openapi@0.1.21:
+    resolution: {integrity: sha512-IUCOZpLOx8IZzxW87ySvFRSyGMRRQS5vpUwhUddzVR9vlDvTfVYjQjFuiJBqQIeGSdZExV3JzuHJCogacmd0/g==}
+    dev: true
 
   /@swc/core-darwin-arm64@1.4.17:
     resolution: {integrity: sha512-HVl+W4LezoqHBAYg2JCqR+s9ife9yPfgWSj37iIawLWzOmuuJ7jVdIB7Ee2B75bEisSEKyxRlTl6Y1Oq3owBgw==}
@@ -3364,12 +3368,13 @@ packages:
     hasBin: true
     dev: true
 
-  /typia@5.5.10(typescript@5.4.5):
-    resolution: {integrity: sha512-IhSzSNW/CrFmrP9cgBMFj6oEJpDD9+mXSepaJu/E0/5mOUkH+riXsZSM6BjaMtBRtlhYeYyTRSyToL7XxZlueg==}
+  /typia@6.0.3(typescript@5.4.5):
+    resolution: {integrity: sha512-Yq69N1EbVcU3kXxeEQEdl9J9mhWRJLfGiKBl9e2zLCIVfzYt/WVjEidlpy1BAPybfOTuIZ+jFtsooZ4FQNJffw==}
     hasBin: true
     peerDependencies:
       typescript: '>=4.8.0 <5.5.0'
     dependencies:
+      '@samchon/openapi': 0.1.21
       commander: 10.0.1
       comment-json: 4.2.3
       inquirer: 8.2.6
