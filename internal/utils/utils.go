@@ -66,17 +66,18 @@ func UglyGuess(s string) string {
 
 		pointCnt := strings.Count(part, ".")
 
-		if pointCnt == 2 {
-			_, icann := publicsuffix.PublicSuffix(part)
-			if icann {
-				addPart(part)
-				continue
+		if pointCnt >= 2 {
+			if pointCnt == 2 {
+				_, icann := publicsuffix.PublicSuffix(part)
+				if icann {
+					addPart(part)
+					continue
+				}
 			}
-		} else if pointCnt > 2 {
+
 			addPart(strings.Split(part, ".")[0])
 			break
 		}
-
 		addPart(part)
 	}
 
