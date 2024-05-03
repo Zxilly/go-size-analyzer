@@ -128,6 +128,7 @@ export class Entry {
                 align.add("File:", this.data.file_path);
                 align.add("Path:", this.data.file_path);
                 align.add("Size:", formatBytes(this.data.size));
+                align.add("Pcln Size:", formatBytes(this.data.pcln_size));
                 return align.toString();
 
             case "package":

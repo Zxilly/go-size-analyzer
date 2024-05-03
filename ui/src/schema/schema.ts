@@ -18,6 +18,7 @@ export const isSection = typia.createIs<Section>();
 export interface File {
     file_path: string;
     size: number & tags.Type<'uint64'>;
+    pcln_size: number & tags.Type<'uint64'>;
 }
 
 export const isFile = typia.createIs<File>();

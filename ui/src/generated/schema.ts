@@ -18,9 +18,10 @@ export const isSection = (input: any): input is Section => {
 export interface File {
     file_path: string;
     size: number & tags.Type<'uint64'>;
+    pcln_size: number & tags.Type<'uint64'>;
 }
 export const isFile = (input: any): input is File => {
-    return "object" === typeof input && null !== input && ("string" === typeof (input as any).file_path && ("number" === typeof (input as any).size && (Math.floor((input as any).size) === (input as any).size && 0 <= (input as any).size && (input as any).size <= 18446744073709552000)));
+    return "object" === typeof input && null !== input && ("string" === typeof (input as any).file_path && ("number" === typeof (input as any).size && (Math.floor((input as any).size) === (input as any).size && 0 <= (input as any).size && (input as any).size <= 18446744073709552000)) && ("number" === typeof (input as any).pcln_size && (Math.floor((input as any).pcln_size) === (input as any).pcln_size && 0 <= (input as any).pcln_size && (input as any).pcln_size <= 18446744073709552000)));
 };
 export interface Symbol {
     name: string;
@@ -50,7 +51,7 @@ export const isPackage = (input: any): input is Package => {
             return true;
         return "object" === typeof value && null !== value && $io0(value);
     });
-    const $io2 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000));
+    const $io2 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("number" === typeof input.pcln_size && (Math.floor(input.pcln_size) === input.pcln_size && 0 <= input.pcln_size && input.pcln_size <= 18446744073709552000));
     const $io3 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.addr && (Math.floor(input.addr) === input.addr && 0 <= input.addr && input.addr <= 18446744073709552000)) && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("data" === input.type || "text" === input.type || "unknown" === input.type);
     return "object" === typeof input && null !== input && $io0(input);
 };
@@ -77,7 +78,7 @@ export const isResult = (input: any): input is Result => {
             return true;
         return "object" === typeof value && null !== value && $io2(value);
     });
-    const $io4 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000));
+    const $io4 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("number" === typeof input.pcln_size && (Math.floor(input.pcln_size) === input.pcln_size && 0 <= input.pcln_size && input.pcln_size <= 18446744073709552000));
     const $io5 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.addr && (Math.floor(input.addr) === input.addr && 0 <= input.addr && input.addr <= 18446744073709552000)) && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("data" === input.type || "text" === input.type || "unknown" === input.type);
     const $io6 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("number" === typeof input.file_size && (Math.floor(input.file_size) === input.file_size && 0 <= input.file_size && input.file_size <= 18446744073709552000)) && ("number" === typeof input.known_size && (Math.floor(input.known_size) === input.known_size && 0 <= input.known_size && input.known_size <= 18446744073709552000)) && ("number" === typeof input.offset && (Math.floor(input.offset) === input.offset && 0 <= input.offset && input.offset <= 18446744073709552000)) && ("number" === typeof input.end && (Math.floor(input.end) === input.end && 0 <= input.end && input.end <= 18446744073709552000)) && ("number" === typeof input.addr && (Math.floor(input.addr) === input.addr && 0 <= input.addr && input.addr <= 18446744073709552000)) && ("number" === typeof input.addr_end && (Math.floor(input.addr_end) === input.addr_end && 0 <= input.addr_end && input.addr_end <= 18446744073709552000)) && "boolean" === typeof input.only_in_memory && "boolean" === typeof input.debug;
     return "object" === typeof input && null !== input && $io0(input);
@@ -97,7 +98,7 @@ export const parseResult = (input: any): import("typia").Primitive<Result> => { 
             return true;
         return "object" === typeof value && null !== value && $io2(value);
     });
-    const $io4 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000));
+    const $io4 = (input: any): boolean => "string" === typeof input.file_path && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("number" === typeof input.pcln_size && (Math.floor(input.pcln_size) === input.pcln_size && 0 <= input.pcln_size && input.pcln_size <= 18446744073709552000));
     const $io5 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.addr && (Math.floor(input.addr) === input.addr && 0 <= input.addr && input.addr <= 18446744073709552000)) && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("data" === input.type || "text" === input.type || "unknown" === input.type);
     const $io6 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("number" === typeof input.file_size && (Math.floor(input.file_size) === input.file_size && 0 <= input.file_size && input.file_size <= 18446744073709552000)) && ("number" === typeof input.known_size && (Math.floor(input.known_size) === input.known_size && 0 <= input.known_size && input.known_size <= 18446744073709552000)) && ("number" === typeof input.offset && (Math.floor(input.offset) === input.offset && 0 <= input.offset && input.offset <= 18446744073709552000)) && ("number" === typeof input.end && (Math.floor(input.end) === input.end && 0 <= input.end && input.end <= 18446744073709552000)) && ("number" === typeof input.addr && (Math.floor(input.addr) === input.addr && 0 <= input.addr && input.addr <= 18446744073709552000)) && ("number" === typeof input.addr_end && (Math.floor(input.addr_end) === input.addr_end && 0 <= input.addr_end && input.addr_end <= 18446744073709552000)) && "boolean" === typeof input.only_in_memory && "boolean" === typeof input.debug;
     return "object" === typeof input && null !== input && $io0(input);
