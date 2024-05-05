@@ -141,7 +141,7 @@ Web explorer options
 - [x] 计算符号本身的大小到包中
 - [ ] 添加其他图表，如火焰图、饼图等
 - [ ] 支持 demangle cgo 中的 C++/Rust 符号
-- [ ] 添加 TUI 模式以探索
+- [x] 添加 TUI 模式以探索
 
 ## Contribution
 
