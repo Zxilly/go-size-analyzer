@@ -29,7 +29,7 @@ func main() {
 	}
 
 	if Options.Tui {
-		tui.RunTUI()
+		tui.RunTUI(result)
 		return
 	}
 
