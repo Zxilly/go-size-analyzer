@@ -29,6 +29,8 @@ var Options struct {
 	Listen string `long:"listen" help:"listen address" default:":8080" group:"web"`
 	Open   bool   `long:"open" help:"Open browser" group:"web"`
 
+	Tui bool `long:"tui" help:"use terminal interface to explore the details" group:"tui"`
+
 	Output string `short:"o" help:"Write to file"`
 
 	Version kong.VersionFlag `help:"Show version"`
@@ -61,6 +63,10 @@ func init() {
 			{
 				Key:   "svg",
 				Title: "Svg output options",
+			},
+			{
+				Key:   "tui",
+				Title: "Terminal interface options",
 			},
 		}),
 		kong.Vars{

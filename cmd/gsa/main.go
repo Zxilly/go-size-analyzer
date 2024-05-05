@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/tui"
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"log/slog"
 	"os"
@@ -25,6 +26,11 @@ func main() {
 	})
 	if err != nil {
 		utils.FatalError(err)
+	}
+
+	if Options.Tui {
+		tui.RunTUI()
+		return
 	}
 
 	if Options.Web {
@@ -77,7 +83,6 @@ func main() {
 
 		utils.WaitSignal()
 		return
-
 	}
 
 	if Options.Output != "" {
