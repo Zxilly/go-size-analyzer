@@ -17,7 +17,7 @@ require (
 	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.9.0
 	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
-	golang.org/x/arch v0.7.0
+	golang.org/x/arch v0.8.0
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 	golang.org/x/net v0.24.0
 )
