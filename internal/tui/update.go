@@ -9,8 +9,7 @@ import (
 func (m *viewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		h, v := appStyle.GetFrameSize()
-		m.list.SetSize(msg.Width-h, msg.Height-v)
+
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, DefaultKeyMap.Up):

@@ -3,12 +3,9 @@ package tui
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/charmbracelet/bubbles/list"
 	"github.com/samber/lo"
 	"path/filepath"
 )
-
-var _ list.Item = wrapper{}
 
 // wrapper union type
 type wrapper struct {
@@ -18,10 +15,6 @@ type wrapper struct {
 	function *entity.Function
 
 	parent *wrapper
-}
-
-func (w wrapper) FilterValue() string {
-	return w.Title()
 }
 
 func newWrapper(cnt any) wrapper {
