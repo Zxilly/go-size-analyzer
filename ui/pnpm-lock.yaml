@@ -77,8 +77,8 @@ devDependencies:
     specifier: ^1.24.1
     version: 1.24.1
   sass:
-    specifier: ^1.76.0
-    version: 1.76.0
+    specifier: ^1.77.0
+    version: 1.77.0
   terser:
     specifier: ^5.31.0
     version: 5.31.0
@@ -93,7 +93,7 @@ devDependencies:
     version: 6.0.3(typescript@5.4.5)
   vite:
     specifier: ^5.2.11
-    version: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
+    version: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0)
   vite-plugin-html:
     specifier: ^3.2.2
     version: 3.2.2(vite@5.2.11)
@@ -120,7 +120,7 @@ packages:
       vite: 4.x || 5.x
     dependencies:
       '@codecov/bundler-plugin-core': 0.0.1-beta.6
-      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
+      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0)
     dev: true
 
   /@esbuild/aix-ppc64@0.20.2:
@@ -909,7 +909,7 @@ packages:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.5.3
-      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
+      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -3064,8 +3064,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /sass@1.76.0:
-    resolution: {integrity: sha512-nc3LeqvF2FNW5xGF1zxZifdW3ffIz5aBb7I7tSvOoNu7z1RQ6pFt9MBuiPtjgaI62YWrM/txjWlOCFiGtf2xpw==}
+  /sass@1.77.0:
+    resolution: {integrity: sha512-eGj4HNfXqBWtSnvItNkn7B6icqH14i3CiCGbzMKs3BAPTq62pp9NBYsBgyN4cA+qssqo9r26lW4JSvlaUUWbgw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -3447,7 +3447,7 @@ packages:
       html-minifier-terser: 6.1.0
       node-html-parser: 5.4.2
       pathe: 0.2.0
-      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
+      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0)
     dev: true
 
   /vite-plugin-singlefile@2.0.1(rollup@4.17.2)(vite@5.2.11):
@@ -3459,10 +3459,10 @@ packages:
     dependencies:
       micromatch: 4.0.5
       rollup: 4.17.2
-      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0)
+      vite: 5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0)
     dev: true
 
-  /vite@5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.76.0)(terser@5.31.0):
+  /vite@5.2.11(@types/node@20.12.10)(lightningcss@1.24.1)(sass@1.77.0)(terser@5.31.0):
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -3495,7 +3495,7 @@ packages:
       lightningcss: 1.24.1
       postcss: 8.4.38
       rollup: 4.17.2
-      sass: 1.76.0
+      sass: 1.77.0
       terser: 5.31.0
     optionalDependencies:
       fsevents: 2.3.3
