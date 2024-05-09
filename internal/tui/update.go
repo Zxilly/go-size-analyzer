@@ -11,6 +11,17 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case key.Matches(msg, DefaultKeyMap.Switch):
 		m.focus = m.nextFocus()
 		return m, nil
+	case key.Matches(msg, DefaultKeyMap.Backward):
+		if m.current != nil {
+			m.current = m.current.parent
+		}
+		return m, nil
+	case key.Matches(msg, DefaultKeyMap.Enter):
+		if m.currentSelection().hasChildren() {
+			cur := m.currentSelection()
+			m.current = cur
+			m.leftTable.SetRows(m.currentList().ToRows())
+		}
 	case key.Matches(msg, DefaultKeyMap.Exit):
 		return m, tea.Quit
 	}

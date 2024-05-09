@@ -11,6 +11,7 @@ import (
 	"golang.org/x/term"
 	"os"
 	"slices"
+	"sync"
 )
 
 var _ tea.Model = (*mainModel)(nil)
@@ -32,17 +33,19 @@ type mainModel struct {
 	focus focusState
 }
 
-func (m mainModel) currentSelection() wrapper {
-	var list []wrapper
-	if m.current == nil {
-		list = m.baseItems
-	} else {
-		list = m.current.children()
-	}
-	if m.leftTable.Cursor() < 0 || m.leftTable.Cursor() >= len(list) {
+func (m mainModel) currentSelection() *wrapper {
+	l := m.currentList()
+	if m.leftTable.Cursor() < 0 || m.leftTable.Cursor() >= len(l) {
 		panic("cursor out of range")
 	}
-	return list[m.leftTable.Cursor()]
+	return &l[m.leftTable.Cursor()]
+}
+
+func (m mainModel) currentList() wrappers {
+	if m.current == nil {
+		return m.baseItems
+	}
+	return m.current.children()
 }
 
 func (m mainModel) getKeyMap() help.KeyMap {
@@ -82,20 +85,27 @@ func (m mainModel) nextFocus() focusState {
 	}
 }
 
-func buildRootItems(result *result.Result) wrappers {
-	ret := make([]wrapper, 0)
-	for _, p := range result.Packages {
-		ret = append(ret, newWrapper(p))
-	}
-	for _, s := range result.Sections {
-		ret = append(ret, newWrapper(s))
-	}
+var rootCache wrappers
+var rootCacheOnce = &sync.Once{}
 
-	slices.SortFunc(ret, func(a, b wrapper) int {
-		return -cmp.Compare(a.size(), b.size())
+func buildRootItems(result *result.Result) wrappers {
+	rootCacheOnce.Do(func() {
+		ret := make([]wrapper, 0)
+		for _, p := range result.Packages {
+			ret = append(ret, newWrapper(p))
+		}
+		for _, s := range result.Sections {
+			ret = append(ret, newWrapper(s))
+		}
+
+		slices.SortFunc(ret, func(a, b wrapper) int {
+			return -cmp.Compare(a.size(), b.size())
+		})
+
+		rootCache = ret
 	})
 
-	return ret
+	return rootCache
 }
 
 func newMainModel(result *result.Result) mainModel {

@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"cmp"
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
@@ -8,6 +9,7 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/samber/lo"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 )
@@ -48,7 +50,7 @@ func newWrapper(cnt any) wrapper {
 	}
 }
 
-func (w wrapper) Title() string {
+func (w *wrapper) Title() string {
 	switch {
 	case w.pkg != nil:
 		return w.pkg.Name
@@ -63,7 +65,7 @@ func (w wrapper) Title() string {
 	}
 }
 
-func (w wrapper) Description() string {
+func (w *wrapper) Description() string {
 	sb := new(strings.Builder)
 
 	writeln := func(s string) {
@@ -150,19 +152,33 @@ func (w wrapper) Description() string {
 	return sb.String()
 }
 
-func buildPackageChildren(pkg *entity.Package) wrappers {
-	ret := make([]wrapper, 0)
-	for _, k := range pkg.Files {
-		ret = append(ret, newWrapper(k))
-	}
+func sortWrappers(wrappers wrappers) {
+	slices.SortFunc(wrappers, func(a, b wrapper) int {
+		return -cmp.Compare(a.size(), b.size())
+	})
+}
 
+func buildPackageChildren(pkg *entity.Package) wrappers {
+	subs := make([]wrapper, 0)
 	for _, k := range utils.SortedKeys(pkg.SubPackages) {
-		ret = append(ret, newWrapper(pkg.SubPackages[k]))
+		subs = append(subs, newWrapper(pkg.SubPackages[k]))
 	}
+	sortWrappers(subs)
+
+	files := make([]wrapper, 0)
+	for _, k := range pkg.Files {
+		files = append(files, newWrapper(k))
+	}
+	sortWrappers(files)
+
+	ret := make([]wrapper, 0, len(files)+len(subs))
+	ret = append(ret, subs...)
+	ret = append(ret, files...)
+
 	return ret
 }
 
-func (w wrapper) size() uint64 {
+func (w *wrapper) size() uint64 {
 	switch {
 	case w.pkg != nil:
 		return w.pkg.Size
@@ -177,33 +193,18 @@ func (w wrapper) size() uint64 {
 	}
 }
 
-func (w wrapper) typ() string {
-	switch {
-	case w.pkg != nil:
-		return "Package"
-	case w.section != nil:
-		return "Section"
-	case w.file != nil:
-		return "File"
-	case w.function != nil:
-		return "Function"
-	default:
-		panic("invalid wrapper")
-	}
-}
-
-func (w wrapper) toRow() table.Row {
+func (w *wrapper) toRow() table.Row {
 	return table.Row{
 		w.Title(),
 		humanize.Bytes(w.size()),
 	}
 }
 
-func (w wrapper) hasChildren() bool {
+func (w *wrapper) hasChildren() bool {
 	return len(w.children()) > 0
 }
 
-func (w wrapper) children() wrappers {
+func (w *wrapper) children() wrappers {
 	w.cacheOnce.Do(func() {
 		var ret []wrapper
 		switch {
@@ -216,11 +217,13 @@ func (w wrapper) children() wrappers {
 			ret = lo.Map(w.file.Functions, func(item *entity.Function, _ int) wrapper {
 				return newWrapper(item)
 			})
+			sortWrappers(ret)
+
 		default:
 			panic("invalid wrapper")
 		}
 		for _, k := range ret {
-			k.parent = &w
+			k.parent = w
 		}
 		w.childrenCache = ret
 	})
