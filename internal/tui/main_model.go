@@ -1,14 +1,16 @@
 package tui
 
 import (
+	"cmp"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/tui/table"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/term"
 	"os"
+	"slices"
 )
 
 var _ tea.Model = (*mainModel)(nil)
@@ -46,7 +48,7 @@ func (m mainModel) currentSelection() wrapper {
 }
 
 func (m mainModel) getKeyMap() help.KeyMap {
-	mainKeys := []key.Binding{DefaultKeyMap.Backward, DefaultKeyMap.Exit}
+	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Backward, DefaultKeyMap.Exit}
 	ret := DynamicKeyMap{
 		Short: mainKeys,
 		Long:  [][]key.Binding{mainKeys},
@@ -56,7 +58,7 @@ func (m mainModel) getKeyMap() help.KeyMap {
 	case focusedMain:
 		ret.Short = append(ret.Short, tableKeyMap()...)
 		ret.Long = append(ret.Long, tableKeyMap())
-	case focusedDetail, focusedChildren:
+	case focusedDetail:
 		ret.Short = append(ret.Short, m.rightDetail.KeyMap().ShortHelp()...)
 		ret.Long = append(ret.Long, m.rightDetail.KeyMap().FullHelp()...)
 	}
@@ -69,12 +71,6 @@ func (m mainModel) nextFocus() focusState {
 	case focusedMain:
 		return focusedDetail
 	case focusedDetail:
-		cur := m.currentSelection()
-		if cur.hasChildren() {
-			return focusedChildren
-		}
-		return focusedMain
-	case focusedChildren:
 		return focusedMain
 	default:
 		panic("invalid focus state")
@@ -89,6 +85,11 @@ func buildRootItems(result *result.Result) wrappers {
 	for _, s := range result.Sections {
 		ret = append(ret, newWrapper(s))
 	}
+
+	slices.SortFunc(ret, func(a, b wrapper) int {
+		return -cmp.Compare(a.size(), b.size())
+	})
+
 	return ret
 }
 
@@ -99,6 +100,7 @@ func newViewModel(result *result.Result) mainModel {
 	}
 
 	baseItems := buildRootItems(result)
+	_, y := baseStyle.GetFrameSize()
 
 	m := mainModel{
 		baseItems: baseItems,
@@ -107,8 +109,9 @@ func newViewModel(result *result.Result) mainModel {
 
 		rightDetail: detailModel{},
 		leftTable: table.New(
-			table.WithColumns(getTableColumns(width)),
+			table.WithColumns(getTableColumns(width, y)),
 			table.WithRows(baseItems.ToRows()),
+			table.WithFocused(true),
 		),
 		help: help.New(),
 
