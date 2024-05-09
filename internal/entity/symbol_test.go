@@ -15,7 +15,7 @@ func TestSymbolStringRepresentation(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Symbol: testSymbol Addr: 1000 CodeSize: 100 Type: data"
+	expected := "Symbol: testSymbol Addr: 1000 Size: 100 Type: data"
 	result := symbol.String()
 
 	assert.Equal(t, expected, result)
@@ -29,7 +29,7 @@ func TestSymbolStringRepresentationWithDifferentType(t *testing.T) {
 		Type: entity.AddrTypeText,
 	}
 
-	expected := "Symbol: testSymbol Addr: 1000 CodeSize: 100 Type: text"
+	expected := "Symbol: testSymbol Addr: 1000 Size: 100 Type: text"
 	result := symbol.String()
 
 	assert.Equal(t, expected, result)
@@ -43,7 +43,7 @@ func TestSymbolStringRepresentationWithZeroSize(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Symbol: testSymbol Addr: 1000 CodeSize: 0 Type: data"
+	expected := "Symbol: testSymbol Addr: 1000 Size: 0 Type: data"
 	result := symbol.String()
 
 	assert.Equal(t, expected, result)
@@ -57,7 +57,7 @@ func TestSymbolStringRepresentationWithZeroAddr(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Symbol: testSymbol Addr: 0 CodeSize: 100 Type: data"
+	expected := "Symbol: testSymbol Addr: 0 Size: 100 Type: data"
 	result := symbol.String()
 
 	assert.Equal(t, expected, result)
