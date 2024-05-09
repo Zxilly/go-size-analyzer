@@ -6,10 +6,10 @@ import (
 )
 
 type File struct {
-	FilePath  string
-	Functions []*Function
+	FilePath  string      `json:"file_path"`
+	Functions []*Function `json:"functions"`
 
-	pkg *Package
+	Pkg *Package `json:"-"`
 }
 
 func (f *File) FullSize() uint64 {

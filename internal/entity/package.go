@@ -122,7 +122,7 @@ func (p *Package) getOrInitFile(s string) *File {
 
 	f := &File{
 		FilePath:  utils.Deduplicate(s),
-		pkg:       p,
+		Pkg:       p,
 		Functions: make([]*Function, 0),
 	}
 

@@ -10,8 +10,10 @@ const (
 )
 
 var baseStyle = lipgloss.NewStyle().
-	BorderStyle(lipgloss.NormalBorder()).
-	BorderForeground(lipgloss.Color("69"))
+	BorderStyle(lipgloss.ThickBorder()).
+	BorderForeground(lipgloss.Color("69")).
+	BorderBottom(true).
+	BorderTop(true)
 
 const (
 	rowWidthSize = 13

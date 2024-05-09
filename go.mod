@@ -7,8 +7,8 @@ toolchain go1.22.1
 require (
 	github.com/ZxillyFork/gosym v0.0.0-20240502221713-b6e6623d24a9
 	github.com/alecthomas/kong v0.9.0
-	github.com/charmbracelet/bubbles v0.18.0
-	github.com/charmbracelet/bubbletea v0.26.2
+	github.com/charmbracelet/bubbles v0.18.1-0.20240508180215-65933b4ef686
+	github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed
 	github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dghubble/trie v0.1.0

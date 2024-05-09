@@ -10,7 +10,6 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch {
 	case key.Matches(msg, DefaultKeyMap.Switch):
 		m.focus = m.nextFocus()
-		m.keyMap = m.getKeyMap()
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Exit):
 		return m, tea.Quit
@@ -21,6 +20,7 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch m.focus {
 	case focusedMain:
 		m.leftTable, cmd = m.leftTable.Update(msg)
+		m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
 	}
@@ -28,14 +28,12 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m mainModel) updateWindowSize(width, height int) (mainModel, tea.Cmd) {
+func (m mainModel) handleWindowSizeEvent(width, height int) (mainModel, tea.Cmd) {
 	m.width = width
 	m.height = height
 
-	x, y := baseStyle.GetFrameSize()
-
-	m.leftTable.SetWidth(width/2 - x)
-	m.leftTable.SetColumns(getTableColumns(width, y))
+	m.leftTable.SetWidth(width / 2)
+	m.leftTable.SetColumns(getTableColumns(width))
 
 	m.help.Width = width
 
@@ -45,9 +43,10 @@ func (m mainModel) updateWindowSize(width, height int) (mainModel, tea.Cmd) {
 	const nameHeight = 1
 
 	// update the table height accordingly
-	m.leftTable.SetHeight(height - helpHeight - headerHeight - nameHeight - 2) // 2 for borders
+	m.leftTable.SetHeight(height - helpHeight - headerHeight - nameHeight - 1)
 
-	// todo: update detail height
+	m.rightDetail.viewPort.Height = height - helpHeight - nameHeight - 2
+	m.rightDetail.viewPort.Width = width - width/2 - 1
 
 	return m, tea.ClearScreen
 }
@@ -55,7 +54,7 @@ func (m mainModel) updateWindowSize(width, height int) (mainModel, tea.Cmd) {
 func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		return m.updateWindowSize(msg.Width, msg.Height)
+		return m.handleWindowSizeEvent(msg.Width, msg.Height)
 	case tea.KeyMsg:
 		return m.handleKeyEvent(msg)
 	}
