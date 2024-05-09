@@ -160,8 +160,8 @@ func (w *wrapper) Description() string {
 			writeln(fmt.Sprintf("  Header: %d Bytes", w.function.PclnSize.Header))
 			writeln(fmt.Sprintf("  Func Data: %d Bytes", w.function.PclnSize.FuncData))
 			writeln("  PC Data:")
-			for k, v := range w.function.PclnSize.PCData {
-				writeln(fmt.Sprintf("    %s: %d Bytes", k, v))
+			for _, k := range utils.SortedKeys(w.function.PclnSize.PCData) {
+				writeln(fmt.Sprintf("    %s: %d Bytes", k, w.function.PclnSize.PCData[k]))
 			}
 		}
 	default:
