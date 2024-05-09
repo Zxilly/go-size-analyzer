@@ -39,18 +39,7 @@ func (m mainModel) View() string {
 		right = borderStyle.Render(right)
 	}
 
-	rightHeight := lipgloss.Height(right)
-	leftHeight := lipgloss.Height(left)
-	if rightHeight != leftHeight {
-		panic(fmt.Errorf("left and right views have different heights: %d != %d", leftHeight, rightHeight))
-	}
-
 	main := lipgloss.JoinHorizontal(lipgloss.Top, left, right)
-
-	mainHeight := lipgloss.Height(main)
-	if mainHeight != leftHeight {
-		panic(fmt.Errorf("main view has different height than left view: %d != %d", mainHeight, leftHeight))
-	}
 
 	help := m.help.View(m.getKeyMap())
 

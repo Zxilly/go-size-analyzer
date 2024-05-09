@@ -46,7 +46,7 @@ func (m mainModel) handleWindowSizeEvent(width, height int) (mainModel, tea.Cmd)
 	m.leftTable.SetHeight(height - helpHeight - headerHeight - nameHeight - 1)
 
 	m.rightDetail.viewPort.Height = height - helpHeight - nameHeight - 2
-	m.rightDetail.viewPort.Width = width - width/2 - 1
+	m.rightDetail.viewPort.Width = width - width/2
 
 	return m, tea.ClearScreen
 }
