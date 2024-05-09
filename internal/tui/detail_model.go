@@ -1,25 +1,39 @@
 package tui
 
 import (
-	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type detailModel struct {
-	display *wrapper
+	viewPort viewport.Model
+}
+
+func newDetailModel(width, height int) detailModel {
+	return detailModel{
+		viewPort: viewport.New(width, height),
+	}
 }
 
 func (d detailModel) Update(msg tea.Msg) (detailModel, tea.Cmd) {
-	//TODO implement me
-	return d, nil
+	var cmd tea.Cmd
+	d.viewPort, cmd = d.viewPort.Update(msg)
+	return d, cmd
 }
 
 func (d detailModel) View() string {
-	//TODO implement me
-	return ""
+	return d.viewPort.View()
 }
 
-func (d detailModel) KeyMap() help.KeyMap {
-	//TODO implement me
-	return nil
+func (d detailModel) KeyMap() []key.Binding {
+	km := d.viewPort.KeyMap
+	return []key.Binding{
+		km.Up,
+		km.Down,
+		km.PageUp,
+		km.PageDown,
+		km.HalfPageUp,
+		km.HalfPageDown,
+	}
 }

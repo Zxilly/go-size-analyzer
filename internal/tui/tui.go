@@ -9,8 +9,8 @@ import (
 )
 
 func RunTUI(result *result.Result) {
-	model := newViewModel(result)
-	_, err := tea.NewProgram(model, tea.WithAltScreen(), tea.WithFPS(60)).Run()
+	model := newMainModel(result)
+	_, err := tea.NewProgram(model, tea.WithAltScreen(), tea.WithMouseCellMotion()).Run()
 	if err != nil {
 		slog.Error(fmt.Sprintf("TUI error: %v", err))
 		os.Exit(1)

@@ -1,12 +1,12 @@
 package tui
 
-import "github.com/Zxilly/go-size-analyzer/internal/tui/table"
+import "github.com/charmbracelet/bubbles/table"
 
-func getTableColumns(width int, frame int) []table.Column {
+func getTableColumns(width int) []table.Column {
 	return []table.Column{
 		{
 			Title: "Name",
-			Width: width/2 - rowWidthSize - frame - 7, // fixme: why 7 is ok here?
+			Width: width/2 - rowWidthSize - 6, // fixme: why 6 is ok here?
 		},
 		{
 			"Size",

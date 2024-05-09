@@ -4,28 +4,15 @@ import (
 	"fmt"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
-	"github.com/muesli/termenv"
-	"strings"
 )
-
-func (m mainModel) emptyView(content string) string {
-	msg := wordwrap.String(content, m.width)
-	// padding to full screen
-	line := strings.Repeat(" ", m.width) + "\n"
-	msgHeight := lipgloss.Height(msg)
-	paddingHeight := m.height - msgHeight
-	padding := strings.Repeat(line, paddingHeight)
-	msg = msg + padding
-	return msg
-}
 
 func (m mainModel) View() string {
 	if m.width < 70 || m.height < 20 {
-		return m.emptyView(fmt.Sprintf("Your terminal window is too small. "+
-			"Please make it at least 70x20 and try again. Current size: %d x %d", m.width, m.height))
+		return wordwrap.String(
+			fmt.Sprintf("Your terminal window is too small. "+
+				"Please make it at least 70x20 and try again. Current size: %d x %d", m.width, m.height),
+			m.width)
 	}
-
-	lipgloss.SetColorProfile(termenv.ANSI)
 
 	title := lipgloss.NewStyle().
 		Bold(true).
@@ -41,7 +28,7 @@ func (m mainModel) View() string {
 	right := m.rightDetail.View()
 
 	borderStyle := baseStyle.Width(m.width / 2)
-	disabledBorderStyle := borderStyle.Foreground(lipgloss.Color("241"))
+	disabledBorderStyle := borderStyle.BorderForeground(lipgloss.Color("241"))
 
 	switch m.focus {
 	case focusedMain:
@@ -52,9 +39,20 @@ func (m mainModel) View() string {
 		right = borderStyle.Render(right)
 	}
 
-	main := lipgloss.JoinHorizontal(lipgloss.Center, left, right)
+	rightHeight := lipgloss.Height(right)
+	leftHeight := lipgloss.Height(left)
+	if rightHeight != leftHeight {
+		panic(fmt.Errorf("left and right views have different heights: %d != %d", leftHeight, rightHeight))
+	}
 
-	help := m.help.View(m.keyMap)
+	main := lipgloss.JoinHorizontal(lipgloss.Top, left, right)
+
+	mainHeight := lipgloss.Height(main)
+	if mainHeight != leftHeight {
+		panic(fmt.Errorf("main view has different height than left view: %d != %d", mainHeight, leftHeight))
+	}
+
+	help := m.help.View(m.getKeyMap())
 
 	full := lipgloss.JoinVertical(lipgloss.Top, title, main, help)
 	return full

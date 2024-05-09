@@ -9,6 +9,7 @@ import (
 type KeyMapTyp struct {
 	Switch   key.Binding
 	Backward key.Binding
+	Enter    key.Binding
 	Exit     key.Binding
 }
 
@@ -20,6 +21,10 @@ var DefaultKeyMap = KeyMapTyp{
 	Backward: key.NewBinding(
 		key.WithKeys("esc", "backspace"),
 		key.WithHelp("esc/backspace", "go back"),
+	),
+	Enter: key.NewBinding(
+		key.WithKeys("enter"),
+		key.WithHelp("enter", "explore"),
 	),
 	Exit: key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),

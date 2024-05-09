@@ -3,10 +3,10 @@ package tui
 import (
 	"cmp"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"github.com/Zxilly/go-size-analyzer/internal/tui/table"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/term"
 	"os"
@@ -24,8 +24,6 @@ type mainModel struct {
 	current *wrapper // nil means root
 
 	fileName string
-
-	keyMap help.KeyMap
 
 	leftTable   table.Model
 	rightDetail detailModel
@@ -48,7 +46,14 @@ func (m mainModel) currentSelection() wrapper {
 }
 
 func (m mainModel) getKeyMap() help.KeyMap {
-	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Backward, DefaultKeyMap.Exit}
+	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Exit}
+	if m.currentSelection().hasChildren() {
+		mainKeys = append(mainKeys, DefaultKeyMap.Enter)
+	}
+	if m.current != nil {
+		mainKeys = append(mainKeys, DefaultKeyMap.Backward)
+	}
+
 	ret := DynamicKeyMap{
 		Short: mainKeys,
 		Long:  [][]key.Binding{mainKeys},
@@ -59,8 +64,8 @@ func (m mainModel) getKeyMap() help.KeyMap {
 		ret.Short = append(ret.Short, tableKeyMap()...)
 		ret.Long = append(ret.Long, tableKeyMap())
 	case focusedDetail:
-		ret.Short = append(ret.Short, m.rightDetail.KeyMap().ShortHelp()...)
-		ret.Long = append(ret.Long, m.rightDetail.KeyMap().FullHelp()...)
+		ret.Short = append(ret.Short, m.rightDetail.KeyMap()...)
+		ret.Long = append(ret.Long, m.rightDetail.KeyMap())
 	}
 
 	return ret
@@ -93,23 +98,22 @@ func buildRootItems(result *result.Result) wrappers {
 	return ret
 }
 
-func newViewModel(result *result.Result) mainModel {
+func newMainModel(result *result.Result) mainModel {
 	width, height, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
 		utils.FatalError(err)
 	}
 
 	baseItems := buildRootItems(result)
-	_, y := baseStyle.GetFrameSize()
 
 	m := mainModel{
 		baseItems: baseItems,
 		current:   nil,
 		fileName:  result.Name,
 
-		rightDetail: detailModel{},
+		rightDetail: newDetailModel(width-width/2-1, height-3),
 		leftTable: table.New(
-			table.WithColumns(getTableColumns(width, y)),
+			table.WithColumns(getTableColumns(width)),
 			table.WithRows(baseItems.ToRows()),
 			table.WithFocused(true),
 		),
@@ -121,9 +125,9 @@ func newViewModel(result *result.Result) mainModel {
 		focus: focusedMain,
 	}
 
-	m.keyMap = m.getKeyMap()
+	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
 
-	m, _ = m.updateWindowSize(width, height)
+	m, _ = m.handleWindowSizeEvent(width, height)
 
 	return m
 }
