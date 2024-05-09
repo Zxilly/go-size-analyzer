@@ -114,8 +114,10 @@ func (w *wrapper) Description() string {
 			writeln(fmt.Sprintf("Section: %s", w.section.Name))
 			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.section.Size), w.section.Size))
 			writeln(fmt.Sprintf("File Size: %s (%d Bytes)", humanize.Bytes(w.section.FileSize), w.section.FileSize))
+			writeln(fmt.Sprintf("Known Size: %s (%d Bytes)", humanize.Bytes(w.section.KnownSize), w.section.KnownSize))
 			writeln(fmt.Sprintf("Addr: 0x%x - 0x%x", w.section.Addr, w.section.Addr+w.section.Size))
 			writeln(fmt.Sprintf("Offset: 0x%x - 0x%x", w.section.Offset, w.section.Offset+w.section.FileSize))
+			writeln(fmt.Sprintf("Only In Memory: %t", w.section.OnlyInMemory))
 		}
 	case w.file != nil:
 		{
