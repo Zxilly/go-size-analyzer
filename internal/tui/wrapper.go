@@ -59,7 +59,14 @@ func (w *wrapper) Title() string {
 	case w.file != nil:
 		return filepath.Base(w.file.FilePath)
 	case w.function != nil:
-		return w.function.Name
+		switch w.function.Type {
+		case entity.FuncTypeFunction:
+			return w.function.Name
+		case entity.FuncTypeMethod:
+			return fmt.Sprintf("%s.%s", w.function.Receiver, w.function.Name)
+		default:
+			panic("invalid function type")
+		}
 	default:
 		panic("invalid wrapper")
 	}
