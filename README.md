@@ -13,7 +13,11 @@ A simple tool to analyze the size of a Go compiled binary.
 
 Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
 
-Don't use `go install`, because gsa uses modded dependencies and `replace` directive was not allowed by `go install`.
+Or use the following command to install the latest version:
+
+```bash
+go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
+```
 
 ## Usage
 

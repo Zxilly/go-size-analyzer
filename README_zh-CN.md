@@ -11,7 +11,11 @@
 
 从[发布页面](https://github.com/Zxilly/go-size-analyzer/releases)下载最新版本。
 
-不要使用 `go install`，因为 gsa 使用修改后的依赖项，而 `go install`不允许使用 `replace` 指令。
+或者使用以下命令安装最新版本：
+
+```bash
+go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
+```
 
 ## 使用
 
