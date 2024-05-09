@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// todo: store the parent cursor to recover the cursor position when going back
 func updateCurrent(m *mainModel, wrapper *wrapper) {
 	m.current = wrapper
 	m.leftTable.SetCursor(0)
@@ -19,12 +20,12 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.focus = m.nextFocus()
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Backward):
-		if m.current != nil {
+		if m.current != nil && m.focus == focusedMain {
 			updateCurrent(&m, m.current.parent)
 		}
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Enter):
-		if m.currentSelection().hasChildren() {
+		if m.currentSelection().hasChildren() && m.focus == focusedMain {
 			updateCurrent(&m, m.currentSelection())
 		}
 	case key.Matches(msg, DefaultKeyMap.Exit):
@@ -62,7 +63,7 @@ func (m mainModel) handleWindowSizeEvent(width, height int) (mainModel, tea.Cmd)
 	m.leftTable.SetHeight(height - helpHeight - headerHeight - nameHeight - 1)
 
 	m.rightDetail.viewPort.Height = height - helpHeight - nameHeight - 2
-	m.rightDetail.viewPort.Width = width - width/2
+	m.rightDetail.viewPort.Width = width - width/2 - 1
 
 	return m, tea.ClearScreen
 }

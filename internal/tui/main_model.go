@@ -121,7 +121,7 @@ func newMainModel(result *result.Result) mainModel {
 		current:   nil,
 		fileName:  result.Name,
 
-		rightDetail: newDetailModel(width-width/2, height-3),
+		rightDetail: newDetailModel(width-width/2-1, height-3),
 		leftTable: table.New(
 			table.WithColumns(getTableColumns(width)),
 			table.WithRows(baseItems.ToRows()),
