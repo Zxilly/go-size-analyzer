@@ -2,10 +2,10 @@ module github.com/Zxilly/go-size-analyzer
 
 go 1.22
 
-toolchain go1.22.1
+toolchain go1.22.3
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20240509173824-68ffcc0ad778
+	github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a
 	github.com/ZxillyFork/gosym v0.0.0-20240509173136-7efe915f9f99
 	github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d
 	github.com/alecthomas/kong v0.9.0
@@ -27,14 +27,11 @@ require (
 	golang.org/x/term v0.20.0
 )
 
-replace github.com/goretk/gore v0.11.5 => github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689
-
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/x/exp/term v0.0.0-20240509130423-e48c874ef5d2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
-	github.com/goretk/gore v0.11.5 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
