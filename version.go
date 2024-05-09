@@ -14,6 +14,15 @@ const (
 	unknownProperty = "N/A"
 )
 
+const (
+	// when update this, also update the version string in workflow
+	staticVersion = 1
+)
+
+func GetStaticVersion() int {
+	return staticVersion
+}
+
 var (
 	name       = unknownProperty
 	version    = unknownVersion
