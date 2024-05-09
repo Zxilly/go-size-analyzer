@@ -143,6 +143,9 @@ Web explorer options
   --web               use web interface to explore the details
   --listen=":8080"    listen address
   --open              Open browser
+
+Terminal interface options
+  --tui    use terminal interface to explore the details
 ```
 
 > [!CAUTION]
