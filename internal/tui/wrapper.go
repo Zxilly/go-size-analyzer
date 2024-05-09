@@ -126,7 +126,15 @@ func (w *wrapper) Description() string {
 				writeln("")
 				writeln("Functions:")
 				for _, k := range w.file.Functions {
-					writeln(fmt.Sprintf("  %s", k.Name))
+					var name string
+					switch k.Type {
+					case entity.FuncTypeFunction:
+						name = k.Name
+					case entity.FuncTypeMethod:
+						name = fmt.Sprintf("%s.%s", k.Receiver, k.Name)
+					}
+
+					writeln(fmt.Sprintf("  %s", name))
 				}
 			}
 		}
