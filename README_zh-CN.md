@@ -31,6 +31,18 @@ $ gsa --web golang-compiled-binary
 
 您可以点击以展开包以查看详细信息。
 
+#### 终端用户界面（实验性）
+
+```bash
+$ gsa --tui golang-compiled-binary
+```
+
+![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/92e78c82-8613-4b17-b043-630c238b2599)
+
+>[!NOTE]
+> 在 Windows 上可能会出现 UI 显示问题，这是由于依赖库引起的。
+> 如果遇到问题，请尝试在 Linux/WSL 上运行。
+
 #### 文本模式
 
 ```bash
