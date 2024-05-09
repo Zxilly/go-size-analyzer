@@ -21,7 +21,7 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch m.focus {
 	case focusedMain:
 		m.leftTable, cmd = m.leftTable.Update(msg)
-	case focusedDetail, focusedChildren:
+	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
 	}
 
@@ -32,19 +32,24 @@ func (m mainModel) updateWindowSize(width, height int) (mainModel, tea.Cmd) {
 	m.width = width
 	m.height = height
 
-	m.leftTable.SetWidth(width / 2)
-	m.leftTable.SetColumns(getTableColumns(width))
+	x, y := baseStyle.GetFrameSize()
+
+	m.leftTable.SetWidth(width/2 - x)
+	m.leftTable.SetColumns(getTableColumns(width, y))
 
 	m.help.Width = width
 
 	helpHeight := lipgloss.Height(m.help.View(m.getKeyMap()))
 
+	const headerHeight = 1
+	const nameHeight = 1
+
 	// update the table height accordingly
-	m.leftTable.SetHeight(height - 1 - helpHeight - 5)
+	m.leftTable.SetHeight(height - helpHeight - headerHeight - nameHeight - 2) // 2 for borders
 
 	// todo: update detail height
 
-	return m, nil
+	return m, tea.ClearScreen
 }
 
 func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

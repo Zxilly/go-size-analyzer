@@ -2,8 +2,9 @@ package tui
 
 import (
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/tui/table"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/charmbracelet/bubbles/table"
+
 	"github.com/dustin/go-humanize"
 	"github.com/samber/lo"
 	"path/filepath"
@@ -111,7 +112,6 @@ func (w wrapper) typ() string {
 func (w wrapper) toRow() table.Row {
 	return table.Row{
 		w.Title(),
-		w.typ(),
 		humanize.Bytes(w.size()),
 	}
 }
