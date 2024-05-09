@@ -12,3 +12,4 @@ coverage:
 ignore:
   - "internal/tui/*.go"
   - "internal/wrapper/*.go"
+  - "cmd/gsa/*.go"
