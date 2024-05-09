@@ -6,16 +6,15 @@ toolchain go1.22.1
 
 require (
 	github.com/ZxillyFork/gosym v0.0.0-20240502221713-b6e6623d24a9
+	github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d
 	github.com/alecthomas/kong v0.9.0
 	github.com/charmbracelet/bubbles v0.18.1-0.20240508180215-65933b4ef686
 	github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed
 	github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb
 	github.com/deckarep/golang-set/v2 v2.6.0
-	github.com/dghubble/trie v0.1.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goretk/gore v0.11.5
 	github.com/jedib0t/go-pretty/v6 v6.5.9
-	github.com/mattn/go-runewidth v0.0.15
 	github.com/muesli/reflow v0.3.0
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
@@ -28,10 +27,7 @@ require (
 	golang.org/x/term v0.20.0
 )
 
-replace (
-	github.com/dghubble/trie v0.1.0 => github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179
-	github.com/goretk/gore v0.11.5 => github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689
-)
+replace github.com/goretk/gore v0.11.5 => github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
@@ -42,6 +38,7 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
+	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/termenv v0.15.2 // indirect

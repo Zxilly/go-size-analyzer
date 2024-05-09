@@ -4,7 +4,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/ZxillyFork/gosym"
-	"github.com/dghubble/trie"
+	"github.com/ZxillyFork/trie"
 	"github.com/goretk/gore"
 	"runtime/debug"
 )

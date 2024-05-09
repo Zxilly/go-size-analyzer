@@ -2,8 +2,8 @@ github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689 h1:/K0xOXZArG+0d6O
 github.com/ZxillyFork/gore v0.0.0-20240502222030-26c06ec5c689/go.mod h1:aP2AhCAFnU0PmsOMOY6cpBXCOqQx61CO4eR5a+EeYhU=
 github.com/ZxillyFork/gosym v0.0.0-20240502221713-b6e6623d24a9 h1:OPZjL9kb2fihxdSUo7uxho7R87MisX1nlThrq+B0sGM=
 github.com/ZxillyFork/gosym v0.0.0-20240502221713-b6e6623d24a9/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
-github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179 h1:uKuNlcces+jXDACj7KE4oxJdJM2nPdmaGK7QCD6ip1U=
-github.com/ZxillyFork/trie v0.0.0-20240428062955-77f35217e179/go.mod h1:sOmnzfBNH7H92ow2292dDFWNsVQuh/izuD7otCYb1ak=
+github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d h1:ED/987saVptZxHwWyH7k3jbkn+gPX/KTafhzWgUi5l4=
+github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=
 github.com/alecthomas/assert/v2 v2.6.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v0.9.0 h1:G5diXxc85KvoV2f0ZRVuMsi45IrBgx9zDNGNj165aPA=
@@ -12,16 +12,10 @@ github.com/alecthomas/repr v0.4.0 h1:GhI2A8MACjfegCPVq9f1FLvIBS+DrQ2KQBFZP1iFzXc
 github.com/alecthomas/repr v0.4.0/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1/go.mod h1:uYgXzlJ7ZpABp8OJ+exZzJJhRNQ2ASbcXHWsFqH8hp8=
-github.com/charmbracelet/bubbles v0.18.0 h1:PYv1A036luoBGroX6VWjQIE9Syf2Wby2oOl/39KLfy0=
-github.com/charmbracelet/bubbles v0.18.0/go.mod h1:08qhZhtIwzgrtBjAcJnij1t1H0ZRjwHyGsy6AL11PSw=
 github.com/charmbracelet/bubbles v0.18.1-0.20240508180215-65933b4ef686 h1:GaPvk7qUPwk+YUw/qho8yuLbCRPT4O2kGdjgJaipIFs=
 github.com/charmbracelet/bubbles v0.18.1-0.20240508180215-65933b4ef686/go.mod h1:Zlzkn8WOd6QS7RC1BXAY1iw1VLq+xT70UZ1vkEtnrvo=
-github.com/charmbracelet/bubbletea v0.26.2 h1:Eeb+n75Om9gQ+I6YpbCXQRKHt5Pn4vMwusQpwLiEgJQ=
-github.com/charmbracelet/bubbletea v0.26.2/go.mod h1:6I0nZ3YHUrQj7YHIHlM8RySX4ZIthTliMY+W8X8b+Gs=
 github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed h1:ptV8h3ymgBFokbYqxOJopjKbW3BJmNYeSHYavcKYn9Q=
 github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed/go.mod h1:6I0nZ3YHUrQj7YHIHlM8RySX4ZIthTliMY+W8X8b+Gs=
-github.com/charmbracelet/lipgloss v0.10.0 h1:KWeXFSexGcfahHX+54URiZGkBFazf70JNMtwg/AFW3s=
-github.com/charmbracelet/lipgloss v0.10.0/go.mod h1:Wig9DSfvANsxqkRsqj6x87irdy123SR4dOXlKa91ciE=
 github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb h1:Hs3xzxHuruNT2Iuo87iS40c0PhLqpnUKBI6Xw6Ad3wQ=
 github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb/go.mod h1:EPP2QJ0ectp3zo6gx9f8oJGq8keirqPJ3XpYEI8wrrs=
 github.com/charmbracelet/x/exp/term v0.0.0-20240408110044-525ba71bb562 h1:jCSNgVpyc16IspmSdrUTio2lY33YojCN4tKOyQxWIg4=
