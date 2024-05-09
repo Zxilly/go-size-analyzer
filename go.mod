@@ -5,6 +5,7 @@ go 1.22
 toolchain go1.22.1
 
 require (
+	github.com/ZxillyFork/gore v0.0.0-20240509173824-68ffcc0ad778
 	github.com/ZxillyFork/gosym v0.0.0-20240509173136-7efe915f9f99
 	github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d
 	github.com/alecthomas/kong v0.9.0
@@ -13,7 +14,6 @@ require (
 	github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dustin/go-humanize v1.0.1
-	github.com/goretk/gore v0.11.5
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/muesli/reflow v0.3.0
 	github.com/nikolaydubina/treemap v1.2.5
@@ -34,6 +34,7 @@ require (
 	github.com/charmbracelet/x/exp/term v0.0.0-20240509130423-e48c874ef5d2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
+	github.com/goretk/gore v0.11.5 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -45,7 +46,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect

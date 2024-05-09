@@ -3,8 +3,8 @@ package entity
 import (
 	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
-	"github.com/goretk/gore"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
 	"runtime/debug"

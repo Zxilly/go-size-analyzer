@@ -6,7 +6,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"github.com/goretk/gore"
+	"github.com/ZxillyFork/gore"
 	"golang.org/x/exp/maps"
 	"log/slog"
 	"path"
