@@ -128,6 +128,10 @@ func (w *wrapper) Description() string {
 			writeln(fmt.Sprintf("Function: %s", w.function.Name))
 			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.function.Size()), w.function.Size()))
 			writeln(fmt.Sprintf("Type: %s", w.function.Type))
+			if w.function.Type == entity.FuncTypeMethod {
+				writeln(fmt.Sprintf("Receiver: %s", w.function.Receiver))
+			}
+
 			writeln(fmt.Sprintf("Code Size: %s (%d Bytes)", humanize.Bytes(w.function.CodeSize), w.function.CodeSize))
 			writeln(fmt.Sprintf("Pcln Size: %s (%d Bytes)", humanize.Bytes(w.function.PclnSize.Size()), w.function.PclnSize.Size()))
 			writeln(fmt.Sprintf("Addr: 0x%x - 0x%x", w.function.Addr, w.function.Addr+w.function.CodeSize))
@@ -218,14 +222,14 @@ func (w *wrapper) children() wrappers {
 				return newWrapper(item)
 			})
 			sortWrappers(ret)
-
 		default:
 			panic("invalid wrapper")
 		}
-		for _, k := range ret {
-			k.parent = w
-		}
-		w.childrenCache = ret
+
+		w.childrenCache = lo.Map(ret, func(item wrapper, _ int) wrapper {
+			item.parent = w
+			return item
+		})
 	})
 
 	return w.childrenCache

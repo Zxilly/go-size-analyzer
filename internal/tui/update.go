@@ -6,6 +6,13 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+func updateCurrent(m *mainModel, wrapper *wrapper) {
+	m.current = wrapper
+	m.leftTable.SetCursor(0)
+	m.leftTable.SetRows(m.currentList().ToRows())
+	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
+}
+
 func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch {
 	case key.Matches(msg, DefaultKeyMap.Switch):
@@ -13,14 +20,12 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Backward):
 		if m.current != nil {
-			m.current = m.current.parent
+			updateCurrent(&m, m.current.parent)
 		}
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Enter):
 		if m.currentSelection().hasChildren() {
-			cur := m.currentSelection()
-			m.current = cur
-			m.leftTable.SetRows(m.currentList().ToRows())
+			updateCurrent(&m, m.currentSelection())
 		}
 	case key.Matches(msg, DefaultKeyMap.Exit):
 		return m, tea.Quit

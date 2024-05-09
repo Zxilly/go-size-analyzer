@@ -150,5 +150,10 @@ func (m mainModel) title() string {
 	if m.current == nil {
 		return m.fileName
 	}
-	return m.current.Title()
+	switch {
+	case m.current.file != nil:
+		return m.current.parent.Title() + "/" + m.current.Title()
+	default:
+		return m.current.Title()
+	}
 }
