@@ -2,10 +2,9 @@ package printer
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Zxilly/go-size-analyzer/internal/global"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"log/slog"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"strings"
 )
 
@@ -27,7 +26,7 @@ func Json(r *result.Result, options *JsonOption) []byte {
 		b, err = json.MarshalIndent(r, "", strings.Repeat(" ", *options.Indent))
 	}
 	if err != nil {
-		slog.Error(fmt.Sprintf("Error: %v", err))
+		utils.FatalError(err)
 	}
 
 	return b
