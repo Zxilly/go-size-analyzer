@@ -44,7 +44,7 @@ You can click to expand the package to see the details.
 $ gsa --tui golang-compiled-binary
 ```
 
-![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/92e78c82-8613-4b17-b043-630c238b2599)
+![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/04556f54-7ebb-42b8-ac57-91a17887a44e)
 
 > [!NOTE]  
 > There may be a problem with the UI display on Windows, which is caused by dependent libraries. 

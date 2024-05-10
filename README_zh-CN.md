@@ -41,7 +41,7 @@ $ gsa --web golang-compiled-binary
 $ gsa --tui golang-compiled-binary
 ```
 
-![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/92e78c82-8613-4b17-b043-630c238b2599)
+![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/04556f54-7ebb-42b8-ac57-91a17887a44e)
 
 >[!NOTE]
 > 在 Windows 上可能会出现 UI 显示问题，这是由于依赖库引起的。
