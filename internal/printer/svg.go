@@ -1,16 +1,12 @@
 package printer
 
 import (
-	"encoding/csv"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/nikolaydubina/treemap"
-	"github.com/nikolaydubina/treemap/parser"
 	"github.com/nikolaydubina/treemap/render"
 	"image/color"
 	"path/filepath"
-	"strconv"
-	"strings"
 )
 
 type SvgOption struct {
@@ -23,21 +19,37 @@ type SvgOption struct {
 }
 
 func Svg(r *result.Result, options *SvgOption) []byte {
-	s := new(strings.Builder)
-	c := csv.NewWriter(s)
-
 	baseName := filepath.Base(r.Name)
-	// write file
-	_ = c.Write([]string{baseName, strconv.Itoa(int(r.Size)), "0"})
+
+	tree := &treemap.Tree{
+		Nodes: make(map[string]treemap.Node),
+		To:    make(map[string][]string),
+		Root:  baseName,
+	}
+
+	insert := func(path string, size float64) {
+		tree.Nodes[path] = treemap.Node{
+			Path: path,
+			Size: size,
+		}
+	}
+
+	relation := func(parent, child string) {
+		tree.To[parent] = append(tree.To[parent], child)
+	}
 
 	merge := func(s string) string {
 		return baseName + "/" + s
 	}
 
+	// write file
+	insert(baseName, float64(r.Size))
+
 	// write sections
 	if !options.HideSections {
 		for _, sec := range r.Sections {
-			_ = c.Write([]string{merge(sec.Name), strconv.Itoa(int(sec.Size)), "0"})
+			insert(merge(sec.Name), float64(sec.FileSize-sec.KnownSize))
+			relation(baseName, merge(sec.Name))
 		}
 	}
 
@@ -46,23 +58,17 @@ func Svg(r *result.Result, options *SvgOption) []byte {
 	writePackage = func(p *entity.Package) {
 		if !((options.HideMain && p.Type == entity.PackageTypeMain) ||
 			(options.HideStd && p.Type == entity.PackageTypeStd)) {
-			_ = c.Write([]string{merge(p.Name), strconv.Itoa(int(p.Size)), "0"})
+			insert(merge(p.Name), float64(p.Size))
 		}
 		for _, sub := range p.SubPackages {
+			relation(merge(p.Name), merge(sub.Name))
 			writePackage(sub)
 		}
 	}
 
 	for _, p := range r.Packages {
 		writePackage(p)
-	}
-
-	c.Flush()
-
-	p := parser.CSVTreeParser{}
-	tree, err := p.ParseString(s.String())
-	if err != nil {
-		panic(err)
+		relation(baseName, merge(p.Name))
 	}
 
 	treemap.SetNamesFromPaths(tree)
