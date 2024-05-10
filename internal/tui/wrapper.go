@@ -204,7 +204,7 @@ func (w *wrapper) size() uint64 {
 	case w.pkg != nil:
 		return w.pkg.Size
 	case w.section != nil:
-		return w.section.Size
+		return w.section.FileSize - w.section.KnownSize
 	case w.file != nil:
 		return w.file.FullSize()
 	case w.function != nil:
