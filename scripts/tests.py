@@ -1,6 +1,5 @@
 import csv
 import json
-import time
 
 import requests
 
@@ -54,6 +53,8 @@ def run_unit_tests():
             "-cover",
             "./...",
             f"-test.gocoverdir={unit_path}",
+            "-tags",
+            "embed"
         ],
         "unit",
         ".txt",
@@ -120,7 +121,7 @@ def run_web_test(entry: str):
         if "localhost" in line:
             break
 
-    time.sleep(1) # still need to wait for the server to start
+    time.sleep(1)  # still need to wait for the server to start
 
     ret = requests.get(f"http://localhost:{port}").text
 
