@@ -2,6 +2,10 @@ github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a h1:5fHVlhW+y2AvBdz
 github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a/go.mod h1:uD1YXB1UGkc6qCqPfkcMYGhZ2W1alw4VCXoD+SGBCsI=
 github.com/ZxillyFork/gosym v0.0.0-20240509173136-7efe915f9f99 h1:OlO+KAUmji+IOgqgGgzjukKDGsG3aDsxsh4pewXtmvc=
 github.com/ZxillyFork/gosym v0.0.0-20240509173136-7efe915f9f99/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
+github.com/ZxillyFork/gosym v0.0.0-20240510024453-3a68cf1c493b h1:pQBp7LWjuPd6UFacJIADF0DpBCggUTqiIKuPRKRa4L8=
+github.com/ZxillyFork/gosym v0.0.0-20240510024453-3a68cf1c493b/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
+github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
+github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d h1:ED/987saVptZxHwWyH7k3jbkn+gPX/KTafhzWgUi5l4=
 github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=

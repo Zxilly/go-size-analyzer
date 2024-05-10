@@ -6,7 +6,7 @@ toolchain go1.22.3
 
 require (
 	github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a
-	github.com/ZxillyFork/gosym v0.0.0-20240509173136-7efe915f9f99
+	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d
 	github.com/alecthomas/kong v0.9.0
 	github.com/charmbracelet/bubbles v0.18.1-0.20240508180215-65933b4ef686

@@ -9,9 +9,7 @@ import (
 	"github.com/ZxillyFork/gosym"
 	"log/slog"
 	"math"
-	"reflect"
 	"runtime/debug"
-	"unsafe"
 )
 
 type KnownInfo struct {
@@ -78,21 +76,16 @@ func (k *KnownInfo) UpdateVersionFlag() {
 
 // ExtractPackageFromSymbol copied from debug/gosym/symtab.go
 func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
-	sym := &gosym.Sym{
-		Name: s,
-	}
-
-	val := reflect.ValueOf(sym).Elem()
-	ver := val.FieldByName("goVersion")
-
-	set := func(i int) {
-		reflect.NewAt(ver.Type(), unsafe.Pointer(ver.UnsafeAddr())).Elem().SetInt(int64(i))
-	}
-
+	var ver gosym.Version
 	if k.VersionFlag.Meq120 {
-		set(5) // ver120
+		ver = gosym.Ver120 // ver120
 	} else if k.VersionFlag.Leq118 {
-		set(4) // ver118
+		ver = gosym.Ver118 // ver118
+	}
+
+	sym := &gosym.Sym{
+		Name:      s,
+		GoVersion: ver,
 	}
 
 	pn := sym.PackageName()
