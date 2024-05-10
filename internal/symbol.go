@@ -36,9 +36,6 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 		SymbolName:  utils.Deduplicate(name),
 		PackageName: utils.Deduplicate(pkgName),
 	})
-	if ap == nil {
-		return nil
-	}
 
 	pkg.AddSymbol(addr, size, typ, name, ap)
 
