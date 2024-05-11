@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.ref }}-gsa-tests
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   build-ui:
     uses: ./.github/workflows/build-ui.yml
@@ -65,12 +69,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload coverage
+      - name: Upload unit coverage
         uses: codecov/codecov-action@v4.3.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: Zxilly/go-size-analyzer
-          file: coverage.profile
+          use_oidc: true
+          file: unit.profile
+          flags: unit
+
+      - name: Upload integration coverage
+        uses: codecov/codecov-action@v4.3.1
+        with:
+          use_oidc: true
+          file: integration.profile
+          flags: integration
 
       - name: Upload results
         uses: actions/upload-artifact@v4

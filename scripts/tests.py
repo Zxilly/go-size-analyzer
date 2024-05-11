@@ -73,14 +73,31 @@ def merge_covdata():
             "tool",
             "covdata",
             "textfmt",
-            "-i=./covdata/unit,./covdata/integration",
+            "-i=./covdata/unit",
             "-o",
-            "coverage.profile",
+            "unit.profile",
         ],
         check=True,
         cwd=get_project_root(),
         encoding="utf-8",
     )
+    log("Merged unit coverage data.")
+
+    subprocess.run(
+        [
+            "go",
+            "tool",
+            "covdata",
+            "textfmt",
+            "-i=./covdata/integration",
+            "-o",
+            "integration.profile",
+        ],
+        check=True,
+        cwd=get_project_root(),
+        encoding="utf-8",
+    )
+    log("Merged integration coverage data.")
 
     log("Merged coverage data.")
 
