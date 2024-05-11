@@ -3,13 +3,10 @@ package tui
 import (
 	"cmp"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
-	"golang.org/x/term"
-	"os"
 	"slices"
 	"sync"
 )
@@ -119,11 +116,6 @@ func newLeftTable(width int, rows []table.Row) table.Model {
 }
 
 func newMainModel(result *result.Result) mainModel {
-	width, height, err := term.GetSize(int(os.Stdout.Fd()))
-	if err != nil {
-		utils.FatalError(err)
-	}
-
 	baseItems := buildRootItems(result)
 
 	m := mainModel{
@@ -131,12 +123,9 @@ func newMainModel(result *result.Result) mainModel {
 		current:   nil,
 		fileName:  result.Name,
 
-		rightDetail: newDetailModel(width-width/2-1, height-3),
-		leftTable:   newLeftTable(width, baseItems.ToRows()),
+		rightDetail: newDetailModel(0, 0),
+		leftTable:   newLeftTable(0, baseItems.ToRows()),
 		help:        help.New(),
-
-		width:  width,
-		height: height,
 
 		focus: focusedMain,
 
@@ -144,8 +133,6 @@ func newMainModel(result *result.Result) mainModel {
 	}
 
 	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
-
-	m, _ = handleWindowSizeEvent(m, width, height)
 
 	return m
 }
