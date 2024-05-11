@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/stretchr/testify/assert"
 	"sync"
 	"testing"
@@ -21,6 +22,14 @@ func Test_wrapper_Description(t *testing.T) {
 
 func Test_wrapper_Title(t *testing.T) {
 	w := wrapper{}
+	assert.Panics(t, func() {
+		w.Title()
+	})
+
+	w = wrapper{function: &entity.Function{
+		Type: "invalid",
+	}}
+
 	assert.Panics(t, func() {
 		w.Title()
 	})
