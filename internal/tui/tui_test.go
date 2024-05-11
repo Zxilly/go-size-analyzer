@@ -1,0 +1,82 @@
+package tui
+
+import (
+	"bytes"
+	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
+	"path/filepath"
+	"runtime"
+	"testing"
+	"time"
+)
+
+func init() {
+	lipgloss.SetColorProfile(termenv.Ascii)
+}
+
+func GetProjectRoot() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return filepath.Join(filepath.Dir(filename), "..", "..")
+}
+
+func GetTestResult(t *testing.T) *result.Result {
+	t.Helper()
+
+	// test against bin-linux-1.21-amd64
+	path := filepath.Join(GetProjectRoot(), "scripts", "bins", "bin-linux-1.21-amd64")
+	path, err := filepath.Abs(path)
+	if err != nil {
+		t.Fatalf("failed to get absolute path of %s: %v", path, err)
+	}
+
+	r, err := internal.Analyze(path, internal.Options{})
+	if err != nil {
+		t.Fatalf("failed to analyze %s: %v", path, err)
+	}
+	return r
+}
+
+func TestFullOutput(t *testing.T) {
+	m := newMainModel(GetTestResult(t))
+	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(300, 100))
+
+	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
+		return bytes.Contains(bts, []byte("runtime"))
+	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
+
+	tm.Send(tea.MouseMsg{
+		Action: tea.MouseActionPress,
+		Button: tea.MouseButtonWheelDown,
+	})
+
+	tm.Send(tea.MouseMsg{
+		Action: tea.MouseActionPress,
+		Button: tea.MouseButtonWheelUp,
+	})
+
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyEnter,
+	})
+
+	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
+		return bytes.Contains(bts, []byte("proc.go"))
+	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
+
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyBackspace,
+	})
+
+	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
+		return bytes.Contains(bts, []byte(".gopclntab"))
+	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
+
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyCtrlC,
+	})
+
+	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*1))
+}
