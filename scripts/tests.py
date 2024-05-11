@@ -177,13 +177,13 @@ if __name__ == "__main__":
 
     init_dirs()
 
-    run_unit_tests()
-
     log("Fetching remote binaries...")
 
     tests = load_remote_binaries()
 
     run_integration_tests(tests)
+
+    run_unit_tests()
 
     merge_covdata()
 
