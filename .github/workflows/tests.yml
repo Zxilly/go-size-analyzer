@@ -6,10 +6,6 @@ on:
       - master
   pull_request:
 
-concurrency:
-  group: ${{ github.ref }}-gsa-tests
-  cancel-in-progress: true
-
 permissions:
   contents: write
   id-token: write
