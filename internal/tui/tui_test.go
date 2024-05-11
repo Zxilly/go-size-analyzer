@@ -81,6 +81,12 @@ func TestFullOutput(t *testing.T) {
 		Type: tea.KeyEnter,
 	})
 
+	// resize window
+	tm.Send(tea.WindowSizeMsg{
+		Width:  200,
+		Height: 100,
+	})
+
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte("proc.go"))
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
