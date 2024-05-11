@@ -41,7 +41,7 @@ var Options struct {
 func init() {
 	kong.Parse(&Options,
 		kong.Name("gsa"),
-		kong.Description("A tool for analysing the size of dependencies in compiled Golang binaries, "+
+		kong.Description("A tool for analyzing the size of dependencies in compiled Golang binaries, "+
 			"providing insight into their impact on the final build."),
 		kong.UsageOnError(),
 		kong.ConfigureHelp(kong.HelpOptions{

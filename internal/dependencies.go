@@ -9,7 +9,7 @@ import (
 	"runtime/debug"
 )
 
-// Dependencies a pres-udo package for the whole binary
+// Dependencies a pseudo package for the whole binary
 type Dependencies struct {
 	k *KnownInfo
 

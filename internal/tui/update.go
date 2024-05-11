@@ -64,7 +64,7 @@ func handleKeyEvent(m mainModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func tabelHandleMouseEvent(t table.Model, msg tea.MouseMsg) (table.Model, tea.Cmd) {
+func tableHandleMouseEvent(t table.Model, msg tea.MouseMsg) (table.Model, tea.Cmd) {
 	switch msg.Button {
 	case tea.MouseButtonWheelUp:
 		t.MoveUp(3)
@@ -86,7 +86,7 @@ func handleMouseEvent(m mainModel, msg tea.MouseMsg) (mainModel, tea.Cmd) {
 
 	switch m.focus {
 	case focusedMain:
-		m.leftTable, cmd = tabelHandleMouseEvent(m.leftTable, msg)
+		m.leftTable, cmd = tableHandleMouseEvent(m.leftTable, msg)
 		m = m.updateDetail()
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
