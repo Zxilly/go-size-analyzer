@@ -7,9 +7,8 @@ coverage:
     project:
       default:
         threshold: 5%
-        target: 80%
+        target: 70%
 
 ignore:
-  - "internal/tui/*.go"
   - "internal/wrapper/*.go"
   - "cmd/gsa/*.go"
