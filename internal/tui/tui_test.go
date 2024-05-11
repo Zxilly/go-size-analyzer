@@ -48,6 +48,7 @@ func TestFullOutput(t *testing.T) {
 		return bytes.Contains(bts, []byte("runtime"))
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
+	// test scroll
 	tm.Send(tea.MouseMsg{
 		Action: tea.MouseActionPress,
 		Button: tea.MouseButtonWheelDown,
@@ -56,6 +57,24 @@ func TestFullOutput(t *testing.T) {
 	tm.Send(tea.MouseMsg{
 		Action: tea.MouseActionPress,
 		Button: tea.MouseButtonWheelUp,
+	})
+
+	// test detail
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyTab,
+	})
+
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyDown,
+	})
+	tm.Send(tea.MouseMsg{
+		Action: tea.MouseActionPress,
+		Button: tea.MouseButtonWheelUp,
+	})
+
+	// switch back
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyTab,
 	})
 
 	tm.Send(tea.KeyMsg{
