@@ -88,9 +88,9 @@ func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 		GoVersion: ver,
 	}
 
-	pn := sym.PackageName()
+	packageName := sym.PackageName()
 
-	return utils.UglyGuess(pn)
+	return utils.UglyGuess(packageName)
 }
 
 func (k *KnownInfo) LoadPackages() error {
