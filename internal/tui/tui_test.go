@@ -66,6 +66,35 @@ func TestFullOutput(t *testing.T) {
 		return bytes.Contains(bts, []byte("proc.go"))
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
 
+	// enter proc.go
+	for range 4 {
+		tm.Send(tea.KeyMsg{
+			Type: tea.KeyDown,
+		})
+	}
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyEnter,
+	})
+
+	// list all
+	for range 20 {
+		tm.Send(tea.KeyMsg{
+			Type: tea.KeyDown,
+		})
+	}
+
+	// back to runtime
+	tm.Send(tea.KeyMsg{
+		Type: tea.KeyBackspace,
+	})
+
+	for range 20 {
+		tm.Send(tea.KeyMsg{
+			Type: tea.KeyDown,
+		})
+	}
+
+	// back to root
 	tm.Send(tea.KeyMsg{
 		Type: tea.KeyBackspace,
 	})
