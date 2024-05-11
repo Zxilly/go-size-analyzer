@@ -2,11 +2,12 @@ package gsv
 
 import (
 	"fmt"
-	"github.com/dustin/go-humanize"
 	"runtime"
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"github.com/dustin/go-humanize"
 )
 
 const (

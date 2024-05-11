@@ -1,9 +1,10 @@
 package printer
 
 import (
+	"strings"
+
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
-	"strings"
 )
 
 const ReplacedStr = `"GSA_PACKAGE_DATA"`

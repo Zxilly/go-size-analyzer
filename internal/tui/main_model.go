@@ -2,13 +2,15 @@ package tui
 
 import (
 	"cmp"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"slices"
+	"sync"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
-	"slices"
-	"sync"
+
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 var _ tea.Model = (*mainModel)(nil)

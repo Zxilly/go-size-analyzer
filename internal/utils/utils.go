@@ -3,12 +3,13 @@ package utils
 import (
 	"debug/pe"
 	"fmt"
-	"go4.org/intern"
-	"golang.org/x/net/publicsuffix"
 	"log/slog"
 	"os"
 	"strconv"
 	"strings"
+
+	"go4.org/intern"
+	"golang.org/x/net/publicsuffix"
 )
 
 func GetFileSize(file *os.File) uint64 {

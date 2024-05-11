@@ -3,8 +3,9 @@ package entity_test
 import (
 	"testing"
 
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 func TestSymbolStringRepresentation(t *testing.T) {

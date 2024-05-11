@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 func TestAddrPosString(t *testing.T) {

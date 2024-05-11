@@ -5,6 +5,7 @@ import (
 	"debug/macho"
 	"debug/pe"
 	"errors"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 

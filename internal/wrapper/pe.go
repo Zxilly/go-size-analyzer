@@ -3,10 +3,11 @@ package wrapper
 import (
 	"debug/pe"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"slices"
 	"strings"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 type PeWrapper struct {

@@ -1,9 +1,11 @@
 package utils_test
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func TestSortedKeysReturnsSortedKeysForIntegerMap(t *testing.T) {

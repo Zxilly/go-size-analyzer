@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"log/slog"
 	"strings"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrType) error {

@@ -1,10 +1,12 @@
 package tui
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/stretchr/testify/assert"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 func Test_newWrapper(t *testing.T) {

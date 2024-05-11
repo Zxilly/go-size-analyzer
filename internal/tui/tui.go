@@ -2,9 +2,11 @@ package tui
 
 import (
 	"fmt"
+
+	tea "github.com/charmbracelet/bubbletea"
+
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 func RunTUI(r *result.Result) {

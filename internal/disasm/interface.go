@@ -2,9 +2,10 @@ package disasm
 
 import (
 	"fmt"
+	"unicode/utf8"
+
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"unicode/utf8"
 )
 
 type PossibleStr struct {

@@ -3,15 +3,17 @@ package tui
 import (
 	"cmp"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/dustin/go-humanize"
-	"github.com/samber/lo"
 	"path/filepath"
 	"slices"
 	"strings"
 	"sync"
+
+	"github.com/charmbracelet/bubbles/table"
+	"github.com/dustin/go-humanize"
+	"github.com/samber/lo"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 type wrappers []wrapper
