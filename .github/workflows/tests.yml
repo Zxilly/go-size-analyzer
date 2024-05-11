@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
   id-token: write
+  # Optional: allow read access to pull request. Used with golangci-lint `only-new-issues` option.
+  pull-requests: read
+  # Optional: allow write access to checks to allow the action to annotate code in the PR. Used with golangci-lint
+  checks: write
 
 jobs:
   build-ui:
@@ -49,7 +53,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ui
-  
+
       - name: Move UI file
         run: mv index.html internal/webui/index.html
 
@@ -64,6 +68,12 @@ jobs:
         run: python scripts/tests.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          only-new-issues: true # this should be removed at some point, but there are too many issues to address
+          version: latest
 
       - name: Upload unit coverage
         uses: codecov/codecov-action@v4.3.1
