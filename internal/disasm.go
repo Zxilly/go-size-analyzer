@@ -2,11 +2,13 @@ package internal
 
 import (
 	"errors"
-	"github.com/Zxilly/go-size-analyzer/internal/disasm"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"log/slog"
+
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
-	"log/slog"
+
+	"github.com/Zxilly/go-size-analyzer/internal/disasm"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 func (k *KnownInfo) Disasm() error {

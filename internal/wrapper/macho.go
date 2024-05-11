@@ -3,9 +3,10 @@ package wrapper
 import (
 	"debug/macho"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"slices"
 	"strings"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 type MachoWrapper struct {

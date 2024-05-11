@@ -1,8 +1,9 @@
 package main
 
 import (
-	gsv "github.com/Zxilly/go-size-analyzer"
 	"github.com/alecthomas/kong"
+
+	gsv "github.com/Zxilly/go-size-analyzer"
 )
 
 var Options struct {

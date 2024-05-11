@@ -2,10 +2,11 @@ package printer
 
 import (
 	"encoding/json"
+	"strings"
+
 	"github.com/Zxilly/go-size-analyzer/internal/global"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"strings"
 )
 
 type JsonOption struct {

@@ -2,14 +2,16 @@ package internal
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"github.com/ZxillyFork/gore"
-	"github.com/ZxillyFork/gosym"
 	"log/slog"
 	"math"
 	"runtime/debug"
+
+	"github.com/ZxillyFork/gore"
+	"github.com/ZxillyFork/gosym"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
 type KnownInfo struct {

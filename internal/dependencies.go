@@ -1,12 +1,14 @@
 package internal
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"runtime/debug"
+
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
 	"github.com/ZxillyFork/trie"
-	"runtime/debug"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 // Dependencies a pres-udo package for the whole binary

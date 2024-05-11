@@ -4,8 +4,9 @@ import (
 	"debug/elf"
 	"errors"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"strings"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 type ElfWrapper struct {

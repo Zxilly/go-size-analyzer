@@ -2,12 +2,14 @@ package entity
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"runtime/debug"
+
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
-	"runtime/debug"
+
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 type PackageMap map[string]*Package

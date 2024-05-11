@@ -3,14 +3,16 @@ package printer
 import (
 	"cmp"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"path/filepath"
+	"slices"
+
 	"github.com/dustin/go-humanize"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/samber/lo"
 	"golang.org/x/exp/maps"
-	"path/filepath"
-	"slices"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 func percentString(f float64) string {

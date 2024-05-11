@@ -2,9 +2,11 @@ package disasm
 
 import (
 	"errors"
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 type TestFileWrapper struct {

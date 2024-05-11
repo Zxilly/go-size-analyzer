@@ -1,12 +1,14 @@
 package webui_test
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/printer"
-	"github.com/Zxilly/go-size-analyzer/internal/webui"
-	"github.com/stretchr/testify/assert"
-	"golang.org/x/net/html"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"golang.org/x/net/html"
+
+	"github.com/Zxilly/go-size-analyzer/internal/printer"
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
 func TestGetTemplate(t *testing.T) {

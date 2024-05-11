@@ -1,9 +1,10 @@
 package internal
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"reflect"
 	"testing"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
 func TestSectionMap_AssertSize(t *testing.T) {

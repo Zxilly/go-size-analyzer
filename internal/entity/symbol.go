@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 

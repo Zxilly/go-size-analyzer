@@ -1,12 +1,14 @@
 package printer
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"github.com/nikolaydubina/treemap"
-	"github.com/nikolaydubina/treemap/render"
 	"image/color"
 	"path/filepath"
+
+	"github.com/nikolaydubina/treemap"
+	"github.com/nikolaydubina/treemap/render"
+
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 type SvgOption struct {

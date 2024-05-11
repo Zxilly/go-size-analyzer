@@ -1,10 +1,12 @@
 package entity_test
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/global"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestFile_MarshalJSON(t *testing.T) {

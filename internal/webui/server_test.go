@@ -1,12 +1,13 @@
 package webui_test
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"net/http"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
 func TestHostServer(t *testing.T) {

@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/tui"
-	"github.com/Zxilly/go-size-analyzer/internal/webui"
 	"log/slog"
 	"os"
 
+	"github.com/pkg/browser"
+
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
+	"github.com/Zxilly/go-size-analyzer/internal/tui"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/pkg/browser"
+	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
 func main() {

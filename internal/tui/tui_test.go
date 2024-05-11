@@ -2,16 +2,18 @@ package tui
 
 import (
 	"bytes"
-	"github.com/Zxilly/go-size-analyzer/internal"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/x/exp/teatest"
-	"github.com/muesli/termenv"
 	"path/filepath"
 	"runtime"
 	"testing"
 	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
+
+	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 func init() {

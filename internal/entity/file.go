@@ -2,6 +2,7 @@ package entity
 
 import (
 	"encoding/json"
+
 	"github.com/Zxilly/go-size-analyzer/internal/global"
 )
 

@@ -4,11 +4,12 @@ package webui
 
 import (
 	"fmt"
-	gsv "github.com/Zxilly/go-size-analyzer"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"io"
 	"log/slog"
 	"net/http"
+
+	gsv "github.com/Zxilly/go-size-analyzer"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 var BaseUrl = fmt.Sprintf("https://github.com/Zxilly/go-size-analyzer/releases/download/ui-v%d/index.html", gsv.GetStaticVersion())
