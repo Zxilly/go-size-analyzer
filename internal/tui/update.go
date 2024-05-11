@@ -2,31 +2,50 @@ package tui
 
 import (
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
-// todo: store the parent cursor to recover the cursor position when going back
-func updateCurrent(m *mainModel, wrapper *wrapper) {
-	m.current = wrapper
-	m.leftTable.SetCursor(0)
-	m.leftTable.SetRows(m.currentList().ToRows())
-	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
+func (m mainModel) pushParent(cursor table.Model) mainModel {
+	m.parents = append(m.parents, cursor)
+	return m
 }
 
-func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (m mainModel) popParent() (mainModel, table.Model) {
+	old := m.parents[len(m.parents)-1]
+	m.parents = m.parents[:len(m.parents)-1]
+	return m, old
+}
+
+func (m mainModel) updateDetail() mainModel {
+	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
+	return m
+}
+
+func handleKeyEvent(m mainModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch {
 	case key.Matches(msg, DefaultKeyMap.Switch):
 		m.focus = m.nextFocus()
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Backward):
 		if m.current != nil && m.focus == focusedMain {
-			updateCurrent(&m, m.current.parent)
+			m.current = m.current.parent
+
+			var parent table.Model
+			m, parent = m.popParent()
+			m.leftTable = parent
+			m = m.updateDetail()
+			m, _ = handleWindowSizeEvent(m, m.width, m.height)
 		}
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Enter):
 		if m.currentSelection().hasChildren() && m.focus == focusedMain {
-			updateCurrent(&m, m.currentSelection())
+			m = m.pushParent(m.leftTable)
+			m.current = m.currentSelection()
+			m.leftTable = newLeftTable(m.width, m.current.children().ToRows())
+			m = m.updateDetail()
+			m, _ = handleWindowSizeEvent(m, m.width, m.height)
 		}
 	case key.Matches(msg, DefaultKeyMap.Exit):
 		return m, tea.Quit
@@ -37,7 +56,7 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch m.focus {
 	case focusedMain:
 		m.leftTable, cmd = m.leftTable.Update(msg)
-		m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
+		m = m.updateDetail()
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
 	}
@@ -45,7 +64,38 @@ func (m mainModel) handleKeyEvent(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m mainModel) handleWindowSizeEvent(width, height int) (mainModel, tea.Cmd) {
+func tabelHandleMouseEvent(t table.Model, msg tea.MouseMsg) (table.Model, tea.Cmd) {
+	switch msg.Button {
+	case tea.MouseButtonWheelUp:
+		t.MoveUp(3)
+	case tea.MouseButtonWheelDown:
+		t.MoveDown(3)
+	default:
+		return t, nil
+	}
+
+	return t, nil
+}
+
+func handleMouseEvent(m mainModel, msg tea.MouseMsg) (mainModel, tea.Cmd) {
+	if msg.Action != tea.MouseActionPress {
+		return m, nil
+	}
+
+	var cmd tea.Cmd = nil
+
+	switch m.focus {
+	case focusedMain:
+		m.leftTable, cmd = tabelHandleMouseEvent(m.leftTable, msg)
+		m = m.updateDetail()
+	case focusedDetail:
+		m.rightDetail, cmd = m.rightDetail.Update(msg)
+	}
+
+	return m, cmd
+}
+
+func handleWindowSizeEvent(m mainModel, width, height int) (mainModel, tea.Cmd) {
 	m.width = width
 	m.height = height
 
@@ -71,9 +121,11 @@ func (m mainModel) handleWindowSizeEvent(width, height int) (mainModel, tea.Cmd)
 func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		return m.handleWindowSizeEvent(msg.Width, msg.Height)
+		return handleWindowSizeEvent(m, msg.Width, msg.Height)
 	case tea.KeyMsg:
-		return m.handleKeyEvent(msg)
+		return handleKeyEvent(m, msg)
+	case tea.MouseMsg:
+		return handleMouseEvent(m, msg)
 	}
 	return m, nil
 }

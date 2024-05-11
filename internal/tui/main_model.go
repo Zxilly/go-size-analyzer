@@ -31,6 +31,8 @@ type mainModel struct {
 	help        help.Model
 
 	focus focusState
+
+	parents []table.Model
 }
 
 func (m mainModel) currentSelection() *wrapper {
@@ -108,6 +110,14 @@ func buildRootItems(result *result.Result) wrappers {
 	return rootCache
 }
 
+func newLeftTable(width int, rows []table.Row) table.Model {
+	return table.New(
+		table.WithColumns(getTableColumns(width)),
+		table.WithRows(rows),
+		table.WithFocused(true),
+	)
+}
+
 func newMainModel(result *result.Result) mainModel {
 	width, height, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
@@ -122,22 +132,20 @@ func newMainModel(result *result.Result) mainModel {
 		fileName:  result.Name,
 
 		rightDetail: newDetailModel(width-width/2-1, height-3),
-		leftTable: table.New(
-			table.WithColumns(getTableColumns(width)),
-			table.WithRows(baseItems.ToRows()),
-			table.WithFocused(true),
-		),
-		help: help.New(),
+		leftTable:   newLeftTable(width, baseItems.ToRows()),
+		help:        help.New(),
 
 		width:  width,
 		height: height,
 
 		focus: focusedMain,
+
+		parents: make([]table.Model, 0),
 	}
 
 	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
 
-	m, _ = m.handleWindowSizeEvent(width, height)
+	m, _ = handleWindowSizeEvent(m, width, height)
 
 	return m
 }
