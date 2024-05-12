@@ -55,21 +55,20 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 		}
 
 		typ := entity.AddrTypeUnknown
-		if int(s.Sect) <= len(m.file.Sections) {
-			sect := m.file.Sections[s.Sect-1]
-
-			switch sect.Seg {
-			case "__DATA_CONST", "__DATA":
-				typ = entity.AddrTypeData
-			case "__TEXT":
-				typ = entity.AddrTypeText
-			}
-
-			if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
-				continue // bss section, skip
-			}
-		} else {
+		if int(s.Sect) > len(m.file.Sections) {
 			continue // broken index
+		}
+		sect := m.file.Sections[s.Sect-1]
+
+		switch sect.Seg {
+		case "__DATA_CONST", "__DATA":
+			typ = entity.AddrTypeData
+		case "__TEXT":
+			typ = entity.AddrTypeText
+		}
+
+		if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
+			continue // bss section, skip
 		}
 
 		err := marker(s.Name, s.Value, size, typ)

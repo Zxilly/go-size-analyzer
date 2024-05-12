@@ -8,7 +8,7 @@ import (
 
 const defaultURL = "http://localhost:8080"
 
-func GetUrlFromListen(listen string) string {
+func GetURLFromListen(listen string) string {
 	addr, err := net.ResolveTCPAddr("tcp", listen)
 	if err != nil {
 		slog.Warn(fmt.Sprintf("Error resolving listen address: %v", err))

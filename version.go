@@ -16,13 +16,9 @@ const (
 )
 
 const (
-	// when update this, also update the version string in workflow
-	staticVersion = 1
+	// StaticVersion when update this, also update the version string in workflow
+	StaticVersion = "1"
 )
-
-func GetStaticVersion() int {
-	return staticVersion
-}
 
 var (
 	version    = unknownVersion

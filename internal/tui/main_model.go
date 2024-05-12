@@ -91,13 +91,13 @@ var (
 	rootCacheOnce = &sync.Once{}
 )
 
-func buildRootItems(result *result.Result) wrappers {
+func buildRootItems(r *result.Result) wrappers {
 	rootCacheOnce.Do(func() {
 		ret := make([]wrapper, 0)
-		for _, p := range result.Packages {
+		for _, p := range r.Packages {
 			ret = append(ret, newWrapper(p))
 		}
-		for _, s := range result.Sections {
+		for _, s := range r.Sections {
 			ret = append(ret, newWrapper(s))
 		}
 
@@ -119,13 +119,13 @@ func newLeftTable(width int, rows []table.Row) table.Model {
 	)
 }
 
-func newMainModel(result *result.Result) mainModel {
-	baseItems := buildRootItems(result)
+func newMainModel(r *result.Result) mainModel {
+	baseItems := buildRootItems(r)
 
 	m := mainModel{
 		baseItems: baseItems,
 		current:   nil,
-		fileName:  result.Name,
+		fileName:  r.Name,
 
 		rightDetail: newDetailModel(0, 0),
 		leftTable:   newLeftTable(0, baseItems.ToRows()),

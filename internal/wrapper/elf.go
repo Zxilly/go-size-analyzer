@@ -53,7 +53,7 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 			continue
 		}
 		sect := e.file.Sections[i]
-		typ := entity.AddrTypeUnknown
+		var typ entity.AddrType
 		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
 		case elf.SHF_ALLOC | elf.SHF_EXECINSTR:
 			typ = entity.AddrTypeText

@@ -3,7 +3,6 @@
 package webui
 
 import (
-	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -12,7 +11,9 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-var BaseURL = fmt.Sprintf("https://github.com/Zxilly/go-size-analyzer/releases/download/ui-v%d/index.html", gsv.GetStaticVersion())
+const BaseURL = "https://github.com/Zxilly/go-size-analyzer/releases/download/ui-v" +
+	gsv.StaticVersion +
+	"/index.html"
 
 func GetTemplate() string {
 	slog.Info("Downloading template")

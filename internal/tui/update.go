@@ -82,7 +82,7 @@ func handleMouseEvent(m mainModel, msg tea.MouseMsg) (mainModel, tea.Cmd) {
 		return m, nil
 	}
 
-	var cmd tea.Cmd = nil
+	var cmd tea.Cmd
 
 	switch m.focus {
 	case focusedMain:

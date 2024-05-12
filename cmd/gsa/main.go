@@ -71,7 +71,7 @@ func main() {
 	if Options.Web {
 		webui.HostServer(b, Options.Listen)
 
-		url := utils.GetUrlFromListen(Options.Listen)
+		url := utils.GetURLFromListen(Options.Listen)
 
 		fmt.Println("Server started at", url)
 
