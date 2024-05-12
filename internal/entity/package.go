@@ -142,9 +142,7 @@ func (p *Package) Merge(rp *Package) {
 		panic(fmt.Errorf("package name not match %s %s", p.Name, rp.Name))
 	}
 
-	for _, f := range rp.Files {
-		p.Files = append(p.Files, f)
-	}
+	p.Files = append(p.Files, rp.Files...)
 	// prevent duplicate files
 	p.fileEnsureUnique()
 

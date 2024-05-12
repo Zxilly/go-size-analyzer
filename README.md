@@ -159,7 +159,7 @@ Terminal interface options
 ## TODO
 
 - [ ] Add more pattern for disassembling the binary
-- [ ] Extract the information from the dwarf section
+- [ ] Extract the information from the DWARF section
 - [x] Count the symbol size itself to package
 - [ ] Add other charts like flame graph, pie chart, etc.
 - [ ] Support C++/Rust symbol demangling in cgo

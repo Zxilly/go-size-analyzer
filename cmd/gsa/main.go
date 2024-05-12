@@ -87,7 +87,7 @@ func main() {
 	}
 
 	if Options.Output != "" {
-		err := os.WriteFile(Options.Output, b, 0644)
+		err := os.WriteFile(Options.Output, b, os.ModePerm)
 		if err != nil {
 			utils.FatalError(err)
 		}

@@ -26,9 +26,9 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 	imageBase := utils.GetImageBase(p.file)
 
 	const (
-		NUndef = 0
-		NAbs   = -1
-		NDebug = -2
+		nUndef = 0
+		nAbs   = -1
+		nDebug = -2
 	)
 
 	type sym struct {
@@ -40,7 +40,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 
 	peSyms := make([]*pe.Symbol, 0)
 	for _, s := range p.file.Symbols {
-		if s.SectionNumber == NDebug || s.SectionNumber == NAbs || s.SectionNumber == NUndef {
+		if s.SectionNumber == nDebug || s.SectionNumber == nAbs || s.SectionNumber == nUndef {
 			continue // not addr, skip
 		}
 		if s.SectionNumber < 0 || len(p.file.Sections) < int(s.SectionNumber) {
@@ -66,7 +66,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 
 		a := uint64(s.Value) + imageBase + uint64(sect.VirtualAddress)
 
-		typ := entity.AddrTypeUnknown
+		var typ entity.AddrType
 		switch {
 		case ch&text != 0:
 			typ = entity.AddrTypeText
@@ -156,7 +156,7 @@ func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
 	}
 	textStart = imageBase + uint64(sect.VirtualAddress)
 	text, err = sect.Data()
-	return
+	return textStart, text, err
 }
 
 func (p *PeWrapper) GoArch() string {

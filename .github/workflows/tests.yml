@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   build-ui:
+    name: Build UI
     uses: ./.github/workflows/build-ui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -9,7 +9,7 @@ type AddrSpace map[uint64]*Addr
 
 func (a AddrSpace) Get(addr uint64) (ret *Addr, ok bool) {
 	ret, ok = a[addr]
-	return
+	return ret, ok
 }
 
 func (a AddrSpace) Insert(addr *Addr) {
@@ -36,7 +36,7 @@ func MergeAddrSpace(others ...AddrSpace) AddrSpace {
 
 // ToDirtyCoverage get the coverage of the current address space
 func (a AddrSpace) ToDirtyCoverage() AddrCoverage {
-	return lo.MapToSlice(a, func(k uint64, v *Addr) *CoveragePart {
+	return lo.MapToSlice(a, func(_ uint64, v *Addr) *CoveragePart {
 		return &CoveragePart{
 			Pos:   v.AddrPos,
 			Addrs: []*Addr{v},

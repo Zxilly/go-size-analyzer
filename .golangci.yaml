@@ -22,9 +22,6 @@ linters:
     # Drop-in replacement of golint.
     - revive
 
-    # Finds sending http request without context.Context
-    - noctx
-
     # make sure to use t.Helper() when needed
     - thelper
 
@@ -53,7 +50,7 @@ linters:
     - contextcheck
 
 linters-settings:
-  loggercheck:  # invalid key values count
+  loggercheck:
     require-string-key: true
     # Require printf-like format specifier (%s, %d for example) not present.
     # Default: false
@@ -89,27 +86,6 @@ linters-settings:
   revive:
     enable-all-rules: true
     rules:
-      # we must provide configuration for linter that requires them
-      # enable-all-rules is OK, but many revive linters expect configuration
-      # and cannot work without them
-
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#cognitive-complexity
-      - name: cognitive-complexity
-        severity: warning
-        arguments: [7]
-        disabled: true # it would require a big refactoring, disabled for now
-
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#context-as-argument
-      - name: context-as-argument
-        arguments:
-          - allowTypesBefore: "*testing.T"
-
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#cyclomatic
-      - name: cyclomatic
-        arguments: [3]
-        disabled: true # it would require a big refactoring, disabled for now
-
-
       # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#exported
       - name: exported
         arguments:
@@ -118,8 +94,6 @@ linters-settings:
           # make error messages clearer
           - "sayRepetitiveInsteadOfStutters"
 
-      # this linter completes errcheck linter, it will report method called without handling the error
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#unhandled-error
       - name: unhandled-error
         arguments: # here are the exceptions we don't want to be reported
           - "fmt.Print.*"
@@ -130,33 +104,25 @@ linters-settings:
           - "strings.Builder.WriteString"
           - "strings.Builder.WriteRune"
 
-      # boolean parameters that create a control coupling could be useful
-      # but this one is way too noisy
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#flag-parameter
-      - name: flag-parameter
-        disabled: true
+      - name: cognitive-complexity
+        severity: warning
+        arguments: [ 30 ]
 
-      # depguard linter is easier to configure and more powerful
-      # than revive.imports-blocklist
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#imports-blocklist
-      - name: imports-blocklist
-        disabled: true
+      - name: cyclomatic
+        arguments: [ 20 ]
 
-      # it's not really a problem for us in term of readability
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#nested-structs
-      - name: nested-structs
+      - name: struct-tag
         disabled: true
-
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#add-constant
-      # too noisy
       - name: add-constant
         disabled: true
-
-      # too many false positive on jqp code
+      - name: flag-parameter
+        disabled: true
+      - name: imports-blocklist
+        disabled: true
+      - name: nested-structs
+        disabled: true
       - name: modifies-value-receiver
         disabled: true
-
-      # disable everything we don't want
       - name: line-length-limit
         disabled: true
       - name: argument-limit

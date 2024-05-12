@@ -156,7 +156,7 @@ Terminal interface options
 ## TODO
 
 - [ ] 添加更多用于反汇编二进制文件的模式
-- [ ] 从 dwarf 段提取信息
+- [ ] 从 DWARF 段提取信息
 - [x] 计算符号本身的大小到包中
 - [ ] 添加其他图表，如火焰图、饼图等
 - [ ] 支持 demangle cgo 中的 C++/Rust 符号

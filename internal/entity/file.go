@@ -40,13 +40,13 @@ func (f *File) MarshalJSON() ([]byte, error) {
 			Size:     f.FullSize(),
 			PclnSize: f.PclnSize(),
 		})
-	} else {
-		return json.Marshal(struct {
-			FilePath  string      `json:"file_path"`
-			Functions []*Function `json:"functions"`
-		}{
-			FilePath:  f.FilePath,
-			Functions: f.Functions,
-		})
 	}
+
+	return json.Marshal(struct {
+		FilePath  string      `json:"file_path"`
+		Functions []*Function `json:"functions"`
+	}{
+		FilePath:  f.FilePath,
+		Functions: f.Functions,
+	})
 }

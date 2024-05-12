@@ -1,6 +1,7 @@
 package webui_test
 
 import (
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -16,7 +17,9 @@ func TestHostServer(t *testing.T) {
 	listen := "127.0.0.1:8080"
 
 	l := webui.HostServer(content, listen)
-	defer l.Close()
+	defer func(l io.Closer) {
+		_ = l.Close()
+	}(l)
 	assert.NotNil(t, l)
 
 	// wait for the server to start
