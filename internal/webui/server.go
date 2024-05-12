@@ -8,7 +8,7 @@ import (
 func HostServer(content []byte, listen string) io.Closer {
 	server := &http.Server{
 		Addr: listen,
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			w.Header().Set("Content-Type", "text/html")
 			w.Header().Set("Server", "go-size-analyzer")
 			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")

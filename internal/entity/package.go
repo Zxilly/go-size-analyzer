@@ -151,12 +151,11 @@ func (p *Package) Merge(rp *Package) {
 	for k, v := range rp.SubPackages {
 		p.SubPackages[k] = v
 	}
-
 }
 
 func (p *Package) GetFunctions() []*Function {
 	funcs := lo.Reduce(p.Files,
-		func(agg []*Function, item *File, index int) []*Function {
+		func(agg []*Function, item *File, _ int) []*Function {
 			return append(agg, item.Functions...)
 		}, make([]*Function, 0))
 

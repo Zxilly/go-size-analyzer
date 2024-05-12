@@ -13,6 +13,6 @@ func RunTUI(r *result.Result) {
 	model := newMainModel(r)
 	_, err := tea.NewProgram(model, tea.WithAltScreen(), tea.WithMouseCellMotion()).Run()
 	if err != nil {
-		utils.FatalError(fmt.Errorf("TUI error: %v", err))
+		utils.FatalError(fmt.Errorf("TUI error: %w", err))
 	}
 }

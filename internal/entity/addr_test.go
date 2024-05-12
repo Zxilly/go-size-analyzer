@@ -6,6 +6,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
@@ -84,7 +85,7 @@ func TestMergeCoverage(t *testing.T) {
 	}
 
 	result, err := entity.MergeAndCleanCoverage([]entity.AddrCoverage{cov1, cov2})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	// reset result Addrs
 	lo.ForEach(result, func(part *entity.CoveragePart, _ int) {
