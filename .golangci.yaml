@@ -1,12 +1,8 @@
 ---
 # Options for analysis running.
 run:
-  # Timeout for analysis, e.g. 30s, 5m.
-  # Default: 1m
   timeout: 5m
 
-  # Include test files or not.
-  # Default: true
   tests: true
 
 issues:
@@ -77,26 +73,7 @@ linters:
     # Check whether the function uses a non-inherited context.
     - contextcheck
 
-    # We already identified we don't want these ones
-    # - gochecknoinit
-    # - goerr113          # errorlint is better
-    # - testpackage
-
 linters-settings:
-  # configure the golang imports we don't want
-  depguard:
-    rules:
-      # Name of a rule.
-      main:
-        # Packages that are not allowed where the value is a suggestion.
-        deny:
-          - pkg: "github.com/pkg/errors"
-            desc: Should be replaced by standard lib errors package
-
-          - pkg: "golang.org/x/net/context"
-            desc: Should be replaced by standard lib context package
-
-
   loggercheck:  # invalid key values count
     require-string-key: true
     # Require printf-like format specifier (%s, %d for example) not present.
