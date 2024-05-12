@@ -10,7 +10,7 @@ import (
 
 func InitLogger(level slog.Level) {
 	slog.SetDefault(slog.New(slog.NewTextHandler(Stdout, &slog.HandlerOptions{
-		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+		ReplaceAttr: func(_ []string, a slog.Attr) slog.Attr {
 			// remove time
 			if a.Key == "time" {
 				return slog.Attr{}

@@ -98,25 +98,28 @@ var x86Patterns = []x86Pattern{
 		//	main.go:79            0x4806c1                e83a2cfbff              CALL runtime.printstring(SB)
 		//	main.go:79            0x4806c6                e8f525fbff              CALL runtime.printnl(SB)
 		//	main.go:79            0x4806cb                e81024fbff              CALL runtime.printunlock(SB)
-		matchFunc: func(insts []x86PosInst) *PossibleStr {
-			//first := insts[0]
-			//firstInst := first.inst
-			//if firstInst.Op != x86asm.MOV {
-			//	return nil
-			//}
-			//if x86CountNotNilArgs(firstInst.Args) != 2 {
-			//	return nil
-			//}
-			//
-			//second := insts[1]
-			//secondInst := second.inst
-			//if secondInst.Op != x86asm.MOV {
-			//	return nil
-			//}
-			//if x86CountNotNilArgs(secondInst.Args) != 2 {
-			//	return nil
-			//}
+		// matchFunc: func(insts []x86PosInst) *PossibleStr {
+		// 	first := insts[0]
+		// 	firstInst := first.inst
+		// 	if firstInst.Op != x86asm.MOV {
+		// 		return nil
+		// 	}
+		// 	if x86CountNotNilArgs(firstInst.Args) != 2 {
+		// 		return nil
+		// 	}
 
+		// 	second := insts[1]
+		// 	secondInst := second.inst
+		// 	if secondInst.Op != x86asm.MOV {
+		// 		return nil
+		// 	}
+		// 	if x86CountNotNilArgs(secondInst.Args) != 2 {
+		// 		return nil
+		// 	}
+
+		// 	return nil
+		// },
+		matchFunc: func(_ []x86PosInst) *PossibleStr {
 			return nil
 		},
 	},

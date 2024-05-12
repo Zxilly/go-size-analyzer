@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/net/html"
 
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
@@ -19,5 +20,5 @@ func TestGetTemplate(t *testing.T) {
 
 	// Should html
 	_, err := html.Parse(strings.NewReader(got))
-	assert.NoError(t, err)
+	require.NoError(t, err)
 }

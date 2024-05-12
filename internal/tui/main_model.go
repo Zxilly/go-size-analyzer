@@ -86,8 +86,10 @@ func (m mainModel) nextFocus() focusState {
 	}
 }
 
-var rootCache wrappers
-var rootCacheOnce = &sync.Once{}
+var (
+	rootCache     wrappers
+	rootCacheOnce = &sync.Once{}
+)
 
 func buildRootItems(result *result.Result) wrappers {
 	rootCacheOnce.Do(func() {
@@ -139,7 +141,7 @@ func newMainModel(result *result.Result) mainModel {
 	return m
 }
 
-func (m mainModel) Init() tea.Cmd {
+func (mainModel) Init() tea.Cmd {
 	return nil
 }
 

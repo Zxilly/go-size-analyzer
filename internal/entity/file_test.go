@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/global"
@@ -28,7 +29,7 @@ func TestFile_MarshalJSON(t *testing.T) {
 		data, err := file.MarshalJSON()
 
 		// Verify the result
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		expected := `{"file_path":"/path/to/file","pcln_size":0,"size":60}`
 		assert.JSONEq(t, expected, string(data))
 	})
@@ -41,7 +42,7 @@ func TestFile_MarshalJSON(t *testing.T) {
 		data, err := file.MarshalJSON()
 
 		// Verify the result
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		expected := `
 {
     "file_path": "/path/to/file",

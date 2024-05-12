@@ -6,6 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFatalError(t *testing.T) {
@@ -27,7 +28,7 @@ func TestSyncOutputWriteLocksAndWrites(t *testing.T) {
 	syncOutput := &SyncOutput{output: &buf}
 	_, err := syncOutput.Write([]byte("test"))
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "test", buf.String())
 }
 
@@ -37,7 +38,7 @@ func TestSyncOutputSetOutputLocksAndSets(t *testing.T) {
 	syncOutput.SetOutput(&buf2)
 	_, err := syncOutput.Write([]byte("test"))
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "", buf1.String())
 	assert.Equal(t, "test", buf2.String())
 }

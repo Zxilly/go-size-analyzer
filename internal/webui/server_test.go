@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
@@ -21,10 +22,10 @@ func TestHostServer(t *testing.T) {
 	// wait for the server to start
 	time.Sleep(1 * time.Second)
 	// Send a test request to the server
-	req, err := http.NewRequest("GET", "http://127.0.0.1:8080", nil)
-	assert.NoError(t, err)
+	req, err := http.NewRequest(http.MethodGet, "http://127.0.0.1:8080", nil)
+	require.NoError(t, err)
 
 	resp, err := http.DefaultClient.Do(req)
-	assert.NoError(t, err)
-	assert.Equal(t, 200, resp.StatusCode)
+	require.NoError(t, err)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }

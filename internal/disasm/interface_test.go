@@ -25,19 +25,19 @@ func (t TestFileWrapper) GoArch() string {
 	return t.arch
 }
 
-func (t TestFileWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
+func (TestFileWrapper) ReadAddr(_, _ uint64) ([]byte, error) {
 	panic("implement me")
 }
 
-func (t TestFileWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+func (TestFileWrapper) LoadSymbols(_ func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	panic("implement me")
 }
 
-func (t TestFileWrapper) LoadSections() map[string]*entity.Section {
+func (TestFileWrapper) LoadSections() map[string]*entity.Section {
 	panic("implement me")
 }
 
-func (t TestFileWrapper) PclntabSections() []string {
+func (TestFileWrapper) PclntabSections() []string {
 	panic("implement me")
 }
 

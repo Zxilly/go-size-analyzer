@@ -46,8 +46,6 @@ func (k *KnownInfo) LoadSectionMap() {
 	if err != nil {
 		utils.FatalError(err)
 	}
-
-	return
 }
 
 func (k *KnownInfo) AnalyzeSymbol() error {
@@ -160,7 +158,7 @@ func (k *KnownInfo) CollectCoverage() {
 	covs := make([]entity.AddrCoverage, 0)
 
 	// collect packages coverage
-	_ = k.Deps.trie.Walk(func(_ string, value interface{}) error {
+	_ = k.Deps.trie.Walk(func(_ string, value any) error {
 		p := value.(*entity.Package)
 		covs = append(covs, p.GetPackageCoverage())
 		return nil
@@ -188,7 +186,7 @@ func (k *KnownInfo) CalculateSectionSize() {
 	}
 
 	pclntabSize := uint64(0)
-	_ = k.Deps.trie.Walk(func(key string, value interface{}) error {
+	_ = k.Deps.trie.Walk(func(key string, value any) error {
 		p := value.(*entity.Package)
 		for _, fn := range p.GetFunctions() {
 			pclntabSize += fn.PclnSize.Size()
@@ -223,7 +221,7 @@ foundPclntab:
 // CalculatePackageSize calculate the size of each package
 // Happens after disassembly
 func (k *KnownInfo) CalculatePackageSize() {
-	_ = k.Deps.trie.Walk(func(key string, value interface{}) error {
+	_ = k.Deps.trie.Walk(func(key string, value any) error {
 		p := value.(*entity.Package)
 		p.AssignPackageSize()
 		return nil

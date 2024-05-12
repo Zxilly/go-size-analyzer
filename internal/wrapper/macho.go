@@ -13,7 +13,7 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
-func (m *MachoWrapper) PclntabSections() []string {
+func (*MachoWrapper) PclntabSections() []string {
 	return []string{"__gopclntab __TEXT", "__gopclntab __DATA_CONST"}
 }
 
@@ -149,15 +149,15 @@ func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {
 
 func (m *MachoWrapper) GoArch() string {
 	switch m.file.Cpu {
-	//case macho.Cpu386:
+	// case macho.Cpu386:
 	//	return "386"
 	case macho.CpuAmd64:
 		return "amd64"
-		//case macho.CpuArm:
+		// case macho.CpuArm:
 		//	return "arm"
-		//case macho.CpuArm64:
+		// case macho.CpuArm64:
 		//	return "arm64"
-		//case macho.CpuPpc64:
+		// case macho.CpuPpc64:
 		//	return "ppc64"
 	}
 	return ""
