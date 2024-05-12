@@ -112,7 +112,7 @@ def log(msg: str):
     print(f"[{t}] {msg}", flush=True)
 
 
-def find_unused_port(start_port=10000, end_port=60000):
+def find_unused_port(start_port=20000, end_port=60000):
     for port in range(start_port, end_port + 1):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

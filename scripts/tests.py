@@ -167,9 +167,14 @@ def run_web_test(entry: str):
 
 
 def load_remote_binaries() -> list[IntegrationTest]:
+    log("Fetching remote binaries...")
+
     with open(get_binaries_path(), "r") as f:
         reader = csv.reader(f)
-        return [RemoteBinary.from_csv(line).to_test() for line in reader]
+        ret = [RemoteBinary.from_csv(line).to_test() for line in reader]
+
+    log("Fetched remote binaries.")
+    return ret
 
 
 if __name__ == "__main__":
@@ -177,13 +182,10 @@ if __name__ == "__main__":
 
     init_dirs()
 
-    log("Fetching remote binaries...")
-
     tests = load_remote_binaries()
 
-    run_integration_tests(tests)
-
     run_unit_tests()
+    run_integration_tests(tests)
 
     merge_covdata()
 
