@@ -32,7 +32,7 @@ func GetImageBase(file *pe.File) uint64 {
 }
 
 func Deduplicate(s string) string {
-	return intern.GetByString(s).Get().(string)
+	return intern.GetByString(s).Get().(string) //nolint: revive // should be replaced with unique after 1.23
 }
 
 // UglyGuess an ugly hack for a known issue about golang compiler

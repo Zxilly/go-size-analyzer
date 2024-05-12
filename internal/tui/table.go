@@ -9,8 +9,8 @@ func getTableColumns(width int) []table.Column {
 			Width: width/2 - rowWidthSize - 6, // fixme: why 6 is ok here?
 		},
 		{
-			"Size",
-			rowWidthSize,
+			Title: "Size",
+			Width: rowWidthSize,
 		},
 	}
 }

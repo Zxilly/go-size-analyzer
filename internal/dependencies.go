@@ -16,14 +16,14 @@ type Dependencies struct {
 	k *KnownInfo
 
 	TopPkgs entity.PackageMap
-	trie    *trie.PathTrie
+	trie    *trie.PathTrie[*entity.Package]
 }
 
 func NewDependencies(k *KnownInfo) *Dependencies {
 	return &Dependencies{
 		TopPkgs: make(entity.PackageMap),
 		k:       k,
-		trie:    trie.NewPathTrie(),
+		trie:    trie.NewPathTrie[*entity.Package](),
 	}
 }
 
@@ -32,13 +32,12 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 	if p == nil {
 		return nil, false
 	}
-	return p.(*entity.Package), true
+	return p, true
 }
 
 func (m *Dependencies) GetFunctions() []*entity.Function {
 	funcs := make([]*entity.Function, 0)
-	_ = m.trie.Walk(func(_ string, value any) error {
-		p := value.(*entity.Package)
+	_ = m.trie.Walk(func(_ string, p *entity.Package) error {
 		funcs = append(funcs, p.GetFunctions()...)
 		return nil
 	})
@@ -49,7 +48,7 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 	for _, mod := range mods {
 		old := m.trie.Get(mod.Path)
 		if old != nil {
-			old.(*entity.Package).DebugMod = mod
+			old.DebugMod = mod
 			continue
 		}
 		p := entity.NewPackage()
@@ -63,19 +62,19 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 func (m *Dependencies) FinishLoad() {
 	type pair struct {
 		m  entity.PackageMap
-		tc *trie.PathTrie
+		tc *trie.PathTrie[*entity.Package]
 	}
 
 	// load generated packages, they don't have a path
 	if m.trie.Value != nil {
-		m.TopPkgs[""] = m.trie.Value.(*entity.Package)
+		m.TopPkgs[""] = *m.trie.Value
 	}
 
 	pending := []pair{{m.TopPkgs, m.trie}}
 
-	load := func(packageMap entity.PackageMap, p *trie.PathTrie) {
+	load := func(packageMap entity.PackageMap, p *trie.PathTrie[*entity.Package]) {
 		for part, nxt := range p.RecursiveDirectChildren() {
-			packageMap[part] = nxt.Value.(*entity.Package)
+			packageMap[part] = *nxt.Value
 			cc := nxt.RecursiveDirectChildren()
 			if len(cc) > 0 {
 				pending = append(pending, pair{packageMap[part].SubPackages, nxt})
@@ -110,7 +109,7 @@ func (m *Dependencies) Add(gp *gore.Package, typ entity.PackageType, pclntab *go
 	old := m.trie.Get(name)
 	if old != nil {
 		// merge the old one
-		p.Merge(old.(*entity.Package))
+		p.Merge(old)
 	}
 	m.trie.Put(name, p)
 }

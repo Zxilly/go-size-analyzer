@@ -4,6 +4,12 @@ github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvD
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d h1:ED/987saVptZxHwWyH7k3jbkn+gPX/KTafhzWgUi5l4=
 github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
+github.com/ZxillyFork/trie v0.0.0-20240512044638-3ff3bb468c43 h1:cg6UBw4LvlTohbvBuWhpufGgQr4hpmDFePm2qNDHgs0=
+github.com/ZxillyFork/trie v0.0.0-20240512044638-3ff3bb468c43/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
+github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc h1:gi4UGkk6i249aTnDBfri1orYlgdiT/zcpxFfQmu3wHg=
+github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
+github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992 h1:jxQHUiuMLlxR6laATod/depa8cKEV0gRz9tDcc1yu3Y=
+github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=
 github.com/alecthomas/assert/v2 v2.6.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v0.9.0 h1:G5diXxc85KvoV2f0ZRVuMsi45IrBgx9zDNGNj165aPA=
