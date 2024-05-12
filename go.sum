@@ -10,6 +10,8 @@ github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc h1:gi4UGkk6i249aTn
 github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992 h1:jxQHUiuMLlxR6laATod/depa8cKEV0gRz9tDcc1yu3Y=
 github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
+github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
+github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=
 github.com/alecthomas/assert/v2 v2.6.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v0.9.0 h1:G5diXxc85KvoV2f0ZRVuMsi45IrBgx9zDNGNj165aPA=
