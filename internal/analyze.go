@@ -45,11 +45,11 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	if !options.SkipSymbol {
 		err = k.AnalyzeSymbol()
 		if err != nil {
-			if errors.Is(err, wrapper.ErrNoSymbolTable) {
-				slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
-			} else {
+			if !errors.Is(err, wrapper.ErrNoSymbolTable) {
 				return nil, err
+
 			}
+			slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
 		}
 	}
 

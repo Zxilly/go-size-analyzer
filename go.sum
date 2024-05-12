@@ -24,8 +24,6 @@ github.com/charmbracelet/x/exp/golden v0.0.0-20240222125807-0344fda748f8 h1:kyT+
 github.com/charmbracelet/x/exp/golden v0.0.0-20240222125807-0344fda748f8/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240510181320-e66de7a51531 h1:pQEGm2biIw1EygoP5tEufXuykUqZrcqOtQLJ25AO870=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240510181320-e66de7a51531/go.mod h1:hj+TFTT7V4sVYggNy1SkYXgE2ZWscgeteB8FqgqCmWk=
-github.com/charmbracelet/x/exp/term v0.0.0-20240509130423-e48c874ef5d2 h1:QJ8XhlOq5s+riAEKXPXVE0GzG79lBNEdwWxD2ia2Gqc=
-github.com/charmbracelet/x/exp/term v0.0.0-20240509130423-e48c874ef5d2/go.mod h1:YBotIGhfoWhHDlnUpJMkjebGV2pdGRCn1Y4/Nk/vVcU=
 github.com/charmbracelet/x/exp/term v0.0.0-20240510181320-e66de7a51531 h1:RPb7LB50mGIt9KAGz0rJ+SBYRi5gg74TwvKquCN7XBM=
 github.com/charmbracelet/x/exp/term v0.0.0-20240510181320-e66de7a51531/go.mod h1:YBotIGhfoWhHDlnUpJMkjebGV2pdGRCn1Y4/Nk/vVcU=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

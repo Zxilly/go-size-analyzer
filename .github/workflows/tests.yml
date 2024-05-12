@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
   checks: write
   pull-requests: read
 
@@ -43,7 +42,7 @@ jobs:
 
   tests:
     name: Tests
-    needs: [build-ui, typos, lint]
+    needs: build-ui
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]

@@ -25,7 +25,6 @@ func GetStaticVersion() int {
 }
 
 var (
-	name       = unknownProperty
 	version    = unknownVersion
 	commit     = unknownProperty
 	buildDate  = unknownProperty

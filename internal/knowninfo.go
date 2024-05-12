@@ -186,7 +186,7 @@ func (k *KnownInfo) CalculateSectionSize() {
 	}
 
 	pclntabSize := uint64(0)
-	_ = k.Deps.trie.Walk(func(key string, value any) error {
+	_ = k.Deps.trie.Walk(func(_ string, value any) error {
 		p := value.(*entity.Package)
 		for _, fn := range p.GetFunctions() {
 			pclntabSize += fn.PclnSize.Size()
@@ -221,7 +221,7 @@ foundPclntab:
 // CalculatePackageSize calculate the size of each package
 // Happens after disassembly
 func (k *KnownInfo) CalculatePackageSize() {
-	_ = k.Deps.trie.Walk(func(key string, value any) error {
+	_ = k.Deps.trie.Walk(func(_ string, value any) error {
 		p := value.(*entity.Package)
 		p.AssignPackageSize()
 		return nil

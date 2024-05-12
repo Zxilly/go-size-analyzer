@@ -82,7 +82,7 @@ func Svg(r *result.Result, options *SvgOption) []byte {
 	tree.NormalizeHeat()
 
 	colorer := render.NoneColorer{}
-	borderColor := color.RGBA{128, 128, 128, 255}
+	borderColor := color.RGBA{R: 128, G: 128, B: 128, A: 255}
 
 	uiBuilder := render.UITreeMapBuilder{
 		Colorer:     colorer,

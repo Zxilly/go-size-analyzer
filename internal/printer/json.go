@@ -9,12 +9,12 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-type JsonOption struct {
+type JSONOption struct {
 	Indent     *int
 	HideDetail bool
 }
 
-func Json(r *result.Result, options *JsonOption) []byte {
+func JSON(r *result.Result, options *JSONOption) []byte {
 	if options.HideDetail {
 		global.HideDetail = true
 	}

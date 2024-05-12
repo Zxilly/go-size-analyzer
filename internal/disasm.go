@@ -30,7 +30,7 @@ func (k *KnownInfo) Disasm() error {
 
 	slog.Info("Disassemble functions...")
 
-	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, index int) []result {
+	possibles := lo.Flatten(lop.Map(fns, func(fn *entity.Function, _ int) []result {
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
 		candidates = lo.Filter(candidates, func(p disasm.PossibleStr, _ int) bool {
 			if p.Size <= 2 {

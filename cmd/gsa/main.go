@@ -49,12 +49,12 @@ func main() {
 	case "text":
 		b = []byte(printer.Text(result, &common))
 	case "json":
-		b = printer.Json(result, &printer.JsonOption{
+		b = printer.JSON(result, &printer.JSONOption{
 			Indent:     Options.Indent,
 			HideDetail: Options.Compact,
 		})
 	case "html":
-		b = printer.Html(result)
+		b = printer.HTML(result)
 	case "svg":
 		b = printer.Svg(result, &printer.SvgOption{
 			CommonOption: common,
@@ -65,7 +65,7 @@ func main() {
 			PaddingRoot:  Options.PaddingRoot,
 		})
 	default:
-		utils.FatalError(fmt.Errorf("Invalid format: %s", Options.Format))
+		utils.FatalError(fmt.Errorf("invalid format: %s", Options.Format))
 	}
 
 	if Options.Web {

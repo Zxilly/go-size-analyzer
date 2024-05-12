@@ -9,7 +9,7 @@ import (
 
 const ReplacedStr = `"GSA_PACKAGE_DATA"`
 
-func Html(r *result.Result) []byte {
-	json := Json(r, &JsonOption{HideDetail: true})
+func HTML(r *result.Result) []byte {
+	json := JSON(r, &JSONOption{HideDetail: true})
 	return []byte(strings.Replace(webui.GetTemplate(), ReplacedStr, string(json), 1))
 }
