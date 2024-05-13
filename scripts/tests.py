@@ -61,6 +61,23 @@ def run_unit_tests():
         timeout=600,  # Windows runner is extremely slow
     )
 
+    # test no tag
+    run_process(
+        [
+            "go",
+            "test",
+            "-v",
+            "-race",
+            "-covermode=atomic",
+            "-cover",
+            "./internal/webui",
+            f"-test.gocoverdir={unit_path}",
+        ],
+        "unit",
+        ".txt",
+        timeout=600,  # Windows runner is extremely slow
+    )
+
     log("Unit tests passed.")
 
 
