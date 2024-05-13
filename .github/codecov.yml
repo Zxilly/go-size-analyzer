@@ -15,3 +15,9 @@ coverage:
 ignore:
   - "internal/wrapper/*.go"
   - "cmd/gsa/*.go"
+
+comment:
+  layout: "condensed_header, condensed_files, diff, flags, condensed_footer"
+  behavior: default
+  require_changes: false
+  hide_project_coverage: true
