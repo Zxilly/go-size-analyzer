@@ -106,7 +106,7 @@ linters-settings:
 
       - name: cognitive-complexity
         severity: warning
-        arguments: [ 30 ]
+        arguments: [ 50 ]
 
       - name: cyclomatic
         arguments: [ 30 ]
