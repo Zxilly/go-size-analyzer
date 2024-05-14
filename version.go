@@ -89,6 +89,10 @@ func SprintVersion() string {
 	keys := []string{"Version", "Git Commit", "Build Date", "Commit Date", "Dirty Build", "Go Version", "Platform"}
 
 	for _, k := range keys {
+		if values[k] == unknownProperty {
+			continue
+		}
+
 		s.WriteString(fmt.Sprintf("  %-11s      %s\n", k, values[k]))
 	}
 
