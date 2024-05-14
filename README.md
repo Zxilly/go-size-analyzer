@@ -13,6 +13,12 @@ A simple tool to analyze the size of a Go compiled binary.
 
 Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
 
+You can use Homebrew to install `go-size-analyzer`
+
+```bash
+brew install go-size-analyzer
+```
+
 Or use the following command to install the latest version:
 
 ```bash

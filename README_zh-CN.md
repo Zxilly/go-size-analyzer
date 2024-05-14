@@ -11,6 +11,12 @@
 
 从[发布页面](https://github.com/Zxilly/go-size-analyzer/releases)下载最新版本。
 
+你可以使用 Homebrew 安装 `go-size-analyzer`
+
+```bash
+brew install go-size-analyzer
+```
+
 或者使用以下命令安装最新版本：
 
 ```bash
