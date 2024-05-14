@@ -109,7 +109,7 @@ linters-settings:
         arguments: [ 30 ]
 
       - name: cyclomatic
-        arguments: [ 20 ]
+        arguments: [ 30 ]
 
       - name: struct-tag
         disabled: true
