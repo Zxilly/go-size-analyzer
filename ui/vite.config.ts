@@ -36,16 +36,15 @@ function getSha(): string | undefined {
         const mergeCommitRegex = /^[a-z0-9]{40} [a-z0-9]{40}$/;
 
         const mergeCommitMessage = child_process.execSync("git show --no-patch --format=%P").toString();
-
-        console.log("mergeCommitMessage", mergeCommitMessage);
+        if (mergeCommitMessage === "") {
+            throw new Error("Failed to get merge commit message");
+        }
 
         if (mergeCommitRegex.exec(mergeCommitMessage)) {
             const ret = mergeCommitMessage.split(" ")[1];
             console.log("ret", ret);
             return ret;
         }
-    } else {
-        console.error("GITHUB_HEAD_REF is not set, skipping SHA extraction");
     }
     return envs?.GITHUB_SHA;
 }
