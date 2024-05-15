@@ -25,12 +25,13 @@ const devDataMocker: PluginOption = {
 const envs = process.env;
 
 function getSha(): string | undefined {
+    let commit = envs?.GITHUB_SHA;
+
     if (envs?.GITHUB_HEAD_REF && envs?.GITHUB_HEAD_REF !== "") {
         const prRegex = /refs\/pull\/([0-9]+)\/merge/;
         const matches = prRegex.exec(envs?.GITHUB_REF ?? "");
         if (!matches) {
-            console.error("Failed to parse PR number from GITHUB_REF", envs?.GITHUB_REF);
-            return undefined;
+            throw new Error(`Failed to get PR number from ${envs?.GITHUB_REF}`);
         }
 
         const mergeCommitRegex = /^[a-z0-9]{40} [a-z0-9]{40}$/;
@@ -43,10 +44,12 @@ function getSha(): string | undefined {
         if (mergeCommitRegex.exec(mergeCommitMessage)) {
             const ret = mergeCommitMessage.split(" ")[1];
             console.log("ret", ret);
-            return ret;
+            commit = ret;
         }
     }
-    return envs?.GITHUB_SHA;
+
+    console.log(`Reporting bundle for commit ${commit}`);
+    return commit;
 }
 
 export default defineConfig({
