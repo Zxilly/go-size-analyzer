@@ -1,5 +1,6 @@
 import {Result} from "../schema/schema.ts";
 import {parseResult} from "../generated/schema.ts";
+import {useCallback, useRef} from 'react';
 
 export function loadData(): Result {
     const doc = document.querySelector("#data")!;
@@ -30,4 +31,20 @@ export function trimPrefix(str: string, prefix: string) {
     } else {
         return str
     }
+}
+
+export function useThrottle<T extends (...args: Parameters<T>) => ReturnType<T>>(func: T, delay: number): (...args: Parameters<T>) => void {
+    const lastCall = useRef<number>(0);
+    const lastFunc = useRef<T>(func);
+
+    lastFunc.current = func;
+
+    return useCallback((...args: Parameters<T>) => {
+        const now = Date.now();
+
+        if (now - lastCall.current >= delay) {
+            lastCall.current = now;
+            lastFunc.current(...args);
+        }
+    }, [delay]);
 }

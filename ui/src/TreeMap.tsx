@@ -120,7 +120,9 @@ function TreeMap() {
                                         node={node}
                                         onMouseOver={(node) => {
                                             setTooltipNode(node);
-                                            setShowTooltip(true);
+                                            if (!showTooltip) {
+                                                setShowTooltip(true);
+                                            }
                                         }}
                                         selected={selectedNode?.data?.getID() === node.data.getID()}
                                         onClick={(node) => {

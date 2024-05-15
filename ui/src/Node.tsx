@@ -41,7 +41,7 @@ export const Node: React.FC<NodeProps> = (
             x: width / 2,
             y: children != null ? (TOP_PADDING + PADDING) / 2 : height / 2
         }
-    }, [])
+    }, [children, height, width])
 
     const title = useMemo(() => {
         const t = trimPrefix(node.data.getName(), node.parent?.data.getName() ?? "")
