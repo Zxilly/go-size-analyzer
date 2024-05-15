@@ -16,7 +16,7 @@ import {max} from "d3-array";
 
 type Candidate = Section | File | Package | Result | FileSymbol;
 
-type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
+export type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
 
 export class Entry {
     private readonly type: EntryType;
@@ -255,10 +255,7 @@ function childrenFromResult(result: Result): Entry[] {
         packageContainer.explain = `The size of the ${type} packages in the binary.`
         typedPackagesChildren.push(packageContainer);
     }
-    const packageContainerSize = typedPackagesChildren.reduce((acc, child) => acc + child.getSize(), 0);
-    const packageContainer = new Entry("Packages Size", packageContainerSize, "container", typedPackagesChildren);
-    packageContainer.explain = "The size of the packages in the binary."
-    children.push(packageContainer);
+    children.push(...typedPackagesChildren);
 
     const leftSize = result.size - children.reduce((acc, child) => acc + child.getSize(), 0);
     if (leftSize > 0) {
