@@ -90,14 +90,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload unit coverage
-        uses: codecov/codecov-action@v4.3.1
+        uses: codecov/codecov-action@v4.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: unit.profile
           flags: unit
 
       - name: Upload integration coverage
-        uses: codecov/codecov-action@v4.3.1
+        uses: codecov/codecov-action@v4.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: integration.profile
