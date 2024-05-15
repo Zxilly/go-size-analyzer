@@ -4,6 +4,7 @@ import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "fs"
 import {createHtmlPlugin} from "vite-plugin-html";
 import {codecovVitePlugin} from "@codecov/vite-plugin";
+import child_process from "child_process";
 
 const devDataMocker: PluginOption = {
     name: 'devDataMocker',
@@ -29,9 +30,11 @@ function getSha(): string | undefined {
         return undefined;
     }
 
-    console.log(`CI build detected, sha: ${envs?.GITHUB_SHA}`)
+    const sha = child_process.execSync("git rev-parse HEAD").toString().trim();
 
-    return envs?.GITHUB_SHA;
+    console.log(`CI build detected, sha: ${sha}`)
+
+    return sha;
 }
 
 export default defineConfig({
