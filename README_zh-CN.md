@@ -37,7 +37,7 @@ $ gsa --web golang-compiled-binary
 
 网页将如下所示：
 
-![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/78bb8105-fc5a-4852-8704-8c2fac3bf475)
+![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/e69583ce-b189-4a0d-b108-c3b7d5c33a82)
 
 您可以点击以展开包以查看详细信息。
 
