@@ -1,15 +1,15 @@
 import {HierarchyRectangularNode} from "d3-hierarchy";
-import React, {useLayoutEffect, useMemo, useRef} from "react";
+import React, {useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {Entry} from "./tool/entry.ts";
 import {NodeColorGetter} from "./tool/color.ts";
 import {PADDING, TOP_PADDING} from "./tool/const.ts";
 import {trimPrefix} from "./tool/utils.ts";
+import {globalNodeCache} from "./cache.ts";
 
 type NodeEventHandler = (event: HierarchyRectangularNode<Entry>) => void;
 
 export interface NodeProps {
     node: HierarchyRectangularNode<Entry>;
-    onMouseOver: NodeEventHandler;
     selected: boolean;
     onClick: NodeEventHandler;
     getModuleColor: NodeColorGetter;
@@ -18,12 +18,20 @@ export interface NodeProps {
 export const Node: React.FC<NodeProps> = (
     {
         node,
-        onMouseOver,
         onClick,
         selected,
         getModuleColor
     }
 ) => {
+    useEffect(() => {
+        globalNodeCache.set(node.data.getID(), node)
+
+        return () => {
+            // well, I think it won't be called :)
+            globalNodeCache.delete(node.data.getID())
+        }
+    }, [node]);
+
     const {backgroundColor, fontColor} = getModuleColor(node);
     const {x0, x1, y1, y0, children = null} = node;
 
@@ -94,10 +102,7 @@ export const Node: React.FC<NodeProps> = (
                 event.stopPropagation();
                 onClick(node);
             }}
-            onMouseOver={(event) => {
-                event.stopPropagation();
-                onMouseOver(node);
-            }}
+            data-id={node.data.getID()}
         >
             <rect
                 fill={backgroundColor}

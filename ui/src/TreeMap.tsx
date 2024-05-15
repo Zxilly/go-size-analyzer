@@ -1,18 +1,13 @@
 import {loadData} from "./tool/utils.ts";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {Entry} from "./tool/entry.ts";
 import {useWindowSize} from "usehooks-ts";
-import {
-    hierarchy,
-    HierarchyNode,
-    HierarchyRectangularNode,
-    treemap,
-    treemapResquarify
-} from "d3-hierarchy";
+import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapResquarify} from "d3-hierarchy";
 import {group} from "d3-array";
 import createRainbowColor from "./tool/color.ts";
 import {Tooltip} from "./Tooltip.tsx";
 import {Node} from "./Node.tsx";
+import {globalNodeCache} from "./cache.ts";
 
 function TreeMap() {
     const rootEntry = useMemo(() => new Entry(loadData()), [])
@@ -40,7 +35,7 @@ function TreeMap() {
             //.paddingOuter(2)
             .paddingTop(20)
             .round(true)
-            .tile(treemapResquarify);
+            .tile(treemapResquarify.ratio(1));
     }, [height, width])
 
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)
@@ -60,21 +55,6 @@ function TreeMap() {
         return selectedNodeLeaveSet.has(node) ? 1 : 0
     }, [selectedNode, selectedNodeLeaveSet])
 
-    const [showTooltip, setShowTooltip] = useState<boolean>(false);
-    const [tooltipNode, setTooltipNode] = useState<
-        HierarchyRectangularNode<Entry> | undefined
-    >(undefined);
-
-    useEffect(() => {
-        const handleMouseOut = () => {
-            setShowTooltip(false);
-        };
-
-        document.addEventListener("mouseover", handleMouseOut);
-        return () => {
-            document.removeEventListener("mouseover", handleMouseOut);
-        };
-    }, []);
 
     const root = useMemo(() => {
         const rootWithSizesAndSorted = rawHierarchy
@@ -106,6 +86,67 @@ function TreeMap() {
         return nestedData;
     }, [root]);
 
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [tooltipNode, setTooltipNode] =
+        useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
+
+    const svgRef = useRef<SVGSVGElement>(null);
+
+    useEffect(() => {
+        if (!svgRef.current) {
+            return;
+        }
+        const svg = svgRef.current;
+
+        const visibleListener = (value: boolean) => {
+            return () => {
+                setShowTooltip(value);
+            }
+        }
+        const enter = visibleListener(true);
+        const leave = visibleListener(false);
+
+        svg.addEventListener("mouseenter", enter);
+        svg.addEventListener("mouseleave", leave);
+
+        return () => {
+            svg.removeEventListener("mouseenter", enter);
+            svg.removeEventListener("mouseleave", leave);
+        }
+    }, []);
+
+    useEffect(() => {
+        const moveListener = (e: MouseEvent) => {
+            if (!e.target) {
+                return;
+            }
+
+            const target = (e.target as SVGElement).parentNode;
+            if (!target) {
+                return;
+            }
+
+            const dataIdStr = (target as Element).getAttribute("data-id");
+            if (!dataIdStr) {
+                return;
+            }
+
+            const dataId = parseInt(dataIdStr);
+
+            const node = globalNodeCache.get(dataId);
+            if (!node) {
+                return;
+            }
+
+            setTooltipNode(node);
+        }
+
+        document.addEventListener("mousemove", moveListener);
+        return () => {
+            document.removeEventListener("mousemove", moveListener);
+        }
+    }, []);
+
     return (
         <>
             <Tooltip visible={showTooltip} node={tooltipNode}/>
@@ -118,12 +159,6 @@ function TreeMap() {
                                     <Node
                                         key={node.data.getID()}
                                         node={node}
-                                        onMouseOver={(node) => {
-                                            setTooltipNode(node);
-                                            if (!showTooltip) {
-                                                setShowTooltip(true);
-                                            }
-                                        }}
                                         selected={selectedNode?.data?.getID() === node.data.getID()}
                                         onClick={(node) => {
                                             setSelectedNode(selectedNode?.data?.getID() === node.data.getID() ? null : node);

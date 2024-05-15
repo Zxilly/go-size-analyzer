@@ -10,7 +10,7 @@ import {
     Section,
     Symbol as FileSymbol
 } from "../generated/schema.ts";
-import {id} from "./id.ts";
+import {orderedID} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";
 import {max} from "d3-array";
 
@@ -24,7 +24,7 @@ export class Entry {
     private readonly size: number;
     private readonly name: string;
     private readonly children: Entry[] = [];
-    private readonly uid = id();
+    private readonly uid = orderedID();
     explain: string = ""; // should only be used by the container type
 
     constructor(data: Candidate)
@@ -198,8 +198,12 @@ export class Entry {
         return this.children;
     }
 
-    public getID(): string {
+    public getIDString(): string {
         return this.uid.toString(16);
+    }
+
+    public getID(): number {
+        return this.uid;
     }
 }
 
