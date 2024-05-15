@@ -77,55 +77,57 @@ func (w *wrapper) Title() string {
 func (w *wrapper) Description() string {
 	sb := new(strings.Builder)
 
-	writeln := func(s string) {
-		sb.WriteString(s)
-		sb.WriteRune('\n')
+	writeln := func(format string, args ...any) {
+		fmt.Fprintf(sb, format+"\n", args...)
 	}
 
 	switch {
 	case w.pkg != nil:
 		{
-			writeln(fmt.Sprintf("Package: %s", w.pkg.Name))
-			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.pkg.Size), w.pkg.Size))
-			writeln(fmt.Sprintf("Type: %s", w.pkg.Type))
+			writeln("Package: %s", w.pkg.Name)
+			writeln("Size: %s (%d Bytes)", humanize.Bytes(w.pkg.Size), w.pkg.Size)
+			writeln("Type: %s", w.pkg.Type)
 
 			if len(w.pkg.Files) > 0 {
 				writeln("")
 				writeln("Files:")
 				for _, k := range w.pkg.Files {
-					writeln(fmt.Sprintf("  %s", k.FilePath))
+					writeln("  %s", k.FilePath)
 				}
 			}
 			if len(w.pkg.SubPackages) > 0 {
 				writeln("")
 				writeln("SubPackages:")
 				for _, k := range utils.SortedKeys(w.pkg.SubPackages) {
-					writeln(fmt.Sprintf("  %s", k))
+					writeln("  %s", k)
 				}
 			}
 			if len(w.pkg.Symbols) > 0 {
 				writeln("")
 				writeln("Symbols:")
 				for _, k := range w.pkg.Symbols {
-					writeln(fmt.Sprintf("  %s", k))
+					writeln("  %s", k)
 				}
 			}
 		}
 	case w.section != nil:
 		{
-			writeln(fmt.Sprintf("Section: %s", w.section.Name))
-			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.section.Size), w.section.Size))
-			writeln(fmt.Sprintf("File Size: %s (%d Bytes)", humanize.Bytes(w.section.FileSize), w.section.FileSize))
-			writeln(fmt.Sprintf("Known Size: %s (%d Bytes)", humanize.Bytes(w.section.KnownSize), w.section.KnownSize))
-			writeln(fmt.Sprintf("Addr: 0x%x - 0x%x", w.section.Addr, w.section.Addr+w.section.Size))
-			writeln(fmt.Sprintf("Offset: 0x%x - 0x%x", w.section.Offset, w.section.Offset+w.section.FileSize))
-			writeln(fmt.Sprintf("Only In Memory: %t", w.section.OnlyInMemory))
+			writeln("Section: %s", w.section.Name)
+			writeln("Size: %s (%d Bytes)", humanize.Bytes(w.section.Size), w.section.Size)
+			writeln("File Size: %s (%d Bytes)",
+				humanize.Bytes(w.section.FileSize), w.section.FileSize)
+			writeln("Known Size: %s (%d Bytes)",
+				humanize.Bytes(w.section.KnownSize), w.section.KnownSize)
+			writeln("Addr: 0x%x - 0x%x", w.section.Addr, w.section.Addr+w.section.Size)
+			writeln("Offset: 0x%x - 0x%x", w.section.Offset, w.section.Offset+w.section.FileSize)
+			writeln("Only In Memory: %t", w.section.OnlyInMemory)
 		}
 	case w.file != nil:
 		{
-			writeln(fmt.Sprintf("File: %s", w.file.FilePath))
-			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.file.FullSize()), w.file.FullSize()))
-			writeln(fmt.Sprintf("Package: %s", w.file.Pkg.Name))
+			writeln("File: %s", w.file.FilePath)
+			writeln("Size: %s (%d Bytes)",
+				humanize.Bytes(w.file.FullSize()), w.file.FullSize())
+			writeln("Package: %s", w.file.Pkg.Name)
 			if len(w.file.Functions) > 0 {
 				writeln("")
 				writeln("Functions:")
@@ -138,34 +140,37 @@ func (w *wrapper) Description() string {
 						name = fmt.Sprintf("%s.%s", k.Receiver, k.Name)
 					}
 
-					writeln(fmt.Sprintf("  %s", name))
+					writeln("  %s", name)
 				}
 			}
 		}
 	case w.function != nil:
 		{
-			writeln(fmt.Sprintf("Function: %s", w.function.Name))
-			writeln(fmt.Sprintf("Size: %s (%d Bytes)", humanize.Bytes(w.function.Size()), w.function.Size()))
-			writeln(fmt.Sprintf("Type: %s", w.function.Type))
+			writeln("Function: %s", w.function.Name)
+			writeln("Size: %s (%d Bytes)",
+				humanize.Bytes(w.function.Size()), w.function.Size())
+			writeln("Type: %s", w.function.Type)
 			if w.function.Type == entity.FuncTypeMethod {
-				writeln(fmt.Sprintf("Receiver: %s", w.function.Receiver))
+				writeln("Receiver: %s", w.function.Receiver)
 			}
 
-			writeln(fmt.Sprintf("Code Size: %s (%d Bytes)", humanize.Bytes(w.function.CodeSize), w.function.CodeSize))
-			writeln(fmt.Sprintf("Pcln Size: %s (%d Bytes)", humanize.Bytes(w.function.PclnSize.Size()), w.function.PclnSize.Size()))
-			writeln(fmt.Sprintf("Addr: 0x%x - 0x%x", w.function.Addr, w.function.Addr+w.function.CodeSize))
+			writeln("Code Size: %s (%d Bytes)",
+				humanize.Bytes(w.function.CodeSize), w.function.CodeSize)
+			writeln("Pcln Size: %s (%d Bytes)",
+				humanize.Bytes(w.function.PclnSize.Size()), w.function.PclnSize.Size())
+			writeln("Addr: 0x%x - 0x%x", w.function.Addr, w.function.Addr+w.function.CodeSize)
 
 			writeln("")
 			writeln("Pcln Details:")
-			writeln(fmt.Sprintf("  Func Name: %d Bytes", w.function.PclnSize.Name))
-			writeln(fmt.Sprintf("  File Name Tab: %d Bytes", w.function.PclnSize.PCFile))
-			writeln(fmt.Sprintf("  PC to Stack Pointer Table: %d Bytes", w.function.PclnSize.PCSP))
-			writeln(fmt.Sprintf("  PC to Line Number Table: %d Bytes", w.function.PclnSize.PCLN))
-			writeln(fmt.Sprintf("  Header: %d Bytes", w.function.PclnSize.Header))
-			writeln(fmt.Sprintf("  Func Data: %d Bytes", w.function.PclnSize.FuncData))
+			writeln("  Func Name: %d Bytes", w.function.PclnSize.Name)
+			writeln("  File Name Tab: %d Bytes", w.function.PclnSize.PCFile)
+			writeln("  PC to Stack Pointer Table: %d Bytes", w.function.PclnSize.PCSP)
+			writeln("  PC to Line Number Table: %d Bytes", w.function.PclnSize.PCLN)
+			writeln("  Header: %d Bytes", w.function.PclnSize.Header)
+			writeln("  Func Data: %d Bytes", w.function.PclnSize.FuncData)
 			writeln("  PC Data:")
 			for _, k := range utils.SortedKeys(w.function.PclnSize.PCData) {
-				writeln(fmt.Sprintf("    %s: %d Bytes", k, w.function.PclnSize.PCData[k]))
+				writeln("    %s: %d Bytes", k, w.function.PclnSize.PCData[k])
 			}
 		}
 	default:
