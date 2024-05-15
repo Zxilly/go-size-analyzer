@@ -4,6 +4,7 @@ import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "fs"
 import {createHtmlPlugin} from "vite-plugin-html";
 import {codecovVitePlugin} from "@codecov/vite-plugin";
+import child_process from "child_process";
 
 const devDataMocker: PluginOption = {
     name: 'devDataMocker',
@@ -19,6 +20,34 @@ const devDataMocker: PluginOption = {
             return html
         }
     }
+}
+
+const envs = process.env;
+
+function getSha(): string | undefined {
+    if (envs?.GITHUB_HEAD_REF && envs?.GITHUB_HEAD_REF !== "") {
+        const prRegex = /refs\/pull\/([0-9]+)\/merge/;
+        const matches = prRegex.exec(envs?.GITHUB_REF ?? "");
+        if (!matches) {
+            console.error("Failed to parse PR number from GITHUB_REF", envs?.GITHUB_REF);
+            return undefined;
+        }
+
+        const mergeCommitRegex = /^[a-z0-9]{40} [a-z0-9]{40}$/;
+
+        const mergeCommitMessage = child_process.execSync("git show --no-patch --format=%P").toString();
+
+        console.log("mergeCommitMessage", mergeCommitMessage);
+
+        if (mergeCommitRegex.exec(mergeCommitMessage)) {
+            const ret = mergeCommitMessage.split(" ")[1];
+            console.log("ret", ret);
+            return ret;
+        }
+    } else {
+        console.error("GITHUB_HEAD_REF is not set, skipping SHA extraction");
+    }
+    return envs?.GITHUB_SHA;
 }
 
 export default defineConfig({
@@ -37,6 +66,9 @@ export default defineConfig({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
             bundleName: "gsa-ui",
             uploadToken: process.env.CODECOV_TOKEN,
+            uploadOverrides: {
+                sha: getSha()
+            }
         }),
     ],
     clearScreen: false,
