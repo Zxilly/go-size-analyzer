@@ -1,5 +1,5 @@
 import {loadData} from "./tool/utils.ts";
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {Entry} from "./tool/entry.ts";
 import {useWindowSize} from "usehooks-ts";
 import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapResquarify} from "d3-hierarchy";
@@ -32,10 +32,9 @@ function TreeMap() {
         return treemap<Entry>()
             .size([width, height])
             .paddingInner(2)
-            //.paddingOuter(2)
             .paddingTop(20)
             .round(true)
-            .tile(treemapResquarify.ratio(1));
+            .tile(treemapResquarify);
     }, [height, width])
 
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)
@@ -147,10 +146,43 @@ function TreeMap() {
         }
     }, []);
 
+    const nodes = useMemo(() => {
+        return (
+            <Nodes
+                nestedData={nestedData}
+                selectedNode={selectedNode}
+                getModuleColor={getModuleColor}
+                setSelectedNode={setSelectedNode}
+            />
+        )
+    }, [getModuleColor, nestedData, selectedNode])
+
     return (
         <>
             <Tooltip visible={showTooltip} node={tooltipNode}/>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} ref={svgRef}>
+                {nodes}
+            </svg>
+        </>
+    )
+}
+
+interface NodesProps {
+    nestedData: { key: number, values: HierarchyRectangularNode<Entry>[] }[]
+    selectedNode: HierarchyRectangularNode<Entry> | null
+    getModuleColor: (node: HierarchyNode<Entry>) => { backgroundColor: string, fontColor: string }
+    setSelectedNode: (node: HierarchyRectangularNode<Entry> | null) => void
+}
+
+const Nodes: React.FC<NodesProps> =
+    ({
+         nestedData,
+         selectedNode,
+         getModuleColor,
+         setSelectedNode
+     }) => {
+        return (
+            <>
                 {nestedData.map(({key, values}) => {
                     return (
                         <g className="layer" key={key}>
@@ -170,9 +202,8 @@ function TreeMap() {
                         </g>
                     );
                 })}
-            </svg>
-        </>
-    )
-}
+            </>
+        )
+    }
 
 export default TreeMap

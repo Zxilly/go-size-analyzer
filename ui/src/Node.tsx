@@ -43,7 +43,7 @@ export const Node: React.FC<NodeProps> = (
 
     const textProps = useMemo(() => {
         return {
-            "fontSize": "0.9em",
+            "fontSize": "0.8em",
             "dominantBaseline": "middle",
             "textAnchor": "middle",
             x: width / 2,

@@ -198,10 +198,6 @@ export class Entry {
         return this.children;
     }
 
-    public getIDString(): string {
-        return this.uid.toString(16);
-    }
-
     public getID(): number {
         return this.uid;
     }
