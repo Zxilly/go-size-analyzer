@@ -45,7 +45,11 @@ function getSha(): string | undefined {
             const ret = mergeCommitMessage.split(" ")[1];
             console.log("ret", ret);
             commit = ret;
+        } else {
+            throw new Error(`Failed to get merge commit from ${mergeCommitMessage}`);
         }
+    } else {
+        console.log("Not a PR build");
     }
 
     console.log(`Reporting bundle for commit ${commit}`);
