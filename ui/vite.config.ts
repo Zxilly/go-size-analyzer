@@ -25,6 +25,11 @@ const devDataMocker: PluginOption = {
 const envs = process.env;
 
 function getSha(): string | undefined {
+    if (!(envs?.CI)) {
+        console.log("Not a CI build");
+        return undefined;
+    }
+
     let commit = envs?.GITHUB_SHA;
 
     if (envs?.GITHUB_HEAD_REF && envs?.GITHUB_HEAD_REF !== "") {
@@ -42,11 +47,14 @@ function getSha(): string | undefined {
         }
 
         if (mergeCommitRegex.exec(mergeCommitMessage)) {
-            const ret = mergeCommitMessage.split(" ")[1];
-            console.log("ret", ret);
-            commit = ret;
+            commit = mergeCommitMessage.split(" ")[1];
         } else {
-            throw new Error(`Failed to get merge commit from ${mergeCommitMessage}`);
+            const singleParentRegex = /[a-z0-9]{40}/;
+            if (singleParentRegex.exec(mergeCommitMessage)) {
+                commit = mergeCommitMessage;
+            } else {
+                throw new Error(`Failed to get commit from ${mergeCommitMessage}`);
+            }
         }
     } else {
         console.log("Not a PR build");
