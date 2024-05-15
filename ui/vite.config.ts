@@ -21,6 +21,19 @@ const devDataMocker: PluginOption = {
     }
 }
 
+const envs = process.env;
+
+function getSha(): string | undefined {
+    if (!(envs?.CI)) {
+        console.log("Not a CI build");
+        return undefined;
+    }
+
+    console.log(`CI build detected, sha: ${envs?.GITHUB_SHA}`)
+
+    return envs?.GITHUB_SHA;
+}
+
 export default defineConfig({
     plugins: [
         react(),
@@ -37,6 +50,10 @@ export default defineConfig({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
             bundleName: "gsa-ui",
             uploadToken: process.env.CODECOV_TOKEN,
+            uploadOverrides: {
+                sha: getSha()
+            },
+            debug: true,
         }),
     ],
     clearScreen: false,
