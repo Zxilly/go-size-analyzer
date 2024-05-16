@@ -99,6 +99,7 @@ jobs:
           PROFILE: ${{ matrix.profile }}
 
       - name: Upload coverage
+        if: ${{ matrix.profile == 'main' }}
         uses: codecov/codecov-action@v4.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
