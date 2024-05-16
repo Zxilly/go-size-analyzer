@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log/slog"
 	"path"
+	"runtime"
 
 	"github.com/ZxillyFork/gore"
 	"golang.org/x/exp/maps"
@@ -35,6 +36,9 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	k.KnownAddr = entity.NewKnownAddr()
 	k.UpdateVersionFlag()
 
+	// collect for load and possible disassemble in go version read
+	runtime.GC()
+
 	k.LoadSectionMap()
 
 	err = k.LoadPackages()
@@ -53,12 +57,19 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 		}
 	}
 
+	// collect for pacakge and symbol
+	runtime.GC()
+
 	if !options.SkipDisasm {
 		err = k.Disasm()
 		if err != nil {
 			return nil, err
 		}
 	}
+
+	// collect for disassemble
+	// which can be very memory consuming
+	runtime.GC()
 
 	// we have collected everything, now we can calculate the size
 

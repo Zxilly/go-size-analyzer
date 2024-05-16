@@ -81,7 +81,7 @@ linters-settings:
 
   staticcheck:
     # SAxxxx checks in https://staticcheck.io/docs/configuration/options/#checks
-    checks: ["all"]
+    checks: [ "all" ]
 
   revive:
     enable-all-rules: true
@@ -111,6 +111,8 @@ linters-settings:
       - name: cyclomatic
         arguments: [ 30 ]
 
+      - name: call-to-gc
+        disabled: true
       - name: struct-tag
         disabled: true
       - name: add-constant
