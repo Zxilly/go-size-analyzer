@@ -132,7 +132,7 @@ def find_unused_port(start_port=20000, end_port=60000):
     return None
 
 
-def run_process(pargs: list[str], name: str, timeout=120, profiler_dir: str = None) -> str:
+def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = None) -> str:
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
     if profiler_dir is not None:
