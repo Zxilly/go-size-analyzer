@@ -1,43 +1,12 @@
+import os.path
 from argparse import ArgumentParser
 
 import requests
 
-from define import IntegrationTest, TestType
 from gsa import build_gsa
 from merge import merge_covdata
 from remote import load_remote_binaries, load_remote_for_tui_test
 from utils import *
-
-
-def eval_test(gsa: str, target: IntegrationTest):
-    name = target.name
-    path = target.path
-    test_type = target.type
-
-    if TestType.TEXT_TEST in test_type:
-        run_process([gsa, "-f", "text", "--verbose", path], name, ".txt")
-
-    if TestType.JSON_TEST in test_type:
-        run_process([gsa,
-                     "-f", "json",
-                     "--indent", "2",
-                     path,
-                     "-o", get_result_file(name, ".json")],
-                    name, ".json.txt")
-
-    if TestType.HTML_TEST in test_type:
-        run_process([gsa,
-                     "-f", "html",
-                     path,
-                     "-o", get_result_file(name, ".html")],
-                    name, ".html.txt")
-
-    if TestType.SVG_TEST in test_type:
-        run_process([gsa,
-                     "-f", "svg",
-                     path,
-                     "-o", get_result_file(name, ".svg")],
-                    name, ".svg.txt")
 
 
 def run_unit_tests():
@@ -46,7 +15,10 @@ def run_unit_tests():
 
     unit_path = os.path.join(get_project_root(), "covdata", "unit")
 
-    run_process(
+    unit_output_dir = os.path.join(get_project_root(), "results", "unit")
+    ensure_dir(unit_output_dir)
+
+    embed_out = run_process(
         [
             "go",
             "test",
@@ -59,12 +31,11 @@ def run_unit_tests():
             f"-test.gocoverdir={unit_path}"
         ],
         "unit_embed",
-        ".txt",
         timeout=600,  # Windows runner is extremely slow
     )
 
     # test no tag
-    run_process(
+    normal_out = run_process(
         [
             "go",
             "test",
@@ -76,9 +47,13 @@ def run_unit_tests():
             f"-test.gocoverdir={unit_path}",
         ],
         "unit",
-        ".txt",
         timeout=600,  # Windows runner is extremely slow
     )
+
+    with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
+        f.write(embed_out)
+    with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
+        f.write(normal_out)
 
     log("Unit tests passed.")
 
@@ -95,9 +70,9 @@ def run_integration_tests():
         completed_tests = 1
 
         for target in targets:
-            base = time.time()
             try:
-                eval_test(gsa, target)
+                base = time.time()
+                target.run_test(gsa)
                 log(f"[{completed_tests}/{all_tests}] Test {target.name} passed in {format_time(time.time() - base)}.")
                 completed_tests += 1
             except Exception as e:
@@ -112,6 +87,8 @@ def run_web_test(entry: str):
 
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
+    env["OUTPUT_DIR"] = os.path.join(get_project_root(), "results", "web", "profiler")
+    ensure_dir(env["OUTPUT_DIR"])
 
     port = find_unused_port()
     if port is None:
@@ -129,7 +106,7 @@ def run_web_test(entry: str):
 
     time.sleep(1)  # still need to wait for the server to start
 
-    ret = requests.get(f"http://localhost:{port}").text
+    ret = requests.get(f"http://127.0.0.1:{port}").text
 
     assert_html_valid(ret)
 
@@ -138,12 +115,12 @@ def run_web_test(entry: str):
 
 
 def get_parser() -> ArgumentParser:
-    parser = ArgumentParser()
+    ap = ArgumentParser()
 
-    parser.add_argument("--unit", action="store_true", help="Run unit tests.")
-    parser.add_argument("--integration", action="store_true", help="Run integration tests.")
+    ap.add_argument("--unit", action="store_true", help="Run unit tests.")
+    ap.add_argument("--integration", action="store_true", help="Run integration tests.")
 
-    return parser
+    return ap
 
 
 if __name__ == "__main__":
@@ -153,7 +130,7 @@ if __name__ == "__main__":
     init_dirs()
 
     if not args.unit and not args.integration:
-        if os.getenv("CI") is not None:
+        if os.getenv("CI") is None:
             args.unit = True
             args.integration = True
         else:

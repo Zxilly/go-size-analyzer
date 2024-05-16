@@ -23,6 +23,12 @@ func InitLogger(level slog.Level) {
 
 var exitFunc = os.Exit
 
+func UsePanicForExit() {
+	exitFunc = func(code int) {
+		panic(fmt.Sprintf("exit: %d", code))
+	}
+}
+
 func FatalError(err error) {
 	if err == nil {
 		return

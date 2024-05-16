@@ -1,8 +1,9 @@
 import contextlib
+import os.path
 import shutil
 import subprocess
 
-from utils import log, require_go, get_new_temp_binary, get_project_root, extract_output, get_result_file
+from utils import log, require_go, get_new_temp_binary, get_project_root, extract_output
 
 
 @contextlib.contextmanager
@@ -21,7 +22,7 @@ def build_gsa():
             "-cover",
             "-covermode=atomic",
             "-tags",
-            "embed",
+            "embed,profiler",
             "-o",
             temp_binary,
             f"{project_root}/cmd/gsa",
@@ -40,4 +41,4 @@ def build_gsa():
 
     yield temp_binary
 
-    shutil.move(temp_binary, get_result_file("integration", ".test"))
+    shutil.move(temp_binary, os.path.join(get_project_root(), "results", "gsa"))

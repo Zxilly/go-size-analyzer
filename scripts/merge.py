@@ -1,12 +1,10 @@
-import os.path
-import subprocess
+from utils import *
 
-from utils import log, get_project_root, dir_is_empty
 
 def merge_covdata():
     log("Merging coverage data...")
 
-    unit_path = os.path.join(get_project_root(), "covdata", "unit")
+    unit_path = get_covdata_unit_dir()
     if not dir_is_empty(unit_path):
         subprocess.run(
             [
@@ -24,7 +22,7 @@ def merge_covdata():
         )
         log("Merged unit coverage data.")
 
-    integration_path = os.path.join(get_project_root(), "covdata", "integration")
+    integration_path = get_covdata_integration_dir()
     if not dir_is_empty(integration_path):
         subprocess.run(
             [
