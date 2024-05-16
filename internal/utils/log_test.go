@@ -23,6 +23,23 @@ func TestFatalError(t *testing.T) {
 	assert.True(t, m.AssertCalled(t, "os.Exit", 1))
 }
 
+func TestUsePanicForExit(t *testing.T) {
+	m := &mock.Mock{}
+	m.On("os.Exit", 1).Return()
+	exitFunc = func(code int) {
+		m.MethodCalled("os.Exit", code)
+	}
+
+	FatalError(assert.AnError)
+	assert.True(t, m.AssertCalled(t, "os.Exit", 1))
+
+	UsePanicForExit()
+
+	assert.PanicsWithValue(t, "exit: 1", func() {
+		FatalError(assert.AnError)
+	})
+}
+
 func TestSyncOutputWriteLocksAndWrites(t *testing.T) {
 	var buf bytes.Buffer
 	syncOutput := &SyncOutput{output: &buf}
