@@ -14,15 +14,16 @@ class TestType(Flag):
     HTML_TEST = auto()
     SVG_TEST = auto()
 
-    def __str__(self):
-        if self == TestType.TEXT_TEST:
-            return "text"
-        elif self == TestType.JSON_TEST:
-            return "json"
-        elif self == TestType.HTML_TEST:
-            return "html"
-        elif self == TestType.SVG_TEST:
-            return "svg"
+
+def get_flag_str(typ: TestType) -> str:
+    if typ == TestType.TEXT_TEST:
+        return "text"
+    elif typ == TestType.JSON_TEST:
+        return "json"
+    elif typ == TestType.HTML_TEST:
+        return "html"
+    elif typ == TestType.SVG_TEST:
+        return "svg"
 
 
 class IntegrationTest:
@@ -52,7 +53,7 @@ class IntegrationTest:
         return os.path.join(self.typed_dir(typ), f"{self.name}.{typ.value}.txt")
 
     def generated_filepath(self, typ: TestType):
-        ext = str(typ)
+        ext = get_flag_str(typ)
         if ext == "text":
             ext = "txt"
 
