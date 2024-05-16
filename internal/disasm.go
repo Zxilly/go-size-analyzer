@@ -39,7 +39,11 @@ func (k *KnownInfo) Disasm() error {
 		processed := 0
 
 		for r := range resultChan {
-			s, _ := e.LoadAddrString(r.addr, int64(r.size))
+			s, ok := e.LoadAddrString(r.addr, int64(r.size))
+			if !ok {
+				continue
+			}
+
 			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn, entity.DisasmMeta{Value: utils.Deduplicate(s)})
 
 			processed++
@@ -65,14 +69,6 @@ func (k *KnownInfo) Disasm() error {
 		<-disasmLimit
 
 		candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
-		candidates = lo.Filter(candidates, func(p disasm.PossibleStr, _ int) bool {
-			if p.Size <= 2 {
-				return false
-			}
-
-			_, ok := e.LoadAddrString(p.Addr, int64(p.Size))
-			return ok
-		})
 
 		lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
 			resultChan <- result{
