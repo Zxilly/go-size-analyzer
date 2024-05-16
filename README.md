@@ -4,6 +4,7 @@
 [![Tests](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/github/Zxilly/go-size-analyzer/graph/badge.svg?token=Q4TDH6RFZN)](https://codecov.io/github/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
+[![homebrew version](https://img.shields.io/homebrew/v/go-size-analyzer)](https://formulae.brew.sh/formula/go-size-analyzer)
 
 English | [简体中文](./README_zh-CN.md)
 
