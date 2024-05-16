@@ -10,9 +10,9 @@ builds:
   - binary: gsa
     main: ./cmd/gsa
     ldflags:
-        - "-s -w"
-        - -X github.com/Zxilly/go-size-analyzer.version={{.Version}}
-        - -X github.com/Zxilly/go-size-analyzer.buildDate={{.Date}}
+      - "-s -w"
+      - -X github.com/Zxilly/go-size-analyzer.version={{.Version}}
+      - -X github.com/Zxilly/go-size-analyzer.buildDate={{.Date}}
     env:
       - CGO_ENABLED=0
     goos:
@@ -42,7 +42,7 @@ nfpms:
     homepage: https://github.com/Zxilly/go-size-analyzer
     description: A tool for analyzing the dependencies in compiled Golang binaries, providing insight into their impact on the final build.
     maintainer: Zxilly <zxilly@outlook.com>
-    license: MIT
+    license: AGPL-3.0-only
     formats:
       - apk
       - deb
