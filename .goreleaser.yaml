@@ -36,6 +36,19 @@ archives:
       - goos: windows
         format: zip
 
+nfpms:
+  - id: go-size-analyzer
+    package_name: go-size-analyzer
+    homepage: https://github.com/Zxilly/go-size-analyzer
+    description: A tool for analyzing the dependencies in compiled Golang binaries, providing insight into their impact on the final build.
+    maintainer: Zxilly <zxilly@outlook.com>
+    license: MIT
+    formats:
+      - apk
+      - deb
+      - rpm
+      - archlinux
+
 checksum:
   name_template: 'checksums.txt'
 
