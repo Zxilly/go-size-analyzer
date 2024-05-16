@@ -118,7 +118,7 @@ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ```bash
 Usage: gsa <file> [flags]
 
-A tool for analysing the size of dependencies in compiled Golang binaries,
+A tool for analyzing the size of dependencies in compiled Golang binaries,
 providing insight into their impact on the final build.
 
 Arguments:
@@ -149,7 +149,11 @@ Svg output options
   --padding-box=4      Padding between box border and content
   --padding-root=32    Padding around root content
 
-Web explorer options
+Disassembly options
+  --gc-rate=512    Disassemble GC rate, higher means faster and more ram        
+                   consumption
+
+Web interface options
   --web               use web interface to explore the details
   --listen=":8080"    listen address
   --open              Open browser

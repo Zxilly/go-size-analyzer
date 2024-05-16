@@ -22,8 +22,9 @@ func entry() {
 	}
 
 	result, err := internal.Analyze(Options.Binary, internal.Options{
-		SkipSymbol: Options.NoSymbol,
-		SkipDisasm: Options.NoDisasm,
+		SkipSymbol:   Options.NoSymbol,
+		SkipDisasm:   Options.NoDisasm,
+		DisAsmGcRate: Options.GCRate,
 	})
 	if err != nil {
 		utils.FatalError(err)

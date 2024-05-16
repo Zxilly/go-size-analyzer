@@ -18,6 +18,8 @@ import (
 type Options struct {
 	SkipSymbol bool
 	SkipDisasm bool
+
+	DisAsmGcRate int
 }
 
 func Analyze(bin string, options Options) (*result.Result, error) {
@@ -61,7 +63,7 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	runtime.GC()
 
 	if !options.SkipDisasm {
-		err = k.Disasm()
+		err = k.Disasm(options.DisAsmGcRate)
 		if err != nil {
 			return nil, err
 		}

@@ -3,8 +3,10 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"runtime"
+	"time"
 
 	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
@@ -14,7 +16,10 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func (k *KnownInfo) Disasm() error {
+func (k *KnownInfo) Disasm(gcRate int) error {
+	startTime := time.Now()
+	slog.Info("Disassemble functions...")
+
 	fns := k.Deps.GetFunctions()
 
 	e, err := disasm.NewExtractor(k.wrapper, k.Size)
@@ -48,7 +53,7 @@ func (k *KnownInfo) Disasm() error {
 
 			processed++
 
-			if processed%128 == 1 {
+			if processed%gcRate == 1 {
 				// maybe too strict, but we don't have a valid memory limit
 				runtime.GC()
 			}
@@ -56,8 +61,6 @@ func (k *KnownInfo) Disasm() error {
 
 		resultDone()
 	}()
-
-	slog.Info("Disassemble functions...")
 
 	numCores := runtime.NumCPU()
 	disasmLimit := make(chan struct{}, numCores)
@@ -85,7 +88,7 @@ func (k *KnownInfo) Disasm() error {
 
 	<-resultProcess.Done()
 
-	slog.Info("Disassemble done")
+	slog.Info(fmt.Sprintf("Disassemble functions done, took %s", time.Since(startTime)))
 
 	return nil
 }
