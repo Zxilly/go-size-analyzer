@@ -23,7 +23,7 @@ def get_project_root() -> str:
     return os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 
-def ensure_dir(path: str):
+def ensure_dir(path: str) -> str:
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -36,16 +36,6 @@ def get_covdata_unit_dir():
     return os.path.join(get_project_root(), "covdata", "unit")
 
 
-def get_named_result_dir(name: str) -> str:
-    p = os.path.join(get_project_root(), "results", name)
-    ensure_dir(p)
-    return p
-
-
-def get_result_file(name: str, suffix: str = "") -> str:
-    return os.path.join(get_named_result_dir(name), name + suffix)
-
-
 def init_dirs():
     paths: list[str] = [
         get_covdata_integration_dir(),
@@ -56,6 +46,23 @@ def init_dirs():
         ensure_dir(p)
         for f in os.listdir(p):
             os.remove(os.path.join(p, f))
+
+    results = os.path.join(get_project_root(), "results")
+    clear_folder(results)
+    ensure_dir(results)
+
+
+def clear_folder(folder_path: str) -> None:
+    if not os.path.exists(folder_path):
+        return
+
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+        elif os.path.isdir(file_path):
+            shutil.rmtree(file_path)
 
 
 def extract_output(p: subprocess.CompletedProcess) -> str:
@@ -125,19 +132,19 @@ def find_unused_port(start_port=20000, end_port=60000):
     return None
 
 
-def run_process(pargs: list[str], name: str, suffix: str, timeout=60):
+def run_process(pargs: list[str], name: str, timeout=120, profiler_dir: str = None) -> str:
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
+    if profiler_dir is not None:
+        env["OUTPUT_DIR"] = profiler_dir
 
     ret = subprocess.run(
         args=pargs,
         env=env, text=True, capture_output=True, cwd=get_project_root(),
         encoding="utf-8", timeout=timeout
     )
-    output_name = get_result_file(name, suffix)
+
     content = extract_output(ret)
-    with open(output_name, "w", encoding="utf-8") as f:
-        f.write(content)
 
     if ret.returncode != 0:
         msg = (f"Failed to run {name}.\n"
@@ -145,6 +152,8 @@ def run_process(pargs: list[str], name: str, suffix: str, timeout=60):
                f"Output: {content}\n")
         print(msg)
         raise Exception(f"Failed to run {name}.")
+
+    return content
 
 
 def get_binaries_path():

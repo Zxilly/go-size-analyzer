@@ -1,6 +1,6 @@
 import csv
 
-from define import RemoteBinary, RemoteBinaryType, TestType
+from remote import RemoteBinary, RemoteBinaryType, TestType
 from example_download import get_example_download_url
 from utils import get_binaries_path
 

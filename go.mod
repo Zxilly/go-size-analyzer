@@ -16,6 +16,7 @@ require (
 	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/jedib0t/go-pretty/v6 v6.5.9
+	github.com/knadh/profiler v0.1.1
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.15.2
 	github.com/nikolaydubina/treemap v1.2.5

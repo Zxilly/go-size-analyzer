@@ -2,14 +2,6 @@ github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a h1:5fHVlhW+y2AvBdz
 github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a/go.mod h1:uD1YXB1UGkc6qCqPfkcMYGhZ2W1alw4VCXoD+SGBCsI=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
-github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d h1:ED/987saVptZxHwWyH7k3jbkn+gPX/KTafhzWgUi5l4=
-github.com/ZxillyFork/trie v0.0.0-20240509160632-2e73c0b0842d/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
-github.com/ZxillyFork/trie v0.0.0-20240512044638-3ff3bb468c43 h1:cg6UBw4LvlTohbvBuWhpufGgQr4hpmDFePm2qNDHgs0=
-github.com/ZxillyFork/trie v0.0.0-20240512044638-3ff3bb468c43/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
-github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc h1:gi4UGkk6i249aTnDBfri1orYlgdiT/zcpxFfQmu3wHg=
-github.com/ZxillyFork/trie v0.0.0-20240512051609-52f9b9e91abc/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
-github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992 h1:jxQHUiuMLlxR6laATod/depa8cKEV0gRz9tDcc1yu3Y=
-github.com/ZxillyFork/trie v0.0.0-20240512055750-1aa08c51c992/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
 github.com/alecthomas/assert/v2 v2.6.0 h1:o3WJwILtexrEUk3cUVal3oiQY2tfgr/FHWiz/v2n4FU=
@@ -47,6 +39,8 @@ github.com/hexops/gotextdiff v1.0.3 h1:gitA9+qJrrTCsiCl7+kh75nPqQt1cx4ZkudSTLoUq
 github.com/hexops/gotextdiff v1.0.3/go.mod h1:pSWU5MAI3yDq+fZBTazCSJysOMbxWL1BSow5/V2vxeg=
 github.com/jedib0t/go-pretty/v6 v6.5.9 h1:ACteMBRrrmm1gMsXe9PSTOClQ63IXDUt03H5U+UV8OU=
 github.com/jedib0t/go-pretty/v6 v6.5.9/go.mod h1:zbn98qrYlh95FIhwwsbIip0LYpwSG8SUOScs+v9/t0E=
+github.com/knadh/profiler v0.1.1 h1:wlaZnnEbVl5AvFu2zZax3KvYXNVOiuX8bLYSyY3PpEk=
+github.com/knadh/profiler v0.1.1/go.mod h1:LqNkAu++MfFkbEDA63AmRaIf6UkGrLXyZ5VQQdekZiI=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/pretty v0.3.1/go.mod h1:hoEshYVHaxMs3cyo3Yncou5ZscifuDolrwPKZanG3xk=
