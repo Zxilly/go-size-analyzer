@@ -17,6 +17,8 @@ import (
 )
 
 func (k *KnownInfo) Disasm(gcRate int) error {
+	gcRate = max(gcRate, 128)
+
 	startTime := time.Now()
 	slog.Info("Disassemble functions...")
 
