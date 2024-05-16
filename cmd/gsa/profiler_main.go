@@ -18,18 +18,21 @@ func main() {
 		panic("OUTPUT_DIR environment variable is not set")
 	}
 
+	var targets []int
+	mainProfile := os.Getenv("PROFILE")
+	if mainProfile == "main" {
+		targets = []int{profiler.Cpu, profiler.Mem}
+	} else {
+		targets = []int{profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
+	}
+
 	p := profiler.New(
 		profiler.Conf{
 			DirPath:        outputDir,
 			NoShutdownHook: true,
 			MemProfileType: "heap",
 		},
-		profiler.Cpu,
-		profiler.Mem,
-		profiler.Mutex,
-		profiler.Goroutine,
-		profiler.Block,
-		profiler.ThreadCreate,
+		targets...,
 	)
 
 	p.Start()
