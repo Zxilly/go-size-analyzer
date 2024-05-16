@@ -6,6 +6,10 @@ on:
     paths: 
       - 'ui/**'
       - '.github/workflows/build-ui.yml'
+  pull_request:
+    paths:
+      - 'ui/**'
+      - '.github/workflows/build-ui.yml'
   workflow_call:
     inputs:
       external_call:
