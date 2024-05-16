@@ -57,7 +57,7 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 		}
 	}
 
-	// collect for pacakge and symbol
+	// collect for package and symbol
 	runtime.GC()
 
 	if !options.SkipDisasm {
