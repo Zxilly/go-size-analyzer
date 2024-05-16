@@ -4,7 +4,21 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '*.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/*'
+      - 'scripts/*'
+      - '.golangci.yaml'
   pull_request:
+    paths:
+      - '*.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/*'
+      - 'scripts/*'
+      - '.golangci.yaml'
 
 permissions:
   contents: write

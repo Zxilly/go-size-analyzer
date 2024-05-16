@@ -3,10 +3,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '.github/*'
-      - '*.go'
-      - 'scripts/*'
   pull_request:
 
 jobs:

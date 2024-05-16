@@ -1,8 +1,9 @@
 package printer
 
 import (
-	"encoding/json"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/Zxilly/go-size-analyzer/internal/global"
 	"github.com/Zxilly/go-size-analyzer/internal/result"

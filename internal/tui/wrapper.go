@@ -78,7 +78,7 @@ func (w *wrapper) Description() string {
 	sb := new(strings.Builder)
 
 	writeln := func(format string, args ...any) {
-		fmt.Fprintf(sb, format+"\n", args...)
+		_, _ = fmt.Fprintf(sb, format+"\n", args...)
 	}
 
 	switch {
