@@ -1,10 +1,11 @@
-import csv
-import json
+from argparse import ArgumentParser
 
 import requests
 
-from define import IntegrationTest, TestType, RemoteBinary
+from define import IntegrationTest, TestType
 from gsa import build_gsa
+from merge import merge_covdata
+from remote import load_remote_binaries, load_remote_for_tui_test
 from utils import *
 
 
@@ -21,26 +22,28 @@ def eval_test(gsa: str, target: IntegrationTest):
                      "-f", "json",
                      "--indent", "2",
                      path,
-                     "-o", get_result_file(f"{name}.json")],
+                     "-o", get_result_file(name, ".json")],
                     name, ".json.txt")
 
     if TestType.HTML_TEST in test_type:
         run_process([gsa,
                      "-f", "html",
                      path,
-                     "-o", get_result_file(f"{name}.html")],
+                     "-o", get_result_file(name, ".html")],
                     name, ".html.txt")
 
     if TestType.SVG_TEST in test_type:
         run_process([gsa,
                      "-f", "svg",
                      path,
-                     "-o", get_result_file(f"{name}.svg")],
+                     "-o", get_result_file(name, ".svg")],
                     name, ".svg.txt")
 
 
 def run_unit_tests():
     log("Running unit tests...")
+    load_remote_for_tui_test()
+
     unit_path = os.path.join(get_project_root(), "covdata", "unit")
 
     run_process(
@@ -51,12 +54,11 @@ def run_unit_tests():
             "-race",
             "-covermode=atomic",
             "-cover",
+            "-tags=embed",
             "./...",
-            f"-test.gocoverdir={unit_path}",
-            "-tags",
-            "embed"
+            f"-test.gocoverdir={unit_path}"
         ],
-        "unit",
+        "unit_embed",
         ".txt",
         timeout=600,  # Windows runner is extremely slow
     )
@@ -81,45 +83,11 @@ def run_unit_tests():
     log("Unit tests passed.")
 
 
-def merge_covdata():
-    log("Merging coverage data...")
+def run_integration_tests():
+    log("Running integration tests...")
 
-    subprocess.run(
-        [
-            "go",
-            "tool",
-            "covdata",
-            "textfmt",
-            "-i=./covdata/unit",
-            "-o",
-            "unit.profile",
-        ],
-        check=True,
-        cwd=get_project_root(),
-        encoding="utf-8",
-    )
-    log("Merged unit coverage data.")
+    targets = load_remote_binaries()
 
-    subprocess.run(
-        [
-            "go",
-            "tool",
-            "covdata",
-            "textfmt",
-            "-i=./covdata/integration",
-            "-o",
-            "integration.profile",
-        ],
-        check=True,
-        cwd=get_project_root(),
-        encoding="utf-8",
-    )
-    log("Merged integration coverage data.")
-
-    log("Merged coverage data.")
-
-
-def run_integration_tests(targets: list[IntegrationTest]):
     with build_gsa() as gsa:
         run_web_test(gsa)
 
@@ -127,12 +95,16 @@ def run_integration_tests(targets: list[IntegrationTest]):
         completed_tests = 1
 
         for target in targets:
+            base = time.time()
             try:
                 eval_test(gsa, target)
-                log(f"[{completed_tests}/{all_tests}] Test {target.name} passed.")
+                log(f"[{completed_tests}/{all_tests}] Test {target.name} passed in {format_time(time.time() - base)}.")
+                completed_tests += 1
             except Exception as e:
                 log(f"Test {target.name} failed: {e}")
-            completed_tests += 1
+                raise e
+
+    log("Integration tests passed.")
 
 
 def run_web_test(entry: str):
@@ -159,50 +131,38 @@ def run_web_test(entry: str):
 
     ret = requests.get(f"http://localhost:{port}").text
 
-    # parse html
-    parser = DataParser()
-    parser.feed(ret)
-
-    json_data = parser.get_data()
-    if json_data is None:
-        raise Exception("Failed to find data element in the html.")
-
-    # try load value as json
-    try:
-        content = json.loads(json_data)
-    except json.JSONDecodeError:
-        raise Exception("Failed to parse data element as json.")
-
-    # check if the data is correct
-    keys = ["name", "size", "packages", "sections"]
-    for key in keys:
-        if key not in content:
-            raise Exception(f"Missing key {key} in the data.")
+    assert_html_valid(ret)
 
     p.terminate()
     log("Web test passed.")
 
 
-def load_remote_binaries() -> list[IntegrationTest]:
-    log("Fetching remote binaries...")
+def get_parser() -> ArgumentParser:
+    parser = ArgumentParser()
 
-    with open(get_binaries_path(), "r") as f:
-        reader = csv.reader(f)
-        ret = [RemoteBinary.from_csv(line).to_test() for line in reader]
+    parser.add_argument("--unit", action="store_true", help="Run unit tests.")
+    parser.add_argument("--integration", action="store_true", help="Run integration tests.")
 
-    log("Fetched remote binaries.")
-    return ret
+    return parser
 
 
 if __name__ == "__main__":
-    set_base_time()
+    parser = get_parser()
+    args = parser.parse_args()
 
     init_dirs()
 
-    tests = load_remote_binaries()
+    if not args.unit and not args.integration:
+        if os.getenv("CI") is not None:
+            args.unit = True
+            args.integration = True
+        else:
+            raise Exception("Please specify a test type to run.")
 
-    run_unit_tests()
-    run_integration_tests(tests)
+    if args.unit:
+        run_unit_tests()
+    if args.integration:
+        run_integration_tests()
 
     merge_covdata()
 

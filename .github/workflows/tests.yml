@@ -46,6 +46,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        test: [unit, integration]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -87,27 +88,21 @@ jobs:
           enableCrossOsArchive: true
 
       - name: Run tests
-        run: python scripts/tests.py
+        run: python scripts/tests.py --${{ matrix.test }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload unit coverage
+      - name: Upload coverage
         uses: codecov/codecov-action@v4.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: unit.profile
-          flags: unit
-
-      - name: Upload integration coverage
-        uses: codecov/codecov-action@v4.4.0
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: integration.profile
-          flags: integration
+          file: ${{ matrix.test }}.profile
+          flags: ${{ matrix.test }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ matrix.os }}-results
+          name: ${{ matrix.os }}-${{ matrix.test }}-results
           path: results/
+          compression-level: 9
