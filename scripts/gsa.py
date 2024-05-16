@@ -1,6 +1,8 @@
 import contextlib
+import shutil
+import subprocess
 
-from utils import *
+from utils import log, require_go, get_new_temp_binary, get_project_root, extract_output, get_result_file
 
 
 @contextlib.contextmanager
@@ -15,6 +17,7 @@ def build_gsa():
         [
             go,
             "build",
+            "-buildmode=exe",  # since windows use pie by default
             "-cover",
             "-covermode=atomic",
             "-tags",
@@ -37,8 +40,4 @@ def build_gsa():
 
     yield temp_binary
 
-    log("Cleaning up...")
-    os.remove(temp_binary)
-    log("Cleaned up.")
-
-
+    shutil.move(temp_binary, get_result_file("integration", ".test"))

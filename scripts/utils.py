@@ -1,20 +1,22 @@
 import io
+import json
 import os
 import shutil
 import socket
 import subprocess
 import tarfile
 import tempfile
+import time
 import zipfile
 from html.parser import HTMLParser
-
-import time
 
 
 def get_new_temp_binary() -> str:
     suffix = ".exe" if os.name == "nt" else ""
 
-    return tempfile.mktemp(suffix=suffix)
+    temp_dir = tempfile.mkdtemp(prefix="gsa_")
+
+    return os.path.join(temp_dir, f"gsa{suffix}")
 
 
 def get_project_root() -> str:
@@ -34,17 +36,18 @@ def get_covdata_unit_dir():
     return os.path.join(get_project_root(), "covdata", "unit")
 
 
-def get_result_dir() -> str:
-    return os.path.join(get_project_root(), "results")
+def get_named_result_dir(name: str) -> str:
+    p = os.path.join(get_project_root(), "results", name)
+    ensure_dir(p)
+    return p
 
 
-def get_result_file(name: str) -> str:
-    return os.path.join(get_result_dir(), name)
+def get_result_file(name: str, suffix: str = "") -> str:
+    return os.path.join(get_named_result_dir(name), name + suffix)
 
 
 def init_dirs():
     paths: list[str] = [
-        get_result_dir(),
         get_covdata_integration_dir(),
         get_covdata_unit_dir(),
     ]
@@ -98,18 +101,17 @@ def require_go() -> str:
     return go
 
 
-base_time = 0
-
-
-def set_base_time():
-    global base_time
-    base_time = time.time()
+base_time = time.time()
 
 
 def log(msg: str):
     global base_time
-    t = "{:.2f}s".format((time.time() - base_time))
+    t = format_time(time.time() - base_time)
     print(f"[{t}] {msg}", flush=True)
+
+
+def format_time(t: float) -> str:
+    return "{:.2f}s".format(t)
 
 
 def find_unused_port(start_port=20000, end_port=60000):
@@ -132,7 +134,7 @@ def run_process(pargs: list[str], name: str, suffix: str, timeout=60):
         env=env, text=True, capture_output=True, cwd=get_project_root(),
         encoding="utf-8", timeout=timeout
     )
-    output_name = get_result_file(f"{name}{suffix}")
+    output_name = get_result_file(name, suffix)
     content = extract_output(ret)
     with open(output_name, "w", encoding="utf-8") as f:
         f.write(content)
@@ -171,3 +173,29 @@ class DataParser(HTMLParser):
 
     def get_data(self):
         return self.data
+
+
+def assert_html_valid(h: str):
+    # parse html
+    parser = DataParser()
+    parser.feed(h)
+
+    json_data = parser.get_data()
+    if json_data is None:
+        raise Exception("Failed to find data element in the html.")
+
+    # try load value as json
+    try:
+        content = json.loads(json_data)
+    except json.JSONDecodeError:
+        raise Exception("Failed to parse data element as json.")
+
+    # check if the data is correct
+    keys = ["name", "size", "packages", "sections"]
+    for key in keys:
+        if key not in content:
+            raise Exception(f"Missing key {key} in the data.")
+
+
+def dir_is_empty(p: str) -> bool:
+    return len(os.listdir(p)) == 0
