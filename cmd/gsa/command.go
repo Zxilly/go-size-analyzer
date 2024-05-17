@@ -27,8 +27,6 @@ var Options struct {
 	PaddingBox  int `help:"Padding between box border and content" default:"4" group:"svg"`
 	PaddingRoot int `help:"Padding around root content" default:"32" group:"svg"`
 
-	GCRate int `help:"Disassemble GC rate, higher means faster and more ram consumption" default:"512" group:"disasm"`
-
 	Web         bool                  `long:"web" help:"use web interface to explore the details" group:"web"`
 	Listen      string                `long:"listen" help:"listen address" default:":8080" group:"web"`
 	Open        bool                  `long:"open" help:"Open browser" group:"web"`
@@ -72,10 +70,6 @@ func init() {
 			{
 				Key:   "tui",
 				Title: "Terminal interface options",
-			},
-			{
-				Key:   "disasm",
-				Title: "Disassembly options",
 			},
 		}),
 		kong.Vars{

@@ -16,9 +16,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func (k *KnownInfo) Disasm(gcRate int) error {
-	gcRate = max(gcRate, 128)
-
+func (k *KnownInfo) Disasm() error {
 	startTime := time.Now()
 	slog.Info("Disassemble functions...")
 
@@ -43,8 +41,6 @@ func (k *KnownInfo) Disasm(gcRate int) error {
 	resultProcess, resultDone := context.WithCancel(context.Background())
 
 	go func() {
-		processed := 0
-
 		for r := range resultChan {
 			s, ok := e.LoadAddrString(r.addr, int64(r.size))
 			if !ok {
@@ -52,19 +48,12 @@ func (k *KnownInfo) Disasm(gcRate int) error {
 			}
 
 			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn, entity.DisasmMeta{Value: utils.Deduplicate(s)})
-
-			processed++
-
-			if processed%gcRate == 1 {
-				// maybe too strict, but we don't have a valid memory limit
-				runtime.GC()
-			}
 		}
 
 		resultDone()
 	}()
 
-	numCores := runtime.NumCPU()
+	numCores := runtime.NumCPU() * 4
 	disasmLimit := make(chan struct{}, numCores)
 	for range numCores {
 		disasmLimit <- struct{}{}

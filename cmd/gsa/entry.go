@@ -15,6 +15,8 @@ import (
 )
 
 func entry() {
+	utils.ApplyMemoryLimit()
+
 	if Options.Verbose {
 		utils.InitLogger(slog.LevelDebug)
 	} else {
@@ -22,9 +24,8 @@ func entry() {
 	}
 
 	result, err := internal.Analyze(Options.Binary, internal.Options{
-		SkipSymbol:   Options.NoSymbol,
-		SkipDisasm:   Options.NoDisasm,
-		DisAsmGcRate: Options.GCRate,
+		SkipSymbol: Options.NoSymbol,
+		SkipDisasm: Options.NoDisasm,
 	})
 	if err != nil {
 		utils.FatalError(err)

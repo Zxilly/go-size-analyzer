@@ -147,10 +147,6 @@ Svg output options
   --padding-box=4      Padding between box border and content
   --padding-root=32    Padding around root content
 
-Disassembly options
-  --gc-rate=512    Disassemble GC rate, higher means faster and more ram        
-                   consumption
-
 Web interface options
   --web               use web interface to explore the details
   --listen=":8080"    listen address
