@@ -20,7 +20,7 @@ type SvgOption struct {
 	PaddingRoot int
 }
 
-func Svg(r *result.Result, options *SvgOption) []byte {
+func Svg(r *result.Result, options *SvgOption) error {
 	baseName := filepath.Base(r.Name)
 
 	tree := &treemap.Tree{
@@ -96,5 +96,7 @@ func Svg(r *result.Result, options *SvgOption) []byte {
 		float64(options.PaddingRoot))
 	renderer := render.SVGRenderer{}
 
-	return renderer.Render(spec, float64(options.Width), float64(options.Height))
+	data := renderer.Render(spec, float64(options.Width), float64(options.Height))
+	_, err := options.Writer.Write(data)
+	return err
 }

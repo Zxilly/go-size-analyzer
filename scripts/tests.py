@@ -1,4 +1,5 @@
 import os.path
+import time
 from argparse import ArgumentParser
 
 import requests
@@ -94,8 +95,9 @@ def run_web_test(entry: str):
     if port is None:
         raise Exception("Failed to find an unused port.")
 
+    stdout_data, stderr_data = "", ""
     p = subprocess.Popen(
-        args=[entry, "--web", "--listen", f"127.0.0.1:{port}", entry],
+        args=[entry, "--web", "--listen", f"0.0.0.0:{port}", entry],
         text=True, cwd=get_project_root(),
         encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
@@ -103,8 +105,18 @@ def run_web_test(entry: str):
     for line in iter(p.stdout.readline, ""):
         if "localhost" in line:
             break
+        stdout_data += line
 
-    time.sleep(1)  # still need to wait for the server to start
+    time.sleep(1)
+
+    if p.poll() is not None:
+        stdout_data += p.stdout.read()
+        stderr_data = p.stderr.read()
+
+        print(f"stdout: {stdout_data}\n")
+        print(f"stderr: {stderr_data}\n")
+
+        raise Exception("Failed to start the server.")
 
     ret = requests.get(f"http://127.0.0.1:{port}").text
 

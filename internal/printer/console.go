@@ -3,6 +3,7 @@ package printer
 import (
 	"cmp"
 	"fmt"
+	"io"
 	"path/filepath"
 	"slices"
 
@@ -20,12 +21,13 @@ func percentString(f float64) string {
 }
 
 type CommonOption struct {
+	Writer       io.Writer
 	HideSections bool
 	HideMain     bool
 	HideStd      bool
 }
 
-func Text(r *result.Result, options *CommonOption) string {
+func Text(r *result.Result, options *CommonOption) error {
 	t := table.NewWriter()
 
 	allKnownSize := uint64(0)
@@ -87,5 +89,6 @@ func Text(r *result.Result, options *CommonOption) string {
 	t.AppendFooter(table.Row{percentString(float64(allKnownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(allKnownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
 
-	return t.Render()
+	_, err := options.Writer.Write([]byte(t.Render()))
+	return err
 }

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 
@@ -40,25 +42,40 @@ func entry() {
 		Options.Format = "html"
 	}
 
-	var b []byte
+	var writer io.Writer
+
+	if Options.Output != "" {
+		writer, err = os.OpenFile(Options.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			utils.FatalError(err)
+		}
+	} else {
+		writer = os.Stdout
+		if Options.Web {
+			writer = new(bytes.Buffer)
+		}
+	}
+
 	common := printer.CommonOption{
 		HideSections: Options.HideSections,
 		HideMain:     Options.HideMain,
 		HideStd:      Options.HideStd,
+		Writer:       writer,
 	}
 
 	switch Options.Format {
 	case "text":
-		b = []byte(printer.Text(result, &common))
+		err = printer.Text(result, &common)
 	case "json":
-		b = printer.JSON(result, &printer.JSONOption{
+		err = printer.JSON(result, &printer.JSONOption{
 			Indent:     Options.Indent,
 			HideDetail: Options.Compact,
+			Writer:     writer,
 		})
 	case "html":
-		b = printer.HTML(result)
+		err = printer.HTML(result, writer)
 	case "svg":
-		b = printer.Svg(result, &printer.SvgOption{
+		err = printer.Svg(result, &printer.SvgOption{
 			CommonOption: common,
 			Width:        Options.Width,
 			Height:       Options.Height,
@@ -70,8 +87,17 @@ func entry() {
 		utils.FatalError(fmt.Errorf("invalid format: %s", Options.Format))
 	}
 
+	if err != nil {
+		utils.FatalError(err)
+	}
+
 	if Options.Web {
-		webui.HostServer(b, Options.Listen)
+		b, ok := writer.(*bytes.Buffer)
+		if !ok {
+			panic("writer is not bytes.Buffer")
+		}
+
+		webui.HostServer(b.Bytes(), Options.Listen)
 
 		url := utils.GetURLFromListen(Options.Listen)
 
@@ -86,14 +112,5 @@ func entry() {
 
 		utils.WaitSignal()
 		return
-	}
-
-	if Options.Output != "" {
-		err := os.WriteFile(Options.Output, b, os.ModePerm)
-		if err != nil {
-			utils.FatalError(err)
-		}
-	} else {
-		fmt.Println(string(b))
 	}
 }
