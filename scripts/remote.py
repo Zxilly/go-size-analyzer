@@ -40,7 +40,7 @@ class IntegrationTest:
             self.name)
 
     def typed_dir(self, typ: TestType):
-        dir_path = os.path.join(self.base_dir, str(typ))
+        dir_path = os.path.join(self.base_dir, get_flag_str(typ))
         ensure_dir(dir_path)
         return dir_path
 
@@ -50,7 +50,7 @@ class IntegrationTest:
         return dir_path
 
     def output_filepath(self, typ: TestType):
-        return os.path.join(self.typed_dir(typ), f"{self.name}.{typ.value}.txt")
+        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.txt")
 
     def generated_filepath(self, typ: TestType):
         ext = get_flag_str(typ)
