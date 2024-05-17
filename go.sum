@@ -1,5 +1,9 @@
 github.com/ZxillyFork/gore v0.0.0-20240517085927-12fc5c62c0a6 h1:J+GfdumUgnhOcAuXJTxaeILSxd21K2gWVz6q1EyKqQA=
 github.com/ZxillyFork/gore v0.0.0-20240517085927-12fc5c62c0a6/go.mod h1:nMh5jV4q6hRyqeyJToUs/YMwn/fRLOpwQlZu5CFfNQo=
+github.com/ZxillyFork/gore v0.0.0-20240517092230-bae32d392694 h1:dmQebR3RefwybV4gorNlWjN8b799SkmN3kFDCGuL+8c=
+github.com/ZxillyFork/gore v0.0.0-20240517092230-bae32d392694/go.mod h1:nMh5jV4q6hRyqeyJToUs/YMwn/fRLOpwQlZu5CFfNQo=
+github.com/ZxillyFork/gore v0.0.0-20240517092743-06ea6aecda91 h1:yNvjV7XmjdaVJwkPc+qZArA6x3mvKLLPr4tIFrkRJas=
+github.com/ZxillyFork/gore v0.0.0-20240517092743-06ea6aecda91/go.mod h1:nMh5jV4q6hRyqeyJToUs/YMwn/fRLOpwQlZu5CFfNQo=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=

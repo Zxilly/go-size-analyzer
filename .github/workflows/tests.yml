@@ -92,6 +92,9 @@ jobs:
           key: test-bins-${{ hashFiles('scripts/binaries.csv') }}
           enableCrossOsArchive: true
 
+      - name: Download deps
+        run: go mod download
+
       - name: Run tests
         run: python scripts/tests.py --${{ matrix.test }}
         env:

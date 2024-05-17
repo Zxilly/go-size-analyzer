@@ -39,6 +39,9 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/webui/index.html
 
+      - name: Download deps
+        run: go mod download
+
       - uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser
