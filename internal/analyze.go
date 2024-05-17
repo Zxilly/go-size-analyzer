@@ -29,7 +29,7 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	}
 
 	k := &KnownInfo{
-		Size:      utils.GetFileSize(file.GetFile()),
+		Size:      utils.GetFileSize(bin),
 		BuildInfo: file.BuildInfo,
 
 		gore:    file,

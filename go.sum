@@ -1,5 +1,5 @@
-github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a h1:5fHVlhW+y2AvBdz/9TQFMz9eD2GA7UHSNniUEjhqWjI=
-github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a/go.mod h1:uD1YXB1UGkc6qCqPfkcMYGhZ2W1alw4VCXoD+SGBCsI=
+github.com/ZxillyFork/gore v0.0.0-20240517085927-12fc5c62c0a6 h1:J+GfdumUgnhOcAuXJTxaeILSxd21K2gWVz6q1EyKqQA=
+github.com/ZxillyFork/gore v0.0.0-20240517085927-12fc5c62c0a6/go.mod h1:nMh5jV4q6hRyqeyJToUs/YMwn/fRLOpwQlZu5CFfNQo=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
@@ -20,12 +20,12 @@ github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed h1:ptV8
 github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed/go.mod h1:6I0nZ3YHUrQj7YHIHlM8RySX4ZIthTliMY+W8X8b+Gs=
 github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb h1:Hs3xzxHuruNT2Iuo87iS40c0PhLqpnUKBI6Xw6Ad3wQ=
 github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb/go.mod h1:EPP2QJ0ectp3zo6gx9f8oJGq8keirqPJ3XpYEI8wrrs=
-github.com/charmbracelet/x/exp/golden v0.0.0-20240222125807-0344fda748f8 h1:kyT+aGp1z5jwlus3OY0cP6FuT05jYeeExx/4TYxnyrs=
-github.com/charmbracelet/x/exp/golden v0.0.0-20240222125807-0344fda748f8/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
+github.com/charmbracelet/x/exp/golden v0.0.0-20240515162549-69ee4f765313 h1:rzm69mn0WM5fPjzlvIOT89RVYEbojZduVZeEar3Lxfg=
+github.com/charmbracelet/x/exp/golden v0.0.0-20240515162549-69ee4f765313/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240510181320-e66de7a51531 h1:pQEGm2biIw1EygoP5tEufXuykUqZrcqOtQLJ25AO870=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240510181320-e66de7a51531/go.mod h1:hj+TFTT7V4sVYggNy1SkYXgE2ZWscgeteB8FqgqCmWk=
-github.com/charmbracelet/x/exp/term v0.0.0-20240510181320-e66de7a51531 h1:RPb7LB50mGIt9KAGz0rJ+SBYRi5gg74TwvKquCN7XBM=
-github.com/charmbracelet/x/exp/term v0.0.0-20240510181320-e66de7a51531/go.mod h1:YBotIGhfoWhHDlnUpJMkjebGV2pdGRCn1Y4/Nk/vVcU=
+github.com/charmbracelet/x/exp/term v0.0.0-20240515162549-69ee4f765313 h1:fAAMnqSGV4lwoXfS8ZB7MaLvXayMAAVifUx9sOFRyOo=
+github.com/charmbracelet/x/exp/term v0.0.0-20240515162549-69ee4f765313/go.mod h1:YBotIGhfoWhHDlnUpJMkjebGV2pdGRCn1Y4/Nk/vVcU=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

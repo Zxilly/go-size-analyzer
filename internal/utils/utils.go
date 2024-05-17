@@ -12,7 +12,10 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
-func GetFileSize(file *os.File) uint64 {
+func GetFileSize(name string) uint64 {
+	file, _ := os.Open(name)
+	defer file.Close()
+
 	fileInfo, err := file.Stat()
 	if err != nil {
 		panic(err)

@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.3
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20240509175338-86395100281a
+	github.com/ZxillyFork/gore v0.0.0-20240517085927-12fc5c62c0a6
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v0.9.0
@@ -33,8 +33,8 @@ require (
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
-	github.com/charmbracelet/x/exp/golden v0.0.0-20240222125807-0344fda748f8 // indirect
-	github.com/charmbracelet/x/exp/term v0.0.0-20240510181320-e66de7a51531 // indirect
+	github.com/charmbracelet/x/exp/golden v0.0.0-20240515162549-69ee4f765313 // indirect
+	github.com/charmbracelet/x/exp/term v0.0.0-20240515162549-69ee4f765313 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
 	github.com/kr/pretty v0.3.1 // indirect
