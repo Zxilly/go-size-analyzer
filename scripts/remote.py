@@ -167,18 +167,19 @@ def load_remote_binaries(typ: str) -> list[IntegrationTest]:
 
     with open(get_binaries_path(), "r") as f:
         reader = csv.reader(f)
-        ret = [RemoteBinary.from_csv(line).to_test() for line in reader]
+        ret = [RemoteBinary.from_csv(line) for line in reader]
 
-    def filter_test(t: IntegrationTest):
+    def filter_binary(t: RemoteBinary):
         is_example = t.name.startswith("bin-")
         if typ == "example":
             return is_example
         return not is_example
 
-    filtered = list(filter(filter_test, ret))
+    filtered = list(filter(filter_binary, ret))
+    tests = [t.to_test() for t in filtered]
 
     log("Fetched remote binaries.")
-    return filtered
+    return tests
 
 
 def load_remote_for_tui_test():

@@ -106,8 +106,8 @@ def generate_example() -> list[RemoteBinary]:
 
 if __name__ == '__main__':
     remotes = []
-    # remotes.extend(generate_example())
-    # remotes.extend(generate_cockroachdb())
+    remotes.extend(generate_example())
+    remotes.extend(generate_cockroachdb())
     remotes.extend(generate_kubernetes())
 
     for r in remotes:
