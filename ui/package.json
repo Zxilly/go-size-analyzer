@@ -15,8 +15,8 @@
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-beta-26f2496093-20240514",
+    "react-dom": "19.0.0-beta-26f2496093-20240514",
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
@@ -26,23 +26,28 @@
     "@types/d3-hierarchy": "^3.1.7",
     "@types/d3-scale": "^4.0.8",
     "@types/node": "^20.12.12",
-    "@types/react": "^18.3.2",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "npm:types-react@beta",
+    "@types/react-dom": "npm:types-react-dom@beta",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
-    "@vitejs/plugin-react-swc": "^3.6.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "babel-plugin-react-compiler": "0.0.0-experimental-592953e-20240517",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-c8b3f72-20240517",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "lightningcss": "^1.25.0",
     "sass": "^1.77.2",
     "terser": "^5.31.0",
-    "tilg": "^0.1.1",
     "typescript": "^5.4.5",
     "typia": "^6.0.3",
     "vite": "^5.2.11",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.1"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@beta",
+    "@types/react-dom": "npm:types-react-dom@beta"
   }
 }

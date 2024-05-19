@@ -2,12 +2,17 @@ import {loadData} from "./tool/utils.ts";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {Entry} from "./tool/entry.ts";
 import {useWindowSize} from "usehooks-ts";
-import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapResquarify} from "d3-hierarchy";
+import {
+    hierarchy,
+    HierarchyNode,
+    HierarchyRectangularNode,
+    treemap,
+    treemapSquarify
+} from "d3-hierarchy";
 import {group} from "d3-array";
 import createRainbowColor from "./tool/color.ts";
 import {Tooltip} from "./Tooltip.tsx";
 import {Node} from "./Node.tsx";
-import {globalNodeCache} from "./cache.ts";
 
 function TreeMap() {
     const rootEntry = useMemo(() => new Entry(loadData()), [])
@@ -34,7 +39,7 @@ function TreeMap() {
             .paddingInner(2)
             .paddingTop(20)
             .round(true)
-            .tile(treemapResquarify);
+            .tile(treemapSquarify);
     }, [height, width])
 
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)
@@ -85,6 +90,14 @@ function TreeMap() {
         return nestedData;
     }, [root]);
 
+    const allNodes = useMemo(() => {
+        const cache = new Map<number, HierarchyRectangularNode<Entry>>();
+        root.descendants().forEach((node) => {
+            cache.set(node.data.getID(), node);
+        })
+        return cache;
+    },[root])
+
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipNode, setTooltipNode] =
         useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
@@ -132,7 +145,7 @@ function TreeMap() {
 
             const dataId = parseInt(dataIdStr);
 
-            const node = globalNodeCache.get(dataId);
+            const node = allNodes.get(dataId);
             if (!node) {
                 return;
             }
@@ -144,7 +157,7 @@ function TreeMap() {
         return () => {
             document.removeEventListener("mousemove", moveListener);
         }
-    }, []);
+    }, [allNodes]);
 
     const nodes = useMemo(() => {
         return (

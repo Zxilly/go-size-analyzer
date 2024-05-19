@@ -23,21 +23,21 @@ export interface File {
 
 export const isFile = typia.createIs<File>();
 
-export interface Symbol {
+export interface FileSymbol {
     name: string
     addr: number & tags.Type<'uint64'>;
     size: number & tags.Type<'uint64'>;
     type: "unknown" | "text" | "data"
 }
 
-export const isSymbol = typia.createIs<Symbol>();
+export const isSymbol = typia.createIs<FileSymbol>();
 
 export interface Package {
     name: string;
     type: 'main' | 'std' | 'vendor' | 'generated' | 'unknown';
     subPackages: { [key: string]: Package };
     files: File[];
-    symbols: Symbol[];
+    symbols: FileSymbol[];
     size: number & tags.Type<'uint64'>;
 }
 

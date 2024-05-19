@@ -1,5 +1,5 @@
 import {defineConfig, PluginOption} from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "fs"
 import {createHtmlPlugin} from "vite-plugin-html";
@@ -12,7 +12,7 @@ const devDataMocker: PluginOption = {
             return html
         }
         try {
-            const data = await fs.promises.readFile(new URL("./data.json", import.meta.url), "utf-8")
+            const data = await fs.promises.readFile(new URL("../data.json", import.meta.url), "utf-8")
             return html.replace(`"GSA_PACKAGE_DATA"`, data)
         } catch (e) {
             console.error("Failed to load data.json, for dev you should create one with gsa", e)
@@ -40,7 +40,11 @@ function getSha(): string | undefined {
 
 export default defineConfig({
     plugins: [
-        react(),
+        react({
+            babel: {
+                plugins: ["babel-plugin-react-compiler"]
+            }
+        }),
         viteSingleFile(
             {
                 removeViteModuleLoader: true

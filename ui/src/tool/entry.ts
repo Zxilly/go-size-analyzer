@@ -1,5 +1,6 @@
 import {
     File,
+    FileSymbol,
     isFile,
     isPackage,
     isResult,
@@ -7,8 +8,7 @@ import {
     isSymbol,
     Package,
     Result,
-    Section,
-    Symbol as FileSymbol
+    Section
 } from "../generated/schema.ts";
 import {orderedID} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";

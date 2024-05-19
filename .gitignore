@@ -21,3 +21,5 @@ results/
 covdata/
 
 *.profile
+
+data.json
