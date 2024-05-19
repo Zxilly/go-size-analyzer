@@ -21,4 +21,10 @@ func TestGetTemplate(t *testing.T) {
 	// Should html
 	_, err := html.Parse(strings.NewReader(got))
 	require.NoError(t, err)
+
+	// run again for test net mode cache
+	got = webui.GetTemplate()
+	assert.Contains(t, got, printer.ReplacedStr)
+	_, err = html.Parse(strings.NewReader(got))
+	require.NoError(t, err)
 }
