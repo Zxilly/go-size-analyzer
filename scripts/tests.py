@@ -57,7 +57,9 @@ def run_unit_tests():
 
     log("Unit tests passed.")
 
+
 failed = 0
+
 
 def run_integration_tests(typ: str):
     i_failed = 0
@@ -65,6 +67,11 @@ def run_integration_tests(typ: str):
     log(f"Running integration tests {typ}...")
 
     targets = load_remote_binaries(typ)
+
+    if typ == "example":
+        timeout = 2
+    else:
+        timeout = 60
 
     with build_gsa() as gsa:
         if typ == "example":
@@ -76,7 +83,7 @@ def run_integration_tests(typ: str):
         skips = load_skip()
 
         for target in targets:
-            head = f"[{completed_tests}/{all_tests}] Test {target.name}"
+            head = f"[{completed_tests + 1}/{all_tests}] Test {target.name}"
             log(f"{head} start")
 
             if target.name in skips:
@@ -92,7 +99,7 @@ def run_integration_tests(typ: str):
                     log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - typ_base)}.")
                     typ_base = time.time()
 
-                target.run_test(gsa, report_typ)
+                target.run_test(gsa, report_typ, timeout=timeout)
                 log(f"{head} passed in {format_time(time.time() - base)}.")
             except Exception as e:
                 log(f"{head} failed")

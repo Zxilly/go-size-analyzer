@@ -19,6 +19,7 @@ scripts/__pycache__/
 
 results/
 covdata/
+temp/
 
 *.profile
 

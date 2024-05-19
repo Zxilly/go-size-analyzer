@@ -1,20 +1,19 @@
-import io
 import json
 import os
 import shutil
 import socket
 import subprocess
-import tarfile
 import tempfile
 import time
-import zipfile
 from html.parser import HTMLParser
 
 
 def get_new_temp_binary() -> str:
     suffix = ".exe" if os.name == "nt" else ""
 
-    temp_dir = tempfile.mkdtemp(prefix="gsa_")
+    parent_dir = os.path.join(get_project_root(), "temp")
+    os.makedirs(parent_dir, exist_ok=True)
+    temp_dir = tempfile.mkdtemp(prefix="gsa_", dir=parent_dir)
 
     return os.path.join(temp_dir, f"gsa{suffix}")
 
@@ -77,24 +76,6 @@ def extract_output(p: subprocess.CompletedProcess) -> str:
         ret += p.stderr
 
     return ret
-
-
-def load_file_from_tar(f: io.BytesIO, target_name: str) -> bytes:
-    with tarfile.open(fileobj=f) as tar:
-        for member in tar.getmembers():
-            real_name = os.path.basename(member.name)
-            if real_name == target_name:
-                return tar.extractfile(member).read()
-    raise Exception(f"File {target_name} not found in tar.")
-
-
-def load_file_from_zip(f: io.BytesIO, target_name: str) -> bytes:
-    with zipfile.ZipFile(f) as z:
-        for name in z.namelist():
-            real_name = os.path.basename(name)
-            if real_name == target_name:
-                return z.read(name)
-    raise Exception(f"File {target_name} not found in zip.")
 
 
 def get_bin_path(name: str) -> str:

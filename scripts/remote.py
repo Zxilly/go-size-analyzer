@@ -1,5 +1,8 @@
 import csv
+import io
 import os.path
+import tarfile
+import zipfile
 from enum import Flag, Enum, auto
 
 import requests
@@ -61,9 +64,9 @@ class IntegrationTest:
 
         return os.path.join(self.typed_dir(typ), f"{self.name}.{ext}")
 
-    def run_test(self, gsa: str, log_typ: callable(TestType)):
+    def run_test(self, gsa: str, log_typ: callable(TestType), timeout=240):
         def run(pargs: list[str], typ: TestType):
-            o = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ))
+            o = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout)
             with open(self.output_filepath(typ), "w") as f:
                 f.write(o)
 
@@ -103,24 +106,48 @@ class RemoteBinaryType(Enum):
     ZIP = "zip"
 
 
+class Target:
+    def __init__(self, name: str, path: str):
+        self.name = name
+        self.path = get_bin_path(path)
+        self.data = None
+
+    def __str__(self):
+        return f"{self.name}:{os.path.basename(self.path)}"
+
+    @staticmethod
+    def from_str(s: str):
+        name, path = s.split(":")
+        return Target(name, path)
+
+
 class RemoteBinary:
-    def __init__(self, name: str, url: str, test_typ: TestType, typ: RemoteBinaryType, target: str = None):
+    def __init__(self, name: str, url: str, test_typ: TestType, typ: RemoteBinaryType, targets: list[Target]):
         self.name = name
         self.url = url
         self.type = typ
         self.test_type = test_typ
-        self.target = target
+        self.targets = targets
 
     def to_csv(self) -> [str]:
-        return [self.name, self.url, self.test_type.value, self.type.value, self.target]
+        return [self.name, self.url, self.test_type.value, self.type.value, "@".join([str(t) for t in self.targets])]
 
     @staticmethod
     def from_csv(line: [str]):
-        return RemoteBinary(line[0], line[1], TestType(int(line[2])), RemoteBinaryType(line[3]), line[4])
+        ret = RemoteBinary(line[0],
+                           line[1],
+                           TestType(int(line[2])),
+                           RemoteBinaryType(line[3]),
+                           [Target.from_str(t) for t in line[4].split("@")])
+        return ret
 
     def ensure_exist(self):
-        bin_path = get_bin_path(self.name)
-        if os.path.exists(bin_path):
+        ok = True
+        for target in self.targets:
+            if not os.path.exists(target.path):
+                ok = False
+                break
+        if ok:
             log(f"{self} already exists.")
             return
 
@@ -142,28 +169,34 @@ class RemoteBinary:
                 content.write(data)
                 bar.update(len(data))
 
+        content.seek(0)
+
         if self.type == RemoteBinaryType.RAW:
-            raw = content.getvalue()
+            self.targets[0].data = content.getvalue()
         elif self.type == RemoteBinaryType.TAR:
-            content.seek(0)
-            raw = load_file_from_tar(content, self.target)
+            self.targets = load_file_from_tar(content, self.targets)
         elif self.type == RemoteBinaryType.ZIP:
-            raw = load_file_from_zip(content, self.target)
+            self.targets = load_file_from_zip(content, self.targets)
         else:
             raise Exception(f"Unknown binary type {self.type}")
 
-        os.makedirs(os.path.dirname(bin_path), exist_ok=True)
-        with open(bin_path, 'wb') as f:
-            f.write(raw)
+        for target in self.targets:
+            d = os.path.dirname(target.path)
+            ensure_dir(d)
+            with open(target.path, "wb") as f:
+                f.write(target.data)
 
         log(f"Downloaded {self}")
 
     def __str__(self):
-        return f"RemoteBinary({self.name}, {self.url}, {self.type}, {self.target})"
+        return f"RemoteBinary({self.name}, {self.url}, {self.type})"
 
-    def to_test(self) -> IntegrationTest:
+    def to_test(self) -> list[IntegrationTest]:
         self.ensure_exist()
-        return IntegrationTest(self.name, get_bin_path(self.name), self.test_type)
+        ret = []
+        for target in self.targets:
+            ret.append(IntegrationTest(target.name, get_bin_path(target.path), self.test_type))
+        return ret
 
 
 def load_remote_binaries(typ: str) -> list[IntegrationTest]:
@@ -180,7 +213,9 @@ def load_remote_binaries(typ: str) -> list[IntegrationTest]:
         return not is_example
 
     filtered = list(filter(filter_binary, ret))
-    tests = [t.to_test() for t in filtered]
+    tests = []
+    for binary in filtered:
+        tests.extend(binary.to_test())
 
     log("Fetched remote binaries.")
     return tests
@@ -189,5 +224,35 @@ def load_remote_binaries(typ: str) -> list[IntegrationTest]:
 def load_remote_for_tui_test():
     (RemoteBinary("bin-linux-1.21-amd64",
                   "https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64",
-                  TestType.TEXT_TEST, RemoteBinaryType.RAW)
+                  TestType.TEXT_TEST, RemoteBinaryType.RAW, [Target("bin-linux-1.21-amd64", "bin-linux-1.21-amd64")])
      .ensure_exist())
+
+
+def load_file_from_tar(f: io.BytesIO, targets: list[Target]) -> list[Target]:
+    with tarfile.open(fileobj=f) as tar:
+        for member in tar.getmembers():
+            real_name = os.path.basename(member.name)
+            for target in targets:
+                if real_name == target.name:
+                    target.data = tar.extractfile(member).read()
+
+    for target in targets:
+        if target.data is None:
+            raise Exception(f"File {target.name} not found in tar.")
+
+    return targets
+
+
+def load_file_from_zip(f: io.BytesIO, targets: list[Target]) -> list[Target]:
+    with zipfile.ZipFile(f) as z:
+        for name in z.namelist():
+            real_name = os.path.basename(name)
+            for target in targets:
+                if real_name == target.name:
+                    target.data = z.read(name)
+
+    for target in targets:
+        if target.data is None:
+            raise Exception(f"File {target.name} not found in zip.")
+
+    return targets

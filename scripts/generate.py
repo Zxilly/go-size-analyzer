@@ -3,7 +3,7 @@ import csv
 import requests
 
 from example_download import get_example_download_url
-from remote import RemoteBinary, RemoteBinaryType, TestType
+from remote import RemoteBinary, RemoteBinaryType, TestType, Target
 from utils import get_binaries_path
 
 
@@ -25,7 +25,9 @@ def generate_cockroachdb() -> list[RemoteBinary]:
                          url[0],
                          TestType.JSON_TEST,
                          RemoteBinaryType.ZIP if is_windows else RemoteBinaryType.TAR,
-                         "cockroach.exe" if is_windows else "cockroach")
+                         [
+                             Target("cockroach.exe" if is_windows else "cockroach", file_name)
+                         ])
         )
 
     return ret
@@ -48,7 +50,10 @@ def generate_kubernetes() -> list[RemoteBinary]:
                     name,
                     url,
                     TestType.JSON_TEST,
-                    RemoteBinaryType.RAW
+                    RemoteBinaryType.RAW,
+                    [
+                        Target(name, name)
+                    ]
                 )
             )
 
@@ -61,7 +66,10 @@ def generate_kubernetes() -> list[RemoteBinary]:
                     name,
                     url,
                     TestType.JSON_TEST,
-                    RemoteBinaryType.RAW
+                    RemoteBinaryType.RAW,
+                    [
+                        Target(name, name)
+                    ]
                 )
             )
 
@@ -97,7 +105,10 @@ def generate_example() -> list[RemoteBinary]:
                                     name,
                                     get_example_download_url(name),
                                     TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
-                                    RemoteBinaryType.RAW
+                                    RemoteBinaryType.RAW,
+                                    [
+                                        Target(name, name)
+                                    ]
                                 )
                             )
 
