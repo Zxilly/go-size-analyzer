@@ -131,8 +131,8 @@ def get_parser() -> ArgumentParser:
     ap = ArgumentParser()
 
     ap.add_argument("--unit", action="store_true", help="Run unit tests.")
-    ap.add_argument("--integration-small", action="store_true", help="Run integration tests for small binaries.")
-    ap.add_argument("--integration-large", action="store_true", help="Run integration tests for large binaries.")
+    ap.add_argument("--integration-example", action="store_true", help="Run integration tests for small binaries.")
+    ap.add_argument("--integration-real", action="store_true", help="Run integration tests for large binaries.")
 
     return ap
 
@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
     init_dirs()
 
-    if not args.unit and not args.integration:
+    if not args.unit or not args.integration_example or not args.integration_real:
         if os.getenv("CI") is None:
             args.unit = True
             args.integration_small = True
@@ -153,9 +153,9 @@ if __name__ == "__main__":
 
     if args.unit:
         run_unit_tests()
-    if args.integration_small:
+    if args.integration_example:
         run_integration_tests("example")
-    if args.integration_large:
+    if args.integration_real:
         run_integration_tests("real")
 
     merge_covdata()
