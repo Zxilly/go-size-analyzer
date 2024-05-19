@@ -143,13 +143,13 @@ if __name__ == "__main__":
 
     init_dirs()
 
-    if not args.unit or not args.integration_example or not args.integration_real:
-        if os.getenv("CI") is None:
+    if os.getenv("CI") is None:
+        if not args.unit or not args.integration_example or not args.integration_real:
             args.unit = True
-            args.integration_small = True
-            args.integration_large = True
-        else:
-            raise Exception("Please specify a test type to run.")
+            args.integration_example = True
+            args.integration_real = True
+    else:
+        raise Exception("Please specify a test type to run.")
 
     if args.unit:
         run_unit_tests()
