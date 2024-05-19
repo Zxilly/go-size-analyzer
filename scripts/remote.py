@@ -4,6 +4,7 @@ import os.path
 import tarfile
 import zipfile
 from enum import Flag, Enum, auto
+from threading import Thread
 
 import requests
 from tqdm import tqdm
@@ -65,39 +66,50 @@ class IntegrationTest:
         return os.path.join(self.typed_dir(typ), f"{self.name}.{ext}")
 
     def run_test(self, gsa: str, log_typ: callable(TestType), timeout=240):
+        threads = []
+
         def run(pargs: list[str], typ: TestType):
             o = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout)
             with open(self.output_filepath(typ), "w") as f:
                 f.write(o)
+            log_typ(typ)
 
         if TestType.TEXT_TEST in self.type:
-            run([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)
-            log_typ(TestType.TEXT_TEST)
+            # run([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)
+            threads.append(Thread(target=run, args=([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
 
         if TestType.JSON_TEST in self.type:
-            run([gsa,
-                 "-f", "json",
-                 "--indent", "2",
-                 self.path,
-                 "-o", self.generated_filepath(TestType.JSON_TEST)],
-                TestType.JSON_TEST)
-            log_typ(TestType.JSON_TEST)
+            threads.append(
+                Thread(target=run,
+                       args=([gsa,
+                              "-f", "json",
+                              "--indent", "2",
+                              self.path,
+                              "-o", self.generated_filepath(TestType.JSON_TEST)],
+                             TestType.JSON_TEST)))
 
         if TestType.HTML_TEST in self.type:
-            run([gsa,
-                 "-f", "html",
-                 self.path,
-                 "-o", self.generated_filepath(TestType.HTML_TEST)],
-                TestType.HTML_TEST)
-            log_typ(TestType.HTML_TEST)
+            threads.append(
+                Thread(target=run,
+                       args=([gsa,
+                              "-f", "html",
+                              self.path,
+                              "-o", self.generated_filepath(TestType.HTML_TEST)],
+                             TestType.HTML_TEST)))
 
         if TestType.SVG_TEST in self.type:
-            run([gsa,
-                 "-f", "svg",
-                 self.path,
-                 "-o", self.generated_filepath(TestType.SVG_TEST)],
-                TestType.SVG_TEST)
-            log_typ(TestType.SVG_TEST)
+            threads.append(
+                Thread(target=run,
+                       args=([gsa,
+                              "-f", "svg",
+                              self.path,
+                              "-o", self.generated_filepath(TestType.SVG_TEST)],
+                             TestType.SVG_TEST)))
+
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
 
 
 class RemoteBinaryType(Enum):

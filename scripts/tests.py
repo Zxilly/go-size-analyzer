@@ -92,12 +92,9 @@ def run_integration_tests(typ: str):
 
             try:
                 base = time.time()
-                typ_base = base
 
                 def report_typ(rtyp: TestType):
-                    nonlocal typ_base
-                    log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - typ_base)}.")
-                    typ_base = time.time()
+                    log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - base)}.")
 
                 target.run_test(gsa, report_typ, timeout=timeout)
                 log(f"{head} passed in {format_time(time.time() - base)}.")
