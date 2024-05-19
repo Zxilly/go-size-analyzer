@@ -41,4 +41,4 @@ def build_gsa():
 
     yield temp_binary
 
-    shutil.move(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
+    shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
