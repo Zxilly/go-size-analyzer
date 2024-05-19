@@ -171,3 +171,14 @@ cockroach-linux-arm64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.
 cockroach-darwin-amd64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-10.9-amd64.tgz,2,tar,cockroach
 cockroach-darwin-arm64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-11.0-arm64.tgz,2,tar,cockroach
 cockroach-windows-amd64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.windows-6.2-amd64.zip,2,zip,cockroach.exe
+kubectl-windows-amd64,https://dl.k8s.io/release/v1.30.1/bin/windows/amd64/kubectl,2,raw,
+kubectl-windows-arm64,https://dl.k8s.io/release/v1.30.1/bin/windows/arm64/kubectl,2,raw,
+kubectl-windows-386,https://dl.k8s.io/release/v1.30.1/bin/windows/386/kubectl,2,raw,
+kubectl-linux-amd64,https://dl.k8s.io/release/v1.30.1/bin/linux/amd64/kubectl,2,raw,
+kubectl-linux-arm64,https://dl.k8s.io/release/v1.30.1/bin/linux/arm64/kubectl,2,raw,
+kubectl-linux-386,https://dl.k8s.io/release/v1.30.1/bin/linux/386/kubectl,2,raw,
+kubectl-darwin-amd64,https://dl.k8s.io/release/v1.30.1/bin/darwin/amd64/kubectl,2,raw,
+kubectl-darwin-arm64,https://dl.k8s.io/release/v1.30.1/bin/darwin/arm64/kubectl,2,raw,
+kubectl-darwin-386,https://dl.k8s.io/release/v1.30.1/bin/darwin/386/kubectl,2,raw,
+kube-apiserver-amd64,https://dl.k8s.io/release/v1.30.1/bin/linux/amd64/kube-apiserver,2,raw,
+kube-apiserver-arm64,https://dl.k8s.io/release/v1.30.1/bin/linux/arm64/kube-apiserver,2,raw,

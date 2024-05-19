@@ -100,6 +100,7 @@ if __name__ == '__main__':
     remotes = []
     remotes.extend(generate_example())
     remotes.extend(generate_cockroachdb())
+    remotes.extend(generate_kubernetes())
 
     with open(get_binaries_path(), "w", newline="") as f:
         writer = csv.writer(f)
