@@ -4,21 +4,7 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '**.go'
-      - 'go.mod'
-      - 'go.sum'
-      - '.github/**'
-      - 'scripts/**'
-      - '.golangci.yaml'
   pull_request:
-    paths:
-      - '*.go'
-      - 'go.mod'
-      - 'go.sum'
-      - '.github/**'
-      - 'scripts/**'
-      - '.golangci.yaml'
 
 permissions:
   contents: write
@@ -139,4 +125,5 @@ jobs:
           name: ${{ matrix.os }}-results
           compression-level: '9'
           pattern: ${{ matrix.os }}-*-results
+          delete-merged: true
 
