@@ -238,7 +238,10 @@ def load_file_from_tar(f: io.BytesIO, targets: list[Target]) -> list[Target]:
             real_name = os.path.basename(member.name)
             for target in targets:
                 if real_name == target.name:
-                    target.data = tar.extractfile(member).read()
+                    f = tar.extractfile(member)
+                    if f is None:
+                        continue
+                    target.data = f.read()
 
     for target in targets:
         if target.data is None:
