@@ -1,7 +1,6 @@
 package entity_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/samber/lo"
@@ -178,6 +177,8 @@ func TestErrorReturnsExpectedErrorMessage(t *testing.T) {
 		Pos2: pos2,
 	}
 
-	expected := fmt.Sprintf("addr %x pos %#v and %#v conflict", addr, pos1, pos2)
+	expected := "addr 1000 pos Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
+		"AddrPos: <nil> Pkg:  Function:  SourceType:  and Pos: Addr: 10ff CodeSize: 100 Type: data\n" +
+		"AddrPos: <nil> Pkg:  Function:  SourceType:  conflict"
 	assert.Equal(t, expected, err.Error())
 }
