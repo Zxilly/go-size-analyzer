@@ -36,6 +36,8 @@ def generate_kubernetes() -> list[RemoteBinary]:
         for a in ["amd64", "arm64", "386"]:
             name = f"kubectl-{o}-{a}"
             url = f"https://dl.k8s.io/release/v1.30.1/bin/{o}/{a}/kubectl"
+            if o == "windows":
+                url += ".exe"
             ret.append(
                 RemoteBinary(
                     name,
