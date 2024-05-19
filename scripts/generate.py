@@ -7,6 +7,12 @@ from remote import RemoteBinary, RemoteBinaryType, TestType, Target
 from utils import get_binaries_path
 
 
+def add_exe(name: str, is_windows: bool) -> str:
+    if is_windows:
+        return f"{name}.exe"
+    return name
+
+
 def generate_cockroachdb() -> list[RemoteBinary]:
     urls = [
         ("https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-amd64.tgz", "linux-amd64"),
@@ -26,7 +32,7 @@ def generate_cockroachdb() -> list[RemoteBinary]:
                          TestType.JSON_TEST,
                          RemoteBinaryType.ZIP if is_windows else RemoteBinaryType.TAR,
                          [
-                             Target("cockroach.exe" if is_windows else "cockroach", file_name)
+                             Target(add_exe("cockroach", is_windows), file_name)
                          ])
         )
 
@@ -52,7 +58,7 @@ def generate_kubernetes() -> list[RemoteBinary]:
                     TestType.JSON_TEST,
                     RemoteBinaryType.RAW,
                     [
-                        Target(name, name)
+                        Target(None, name)
                     ]
                 )
             )
@@ -68,12 +74,56 @@ def generate_kubernetes() -> list[RemoteBinary]:
                     TestType.JSON_TEST,
                     RemoteBinaryType.RAW,
                     [
-                        Target(name, name)
+                        Target(None, name)
                     ]
                 )
             )
 
     return ret
+
+
+def generate_prometheus() -> list[RemoteBinary]:
+    ret = []
+
+    for o in ["windows", "linux", "darwin"]:
+        for a in ["amd64", "arm64", "386"]:
+            if o == "darwin" and a == "386":
+                continue
+
+            targets = [
+                Target(add_exe("prometheus", o == "windows"), f"prometheus-{o}-{a}"),
+                Target(add_exe("promtool", o == "windows"), f"promtool-{o}-{a}")
+            ]
+
+            ret.append(
+                RemoteBinary(
+                    f"prometheus-{o}-{a}",
+                    f"https://github.com/prometheus/prometheus/releases/download/v2.52.0/prometheus-2.52.0.{o}-{a}.tar.gz",
+                    TestType.JSON_TEST,
+                    RemoteBinaryType.TAR,
+                    targets)
+            )
+
+    return ret
+
+
+def generate_vitess() -> list[RemoteBinary]:
+    targets = [
+        Target("vtctl", "vtctl"),
+        Target("vtgate", "vtgate"),
+        Target("vttablet", "vttablet"),
+        Target("vtcombo", "vtcombo"),
+        Target("vtgate", "vtgate"),
+        Target("vtorc", "vtorc"),
+    ]
+    return [
+        RemoteBinary(
+            "vitess",
+            "https://github.com/vitessio/vitess/releases/download/v17.0.7/vitess-17.0.7-7c0245d.tar.gz",
+            TestType.JSON_TEST,
+            RemoteBinaryType.TAR,
+            targets)
+    ]
 
 
 def generate_example() -> list[RemoteBinary]:
@@ -97,7 +147,6 @@ def generate_example() -> list[RemoteBinary]:
                             url = get_example_download_url(name)
 
                             if url is None:
-                                print(f"File {name} not found.")
                                 continue
 
                             ret.append(
@@ -120,6 +169,8 @@ if __name__ == '__main__':
     remotes.extend(generate_example())
     remotes.extend(generate_cockroachdb())
     remotes.extend(generate_kubernetes())
+    remotes.extend(generate_prometheus())
+    remotes.extend(generate_vitess())
 
     for r in remotes:
         print(f"Checking {r.name}...")

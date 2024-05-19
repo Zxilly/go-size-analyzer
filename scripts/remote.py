@@ -107,7 +107,11 @@ class RemoteBinaryType(Enum):
 
 
 class Target:
-    def __init__(self, name: str, path: str):
+    def __init__(self, name: str | None, path: str):
+        """
+        :param name: the name of the file in the archive, for raw it is None
+        :param path: the path name to save the file
+        """
         self.name = name
         self.path = get_bin_path(path)
         self.data = None
