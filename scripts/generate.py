@@ -1,5 +1,7 @@
 import csv
 
+import requests
+
 from example_download import get_example_download_url
 from remote import RemoteBinary, RemoteBinaryType, TestType
 from utils import get_binaries_path
@@ -34,8 +36,11 @@ def generate_kubernetes() -> list[RemoteBinary]:
 
     for o in ["windows", "linux", "darwin"]:
         for a in ["amd64", "arm64", "386"]:
+            if o == "darwin" and a == "386":
+                continue
+
             name = f"kubectl-{o}-{a}"
-            url = f"https://dl.k8s.io/release/v1.30.1/bin/{o}/{a}/kubectl"
+            url = f"https://dl.k8s.io/v1.30.1/bin/{o}/{a}/kubectl"
             if o == "windows":
                 url += ".exe"
             ret.append(
@@ -47,17 +52,18 @@ def generate_kubernetes() -> list[RemoteBinary]:
                 )
             )
 
-    for a in ["amd64", "arm64"]:
-        name = f"kube-apiserver-{a}"
-        url = f"https://dl.k8s.io/release/v1.30.1/bin/linux/{a}/kube-apiserver"
-        ret.append(
-            RemoteBinary(
-                name,
-                url,
-                TestType.JSON_TEST,
-                RemoteBinaryType.RAW
+    for n in ["kube-proxy", "kube-apiserver"]:
+        for a in ["amd64", "arm64"]:
+            name = f"{n}-{a}"
+            url = f"https://dl.k8s.io/v1.30.1/bin/linux/{a}/{n}"
+            ret.append(
+                RemoteBinary(
+                    name,
+                    url,
+                    TestType.JSON_TEST,
+                    RemoteBinaryType.RAW
+                )
             )
-        )
 
     return ret
 
@@ -100,9 +106,15 @@ def generate_example() -> list[RemoteBinary]:
 
 if __name__ == '__main__':
     remotes = []
-    remotes.extend(generate_example())
-    remotes.extend(generate_cockroachdb())
+    # remotes.extend(generate_example())
+    # remotes.extend(generate_cockroachdb())
     remotes.extend(generate_kubernetes())
+
+    for r in remotes:
+        print(f"Checking {r.name}...")
+        resp = requests.get(r.url, stream=True)
+        resp.raise_for_status()
+        resp.close()
 
     with open(get_binaries_path(), "w", newline="") as f:
         writer = csv.writer(f)
