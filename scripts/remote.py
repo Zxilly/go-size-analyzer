@@ -120,7 +120,13 @@ class RemoteBinary:
             log(f"{self} already exists.")
             return
 
-        resp = requests.get(self.url, stream=True)
+        header = dict()
+        if self.url.startswith("https://github.com"):
+            token = os.getenv('GITHUB_TOKEN')
+            if token:
+                header['Authorization'] = f'Bearer {token}'
+
+        resp = requests.get(self.url, stream=True, headers=header)
         resp.raise_for_status()
 
         log(f"Downloading {self}...")
