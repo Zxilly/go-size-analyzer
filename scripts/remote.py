@@ -25,6 +25,8 @@ def get_flag_str(typ: TestType) -> str:
     elif typ == TestType.SVG_TEST:
         return "svg"
 
+    raise Exception(f"Unknown test type {typ}")
+
 
 class IntegrationTest:
     def __init__(self, name: str, path: str, typ: TestType):
@@ -154,15 +156,23 @@ class RemoteBinary:
         return IntegrationTest(self.name, get_bin_path(self.name), self.test_type)
 
 
-def load_remote_binaries() -> list[IntegrationTest]:
+def load_remote_binaries(typ: str) -> list[IntegrationTest]:
     log("Fetching remote binaries...")
 
     with open(get_binaries_path(), "r") as f:
         reader = csv.reader(f)
         ret = [RemoteBinary.from_csv(line).to_test() for line in reader]
 
+    def filter_test(t: IntegrationTest):
+        is_example = t.name.startswith("bin-")
+        if typ == "example":
+            return is_example
+        return not is_example
+
+    filtered = list(filter(filter_test, ret))
+
     log("Fetched remote binaries.")
-    return ret
+    return filtered
 
 
 def load_remote_for_tui_test():

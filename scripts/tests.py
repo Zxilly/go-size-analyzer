@@ -59,13 +59,14 @@ def run_unit_tests():
     log("Unit tests passed.")
 
 
-def run_integration_tests():
+def run_integration_tests(typ: str):
     log("Running integration tests...")
 
-    targets = load_remote_binaries()
+    targets = load_remote_binaries(typ)
 
     with build_gsa() as gsa:
-        run_web_test(gsa)
+        if typ == "example":
+            run_web_test(gsa)
 
         all_tests = len(targets)
         completed_tests = 1
@@ -130,7 +131,8 @@ def get_parser() -> ArgumentParser:
     ap = ArgumentParser()
 
     ap.add_argument("--unit", action="store_true", help="Run unit tests.")
-    ap.add_argument("--integration", action="store_true", help="Run integration tests.")
+    ap.add_argument("--integration-small", action="store_true", help="Run integration tests for small binaries.")
+    ap.add_argument("--integration-large", action="store_true", help="Run integration tests for large binaries.")
 
     return ap
 
@@ -144,14 +146,17 @@ if __name__ == "__main__":
     if not args.unit and not args.integration:
         if os.getenv("CI") is None:
             args.unit = True
-            args.integration = True
+            args.integration_small = True
+            args.integration_large = True
         else:
             raise Exception("Please specify a test type to run.")
 
     if args.unit:
         run_unit_tests()
-    if args.integration:
-        run_integration_tests()
+    if args.integration_small:
+        run_integration_tests("example")
+    if args.integration_large:
+        run_integration_tests("real")
 
     merge_covdata()
 

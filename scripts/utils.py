@@ -132,6 +132,9 @@ def find_unused_port(start_port=20000, end_port=60000):
     return None
 
 
+process_timeout = 360 if os.name == "nt" else 180
+
+
 def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = None) -> str:
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()

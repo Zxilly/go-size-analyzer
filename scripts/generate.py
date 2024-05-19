@@ -1,7 +1,7 @@
 import csv
 
-from remote import RemoteBinary, RemoteBinaryType, TestType
 from example_download import get_example_download_url
+from remote import RemoteBinary, RemoteBinaryType, TestType
 from utils import get_binaries_path
 
 
@@ -21,10 +21,42 @@ def generate_cockroachdb() -> list[RemoteBinary]:
         ret.append(
             RemoteBinary(file_name,
                          url[0],
-                         TestType.JSON_TEST | TestType.SVG_TEST,
+                         TestType.JSON_TEST,
                          RemoteBinaryType.ZIP if is_windows else RemoteBinaryType.TAR,
                          "cockroach.exe" if is_windows else "cockroach")
         )
+
+    return ret
+
+
+def generate_kubernetes() -> list[RemoteBinary]:
+    ret = []
+
+    for o in ["windows", "linux", "darwin"]:
+        for a in ["amd64", "arm64", "386"]:
+            name = f"kubectl-{o}-{a}"
+            url = f"https://dl.k8s.io/release/v1.30.1/bin/{o}/{a}/kubectl"
+            ret.append(
+                RemoteBinary(
+                    name,
+                    url,
+                    TestType.JSON_TEST,
+                    RemoteBinaryType.RAW
+                )
+            )
+
+    for a in ["amd64", "arm64"]:
+        name = f"kube-apiserver-{a}"
+        url = f"https://dl.k8s.io/release/v1.30.1/bin/linux/{a}/kube-apiserver"
+        ret.append(
+            RemoteBinary(
+                name,
+                url,
+                TestType.JSON_TEST,
+                RemoteBinaryType.RAW
+            )
+        )
+
     return ret
 
 
@@ -34,49 +66,42 @@ def generate_example() -> list[RemoteBinary]:
         for o in ["linux", "windows", "darwin"]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
-                    name = f"bin-{o}-{v}-amd64{pie}{cgo}"
-                    url = get_example_download_url(name)
+                    for a in ["amd64", "arm64", "386"]:
+                        for s in ["-strip", ""]:
+                            if pie == "-pie" and cgo == "":
+                                continue
 
-                    if url is None:
-                        print(f"File {name} not found.")
-                        continue
+                            if o == "darwin" and a == "386":
+                                continue
 
-                    ret.append(
-                        RemoteBinary(
-                            name,
-                            get_example_download_url(name),
-                            TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST,
-                            RemoteBinaryType.RAW
-                        )
-                    )
-    for o in ["linux", "windows", "darwin"]:
-        for pie in ["-pie", ""]:
-            for cgo in ["-cgo", ""]:
-                name = f"bin-{o}-1.22-amd64-strip{pie}{cgo}"
-                url = get_example_download_url(name)
+                            if o == "windows" and a == "arm64":
+                                continue
 
-                if url is None:
-                    print(f"File {name} not found.")
-                    continue
+                            name = f"bin-{o}-{v}-{a}{s}{pie}{cgo}"
+                            url = get_example_download_url(name)
 
-                ret.append(
-                    RemoteBinary(
-                        name,
-                        get_example_download_url(name),
-                        TestType.TEXT_TEST,
-                        RemoteBinaryType.RAW
-                    )
-                )
+                            if url is None:
+                                print(f"File {name} not found.")
+                                continue
+
+                            ret.append(
+                                RemoteBinary(
+                                    name,
+                                    get_example_download_url(name),
+                                    TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
+                                    RemoteBinaryType.RAW
+                                )
+                            )
 
     return ret
 
 
 if __name__ == '__main__':
-    tests = []
-    tests.extend(generate_example())
-    tests.extend(generate_cockroachdb())
+    remotes = []
+    remotes.extend(generate_example())
+    remotes.extend(generate_cockroachdb())
 
     with open(get_binaries_path(), "w", newline="") as f:
         writer = csv.writer(f)
-        for test in tests:
-            writer.writerow(test.to_csv())
+        for remote in remotes:
+            writer.writerow(remote.to_csv())
