@@ -80,7 +80,7 @@ export class Entry {
     static loadSize(data: Candidate): number {
         switch (true) {
             case isSection(data):
-                return data.size - data.known_size;
+                return data.file_size - data.known_size;
             default:
                 return data.size;
         }

@@ -213,6 +213,12 @@ foundPclntab:
 			mapper = float64(section.FileSize) / float64(section.Size)
 		}
 		section.KnownSize = uint64(math.Floor(float64(size) * mapper))
+
+		if section.KnownSize > section.FileSize {
+			// fixme: pclntab size calculation is not accurate
+			slog.Warn(fmt.Sprintf("section %s known size %d > file size %d, this is a known issue", section.Name, section.KnownSize, section.FileSize))
+			section.KnownSize = section.FileSize
+		}
 	}
 }
 

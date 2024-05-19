@@ -63,7 +63,7 @@ type ErrAddrCoverageConflict struct {
 }
 
 func (e *ErrAddrCoverageConflict) Error() string {
-	return fmt.Sprintf("addr %x pos %#v and %#v conflict", e.Addr, e.Pos1, e.Pos2)
+	return fmt.Sprintf("addr %x pos %s and %s conflict", e.Addr, e.Pos1, e.Pos2)
 }
 
 // MergeAndCleanCoverage merge multiple AddrCoverage
@@ -99,11 +99,17 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 		if cur.Addr < lastPos.Addr+lastPos.Size {
 			// merge
 			if lastPos.Type != pos.Pos.Type {
+				processed := false
 				// if any is disasm, throw it
 				if last.Addrs[len(last.Addrs)-1].SourceType == AddrSourceDisasm {
 					cover = cover[:len(cover)-1]
+					processed = true
 				}
 				if pos.Addrs[0].SourceType == AddrSourceDisasm {
+					continue
+				}
+				if processed {
+					cover = append(cover, pos)
 					continue
 				}
 
