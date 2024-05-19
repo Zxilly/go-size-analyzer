@@ -52,6 +52,13 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
         test: [ unit, integration-example, integration-real ]
         profile: [ main, other ]
+        include:
+          - test: unit
+            test_type: unit
+          - test: integration-example
+            test_type: integration
+          - test: integration-real
+            test_type: integration
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -105,9 +112,10 @@ jobs:
         if: ${{ matrix.profile == 'main' }}
         uses: codecov/codecov-action@v4.4.0
         with:
+          disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ${{ matrix.test }}.profile
-          flags: ${{ matrix.test }}
+          file: ${{ matrix.test_type }}.profile
+          flags: ${{ matrix.test_type }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4
