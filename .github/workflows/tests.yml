@@ -126,4 +126,5 @@ jobs:
           compression-level: '9'
           pattern: ${{ matrix.os }}-*-results
           delete-merged: true
+          retention-days: 7
 

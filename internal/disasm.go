@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/samber/lo"
-	lop "github.com/samber/lo/parallel"
+	"golang.org/x/sync/semaphore"
 
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -36,11 +36,12 @@ func (k *KnownInfo) Disasm() error {
 		fn         *entity.Function
 	}
 
-	resultChan := make(chan result, 1024)
+	resultChan := make(chan result, 32)
 
 	resultProcess, resultDone := context.WithCancel(context.Background())
 
 	go func() {
+		defer resultDone()
 		for r := range resultChan {
 			s, ok := e.LoadAddrString(r.addr, int64(r.size))
 			if !ok {
@@ -49,31 +50,36 @@ func (k *KnownInfo) Disasm() error {
 
 			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn, entity.DisasmMeta{Value: utils.Deduplicate(s)})
 		}
-
-		resultDone()
 	}()
 
-	numCores := runtime.NumCPU() * 4
-	disasmLimit := make(chan struct{}, numCores)
-	for range numCores {
-		disasmLimit <- struct{}{}
-	}
+	var (
+		maxWorkers = runtime.GOMAXPROCS(0)
+		sem        = semaphore.NewWeighted(int64(maxWorkers))
+	)
 
-	lop.ForEach(fns, func(fn *entity.Function, _ int) {
-		<-disasmLimit
+	lo.ForEach(fns, func(fn *entity.Function, _ int) {
+		if err := sem.Acquire(resultProcess, 1); err != nil {
+			utils.FatalError(err)
+			return
+		}
 
-		candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
+		go func() {
+			defer sem.Release(1)
+			candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
 
-		lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
-			resultChan <- result{
-				addr: p.Addr,
-				size: p.Size,
-				fn:   fn,
-			}
-		})
-
-		disasmLimit <- struct{}{}
+			lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
+				resultChan <- result{
+					addr: p.Addr,
+					size: p.Size,
+					fn:   fn,
+				}
+			})
+		}()
 	})
+
+	if err = sem.Acquire(resultProcess, int64(maxWorkers)); err != nil {
+		utils.FatalError(err)
+	}
 
 	close(resultChan)
 

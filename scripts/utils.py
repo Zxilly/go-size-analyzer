@@ -127,21 +127,22 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
     if profiler_dir is not None:
         env["OUTPUT_DIR"] = profiler_dir
 
-    ret = subprocess.run(
-        args=pargs,
-        env=env, text=True, capture_output=True, cwd=get_project_root(),
-        encoding="utf-8", timeout=timeout
-    )
+    ret = None
 
-    content = extract_output(ret)
-
-    if ret.returncode != 0:
+    try:
+        ret = subprocess.run(
+            args=pargs,
+            env=env, text=True, capture_output=True, cwd=get_project_root(),
+            encoding="utf-8", timeout=timeout, check=True
+        )
+    except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+        content = extract_output(ret)
         msg = (f"Failed to run {name}.\n"
                f"Args: {pargs}\n"
                f"Output: {content}\n")
         raise Exception(msg)
 
-    return content
+    return extract_output(ret)
 
 
 def get_binaries_path():

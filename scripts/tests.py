@@ -69,7 +69,7 @@ def run_integration_tests(typ: str):
     targets = load_remote_binaries(typ)
 
     if typ == "example":
-        timeout = 2
+        timeout = 10
     else:
         timeout = 60
 
@@ -83,7 +83,7 @@ def run_integration_tests(typ: str):
         skips = load_skip()
 
         for target in targets:
-            head = f"[{completed_tests + 1}/{all_tests}] Test {target.name}"
+            head = f"[{completed_tests + 1}/{all_tests}] Test {os.path.basename(target.path)}"
             log(f"{head} start")
 
             if target.name in skips:

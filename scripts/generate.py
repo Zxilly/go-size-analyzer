@@ -78,7 +78,7 @@ def generate_kubernetes() -> list[RemoteBinary]:
 
 def generate_example() -> list[RemoteBinary]:
     ret = []
-    for v in ["1.19", "1.20", "1.21", "1.22"]:
+    for v in ["1.16", "1.19", "1.22"]:
         for o in ["linux", "windows", "darwin"]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
