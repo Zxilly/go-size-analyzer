@@ -132,6 +132,11 @@ def find_unused_port(start_port=20000, end_port=60000):
     return None
 
 
+def load_skip() -> list[str]:
+    with open(os.path.join(get_project_root(), "scripts", "skip.txt"), "r") as f:
+        return [line.strip() for line in f.readlines()]
+
+
 process_timeout = 360 if os.name == "nt" else 180
 
 
@@ -153,8 +158,7 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
         msg = (f"Failed to run {name}.\n"
                f"Args: {pargs}\n"
                f"Output: {content}\n")
-        print(msg)
-        raise Exception(f"Failed to run {name}.")
+        raise Exception(msg)
 
     return content
 

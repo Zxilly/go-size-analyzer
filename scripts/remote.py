@@ -61,7 +61,7 @@ class IntegrationTest:
 
         return os.path.join(self.typed_dir(typ), f"{self.name}.{ext}")
 
-    def run_test(self, gsa: str):
+    def run_test(self, gsa: str, log_typ: callable(TestType)):
         def run(pargs: list[str], typ: TestType):
             o = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ))
             with open(self.output_filepath(typ), "w") as f:
@@ -69,6 +69,7 @@ class IntegrationTest:
 
         if TestType.TEXT_TEST in self.type:
             run([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)
+            log_typ(TestType.TEXT_TEST)
 
         if TestType.JSON_TEST in self.type:
             run([gsa,
@@ -77,6 +78,7 @@ class IntegrationTest:
                  self.path,
                  "-o", self.generated_filepath(TestType.JSON_TEST)],
                 TestType.JSON_TEST)
+            log_typ(TestType.JSON_TEST)
 
         if TestType.HTML_TEST in self.type:
             run([gsa,
@@ -84,6 +86,7 @@ class IntegrationTest:
                  self.path,
                  "-o", self.generated_filepath(TestType.HTML_TEST)],
                 TestType.HTML_TEST)
+            log_typ(TestType.HTML_TEST)
 
         if TestType.SVG_TEST in self.type:
             run([gsa,
@@ -91,6 +94,7 @@ class IntegrationTest:
                  self.path,
                  "-o", self.generated_filepath(TestType.SVG_TEST)],
                 TestType.SVG_TEST)
+            log_typ(TestType.SVG_TEST)
 
 
 class RemoteBinaryType(Enum):

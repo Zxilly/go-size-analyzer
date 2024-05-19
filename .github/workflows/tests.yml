@@ -59,6 +59,7 @@ jobs:
             test_type: integration
           - test: integration-real
             test_type: integration
+      fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
