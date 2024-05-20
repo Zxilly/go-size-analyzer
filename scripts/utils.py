@@ -7,6 +7,7 @@ import tempfile
 import time
 from html.parser import HTMLParser
 from io import BytesIO
+from threading import Thread
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -131,8 +132,15 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
     cpu_percentages = []
     memory_usage_mb = []
     timestamps = []
-
+    output = ""
     start_time = time.time()
+
+    def collect_stdout():
+        nonlocal output
+        for line in iter(process.stdout.readline, ""):
+            output += line
+
+    Thread(target=collect_stdout).start()
 
     try:
         ps_process = psutil.Process(process.pid)
@@ -155,11 +163,8 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
     except TimeoutError as e:
         print(f"TimeoutError occurred: {e}")
         process.kill()
-        process.wait()
     except psutil.NoSuchProcess:
         pass
-    except Exception as e:
-        print(f"Exception occurred: {e}")
 
     buf = BytesIO()
 
@@ -190,9 +195,7 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
         plt.clf()
         plt.close()
 
-    stdout_output, _ = process.communicate()
-
-    return [stdout_output, buf.getvalue()]
+    return [output, buf.getvalue()]
 
 
 def get_binaries_path():

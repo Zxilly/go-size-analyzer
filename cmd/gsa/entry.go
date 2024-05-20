@@ -50,7 +50,7 @@ func entry() {
 			utils.FatalError(err)
 		}
 	} else {
-		writer = os.Stdout
+		writer = utils.Stdout
 		if Options.Web {
 			writer = new(bytes.Buffer)
 		}
@@ -87,9 +87,13 @@ func entry() {
 		utils.FatalError(fmt.Errorf("invalid format: %s", Options.Format))
 	}
 
+	slog.Info("Printing done")
+
 	if err != nil {
 		utils.FatalError(err)
 	}
+
+	slog.Info("Check if web option is set")
 
 	if Options.Web {
 		b, ok := writer.(*bytes.Buffer)
@@ -113,4 +117,6 @@ func entry() {
 		utils.WaitSignal()
 		return
 	}
+
+	slog.Info("Ready to exit")
 }

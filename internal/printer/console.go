@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"fmt"
 	"io"
+	"log/slog"
 	"path/filepath"
 	"slices"
 
@@ -28,6 +29,8 @@ type CommonOption struct {
 }
 
 func Text(r *result.Result, options *CommonOption) error {
+	slog.Info("Printing text report")
+
 	t := table.NewWriter()
 
 	allKnownSize := uint64(0)
@@ -89,6 +92,13 @@ func Text(r *result.Result, options *CommonOption) error {
 	t.AppendFooter(table.Row{percentString(float64(allKnownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(allKnownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
 
-	_, err := options.Writer.Write([]byte(t.Render()))
+	data := []byte(t.Render())
+
+	slog.Info("Report rendered")
+
+	_, err := options.Writer.Write(data)
+
+	slog.Info("Report written")
+
 	return err
 }

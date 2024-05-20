@@ -71,7 +71,7 @@ class IntegrationTest:
     def run_test(self, gsa: str, log_typ: callable(TestType), timeout=240):
         threads = []
 
-        draw = not self.path.startswith("bin-")
+        draw = not self.name.startswith("bin-")
 
         def run(pargs: list[str], typ: TestType):
             [o, b] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)

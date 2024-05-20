@@ -18,7 +18,7 @@ def run_unit_tests():
     unit_output_dir = os.path.join(get_project_root(), "results", "unit")
     ensure_dir(unit_output_dir)
 
-    embed_out = run_process(
+    embed_out = subprocess.check_output(
         [
             "go",
             "test",
@@ -29,7 +29,10 @@ def run_unit_tests():
             "./...",
             f"-test.gocoverdir={unit_path}"
         ],
-        "unit_embed",
+        text=True,
+        cwd=get_project_root(),
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
         timeout=600,  # Windows runner is extremely slow
     )
 
@@ -37,7 +40,7 @@ def run_unit_tests():
         f.write(embed_out)
 
     # test no tag
-    normal_out = run_process(
+    normal_out = subprocess.check_output(
         [
             "go",
             "test",
@@ -45,9 +48,12 @@ def run_unit_tests():
             "-covermode=atomic",
             "-cover",
             "./internal/webui",
-            f"-test.gocoverdir={unit_path}",
+            f"-test.gocoverdir={unit_path}"
         ],
-        "unit",
+        text=True,
+        cwd=get_project_root(),
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
         timeout=600,  # Windows runner is extremely slow
     )
 
