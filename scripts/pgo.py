@@ -16,9 +16,14 @@ def merge_profiles():
         if not os.path.isdir(d):
             continue
 
-        p = os.path.join(d, "json", "profiler", "cpu.pprof")
+        pd = os.path.join(d, "json", "profiler")
+        if not os.path.exists(pd):
+            print(f"Skipping {pd}, not a profiler dir")
+            continue
+
+        p = os.path.join(pd, "cpu.pprof")
         if not os.path.exists(p):
-            print(f"Skipping {p}")
+            print(f"Skipping {p}", os.listdir(pd))
             continue
         profiles.append(p)
 
