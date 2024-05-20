@@ -57,7 +57,6 @@ def run_unit_tests():
         timeout=600,  # Windows runner is extremely slow
     )
 
-
     with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
         f.write(normal_out)
 
@@ -67,7 +66,7 @@ def run_unit_tests():
 failed = 0
 
 
-def run_integration_tests(typ: str):
+def run_integration_tests(typ: str, gsa_path: str):
     i_failed = 0
 
     log(f"Running integration tests {typ}...")
@@ -79,43 +78,42 @@ def run_integration_tests(typ: str):
     else:
         timeout = 60
 
-    with build_gsa() as gsa:
-        if typ == "example":
-            run_web_test(gsa)
+    if typ == "example":
+        run_web_test(gsa_path)
 
-        all_tests = len(targets)
-        completed_tests = 0
+    all_tests = len(targets)
+    completed_tests = 0
 
-        skips = load_skip()
+    skips = load_skip()
 
-        for target in targets:
-            head = f"[{completed_tests + 1}/{all_tests}] Test {os.path.basename(target.path)}"
-            log(f"{head} start")
+    for target in targets:
+        head = f"[{completed_tests + 1}/{all_tests}] Test {os.path.basename(target.path)}"
+        log(f"{head} start")
 
-            if target.path in skips:
-                log(f"{head} is skipped.")
-                continue
+        if target.path in skips:
+            log(f"{head} is skipped.")
+            continue
 
-            try:
-                base = time.time()
+        try:
+            base = time.time()
 
-                def report_typ(rtyp: TestType):
-                    log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - base)}.")
+            def report_typ(rtyp: TestType):
+                log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - base)}.")
 
-                target.run_test(gsa, report_typ, timeout=timeout)
-                log(f"{head} passed in {format_time(time.time() - base)}.")
-            except Exception as e:
-                log(f"{head} failed")
+            target.run_test(gsa_path, report_typ, timeout=timeout)
+            log(f"{head} passed in {format_time(time.time() - base)}.")
+        except Exception as e:
+            log(f"{head} failed")
 
-                if os.getenv("CI") is not None:
-                    with open(os.getenv("GITHUB_STEP_SUMMARY"), "a") as f:
-                        f.write(f"```log\n{str(e)}\n```\n")
-                else:
-                    print(e)
+            if os.getenv("CI") is not None:
+                with open(os.getenv("GITHUB_STEP_SUMMARY"), "a") as f:
+                    f.write(f"```log\n{str(e)}\n```\n")
+            else:
+                print(e)
 
-                i_failed += 1
+            i_failed += 1
 
-            completed_tests += 1
+        completed_tests += 1
 
     if i_failed == 0:
         log("Integration tests passed.")
@@ -202,10 +200,11 @@ if __name__ == "__main__":
 
     if args.unit:
         run_unit_tests()
-    if args.integration_example:
-        run_integration_tests("example")
-    if args.integration_real:
-        run_integration_tests("real")
+    with build_gsa() as gsa:
+        if args.integration_example:
+            run_integration_tests("example", gsa)
+        if args.integration_real:
+            run_integration_tests("real", gsa)
 
     merge_covdata()
 
