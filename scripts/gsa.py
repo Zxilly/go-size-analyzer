@@ -3,7 +3,7 @@ import os.path
 import shutil
 import subprocess
 
-from utils import log, require_go, get_new_temp_binary, get_project_root, extract_output
+from utils import log, require_go, get_new_temp_binary, get_project_root
 
 
 @contextlib.contextmanager
@@ -14,8 +14,8 @@ def build_gsa():
     temp_binary = get_new_temp_binary()
     project_root = get_project_root()
 
-    ret = subprocess.run(
-        [
+    subprocess.check_output(
+        args=[
             go,
             "build",
             "-buildmode=exe",  # since windows use pie by default
@@ -28,14 +28,10 @@ def build_gsa():
             f"{project_root}/cmd/gsa",
         ],
         text=True,
-        capture_output=True,
         cwd=get_project_root(),
+        stderr=subprocess.STDOUT,
         encoding="utf-8",
     )
-
-    if ret.returncode != 0:
-        output = extract_output(ret)
-        raise Exception(f"Failed to build gsa. Output: {output}")
 
     log("Built gsa.")
 

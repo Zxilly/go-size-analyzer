@@ -2,7 +2,7 @@ import csv
 
 import requests
 
-from example_download import get_example_download_url
+from example import get_example_download_url
 from remote import RemoteBinary, RemoteBinaryType, TestType, Target
 from utils import get_binaries_path
 

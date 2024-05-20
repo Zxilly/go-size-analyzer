@@ -58,6 +58,9 @@ class IntegrationTest:
     def output_filepath(self, typ: TestType):
         return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.txt")
 
+    def performance_figure_filepath(self, typ: TestType):
+        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.png")
+
     def generated_filepath(self, typ: TestType):
         ext = get_flag_str(typ)
         if ext == "text":
@@ -68,14 +71,20 @@ class IntegrationTest:
     def run_test(self, gsa: str, log_typ: callable(TestType), timeout=240):
         threads = []
 
+        draw = not self.path.startswith("bin-")
+
         def run(pargs: list[str], typ: TestType):
-            o = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout)
+            [o, b] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)
             with open(self.output_filepath(typ), "w") as f:
                 f.write(o)
+
+            if draw:
+                with open(self.performance_figure_filepath(typ), "wb") as f:
+                    f.write(b)
+
             log_typ(typ)
 
         if TestType.TEXT_TEST in self.type:
-            # run([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)
             threads.append(Thread(target=run, args=([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
 
         if TestType.JSON_TEST in self.type:
@@ -119,6 +128,10 @@ class RemoteBinaryType(Enum):
 
 
 class Target:
+    name: str
+    path: str
+    data: bytes | None
+
     def __init__(self, name: str | None, path: str):
         """
         :param name: the name of the file in the archive, for raw it is None
@@ -210,8 +223,14 @@ class RemoteBinary:
     def to_test(self) -> list[IntegrationTest]:
         self.ensure_exist()
         ret = []
+
+        def get_name(target_name: str):
+            if len(self.targets) == 1:
+                return self.name
+            return self.name + "-" + target_name
+
         for target in self.targets:
-            ret.append(IntegrationTest(target.name, get_bin_path(target.path), self.test_type))
+            ret.append(IntegrationTest(get_name(target.name), get_bin_path(target.path), self.test_type))
         return ret
 
 

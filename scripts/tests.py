@@ -23,7 +23,6 @@ def run_unit_tests():
             "go",
             "test",
             "-v",
-            "-race",
             "-covermode=atomic",
             "-cover",
             "-tags=embed",
@@ -34,13 +33,15 @@ def run_unit_tests():
         timeout=600,  # Windows runner is extremely slow
     )
 
+    with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
+        f.write(embed_out)
+
     # test no tag
     normal_out = run_process(
         [
             "go",
             "test",
             "-v",
-            "-race",
             "-covermode=atomic",
             "-cover",
             "./internal/webui",
@@ -50,8 +51,7 @@ def run_unit_tests():
         timeout=600,  # Windows runner is extremely slow
     )
 
-    with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
-        f.write(embed_out)
+
     with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
         f.write(normal_out)
 
@@ -86,7 +86,7 @@ def run_integration_tests(typ: str):
             head = f"[{completed_tests + 1}/{all_tests}] Test {os.path.basename(target.path)}"
             log(f"{head} start")
 
-            if target.name in skips:
+            if target.path in skips:
                 log(f"{head} is skipped.")
                 continue
 
@@ -161,6 +161,7 @@ def run_web_test(entry: str):
     assert_html_valid(ret)
 
     p.terminate()
+    p.wait()
     log("Web test passed.")
 
 

@@ -20,10 +20,17 @@ type Options struct {
 }
 
 func Analyze(bin string, options Options) (*result.Result, error) {
+	slog.Info("Parsing binary...")
+
 	file, err := gore.Open(bin)
+
+	slog.Info("Parsing binary done")
+
 	if err != nil {
 		return nil, err
 	}
+
+	slog.Info("Finding build info...")
 
 	k := &KnownInfo{
 		Size:      utils.GetFileSize(bin),
@@ -34,6 +41,8 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	}
 	k.KnownAddr = entity.NewKnownAddr()
 	k.UpdateVersionFlag()
+
+	slog.Info("Build info found")
 
 	k.LoadSectionMap()
 

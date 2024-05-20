@@ -11,11 +11,6 @@ versions = ["1.16", "1.18", "1.21"]
 
 full_versions = [f"1.{i}" for i in range(11, 22)]
 
-
-def get_bin_path(filename: str):
-    return os.path.join(os.path.dirname(__file__), "bins", filename)
-
-
 release_info_cache = None
 
 

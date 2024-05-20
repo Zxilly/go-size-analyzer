@@ -2,6 +2,7 @@ package printer
 
 import (
 	"io"
+	"log/slog"
 	"strings"
 
 	"github.com/goccy/go-json"
@@ -21,9 +22,15 @@ func JSON(r *result.Result, options *JSONOption) error {
 		global.HideDetail = true
 	}
 
+	slog.Info("JSON encoding...")
+
 	encoder := json.NewEncoder(options.Writer)
 	if options.Indent != nil {
 		encoder.SetIndent("", strings.Repeat(" ", *options.Indent))
 	}
-	return encoder.Encode(r)
+	err := encoder.Encode(r)
+
+	slog.Info("JSON encode done")
+
+	return err
 }

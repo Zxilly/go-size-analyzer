@@ -6,6 +6,13 @@ import subprocess
 import tempfile
 import time
 from html.parser import HTMLParser
+from io import BytesIO
+
+import matplotlib
+import matplotlib.pyplot as plt
+import psutil
+
+matplotlib.use('agg')
 
 
 def get_new_temp_binary() -> str:
@@ -64,20 +71,6 @@ def clear_folder(folder_path: str) -> None:
             shutil.rmtree(file_path)
 
 
-def extract_output(p: subprocess.CompletedProcess) -> str:
-    ret = ""
-
-    if len(p.stdout) > 0:
-        ret += "stdout:\n"
-        ret += p.stdout
-
-    if len(p.stderr) > 0:
-        ret += "\nstderr:\n"
-        ret += p.stderr
-
-    return ret
-
-
 def get_bin_path(name: str) -> str:
     return os.path.join(get_project_root(), "scripts", "bins", name)
 
@@ -121,28 +114,85 @@ def load_skip() -> list[str]:
 process_timeout = 360 if os.name == "nt" else 180
 
 
-def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = None) -> str:
+def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = None, draw: bool = False) -> [str, bytes]:
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
     if profiler_dir is not None:
         env["OUTPUT_DIR"] = profiler_dir
 
-    ret = None
+    process = subprocess.Popen(
+        args=pargs,
+        env=env, cwd=get_project_root(),
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+    )
+
+    cpu_percentages = []
+    memory_usage_mb = []
+    timestamps = []
+
+    start_time = time.time()
 
     try:
-        ret = subprocess.run(
-            args=pargs,
-            env=env, text=True, capture_output=True, cwd=get_project_root(),
-            encoding="utf-8", timeout=timeout, check=True
-        )
-    except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
-        content = extract_output(ret)
-        msg = (f"Failed to run {name}.\n"
-               f"Args: {pargs}\n"
-               f"Output: {content}\n")
-        raise Exception(msg)
+        ps_process = psutil.Process(process.pid)
 
-    return extract_output(ret)
+        while process.poll() is None:
+            elapsed_time = time.time() - start_time
+            if elapsed_time > timeout:
+                raise TimeoutError(f"Process {name} timed out after {timeout} seconds.")
+
+            if draw:
+                percent = ps_process.cpu_percent()
+                mem = ps_process.memory_info().rss / (1024 * 1024)
+
+                # ensure all data is valid
+                cpu_percentages.append(percent)
+                memory_usage_mb.append(mem)
+                timestamps.append(elapsed_time)
+
+            time.sleep(0.1)
+    except TimeoutError as e:
+        print(f"TimeoutError occurred: {e}")
+        process.kill()
+        process.wait()
+    except psutil.NoSuchProcess:
+        pass
+    except Exception as e:
+        print(f"Exception occurred: {e}")
+
+    buf = BytesIO()
+
+    if draw:
+        fig, ax1 = plt.subplots(figsize=(14, 5))
+
+        color = 'tab:blue'
+        ax1.set_xlabel('Time (seconds)')
+        ax1.set_ylabel('CPU %', color=color)
+        ax1.plot(timestamps, cpu_percentages, color=color)
+        ax1.tick_params(axis='y', labelcolor=color)
+
+        ax1.set_xticks(range(0, int(max(timestamps)) + 1, 1))
+        ax1.set_xlim(0, int(max(timestamps)))
+
+        ax2 = ax1.twinx()
+
+        color = 'tab:purple'
+        ax2.set_ylabel('Memory (MB)', color=color)
+        ax2.plot(timestamps, memory_usage_mb, color=color)
+        ax2.tick_params(axis='y', labelcolor=color)
+
+        plt.title('CPU and Memory Usage')
+
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+
+        plt.clf()
+        plt.close()
+
+    stdout_output, _ = process.communicate()
+
+    return [stdout_output, buf.getvalue()]
 
 
 def get_binaries_path():
