@@ -19,11 +19,17 @@ func main() {
 	}
 
 	var targets []int
-	mainProfile := os.Getenv("PROFILE")
-	if mainProfile == "main" {
-		targets = []int{profiler.Cpu, profiler.Mem}
+
+	_, ci := os.LookupEnv("CI")
+	if ci {
+		mainProfile := os.Getenv("PROFILE")
+		if mainProfile == "main" {
+			targets = []int{profiler.Cpu, profiler.Mem}
+		} else {
+			targets = []int{profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
+		}
 	} else {
-		targets = []int{profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
+		targets = []int{profiler.Cpu, profiler.Mem, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
 	}
 
 	p := profiler.New(

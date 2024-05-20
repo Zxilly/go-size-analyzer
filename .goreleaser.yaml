@@ -22,7 +22,11 @@ builds:
     goarch:
       - amd64
       - arm64
-    flags: -trimpath
+    goamd64:
+      - v3
+    flags:
+      - "-trimpath"
+      - "-pgo=default.pgo"
     tags:
       - embed
 

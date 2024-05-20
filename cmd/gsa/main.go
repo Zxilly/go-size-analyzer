@@ -1,4 +1,4 @@
-//go:build !profiler
+//go:build !profiler && !pgo
 
 package main
 

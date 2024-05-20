@@ -22,5 +22,6 @@ covdata/
 temp/
 
 *.profile
+default.pgo
 
 data.json

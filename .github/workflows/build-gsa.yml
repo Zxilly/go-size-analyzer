@@ -39,6 +39,27 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/webui/index.html
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          check-latest: true
+          cache: 'pip'
+          cache-dependency-path: 'scripts/requirements.txt'
+
+      - name: Add python dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: Cache test binaries
+        uses: actions/cache@v4
+        with:
+          path: scripts/bins
+          key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ matrix.test }}
+          enableCrossOsArchive: true
+
+      - name: Collect profiles
+        run: python scripts/pgo.py
+
       - name: Download deps
         run: go mod download
 
