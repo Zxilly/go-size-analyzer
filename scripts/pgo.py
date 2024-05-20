@@ -1,19 +1,26 @@
 import os
+import shutil
 import subprocess
 
 from gsa import build_pgo_gsa
-from utils import get_project_root
 from tests import run_integration_tests
+from utils import get_project_root
+
 
 def merge_profiles():
     # walk result dirs
     # merge profiles
-
     profiles = []
-    for root, dirs, files in os.walk(os.path.join(get_project_root(), "results")):
-        for file in files:
-            if file == "cpu.pprof":
-                profiles.append(os.path.join(root, file))
+    for d in os.listdir(os.path.join(get_project_root(), "results")):
+        d = os.path.join(get_project_root(), "results", d)
+        if not os.path.isdir(d):
+            continue
+
+        p = os.path.join(d, "json", "profiler", "cpu.pprof")
+        if not os.path.exists(p):
+            print(f"Skipping {p}")
+            continue
+        profiles.append(p)
 
     profile = subprocess.check_output(
         args=[
@@ -29,8 +36,10 @@ def merge_profiles():
     with open(os.path.join(get_project_root(), "default.pgo"), "wb") as f:
         f.write(profile)
 
-if __name__ == '__main__':
-    with build_pgo_gsa() as gsa:
-       run_integration_tests("real")
-    merge_profiles()
 
+if __name__ == '__main__':
+    shutil.rmtree(os.path.join(get_project_root(), "results"), ignore_errors=True)
+
+    with build_pgo_gsa() as gsa:
+        run_integration_tests("real")
+    merge_profiles()
