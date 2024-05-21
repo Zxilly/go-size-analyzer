@@ -1,7 +1,8 @@
 package disasm
 
 import (
-	mapset "github.com/deckarep/golang-set/v2"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
+
 	"golang.org/x/arch/x86/x86asm"
 )
 
@@ -10,7 +11,7 @@ var extractFuncs = map[string]extractorFunc{
 }
 
 func extractAmd64(code []byte, pc uint64) []PossibleStr {
-	resultSet := mapset.NewSet[PossibleStr]()
+	resultSet := utils.NewSet[PossibleStr]()
 
 	var insts = make([]x86PosInst, 0)
 

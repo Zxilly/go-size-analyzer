@@ -13,7 +13,6 @@ require (
 	github.com/charmbracelet/bubbletea v0.26.3-0.20240508202733-ef4e46c488ed
 	github.com/charmbracelet/lipgloss v0.10.1-0.20240506202754-3ee5dcab73cb
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240510181320-e66de7a51531
-	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goccy/go-json v0.10.2
 	github.com/jedib0t/go-pretty/v6 v6.5.9

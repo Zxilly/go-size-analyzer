@@ -1,11 +1,11 @@
 package wrapper
 
 import (
-	mapset "github.com/deckarep/golang-set/v2"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 // src\cmd\link\internal\ld\data.go
-var ignoreSymbols = mapset.NewSet[string]()
+var ignoreSymbols = utils.NewSet[string]()
 
 func init() {
 	symbols := []string{
