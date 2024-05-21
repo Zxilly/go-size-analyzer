@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/net/html"
 
+	"github.com/Zxilly/go-size-analyzer/internal/constant"
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
