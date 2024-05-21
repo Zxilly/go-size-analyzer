@@ -5,9 +5,10 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/goccy/go-json"
+	"github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 
-	"github.com/Zxilly/go-size-analyzer/internal/global"
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
@@ -18,17 +19,17 @@ type JSONOption struct {
 }
 
 func JSON(r *result.Result, options *JSONOption) error {
-	if options.HideDetail {
-		global.HideDetail = true
-	}
-
 	slog.Info("JSON encoding...")
 
-	encoder := json.NewEncoder(options.Writer)
+	var jsonOptions []json.Options
 	if options.Indent != nil {
-		encoder.SetIndent("", strings.Repeat(" ", *options.Indent))
+		jsonOptions = append(jsonOptions, jsontext.WithIndent(strings.Repeat(" ", *options.Indent)))
 	}
-	err := encoder.Encode(r)
+	if options.HideDetail {
+		jsonOptions = append(jsonOptions, json.WithMarshalers(entity.FileMarshalerCompact))
+	}
+
+	err := json.MarshalWrite(options.Writer, r, jsonOptions...)
 
 	slog.Info("JSON encode done")
 

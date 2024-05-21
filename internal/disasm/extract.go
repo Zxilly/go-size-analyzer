@@ -1,9 +1,9 @@
 package disasm
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
-
 	"golang.org/x/arch/x86/x86asm"
+
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 var extractFuncs = map[string]extractorFunc{
