@@ -5,16 +5,15 @@ import (
 	"io"
 	"strings"
 
+	"github.com/Zxilly/go-size-analyzer/internal/constant"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
-const ReplacedStr = `"GSA_PACKAGE_DATA"`
-
 var ErrTemplateInvalid = errors.New("template invalid")
 
 func HTML(r *result.Result, writer io.Writer) error {
-	parts := strings.Split(webui.GetTemplate(), ReplacedStr)
+	parts := strings.Split(webui.GetTemplate(), constant.ReplacedStr)
 	if len(parts) != 2 {
 		return ErrTemplateInvalid
 	}
