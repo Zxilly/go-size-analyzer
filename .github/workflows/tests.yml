@@ -97,7 +97,7 @@ jobs:
 
       - name: Upload coverage
         if: ${{ matrix.profile == 'main' }}
-        uses: codecov/codecov-action@v4.4.0
+        uses: codecov/codecov-action@v4.4.1
         with:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
