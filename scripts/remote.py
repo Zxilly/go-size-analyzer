@@ -4,7 +4,7 @@ import os.path
 import tarfile
 import zipfile
 from enum import Flag, Enum, auto
-from threading import Thread
+from urllib.parse import urlparse
 
 import requests
 from tqdm import tqdm
@@ -181,7 +181,10 @@ class RemoteBinary:
             return
 
         header = dict()
-        if self.url.startswith("https://github.com"):
+
+        host = urlparse(self.url).hostname
+
+        if host == "github.com":
             token = os.getenv('GITHUB_TOKEN')
             if token:
                 header['Authorization'] = f'Bearer {token}'
