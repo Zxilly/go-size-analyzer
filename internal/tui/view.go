@@ -2,9 +2,11 @@ package tui
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/term"
 	"github.com/muesli/reflow/wordwrap"
 )
 
@@ -19,6 +21,14 @@ func getTableStyle(hasChildren bool) table.Styles {
 }
 
 func (m mainModel) View() string {
+	if m.width == 0 || m.height == 0 {
+		var err error
+		m.width, m.height, err = term.GetSize(os.Stdout.Fd())
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	if m.width < 70 || m.height < 20 {
 		return wordwrap.String(
 			fmt.Sprintf("Your terminal window is too small. "+
