@@ -2,6 +2,7 @@ package tui
 
 import (
 	"bytes"
+	"os"
 	"path/filepath"
 	"runtime"
 	"testing"
@@ -11,9 +12,11 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/exp/teatest"
 	"github.com/muesli/termenv"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func init() {
@@ -43,7 +46,7 @@ func GetTestResult(t *testing.T) *result.Result {
 }
 
 func TestFullOutput(t *testing.T) {
-	m := newMainModel(GetTestResult(t))
+	m := newMainModel(GetTestResult(t), 300, 100)
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(300, 100))
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
@@ -135,4 +138,14 @@ func TestFullOutput(t *testing.T) {
 	})
 
 	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*1))
+}
+
+func TestRunTUI(t *testing.T) {
+	utils.UsePanicForExit()
+
+	os.Stdout = os.NewFile(0, os.DevNull)
+
+	assert.Panics(t, func() {
+		RunTUI(GetTestResult(t))
+	})
 }

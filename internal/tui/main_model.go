@@ -119,7 +119,7 @@ func newLeftTable(width int, rows []table.Row) table.Model {
 	)
 }
 
-func newMainModel(r *result.Result) mainModel {
+func newMainModel(r *result.Result, width, height int) mainModel {
 	baseItems := buildRootItems(r)
 
 	m := mainModel{
@@ -134,6 +134,9 @@ func newMainModel(r *result.Result) mainModel {
 		focus: focusedMain,
 
 		parents: make([]table.Model, 0),
+
+		width:  width,
+		height: height,
 	}
 
 	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
