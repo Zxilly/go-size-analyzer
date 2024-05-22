@@ -44,17 +44,13 @@ The web page will look like this:
 
 You can click to expand the package to see the details.
 
-#### Terminal UI (Experimental)
+#### Terminal UI
 
 ```bash
 $ gsa --tui golang-compiled-binary
 ```
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/04556f54-7ebb-42b8-ac57-91a17887a44e)
-
-> [!NOTE]  
-> There may be a problem with the UI display on Windows, which is caused by dependent libraries. 
-> Try running it on linux/WSL if you encounter problems.
 
 #### Text mode 
 
