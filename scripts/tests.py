@@ -1,4 +1,5 @@
 import os.path
+import sys
 from argparse import ArgumentParser
 
 import requests
@@ -18,47 +19,58 @@ def run_unit_tests():
     unit_output_dir = os.path.join(get_project_root(), "results", "unit")
     ensure_dir(unit_output_dir)
 
-    embed_out = subprocess.check_output(
-        [
-            "go",
-            "test",
-            "-v",
-            "-covermode=atomic",
-            "-cover",
-            "-tags=embed",
-            "./...",
-            f"-test.gocoverdir={unit_path}"
-        ],
-        text=True,
-        cwd=get_project_root(),
-        stderr=subprocess.STDOUT,
-        encoding="utf-8",
-        timeout=600,  # Windows runner is extremely slow
-    )
+    try:
+        embed_result = subprocess.run(
+            [
+                "go",
+                "test",
+                "-v",
+                "-covermode=atomic",
+                "-cover",
+                "-tags=embed",
+                "./...",
+                f"-test.gocoverdir={unit_path}"
+            ],
+            text=True,
+            cwd=get_project_root(),
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            timeout=600
+        )
+        embed_result.check_returncode()
+        with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
+            f.write(embed_result.stdout)
+    except subprocess.CalledProcessError as e:
+        log("Error running embed unit tests:")
+        log(f"stdout: {e.stdout}")
+        log(f"stderr: {e.stderr}")
+        sys.exit(1)
 
-    with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
-        f.write(embed_out)
-
-    # test no tag
-    normal_out = subprocess.check_output(
-        [
-            "go",
-            "test",
-            "-v",
-            "-covermode=atomic",
-            "-cover",
-            "./internal/webui",
-            f"-test.gocoverdir={unit_path}"
-        ],
-        text=True,
-        cwd=get_project_root(),
-        stderr=subprocess.STDOUT,
-        encoding="utf-8",
-        timeout=600,  # Windows runner is extremely slow
-    )
-
-    with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
-        f.write(normal_out)
+    try:
+        normal_result = subprocess.run(
+            [
+                "go",
+                "test",
+                "-v",
+                "-covermode=atomic",
+                "-cover",
+                "./internal/webui",
+                f"-test.gocoverdir={unit_path}"
+            ],
+            text=True,
+            cwd=get_project_root(),
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            timeout=600
+        )
+        normal_result.check_returncode()
+        with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
+            f.write(normal_result.stdout)
+    except subprocess.CalledProcessError as e:
+        log("Error running normal unit tests:")
+        log(f"stdout: {e.stdout}")
+        log(f"stderr: {e.stderr}")
+        sys.exit(1)
 
     log("Unit tests passed.")
 

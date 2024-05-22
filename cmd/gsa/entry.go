@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/charmbracelet/x/term"
 	"github.com/pkg/browser"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
@@ -34,7 +35,11 @@ func entry() {
 	}
 
 	if Options.Tui {
-		tui.RunTUI(result)
+		w, h, err := term.GetSize(os.Stdout.Fd())
+		if err != nil {
+			utils.FatalError(fmt.Errorf("failed to get terminal size: %w", err))
+		}
+		tui.RunTUI(result, w, h)
 		return
 	}
 
