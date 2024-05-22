@@ -2,10 +2,21 @@ package tui
 
 import (
 	"fmt"
+	"github.com/charmbracelet/bubbles/table"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
 )
+
+func getTableStyle(hasChildren bool) table.Styles {
+	s := table.DefaultStyles()
+
+	if hasChildren {
+		s.Selected = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("36"))
+	}
+
+	return s
+}
 
 func (m mainModel) View() string {
 	if m.width < 70 || m.height < 20 {
@@ -22,6 +33,7 @@ func (m mainModel) View() string {
 		Align(lipgloss.Center).
 		Render(m.title())
 
+	m.leftTable.SetStyles(getTableStyle(m.currentSelection().hasChildren()))
 	// Render the left table
 	left := m.leftTable.View()
 
