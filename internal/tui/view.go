@@ -2,8 +2,8 @@ package tui
 
 import (
 	"fmt"
-	"github.com/charmbracelet/bubbles/table"
 
+	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
 )
