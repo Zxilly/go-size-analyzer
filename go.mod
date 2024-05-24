@@ -11,7 +11,7 @@ require (
 	github.com/alecthomas/kong v0.9.0
 	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
 	github.com/charmbracelet/bubbletea v0.26.3
-	github.com/charmbracelet/lipgloss v0.10.1-0.20240515185947-83fa9be7feac
+	github.com/charmbracelet/lipgloss v0.11.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240517183709-47cd60ea8d59
 	github.com/charmbracelet/x/term v0.1.1
 	github.com/dustin/go-humanize v1.0.1
