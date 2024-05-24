@@ -166,6 +166,7 @@ Terminal interface options
 - [ ] Add other charts like flame graph, pie chart, etc.
 - [ ] Support C++/Rust symbol demangling in cgo
 - [x] Add a TUI mode for exploring details
+- [ ] Compile to wasm, create a ui to analyze the binary in the browser
 
 ## Contribution
 
