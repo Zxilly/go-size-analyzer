@@ -14,4 +14,5 @@ func RunTUI(r *result.Result, width, height int) error {
 	if err != nil {
 		return fmt.Errorf("TUI error: %w", err)
 	}
+	return nil
 }
