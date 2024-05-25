@@ -59,7 +59,7 @@ func (k *KnownInfo) Disasm() error {
 
 	lo.ForEach(fns, func(fn *entity.Function, _ int) {
 		if err := sem.Acquire(resultProcess, 1); err != nil {
-			utils.FatalError(err)
+			slog.Error(fmt.Sprintf("Failed to acquire semaphore: %v", err))
 			return
 		}
 
@@ -78,7 +78,7 @@ func (k *KnownInfo) Disasm() error {
 	})
 
 	if err = sem.Acquire(resultProcess, int64(maxWorkers)); err != nil {
-		utils.FatalError(err)
+		slog.Error(fmt.Sprintf("Failed to acquire semaphore for all workers: %v", err))
 	}
 
 	close(resultChan)

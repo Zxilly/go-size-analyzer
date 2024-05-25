@@ -2,12 +2,11 @@ package internal
 
 import (
 	"fmt"
+	"github.com/ZxillyFork/gore"
+	"github.com/ZxillyFork/gosym"
 	"log/slog"
 	"math"
 	"runtime/debug"
-
-	"github.com/ZxillyFork/gore"
-	"github.com/ZxillyFork/gosym"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
@@ -32,7 +31,7 @@ type KnownInfo struct {
 	}
 }
 
-func (k *KnownInfo) LoadSectionMap() {
+func (k *KnownInfo) LoadSectionMap() error {
 	slog.Info("Loading sections...")
 
 	sections := k.wrapper.LoadSections()
@@ -42,10 +41,7 @@ func (k *KnownInfo) LoadSectionMap() {
 	k.Sects = &SectionMap{
 		Sections: sections,
 	}
-	err := k.Sects.AssertSize(k.Size)
-	if err != nil {
-		utils.FatalError(err)
-	}
+	return k.Sects.AssertSize(k.Size)
 }
 
 func (k *KnownInfo) AnalyzeSymbol() error {
@@ -132,10 +128,10 @@ func (k *KnownInfo) LoadPackages() error {
 		pkgs.Add(p, entity.PackageTypeUnknown, pclntab)
 	}
 
-	k.RequireModInfo()
-
-	pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
-	pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
+	if err = k.RequireModInfo(); err == nil {
+		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
+		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
+	}
 
 	pkgs.FinishLoad()
 
@@ -144,13 +140,14 @@ func (k *KnownInfo) LoadPackages() error {
 	return nil
 }
 
-func (k *KnownInfo) RequireModInfo() {
+func (k *KnownInfo) RequireModInfo() error {
 	if k.BuildInfo == nil {
-		utils.FatalError(fmt.Errorf("no build info"))
+		return fmt.Errorf("no build info")
 	}
+	return nil
 }
 
-func (k *KnownInfo) CollectCoverage() {
+func (k *KnownInfo) CollectCoverage() error {
 	// load coverage for pclntab and symbol
 	pclntabCov := k.KnownAddr.Pclntab.ToDirtyCoverage()
 
@@ -167,12 +164,10 @@ func (k *KnownInfo) CollectCoverage() {
 
 	var err error
 	k.Coverage, err = entity.MergeAndCleanCoverage(covs)
-	if err != nil {
-		utils.FatalError(err)
-	}
+	return err
 }
 
-func (k *KnownInfo) CalculateSectionSize() {
+func (k *KnownInfo) CalculateSectionSize() error {
 	t := make(map[*entity.Section]uint64)
 	// minus coverage part
 	for _, cp := range k.Coverage {
@@ -202,7 +197,7 @@ func (k *KnownInfo) CalculateSectionSize() {
 			}
 		}
 	}
-	utils.FatalError(fmt.Errorf("pclntab section not found when calculate known size"))
+	return fmt.Errorf("pclntab section not found when calculate known size")
 foundPclntab:
 
 	// linear map virtual size to file size
@@ -220,6 +215,7 @@ foundPclntab:
 			section.KnownSize = section.FileSize
 		}
 	}
+	return nil
 }
 
 // CalculatePackageSize calculate the size of each package
