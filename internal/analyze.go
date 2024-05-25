@@ -6,11 +6,12 @@ import (
 	"log/slog"
 	"path"
 
+	"github.com/ZxillyFork/gore"
+	"golang.org/x/exp/maps"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"github.com/ZxillyFork/gore"
-	"golang.org/x/exp/maps"
 )
 
 type Options struct {

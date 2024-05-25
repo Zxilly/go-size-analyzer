@@ -3,13 +3,13 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"golang.org/x/exp/mmap"
 	"io"
 	"log/slog"
 	"os"
 
 	"github.com/charmbracelet/x/term"
 	"github.com/pkg/browser"
+	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"

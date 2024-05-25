@@ -11,6 +11,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/exp/teatest"
 	"github.com/muesli/termenv"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
@@ -35,7 +37,10 @@ func GetTestResult(t *testing.T) *result.Result {
 		t.Fatalf("failed to get absolute path of %s: %v", path, err)
 	}
 
-	r, err := internal.Analyze(path, internal.Options{})
+	f, err := mmap.Open(path)
+	require.NoError(t, err)
+
+	r, err := internal.Analyze(path, f, uint64(f.Len()), internal.Options{})
 	if err != nil {
 		t.Fatalf("failed to analyze %s: %v", path, err)
 	}
