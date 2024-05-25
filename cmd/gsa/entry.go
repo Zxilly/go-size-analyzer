@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"golang.org/x/exp/mmap"
 	"io"
 	"log/slog"
 	"os"
@@ -17,7 +18,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
-func entry() {
+func entry() error {
 	utils.ApplyMemoryLimit()
 
 	if Options.Verbose {
@@ -26,12 +27,20 @@ func entry() {
 		utils.InitLogger(slog.LevelWarn)
 	}
 
-	result, err := internal.Analyze(Options.Binary, internal.Options{
-		SkipSymbol: Options.NoSymbol,
-		SkipDisasm: Options.NoDisasm,
-	})
+	reader, err := mmap.Open(Options.Binary)
 	if err != nil {
-		utils.FatalError(err)
+		return err
+	}
+
+	result, err := internal.Analyze(Options.Binary,
+		reader,
+		uint64(reader.Len()),
+		internal.Options{
+			SkipSymbol: Options.NoSymbol,
+			SkipDisasm: Options.NoDisasm,
+		})
+	if err != nil {
+		return err
 	}
 
 	if Options.Tui {
@@ -39,8 +48,8 @@ func entry() {
 		if err != nil {
 			utils.FatalError(fmt.Errorf("failed to get terminal size: %w", err))
 		}
-		tui.RunTUI(result, w, h)
-		return
+
+		return tui.RunTUI(result, w, h)
 	}
 
 	if Options.Web {
@@ -52,7 +61,7 @@ func entry() {
 	if Options.Output != "" {
 		writer, err = os.OpenFile(Options.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			utils.FatalError(err)
+			return err
 		}
 	} else {
 		writer = utils.Stdout
@@ -120,8 +129,9 @@ func entry() {
 		}
 
 		utils.WaitSignal()
-		return
 	}
 
 	slog.Info("Ready to exit")
+
+	return nil
 }

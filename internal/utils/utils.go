@@ -4,24 +4,12 @@ import (
 	"debug/pe"
 	"fmt"
 	"log/slog"
-	"os"
 	"strconv"
 	"strings"
 
 	"go4.org/intern"
 	"golang.org/x/net/publicsuffix"
 )
-
-func GetFileSize(name string) uint64 {
-	file, _ := os.Open(name)
-	defer file.Close()
-
-	fileInfo, err := file.Stat()
-	if err != nil {
-		panic(err)
-	}
-	return uint64(fileInfo.Size())
-}
 
 func GetImageBase(file *pe.File) uint64 {
 	switch hdr := file.OptionalHeader.(type) {

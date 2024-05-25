@@ -2,16 +2,15 @@ package internal
 
 import (
 	"errors"
+	"io"
 	"log/slog"
 	"path"
 
-	"github.com/ZxillyFork/gore"
-	"golang.org/x/exp/maps"
-
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
+	"github.com/ZxillyFork/gore"
+	"golang.org/x/exp/maps"
 )
 
 type Options struct {
@@ -19,21 +18,19 @@ type Options struct {
 	SkipDisasm bool
 }
 
-func Analyze(bin string, options Options) (*result.Result, error) {
+func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*result.Result, error) {
 	slog.Info("Parsing binary...")
 
-	file, err := gore.Open(bin)
-
-	slog.Info("Parsing binary done")
-
+	file, err := gore.Open(reader)
 	if err != nil {
 		return nil, err
 	}
 
+	slog.Info("Parsing binary done")
 	slog.Info("Finding build info...")
 
 	k := &KnownInfo{
-		Size:      utils.GetFileSize(bin),
+		Size:      size,
 		BuildInfo: file.BuildInfo,
 
 		gore:    file,
@@ -80,7 +77,7 @@ func Analyze(bin string, options Options) (*result.Result, error) {
 	k.CalculatePackageSize()
 
 	return &result.Result{
-		Name:     path.Base(bin),
+		Name:     path.Base(name),
 		Size:     k.Size,
 		Packages: k.Deps.TopPkgs,
 		Sections: maps.Values(k.Sects.Sections),

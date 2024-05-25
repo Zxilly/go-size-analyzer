@@ -2,6 +2,10 @@
 
 package main
 
+import "github.com/Zxilly/go-size-analyzer/internal/utils"
+
 func main() {
-	entry()
+	if err := entry(); err != nil {
+		utils.FatalError(err)
+	}
 }

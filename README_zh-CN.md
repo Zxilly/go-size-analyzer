@@ -164,7 +164,7 @@ Terminal interface options
 - [ ] 添加其他图表，如火焰图、饼图等
 - [ ] 支持 demangle cgo 中的 C++/Rust 符号
 - [x] 添加 TUI 模式以探索
-- [ ] 编译为 wasm，创建一个在浏览器中分析二进制文件的用户界面
+- [x] 编译为 wasm，创建一个在浏览器中分析二进制文件的用户界面
 
 ## Contribution
 
