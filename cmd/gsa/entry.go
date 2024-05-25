@@ -46,7 +46,7 @@ func entry() error {
 	if Options.Tui {
 		w, h, err := term.GetSize(os.Stdout.Fd())
 		if err != nil {
-			utils.FatalError(fmt.Errorf("failed to get terminal size: %w", err))
+			return fmt.Errorf("failed to get terminal size: %w", err)
 		}
 
 		return tui.RunTUI(result, w, h)
@@ -98,13 +98,13 @@ func entry() error {
 			PaddingRoot:  Options.PaddingRoot,
 		})
 	default:
-		utils.FatalError(fmt.Errorf("invalid format: %s", Options.Format))
+		return fmt.Errorf("invalid format: %s", Options.Format)
 	}
 
 	slog.Info("Printing done")
 
 	if err != nil {
-		utils.FatalError(err)
+		return err
 	}
 
 	slog.Info("Check if web option is set")

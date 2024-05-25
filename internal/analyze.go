@@ -42,7 +42,10 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	slog.Info("Build info found")
 
-	k.LoadSectionMap()
+	err = k.LoadSectionMap()
+	if err != nil {
+		return nil, err
+	}
 
 	err = k.LoadPackages()
 	if err != nil {
@@ -70,10 +73,17 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	// we have collected everything, now we can calculate the size
 
 	// first, merge all results to coverage
-	k.CollectCoverage()
+	err = k.CollectCoverage()
+	if err != nil {
+		return nil, err
+	}
 
 	// for sections
-	k.CalculateSectionSize()
+	err = k.CalculateSectionSize()
+	if err != nil {
+		return nil, err
+	}
+
 	// for packages
 	k.CalculatePackageSize()
 
