@@ -1,5 +1,5 @@
-github.com/ZxillyFork/gore v0.0.0-20240517092743-06ea6aecda91 h1:yNvjV7XmjdaVJwkPc+qZArA6x3mvKLLPr4tIFrkRJas=
-github.com/ZxillyFork/gore v0.0.0-20240517092743-06ea6aecda91/go.mod h1:nMh5jV4q6hRyqeyJToUs/YMwn/fRLOpwQlZu5CFfNQo=
+github.com/ZxillyFork/gore v0.0.0-20240525115805-8d1d0ad0f4bb h1:f4D7ieRG1yJce0Du9Wu6NilLC4PD8RfEy4y+5rdpUng=
+github.com/ZxillyFork/gore v0.0.0-20240525115805-8d1d0ad0f4bb/go.mod h1:5PNDq27+JjDpyK7t7Wt9Fak5dFRiIjz7kfaWzz2LAo8=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=

@@ -28,5 +28,8 @@ func main() {
 
 	p.Start()
 	defer p.Stop()
-	entry()
+
+	if err := entry(); err != nil {
+		utils.FatalError(err)
+	}
 }
