@@ -72,7 +72,6 @@ jobs:
           prerelease: true
 
       - name: Upload artifact
-        if: ${{ inputs.external_call }}
         uses: actions/upload-artifact@v4
         with:
           name: ui
