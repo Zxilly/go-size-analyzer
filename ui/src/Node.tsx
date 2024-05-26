@@ -26,7 +26,7 @@ export const Node: React.FC<NodeProps> = (
     const {x0, x1, y1, y0, children = null} = node;
 
     const textRef = useRef<SVGTextElement>(null);
-    const textRectRef = useRef<DOMRect>(null);
+    const textRectRef = useRef<DOMRect | null>(null);
 
     const width = x1 - x0;
     const height = y1 - y0;
