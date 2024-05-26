@@ -71,7 +71,7 @@ jobs:
           PULL_REQUEST_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
 
       - name: Upload pages artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: 'ui/dist/explorer/'
 
