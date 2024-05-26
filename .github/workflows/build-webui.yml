@@ -3,7 +3,7 @@ name: Build UI
 on:
   push:
     branches:
-      - $default-branch
+      - master
     paths: 
       - 'ui/**'
       - '.github/workflows/build-webui.yml'
