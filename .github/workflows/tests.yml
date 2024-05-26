@@ -3,7 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - $default-branch
   pull_request:
 
 permissions:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build-ui:
-    name: Build UI
+    name: Build Web UI
     uses: ./.github/workflows/build-ui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
