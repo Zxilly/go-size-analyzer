@@ -61,7 +61,7 @@ jobs:
 
       - name: Build wasm
         run: |
-          python run scripts/wasm.py
+          python scripts/wasm.py
 
       - name: Build
         working-directory: ./ui
