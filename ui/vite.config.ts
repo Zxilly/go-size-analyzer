@@ -36,5 +36,5 @@ export default defineConfig({
     esbuild: {
         legalComments: 'none',
     },
-    build: build()
+    build: build("webui")
 })

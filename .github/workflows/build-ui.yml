@@ -64,7 +64,7 @@ jobs:
           artifactErrorsFailBuild: true
           allowUpdates: true
           artifactContentType: 'text/html'
-          artifacts: 'ui/dist/index.html'
+          artifacts: 'ui/dist/webui/index.html'
           tag: ui-v1
           commit: master
           prerelease: true
@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ui
-          path: ui/dist/index.html
+          path: 'ui/dist/webui/index.html'
 
 
       

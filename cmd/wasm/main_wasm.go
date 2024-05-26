@@ -49,7 +49,6 @@ func analyze(_ js.Value, args []js.Value) any {
 }
 
 func main() {
-	wait := make(chan struct{})
 	js.Global().Set("gsa_analyze", js.FuncOf(analyze))
-	<-wait
+	select {}
 }
