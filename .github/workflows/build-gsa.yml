@@ -10,11 +10,13 @@ permissions:
 
 jobs:
   build-ui:
+    name: Build Treemap WebUI
     uses: ./.github/workflows/build-ui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   goreleaser:
+    name: Release
     needs: build-ui
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +27,8 @@ jobs:
       - name: Get tags
         run: git fetch --tags
 
-      - uses: actions/setup-go@v5
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
           go-version-file: "go.mod"
           cache: true
@@ -39,7 +42,8 @@ jobs:
       - name: Move UI file
         run: mv index.html internal/webui/index.html
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           check-latest: true

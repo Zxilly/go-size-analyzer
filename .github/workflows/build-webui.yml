@@ -2,7 +2,8 @@ name: Build UI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - $default-branch
     paths: 
       - 'ui/**'
       - '.github/workflows/build-ui.yml'
@@ -26,6 +27,7 @@ permissions:
 
 jobs:
   build_webui:
+    name: Build Treemap WebUI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
