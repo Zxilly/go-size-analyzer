@@ -37,7 +37,7 @@ export function codecov(name: string): PluginOption {
     })
 }
 
-export function commonPlugin(): PluginOption[][] {
+export function commonPlugin(): any[] {
     return [
         react(),
     ]
@@ -46,5 +46,12 @@ export function commonPlugin(): PluginOption[][] {
 export function build(dir: string): BuildOptions {
     return {
         outDir: path.join("dist", dir),
+        minify: "terser",
+        terserOptions: {
+            compress: {
+                passes: 2,
+                dead_code: true,
+            },
+        },
     }
 }
