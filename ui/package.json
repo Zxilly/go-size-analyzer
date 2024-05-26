@@ -12,14 +12,13 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.18",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "framer-motion": "^11.2.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-use": "^17.5.0"
@@ -42,6 +41,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "sass": "^1.77.2",
+    "terser": "^5.31.0",
     "typescript": "^5.4.5",
     "typia": "^6.0.4",
     "vite": "^5.2.11",

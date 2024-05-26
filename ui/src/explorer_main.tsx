@@ -1,23 +1,16 @@
 import {useAsync} from "react-use";
 import ReactDOM from "react-dom/client";
-import React, {ChangeEvent, ReactNode, useCallback, useEffect, useMemo} from "react";
-import {
-    Button,
-    ChakraProvider,
-    Input,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay
-} from '@chakra-ui/react'
+import React, {ReactNode, useEffect, useMemo} from "react";
+import {Box, Button, CssBaseline, Dialog, DialogContent, DialogTitle} from "@mui/material";
 
 import "./tool/wasm_exec.js"
+
 import gsa from "../gsa.wasm?init"
+
 import {loadDataFromWasmResult} from "./tool/utils.ts";
 import {Entry} from "./tool/entry.ts";
 import TreeMap from "./TreeMap.tsx";
+
 
 type ModalState = {
     isOpen: false
@@ -27,27 +20,39 @@ type ModalState = {
     content: ReactNode
 }
 
+
 type fileChangeHandler = (file: File) => void
 
 const FileSelector = ({handler}: {
+    value?: File | null,
     handler: fileChangeHandler
 }) => {
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0]
-            handler(file)
-        }
-    };
-
     return (
-        <div>
-            <Input type="file" onChange={handleFileChange} hidden id="file-upload"/>
-            <label htmlFor="file-upload">
-                <Button as="span">
-                    Select a file
+        <>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100%"
+            >
+                <Button
+                    variant="outlined"
+                    component="label"
+                >
+                    Select file
+                    <input
+                        type="file"
+                        onChange={(e) => {
+                            const file = e.target.files?.item(0)
+                            if (file) {
+                                handler(file)
+                            }
+                        }}
+                        hidden
+                    />
                 </Button>
-            </label>
-        </div>
+            </Box>
+        </>
     );
 };
 
@@ -108,45 +113,33 @@ const App: React.FC = () => {
             })
         } else if (analyzing) {
             setModalState({isOpen: true, title: "Analyzing", content: "Analyzing binary..."})
-        } else if (!analyzing && !jsonResult) {
+        } else if (!analyzing && !jsonResult && !entry) {
             setModalState({
                 isOpen: true,
                 title: "Error",
-                content: "Failed to analyze " + file.name + ", see console for more details"
+                content: "Failed to analyze " + file.name + ", see browser dev console for more details."
             })
         } else {
             setModalState({isOpen: false})
         }
-    }, [loadError, loading, file, jsonResult])
-
-    const closeModal = useCallback(() => {
-        setModalState({isOpen: false})
-    }, [])
+    }, [loadError, loading, file, jsonResult, analyzing])
 
     return <>
-        <Modal
-            isOpen={modalState.isOpen}
-            onClose={closeModal}
-            closeOnOverlayClick={false}
-            isCentered
+        <Dialog
+            open={modalState.isOpen}
         >
-            <ModalOverlay/>
-            <ModalContent>
-                <ModalHeader>{modalState.isOpen && modalState.title}</ModalHeader>
-                <ModalBody>
-                    {modalState.isOpen && modalState.content}
-                </ModalBody>
-                <ModalFooter/>
-            </ModalContent>
-        </Modal>
+            <DialogTitle>{modalState.isOpen && modalState.title}</DialogTitle>
+            <DialogContent>
+                {modalState.isOpen && modalState.content}
+            </DialogContent>
+        </Dialog>
         {entry && <TreeMap entry={entry}/>}
     </>
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <ChakraProvider resetCSS>
-            <App/>
-        </ChakraProvider>
+        <CssBaseline/>
+        <App/>
     </React.StrictMode>,
 )
