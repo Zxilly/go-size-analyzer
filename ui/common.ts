@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import {BuildOptions, PluginOption} from "vite";
 import {codecovVitePlugin} from "@codecov/vite-plugin";
+import * as path from "node:path";
 
 
 export function getSha(): string | undefined {
@@ -20,8 +21,13 @@ export function getSha(): string | undefined {
 }
 
 export function codecov(name: string): PluginOption {
+    if (process.env.CODECOV_TOKEN === undefined) {
+        console.warn("CODECOV_TOKEN is not set, codecov plugin will be disabled");
+        return undefined;
+    }
+
     return codecovVitePlugin({
-        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        enableBundleAnalysis: true,
         bundleName: name,
         uploadToken: process.env.CODECOV_TOKEN,
         uploadOverrides: {
@@ -33,24 +39,12 @@ export function codecov(name: string): PluginOption {
 
 export function commonPlugin(): PluginOption[][] {
     return [
-        react({
-            babel: {
-                plugins: ["babel-plugin-react-compiler"]
-            }
-        }),
+        react(),
     ]
 }
 
-export function build(): BuildOptions {
+export function build(dir: string): BuildOptions {
     return {
-        cssMinify: "lightningcss",
-        minify: "terser",
-        terserOptions: {
-            compress: {
-                passes: 2,
-                ecma: 2020,
-                dead_code: true,
-            }
-        }
+        outDir: path.join("dist", dir),
     }
 }

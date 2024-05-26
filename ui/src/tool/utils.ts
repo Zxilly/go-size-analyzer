@@ -2,9 +2,17 @@ import {Result} from "../schema/schema.ts";
 import {parseResult} from "../generated/schema.ts";
 import {useCallback, useRef} from 'react';
 
-export function loadData(): Result {
+export function loadDataFromEmbed(): Result {
     const doc = document.querySelector("#data")!;
     const ret = parseResult(doc.textContent!);
+    if (ret === null) {
+        throw new Error("Failed to parse data");
+    }
+    return ret;
+}
+
+export function loadDataFromWasmResult(data: string): Result {
+    const ret = parseResult(data);
     if (ret === null) {
         throw new Error("Failed to parse data");
     }

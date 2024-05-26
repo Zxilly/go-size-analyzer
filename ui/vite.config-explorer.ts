@@ -4,10 +4,13 @@ import * as fs from "node:fs";
 
 const indexHtmlTransform: PluginOption = {
     name: 'index-html-transform',
-    transformIndexHtml: async () => {
-        return await fs.promises.readFile(
-            new URL("./index-explorer.html", import.meta.url),
-            "utf-8")
+    transformIndexHtml: {
+        order: "pre",
+        handler: async () => {
+            return await fs.promises.readFile(
+                new URL("./index-explorer.html", import.meta.url),
+                "utf-8")
+        }
     }
 }
 
@@ -21,5 +24,10 @@ export default defineConfig({
     esbuild: {
         legalComments: 'none',
     },
-    build: build()
+    build: build("explorer"),
+    server: {
+        watch: {
+            usePolling: true,
+        },
+    }
 })

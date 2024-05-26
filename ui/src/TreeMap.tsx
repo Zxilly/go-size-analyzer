@@ -1,33 +1,29 @@
-import {loadData} from "./tool/utils.ts";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {Entry} from "./tool/entry.ts";
-import {useWindowSize} from "usehooks-ts";
-import {
-    hierarchy,
-    HierarchyNode,
-    HierarchyRectangularNode,
-    treemap,
-    treemapSquarify
-} from "d3-hierarchy";
 import {group} from "d3-array";
+import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapSquarify} from "d3-hierarchy";
+import {useTitle, useWindowSize} from "react-use";
+
+import {Entry} from "./tool/entry.ts";
 import createRainbowColor from "./tool/color.ts";
 import {Tooltip} from "./Tooltip.tsx";
 import {Node} from "./Node.tsx";
 
-function TreeMap() {
-    const rootEntry = useMemo(() => new Entry(loadData()), [])
+import "./style.scss"
 
+interface TreeMapProps {
+    entry: Entry
+}
+
+function TreeMap({entry}: TreeMapProps) {
     // Set the document title to the name of the entry
-    useEffect(() => {
-        document.title = rootEntry.getName()
-    }, [rootEntry])
+    useTitle(entry.getName())
 
     // Get the window size
     const {width, height} = useWindowSize()
 
     const rawHierarchy = useMemo(() => {
-        return hierarchy(rootEntry, (e) => e.getChildren())
-    }, [rootEntry])
+        return hierarchy(entry, (e) => e.getChildren())
+    }, [entry])
 
     const getModuleColor = useMemo(() => {
         return createRainbowColor(rawHierarchy)
@@ -96,7 +92,7 @@ function TreeMap() {
             cache.set(node.data.getID(), node);
         })
         return cache;
-    },[root])
+    }, [root])
 
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipNode, setTooltipNode] =
