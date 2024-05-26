@@ -38,6 +38,8 @@ $ gsa --web golang-compiled-binary
 
 Will start a web server on port 8080, you can view the result in your browser.
 
+Or you can use the WASM version in the browser: [GSA Treemap](https://gsa.zxilly.dev)
+
 The web page will look like this:
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/e69583ce-b189-4a0d-b108-c3b7d5c33a82)

@@ -36,6 +36,8 @@ $ gsa --web golang-compiled-binary
 
 将在 8080 端口启动一个 web 服务器，您可以在浏览器中查看结果。
 
+或者您可以在浏览器中使用 WASM 版本：[GSA Treemap](https://gsa.zxilly.dev)
+
 网页将如下所示：
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/e69583ce-b189-4a0d-b108-c3b7d5c33a82)
