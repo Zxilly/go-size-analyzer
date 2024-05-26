@@ -6,11 +6,11 @@ on:
       - $default-branch
     paths: 
       - 'ui/**'
-      - '.github/workflows/build-ui.yml'
+      - '.github/workflows/build-webui.yml'
   pull_request:
     paths:
       - 'ui/**'
-      - '.github/workflows/build-ui.yml'
+      - '.github/workflows/build-webui.yml'
   workflow_call:
     inputs:
       external_call:
