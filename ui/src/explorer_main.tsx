@@ -1,7 +1,7 @@
 import {useAsync} from "react-use";
 import ReactDOM from "react-dom/client";
 import React, {ReactNode, useEffect, useMemo} from "react";
-import {Box, Button, CssBaseline, Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {Box, Button, CssBaseline, Dialog, DialogContent, DialogContentText, DialogTitle, Link} from "@mui/material";
 
 import "./tool/wasm_exec.js"
 
@@ -52,6 +52,24 @@ const FileSelector = ({handler}: {
                     />
                 </Button>
             </Box>
+            <DialogContentText marginTop={2} style={{
+                verticalAlign: "middle",
+            }}>
+                For full features, see
+                <Link
+                    href="https://github.com/Zxilly/go-size-analyzer"
+                    target="_blank"
+                    style={{
+                        marginLeft: "0.3em",
+                    }}
+                >go-size-analyzer</Link>
+                <img alt="GitHub Repo stars"
+                     style={{
+                         marginLeft: "0.3em",
+                     }}
+                     src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"/>
+
+            </DialogContentText>
         </>
     );
 };
@@ -98,11 +116,21 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (loadError) {
-            setModalState({isOpen: true, title: "Error", content: loadError.message})
+            setModalState({
+                isOpen: true, title: "Error", content:
+                    <DialogContentText>{loadError.message}</DialogContentText>
+            })
         } else if (loading) {
-            setModalState({isOpen: true, title: "Loading", content: "Loading WebAssembly module..."})
+            setModalState({
+                isOpen: true, title: "Loading", content:
+                    <DialogContentText>"Loading WebAssembly module...</DialogContentText>
+            })
         } else if (inst === undefined) {
-            setModalState({isOpen: true, title: "Error", content: "Failed to load WebAssembly module"})
+            setModalState({
+                isOpen: true,
+                title: "Error",
+                content: <DialogContentText>Failed to load WebAssembly module</DialogContentText>
+            })
         } else if (file === null) {
             setModalState({
                 isOpen: true,
@@ -112,12 +140,18 @@ const App: React.FC = () => {
                 }}/>
             })
         } else if (analyzing) {
-            setModalState({isOpen: true, title: "Analyzing", content: "Analyzing binary..."})
+            setModalState({
+                isOpen: true,
+                title: "Analyzing",
+                content: <DialogContentText>Analyzing binary...</DialogContentText>
+            })
         } else if (!analyzing && !jsonResult && !entry) {
             setModalState({
                 isOpen: true,
                 title: "Error",
-                content: "Failed to analyze " + file.name + ", see browser dev console for more details."
+                content: <DialogContentText>
+                    Failed to analyze {file.name}, see browser dev console for more details.
+                </DialogContentText>
             })
         } else {
             setModalState({isOpen: false})
