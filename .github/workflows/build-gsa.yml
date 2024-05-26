@@ -11,7 +11,7 @@ permissions:
 jobs:
   build-ui:
     name: Build Treemap WebUI
-    uses: ./.github/workflows/build-ui.yml
+    uses: ./.github/workflows/build-webui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
