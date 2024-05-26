@@ -2,9 +2,9 @@ import csv
 
 import requests
 
-from example import get_example_download_url
-from remote import RemoteBinary, RemoteBinaryType, TestType, Target
-from utils import get_binaries_path
+from .example import get_example_download_url
+from .remote import RemoteBinary, RemoteBinaryType, TestType, Target
+from .utils import get_binaries_path
 
 
 def add_exe(name: str, is_windows: bool) -> str:

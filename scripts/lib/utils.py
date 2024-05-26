@@ -27,7 +27,10 @@ def get_new_temp_binary() -> str:
 
 
 def get_project_root() -> str:
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    return os.path.abspath(
+        os.path.join(os.path.dirname(__file__),
+                     os.pardir,
+                     os.pardir))
 
 
 def ensure_dir(path: str) -> str:

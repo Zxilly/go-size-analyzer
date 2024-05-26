@@ -1,4 +1,4 @@
-//go:build pgo
+//go:build pgo && !wasm
 
 package main
 

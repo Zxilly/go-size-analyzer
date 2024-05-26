@@ -1,9 +1,8 @@
-import argparse
 import os
 
 import requests
 
-from utils import log
+from .utils import log
 
 TARGET_TAG = "latest"
 BIN_REPO = "Zxilly/go-testdata"

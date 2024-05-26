@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
-    "dev": "vite",
+    "build:ui": "tsc && vite -c vite.config.ts build",
+    "build:explorer": "tsc && vite -c vite.config-explorer.ts build",
+    "dev:ui": "vite -c vite.config.ts",
+    "dev:explorer": "vite -c vite.config-explorer.ts",
     "generate": "typia generate --input src/schema --output src/generated --project tsconfig.json",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "d3-array": "^3.2.4",
@@ -43,7 +44,6 @@
     "typescript": "^5.4.5",
     "typia": "^6.0.3",
     "vite": "^5.2.11",
-    "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.1"
   },
   "overrides": {

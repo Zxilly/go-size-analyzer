@@ -1,4 +1,4 @@
-//go:build profiler
+//go:build profiler && !wasm
 
 package main
 
