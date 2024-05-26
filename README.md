@@ -40,6 +40,12 @@ Will start a web server on port 8080, you can view the result in your browser.
 
 Or you can use the WASM version in the browser: [GSA Treemap](https://gsa.zxilly.dev)
 
+> [!NOTE]  
+> Due to the limitation of the browser, the wasm version is much slower than the native version.
+> Normally costs 10x time to analyze the same binary.
+> 
+> Only recommended for analysing small applications (less than 15MB in size)
+
 The web page will look like this:
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/e69583ce-b189-4a0d-b108-c3b7d5c33a82)

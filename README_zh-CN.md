@@ -38,6 +38,12 @@ $ gsa --web golang-compiled-binary
 
 或者您可以在浏览器中使用 WASM 版本：[GSA Treemap](https://gsa.zxilly.dev)
 
+> [!NOTE]
+> 由于浏览器的限制，wasm 版本比原生版本慢得多。
+> 通常分析相同二进制文件需要 10 倍的时间。
+> 
+> 仅建议用于分析小型应用程序（大小小于 15MB）
+
 网页将如下所示：
 
 ![image](https://github.com/Zxilly/go-size-analyzer/assets/31370133/e69583ce-b189-4a0d-b108-c3b7d5c33a82)
