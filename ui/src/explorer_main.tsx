@@ -13,6 +13,7 @@ import {
     ModalOverlay
 } from '@chakra-ui/react'
 
+import "./tool/wasm_exec.js"
 import gsa from "../gsa.wasm?init"
 import {loadDataFromWasmResult} from "./tool/utils.ts";
 import {Entry} from "./tool/entry.ts";
