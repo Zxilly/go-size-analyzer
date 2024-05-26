@@ -1,15 +1,16 @@
-//go:build wasm
+//go:build js && wasm
 
-package wasm
+package main
 
 import (
 	"bytes"
 	"fmt"
+	"log/slog"
+	"syscall/js"
+
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"log/slog"
-	"syscall/js"
 )
 
 func analyze(_ js.Value, args []js.Value) any {
@@ -48,7 +49,7 @@ func analyze(_ js.Value, args []js.Value) any {
 }
 
 func main() {
-	wait := make(chan struct{}, 0)
+	wait := make(chan struct{})
 	js.Global().Set("gsa_analyze", js.FuncOf(analyze))
 	<-wait
 }

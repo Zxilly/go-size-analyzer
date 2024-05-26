@@ -1,4 +1,4 @@
-//go:build !profiler && !pgo
+//go:build !profiler && !pgo && !wasm
 
 package main
 

@@ -2,9 +2,9 @@ import os
 import shutil
 import subprocess
 
-from gsa import build_pgo_gsa
 from tests import run_integration_tests
-from utils import get_project_root
+from lib.gsa import build_pgo_gsa
+from lib.utils import get_project_root
 
 
 def merge_profiles():

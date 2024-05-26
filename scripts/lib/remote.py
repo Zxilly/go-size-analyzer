@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import requests
 from tqdm import tqdm
 
-from utils import *
+from .utils import *
 
 
 class TestType(Flag):

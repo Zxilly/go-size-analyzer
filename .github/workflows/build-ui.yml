@@ -52,7 +52,7 @@ jobs:
 
       - name: Build
         working-directory: ./ui
-        run: pnpm build
+        run: pnpm run build:ui
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           PULL_REQUEST_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}

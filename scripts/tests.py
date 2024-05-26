@@ -1,13 +1,12 @@
 import os.path
-import sys
 from argparse import ArgumentParser
 
 import requests
 
-from gsa import build_gsa
-from merge import merge_covdata
-from remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
-from utils import *
+from lib.gsa import build_gsa
+from lib.merge import merge_covdata
+from lib.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
+from lib.utils import *
 
 
 def run_unit_tests():
@@ -44,7 +43,7 @@ def run_unit_tests():
         log("Error running embed unit tests:")
         log(f"stdout: {e.stdout}")
         log(f"stderr: {e.stderr}")
-        sys.exit(1)
+        exit(1)
 
     try:
         normal_result = subprocess.run(
@@ -70,7 +69,7 @@ def run_unit_tests():
         log("Error running normal unit tests:")
         log(f"stdout: {e.stdout}")
         log(f"stderr: {e.stderr}")
-        sys.exit(1)
+        exit(1)
 
     log("Unit tests passed.")
 

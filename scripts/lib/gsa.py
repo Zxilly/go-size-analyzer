@@ -3,7 +3,7 @@ import os.path
 import shutil
 import subprocess
 
-from utils import log, require_go, get_new_temp_binary, get_project_root
+from .utils import log, require_go, get_new_temp_binary, get_project_root
 
 
 @contextlib.contextmanager

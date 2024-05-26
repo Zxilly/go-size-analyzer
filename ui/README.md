@@ -9,5 +9,5 @@ This file will be used as a data source when `pnpm dev` run.
 
 ```bash
 pnpm install
-pnpm build
+pnpm run build:ui
 ```
