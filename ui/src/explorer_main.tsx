@@ -62,13 +62,13 @@ const FileSelector = ({handler}: {
                     style={{
                         marginLeft: "0.3em",
                     }}
-                >go-size-analyzer</Link>
-                <img alt="GitHub Repo stars"
-                     style={{
-                         marginLeft: "0.3em",
-                     }}
-                     src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"/>
-
+                >go-size-analyzer
+                    <img alt="GitHub Repo stars"
+                         style={{
+                             marginLeft: "0.3em",
+                         }}
+                         src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"/>
+                </Link>
             </DialogContentText>
         </>
     );
