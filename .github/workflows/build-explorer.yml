@@ -19,6 +19,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -26,12 +31,18 @@ jobs:
           package_json_file: 'ui/package.json'
           version: latest
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
         with:
-          node-version: '21'
-          cache: 'pnpm'
-          cache-dependency-path: './ui/pnpm-lock.yaml'
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -48,9 +59,17 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'scripts/requirements.txt'
 
-      - name: Install dependencies
+      - name: Install node dependencies
         working-directory: ./ui
-        run: pnpm install
+        run: |
+          pnpm install
+
+      - name: Setup Binaryen
+        # fixme: use acifani/setup-tinygo after pr acceptance
+        uses: Zxilly/setup-tinygo@main
+        with:
+          install-tinygo: false
+          binaryen-version: '117'
 
       - name: Add python dependencies
         run: |
