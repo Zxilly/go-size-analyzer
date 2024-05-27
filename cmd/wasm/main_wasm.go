@@ -49,6 +49,9 @@ func analyze(_ js.Value, args []js.Value) any {
 }
 
 func main() {
+	utils.ApplyMemoryLimit()
+
 	js.Global().Set("gsa_analyze", js.FuncOf(analyze))
+
 	select {}
 }

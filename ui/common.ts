@@ -37,7 +37,7 @@ export function codecov(name: string): PluginOption {
     })
 }
 
-export function commonPlugin(): any[] {
+export function commonPlugin(): PluginOption[][] {
     return [
         react(),
     ]

@@ -17,7 +17,6 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     plugins: [
         'react-refresh',
-        'eslint-plugin-react-compiler',
     ],
     rules: {
         'react-refresh/only-export-components': [
@@ -26,7 +25,6 @@ module.exports = {
         ],
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
-        'react-compiler/react-compiler': "error",
     },
     parserOptions: {
         ecmaVersion: 'latest',

@@ -1,3 +1,4 @@
+import argparse
 import os.path
 import shutil
 import subprocess
@@ -19,6 +20,10 @@ def require_binaryen():
 
 
 if __name__ == '__main__':
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--raw", action="store_true", help="Do not optimize the wasm binary")
+    args = ap.parse_args()
+
     go = require_go()
     opt = require_binaryen()
 
@@ -38,6 +43,7 @@ if __name__ == '__main__':
             [
                 go,
                 "build",
+                "-trimpath",
                 "-o", tmp_file.name,
                 "./cmd/wasm/main_wasm.go"
             ],
@@ -55,27 +61,31 @@ if __name__ == '__main__':
         print(f"stdout: {e.stdout}")
         print(f"stderr: {e.stderr}")
         exit(1)
-    try:
-        log("Optimizing wasm")
-        result = subprocess.run(
-            [
-                opt,
-                tmp_file.name,
-                "-O4",
-                "--enable-bulk-memory",
-                "-o", wasm_location()
-            ],
-            text=True,
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            timeout=120
-        )
-        result.check_returncode()
-        log("Wasm optimized successfully")
-    except subprocess.CalledProcessError as e:
-        log("Error optimizing wasm:")
-        print(f"stdout: {e.stdout}")
-        print(f"stderr: {e.stderr}")
-        exit(1)
+
+    if args.raw:
+        shutil.copy(tmp_file.name, wasm_location())
+    else:
+        try:
+            log("Optimizing wasm")
+            result = subprocess.run(
+                [
+                    opt,
+                    tmp_file.name,
+                    "-O4",
+                    "--enable-bulk-memory",
+                    "-o", wasm_location()
+                ],
+                text=True,
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                timeout=120
+            )
+            result.check_returncode()
+            log("Wasm optimized successfully")
+        except subprocess.CalledProcessError as e:
+            log("Error optimizing wasm:")
+            print(f"stdout: {e.stdout}")
+            print(f"stderr: {e.stderr}")
+            exit(1)
 
     tmp_dir.cleanup()
