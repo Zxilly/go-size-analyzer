@@ -54,7 +54,7 @@ jobs:
 
       - name: Run ESLint
         working-directory: ./ui
-        run: eslint .
+        run: pnpm eslint .
           --config .eslintrc.cjs
           --ext .js,.jsx,.ts,.tsx
           --format @microsoft/eslint-formatter-sarif
@@ -62,7 +62,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ./ui/eslint-results.sarif
           wait-for-processing: true
@@ -77,12 +77,12 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1
+          version: v1.59
           args: '--out-format=github-actions,colored-line-number,sarif:./golangci-lint-results.sarif'
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ./golangci-lint-results.sarif
           wait-for-processing: true
