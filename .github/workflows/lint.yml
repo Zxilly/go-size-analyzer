@@ -84,7 +84,8 @@ jobs:
       # fixme: remove this after https://github.com/golangci/golangci-lint/pull/4758 merged
       - name: Workaround to fix the issue with golangci-lint sarif output
         run: |
-          jq '(.runs[] | select(.results == null) | .results) = []' input.json -i
+          jq '(.runs[] | select(.results == null) | .results) = []' golangci-lint-results.sarif > tmp.sarif
+          mv tmp.sarif golangci-lint-results.sarif
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
