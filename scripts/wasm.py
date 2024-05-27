@@ -28,57 +28,56 @@ if __name__ == '__main__':
     }
     env.update(os.environ)
 
-    tmp_file = tempfile.mktemp(prefix="gsa", suffix=".wasm")
+    with tempfile.NamedTemporaryFile(mode="w+b", delete=False) as tmp_file:
+        try:
+            print("Building wasm binary")
 
-    try:
-        print("Building wasm binary")
+            result = subprocess.run(
+                [
+                    go,
+                    "build",
+                    "-o", tmp_file,
+                    "./cmd/wasm/main_wasm.go"
+                ],
+                text=True,
+                cwd=get_project_root(),
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                timeout=120,
+                env=env
+            )
 
-        result = subprocess.run(
-            [
-                go,
-                "build",
-                "-o", tmp_file,
-                "./cmd/wasm/main_wasm.go"
-            ],
-            text=True,
-            cwd=get_project_root(),
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            timeout=120,
-            env=env
-        )
+            result.check_returncode()
 
-        result.check_returncode()
+            print("Wasm binary built successfully")
+        except subprocess.CalledProcessError as e:
+            print("Error building wasm:")
+            print(f"stdout: {e.stdout}")
+            print(f"stderr: {e.stderr}")
+            exit(1)
 
-        print("Wasm binary built successfully")
-    except subprocess.CalledProcessError as e:
-        print("Error building wasm:")
-        print(f"stdout: {e.stdout}")
-        print(f"stderr: {e.stderr}")
-        exit(1)
+        try:
+            print("Optimizing wasm")
 
-    try:
-        print("Optimizing wasm")
+            result = subprocess.run(
+                [
+                    opt,
+                    tmp_file,
+                    "-O4",
+                    "--enable-bulk-memory",
+                    "-o", wasm_location()
+                ],
+                text=True,
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                timeout=120
+            )
 
-        result = subprocess.run(
-            [
-                opt,
-                tmp_file,
-                "-O4",
-                "--enable-bulk-memory",
-                "-o", wasm_location()
-            ],
-            text=True,
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            timeout=120
-        )
+            result.check_returncode()
 
-        result.check_returncode()
-
-        print("Wasm optimized successfully")
-    except subprocess.CalledProcessError as e:
-        print("Error optimizing wasm:")
-        print(f"stdout: {e.stdout}")
-        print(f"stderr: {e.stderr}")
-        exit(1)
+            print("Wasm optimized successfully")
+        except subprocess.CalledProcessError as e:
+            print("Error optimizing wasm:")
+            print(f"stdout: {e.stdout}")
+            print(f"stderr: {e.stderr}")
+            exit(1)
