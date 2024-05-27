@@ -14,9 +14,6 @@ vendor/
 .idea/
 .vscode/
 
-scripts/bins/
-scripts/__pycache__/
-
 results/
 covdata/
 temp/
