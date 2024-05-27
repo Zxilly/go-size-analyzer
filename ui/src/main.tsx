@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import TreeMap from './TreeMap.tsx'
 
+import TreeMap from './TreeMap.tsx'
 import {loadDataFromEmbed} from "./tool/utils.ts";
 import {Entry} from "./tool/entry.ts";
 

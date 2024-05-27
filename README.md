@@ -44,7 +44,7 @@ Or you can use the WASM version in the browser: [GSA Treemap](https://gsa.zxilly
 > Due to the limitation of the browser, the wasm version is much slower than the native version.
 > Normally costs 10x time to analyze the same binary.
 > 
-> Only recommended for analysing small applications (less than 15MB in size)
+> Only recommended for analysing small applications (less than 30 MB in size)
 
 The web page will look like this:
 
