@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {group} from "d3-array";
-import {hierarchy, HierarchyNode, HierarchyRectangularNode, treemap, treemapSquarify} from "d3-hierarchy";
+import {HierarchyNode, HierarchyRectangularNode, hierarchy, treemap, treemapSquarify} from "d3-hierarchy";
 import {useTitle, useWindowSize} from "react-use";
 
 import {Entry} from "./tool/entry.ts";

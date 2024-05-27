@@ -22,3 +22,5 @@ temp/
 default.pgo
 
 data.json
+
+*.sarif

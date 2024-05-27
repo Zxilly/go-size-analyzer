@@ -1,14 +1,14 @@
 import {
     File,
     FileSymbol,
+    Package,
+    Result,
+    Section,
     isFile,
     isPackage,
     isResult,
     isSection,
-    isSymbol,
-    Package,
-    Result,
-    Section
+    isSymbol
 } from "../generated/schema.ts";
 import {orderedID} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";

@@ -12,13 +12,15 @@ module.exports = {
     ignorePatterns: [
         'dist',
         '.eslintrc.cjs',
-        'src/generated/schema.ts'
+        'src/generated/schema.ts',
+        'src/tool/wasm_exec.js',
     ],
     parser: '@typescript-eslint/parser',
     plugins: [
         'react-refresh',
     ],
     rules: {
+        'sort-imports': ['warn', {ignoreDeclarationSort: true}],
         'react-refresh/only-export-components': [
             'warn',
             {allowConstantExport: true},
@@ -31,5 +33,10 @@ module.exports = {
         sourceType: 'module',
         project: ['./tsconfig.json', './tsconfig.node.json'],
         tsconfigRootDir: __dirname,
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
     },
 }

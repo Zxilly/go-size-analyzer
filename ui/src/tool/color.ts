@@ -1,5 +1,5 @@
-import { scaleSequential, scaleLinear } from "d3-scale";
-import { hsl, RGBColor } from "d3-color";
+import { scaleLinear, scaleSequential } from "d3-scale";
+import { RGBColor, hsl } from "d3-color";
 import { HierarchyNode } from "d3-hierarchy";
 
 import {Entry} from "./entry.ts";

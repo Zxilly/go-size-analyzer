@@ -1,4 +1,4 @@
-import {defineConfig, PluginOption} from 'vite'
+import {PluginOption, defineConfig} from 'vite'
 import {build, codecov, commonPlugin} from "./common";
 import * as fs from "node:fs";
 

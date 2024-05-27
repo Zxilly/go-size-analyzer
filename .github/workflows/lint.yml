@@ -54,9 +54,9 @@ jobs:
 
       - name: Run ESLint
         working-directory: ./ui
-        run: pnpm eslint .
-          --config .eslintrc.cjs
-          --ext .js,.jsx,.ts,.tsx
+        run: >-
+          pnpm eslint .
+          --ext ".ts,.tsx"
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
         continue-on-error: true
@@ -78,8 +78,13 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.59
-          args: '--out-format=github-actions,colored-line-number,sarif:./golangci-lint-results.sarif'
+          args: '--out-format=colored-line-number,sarif:golangci-lint-results.sarif'
         continue-on-error: true
+
+      # fixme: remove this after https://github.com/golangci/golangci-lint/pull/4758 merged
+      - name: Workaround to fix the issue with golangci-lint sarif output
+        run: |
+          jq '(.runs[] | select(.results == null) | .results) = []' input.json -i
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
