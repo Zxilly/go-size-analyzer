@@ -16,7 +16,7 @@ export function getSha(): string | undefined {
     }
 
     console.info(`CI build detected, not a PR build`)
-    return undefined;
+    return envs.GITHUB_SHA;
 }
 
 export function getVersionTag():HtmlTagDescriptor {
