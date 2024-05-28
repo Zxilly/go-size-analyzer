@@ -2,6 +2,7 @@ import {BuildOptions, HtmlTagDescriptor, PluginOption} from "vite";
 import {codecovVitePlugin} from "@codecov/vite-plugin";
 import * as path from "node:path";
 import react from "@vitejs/plugin-react-swc";
+import {execSync} from "node:child_process";
 
 export function getSha(): string | undefined {
     const envs = process.env;
@@ -19,10 +20,20 @@ export function getSha(): string | undefined {
     return envs.GITHUB_SHA;
 }
 
-export function getVersionTag():HtmlTagDescriptor {
+export function getVersionTag(): HtmlTagDescriptor {
+    const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd();
+    const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd();
+    const commitHash = execSync('git rev-parse HEAD').toString().trimEnd();
+    const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd();
+
     return {
         tag: "script",
-        children: `console.info("Version: ${getSha()}");`,
+        children: `
+        console.info("Branch: ${branchName}");
+        console.info("Commit: ${commitHash}");
+        console.info("Date: ${commitDate}");
+        console.info("Message: ${lastCommitMessage}");
+        `.trim(),
     }
 }
 
