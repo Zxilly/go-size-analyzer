@@ -22,11 +22,9 @@ export function getSha(): string | undefined {
 export function getVersionTag():HtmlTagDescriptor {
     return {
         tag: "script",
-        children: `console.info("Version: ${sha}");`,
+        children: `console.info("Version: ${getSha()}");`,
     }
 }
-
-const sha = getSha();
 
 export function codecov(name: string): PluginOption {
     if (process.env.CODECOV_TOKEN === undefined) {
@@ -39,7 +37,7 @@ export function codecov(name: string): PluginOption {
         bundleName: name,
         uploadToken: process.env.CODECOV_TOKEN,
         uploadOverrides: {
-            sha: sha
+            sha: getSha(),
         },
         debug: true,
     })
