@@ -41,10 +41,8 @@ export const App: React.FC = () => {
 
         const bytes = await file.arrayBuffer()
         const uint8 = new Uint8Array(bytes)
-        const result = gsa_analyze(file.name, uint8)
 
-        const decoder = new TextDecoder()
-        return decoder.decode(result)
+        return gsa_analyze(file.name, uint8)
     }, [file])
 
     const entry = useMemo(() => {

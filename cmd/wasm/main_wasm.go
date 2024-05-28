@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 	"syscall/js"
+	"unsafe"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
@@ -42,10 +43,7 @@ func analyze(_ js.Value, args []js.Value) any {
 		return js.ValueOf(nil)
 	}
 
-	array := js.Global().Get("Uint8Array").New(buf.Len())
-	js.CopyBytesToJS(array, buf.Bytes())
-
-	return array
+	return js.ValueOf(unsafe.String(unsafe.SliceData(buf.Bytes()), buf.Len()))
 }
 
 func main() {
