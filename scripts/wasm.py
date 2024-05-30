@@ -45,7 +45,7 @@ if __name__ == '__main__':
                 "build",
                 "-trimpath",
                 "-o", tmp_file.name,
-                "./cmd/wasm/main_wasm.go"
+                "./cmd/wasm/main_js_wasm.go"
             ],
             text=True,
             cwd=get_project_root(),

@@ -69,15 +69,13 @@ linters-settings:
     # Default: false
     require-specific: true
 
-  # define the import orders
   gci:
     sections:
-      # Standard section: captures all standard packages.
       - standard
-      # Default section: catchall that is not standard or custom
       - default
-      # linters that related to local tool, so they should be separated
+      - prefix(syscall/js) # fixme: workaround, wait for https://github.com/daixiang0/gci/pull/208 merged
       - localmodule
+    custom-order: true
 
   staticcheck:
     # SAxxxx checks in https://staticcheck.io/docs/configuration/options/#checks

@@ -45,7 +45,7 @@ export const FileSelector = ({handler}: {
                 <DialogContent>
                     <DialogContentText>
                         The selected binary {pendingFile?.name} has a size of {formatBytes(pendingFile?.size || 0)}.
-                        It is not recommended to use the wasm version for binary files larger than 30MB.
+                        It is not recommended to use the wasm version for binary files larger than 30 MB.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

@@ -2,7 +2,6 @@ import React, {ReactNode, useEffect, useMemo} from "react";
 import {useAsync} from "react-use";
 import gsa from "../../gsa.wasm?init";
 import {Entry} from "../tool/entry.ts";
-import {loadDataFromWasmResult} from "../tool/utils.ts";
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {FileSelector} from "./file_selector.tsx";
 import TreeMap from "../TreeMap.tsx";
@@ -14,6 +13,8 @@ type ModalState = {
     title: string
     content: ReactNode
 }
+
+declare function gsa_analyze(name: string, data: Uint8Array): import("../generated/schema.ts").Result;
 
 export const App: React.FC = () => {
     const go = useMemo(() => new Go(), [])
@@ -34,7 +35,7 @@ export const App: React.FC = () => {
 
     const [modalState, setModalState] = React.useState<ModalState>({isOpen: false})
 
-    const {value: jsonResult, loading: analyzing} = useAsync(async () => {
+    const {value: result, loading: analyzing} = useAsync(async () => {
         if (!file) {
             return
         }
@@ -42,16 +43,18 @@ export const App: React.FC = () => {
         const bytes = await file.arrayBuffer()
         const uint8 = new Uint8Array(bytes)
 
-        return gsa_analyze(file.name, uint8)
+        const r = gsa_analyze(file.name, uint8)
+        console.log(r)
+        return r
     }, [file])
 
     const entry = useMemo(() => {
-        if (!jsonResult) {
+        if (!result) {
             return null
         }
 
-        return new Entry(loadDataFromWasmResult(jsonResult))
-    }, [jsonResult])
+        return new Entry(result)
+    }, [result])
 
     useEffect(() => {
         if (loadError) {
@@ -84,7 +87,7 @@ export const App: React.FC = () => {
                 title: "Analyzing",
                 content: <DialogContentText>Analyzing binary...</DialogContentText>
             })
-        } else if (!analyzing && !jsonResult && !entry) {
+        } else if (!analyzing && !result && !entry) {
             setModalState({
                 isOpen: true,
                 title: "Error",
@@ -95,7 +98,7 @@ export const App: React.FC = () => {
         } else {
             setModalState({isOpen: false})
         }
-    }, [loadError, loading, file, jsonResult, analyzing, inst, entry])
+    }, [loadError, loading, file, result, analyzing, inst, entry])
 
     return <>
         <Dialog

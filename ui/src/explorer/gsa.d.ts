@@ -1,1 +1,0 @@
-declare function gsa_analyze(name: string, data: Uint8Array): string;
