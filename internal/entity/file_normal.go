@@ -3,9 +3,10 @@
 package entity
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
+
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 var FileMarshalerCompact = json.MarshalFuncV2[File](func(encoder *jsontext.Encoder, file File, options json.Options) error {
