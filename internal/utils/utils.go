@@ -116,3 +116,9 @@ func PrefixToPath(s string) (string, error) {
 	}
 	return string(p), nil
 }
+
+func Must(err error) {
+	if err != nil {
+		panic(err)
+	}
+}

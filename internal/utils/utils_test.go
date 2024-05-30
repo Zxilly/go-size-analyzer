@@ -2,6 +2,7 @@ package utils
 
 import (
 	"debug/gosym"
+	"fmt"
 	"reflect"
 	"testing"
 	"unsafe"
@@ -92,4 +93,14 @@ func TestPrefixToPath(t *testing.T) {
 			t.Errorf("expected PrefixToPath(%s) = %s, got %s", tc.Escaped, tc.Path, got)
 		}
 	}
+}
+
+func TestMust(t *testing.T) {
+	t.Run("does not panic for nil error", func(t *testing.T) {
+		assert.NotPanics(t, func() { Must(nil) })
+	})
+
+	t.Run("panics for non-nil error", func(t *testing.T) {
+		assert.Panics(t, func() { Must(fmt.Errorf("test error")) })
+	})
 }
