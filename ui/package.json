@@ -9,7 +9,8 @@
     "dev:ui": "vite -c vite.config.ts",
     "dev:explorer": "vite -c vite.config-explorer.ts",
     "generate": "typia generate --input src/schema --output src/generated --project tsconfig.json",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -31,6 +32,7 @@
     "@types/d3-hierarchy": "^3.1.7",
     "@types/d3-scale": "^4.0.8",
     "@types/golang-wasm-exec": "^1.15.2",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -41,12 +43,14 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "jsdom": "^24.1.0",
     "sass": "^1.77.2",
     "terser": "^5.31.0",
     "typescript": "^5.4.5",
     "typia": "^6.0.4",
     "vite": "^5.2.11",
     "vite-plugin-html": "^3.2.2",
-    "vite-plugin-singlefile": "^2.0.1"
+    "vite-plugin-singlefile": "^2.0.1",
+    "vitest": "^1.6.0"
   }
 }
