@@ -2,27 +2,35 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zxilly/go-size-analyzer)](https://goreportcard.com/report/github.com/Zxilly/go-size-analyzer)
 [![Tests](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/github/Zxilly/go-size-analyzer/graph/badge.svg?token=Q4TDH6RFZN)](https://codecov.io/github/Zxilly/go-size-analyzer)
+![Codecov](https://img.shields.io/codecov/c/gh/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
-[![homebrew version](https://img.shields.io/homebrew/v/go-size-analyzer)](https://formulae.brew.sh/formula/go-size-analyzer)
 
 English | [简体中文](./README_zh-CN.md)
 
 A simple tool to analyze the size of a Go compiled binary.
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/go-size-analyzer.svg)](https://repology.org/project/go-size-analyzer/versions)
+
 ## Installation
 
-Download the latest release from the [release page](https://github.com/Zxilly/go-size-analyzer/releases)
+### [Download the latest binary](https://github.com/Zxilly/go-size-analyzer/releases)
 
-You can use Homebrew to install `go-size-analyzer`
+### MacOS / Linux via Homebrew:
 
-```bash
+Using [Homebrew](https://brew.sh/)
+```
 brew install go-size-analyzer
 ```
 
-Or use the following command to install the latest version:
+### Windows:
 
-```bash
+Using [scoop](https://scoop.sh/)
+```
+scoop install go-size-analyzer
+```
+
+### Go Install:
+```
 go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 ```
 

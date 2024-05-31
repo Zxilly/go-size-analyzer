@@ -2,25 +2,35 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zxilly/go-size-analyzer)](https://goreportcard.com/report/github.com/Zxilly/go-size-analyzer)
 [![Tests](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/Zxilly/go-size-analyzer/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/github/Zxilly/go-size-analyzer/graph/badge.svg?token=Q4TDH6RFZN)](https://codecov.io/github/Zxilly/go-size-analyzer)
+![Codecov](https://img.shields.io/codecov/c/gh/Zxilly/go-size-analyzer)
 [![GitHub release](https://img.shields.io/github/v/release/Zxilly/go-size-analyzer)](https://github.com/Zxilly/go-size-analyzer/releases)
-[![homebrew version](https://img.shields.io/homebrew/v/go-size-analyzer)](https://formulae.brew.sh/formula/go-size-analyzer)
 
 一个简单的工具，用于分析 Go 编译二进制文件的大小。
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/go-size-analyzer.svg)](https://repology.org/project/go-size-analyzer/versions)
+
 ## 安装
 
-从[发布页面](https://github.com/Zxilly/go-size-analyzer/releases)下载最新版本。
+### 安装
 
-你可以使用 Homebrew 安装 `go-size-analyzer`
+### [下载最新二进制文件](https://github.com/Zxilly/go-size-analyzer/releases)
 
-```bash
+### 通过 Homebrew 安装 MacOS / Linux：
+
+使用 [Homebrew](https://brew.sh/)
+```
 brew install go-size-analyzer
 ```
 
-或者使用以下命令安装最新版本：
+### Windows：
 
-```bash
+使用 [scoop](https://scoop.sh/)
+```
+scoop install go-size-analyzer
+```
+
+### Go 安装：
+```
 go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 ```
 
