@@ -13,7 +13,7 @@
 
 ### [下载最新二进制文件](https://github.com/Zxilly/go-size-analyzer/releases)
 
-### 通过 Homebrew 安装 MacOS / Linux：
+### MacOS / Linux 通过 Homebrew 安装：
 
 使用 [Homebrew](https://brew.sh/)
 ```
