@@ -9,9 +9,9 @@ import {orderedID} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";
 import {aligner} from "./aligner.ts";
 
-type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
+export type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
 
-type EntryChildren = {
+export type EntryChildren = {
     "section": never[],
     "file": never[],
     "package": EntryLike<"package" | "symbol" | "disasm" | "file">[],

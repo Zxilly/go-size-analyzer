@@ -13,15 +13,11 @@ export interface Section {
     debug: boolean;
 }
 
-export const isSection = typia.createIs<Section>();
-
 export interface File {
     file_path: string;
     size: number & tags.Type<'uint64'>;
     pcln_size: number & tags.Type<'uint64'>;
 }
-
-export const isFile = typia.createIs<File>();
 
 export interface FileSymbol {
     name: string
@@ -29,8 +25,6 @@ export interface FileSymbol {
     size: number & tags.Type<'uint64'>;
     type: "unknown" | "text" | "data"
 }
-
-export const isSymbol = typia.createIs<FileSymbol>();
 
 export interface Package {
     name: string;
@@ -41,15 +35,11 @@ export interface Package {
     size: number & tags.Type<'uint64'>;
 }
 
-export const isPackage = typia.createIs<Package>();
-
 export interface Result {
     name: string;
     size: number & tags.Type<'uint64'>;
     packages: { [key: string]: Package };
     sections: Section[];
 }
-
-export const isResult = typia.createIs<Result>();
 
 export const parseResult = typia.json.createIsParse<Result>();

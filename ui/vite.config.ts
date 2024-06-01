@@ -14,7 +14,7 @@ const getPlaceHolder = (): string => {
 
     try {
         return fs.readFileSync(
-            new URL("../data.json", import.meta.url),
+            new URL("./src/testdata/testdata.json", import.meta.url),
             "utf-8"
         )
     } catch (e) {

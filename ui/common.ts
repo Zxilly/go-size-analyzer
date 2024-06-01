@@ -3,7 +3,7 @@ import {codecovVitePlugin} from "@codecov/vite-plugin";
 import * as path from "node:path";
 import react from "@vitejs/plugin-react-swc";
 import {execSync} from "node:child_process";
-import type { InlineConfig } from 'vitest';
+import type {InlineConfig} from 'vitest';
 
 export function getSha(): string | undefined {
     const envs = process.env;
@@ -40,7 +40,7 @@ export function getVersionTag(): HtmlTagDescriptor {
 
 export function codecov(name: string): PluginOption {
     if (process.env.CODECOV_TOKEN === undefined) {
-        console.warn("CODECOV_TOKEN is not set, codecov plugin will be disabled");
+        console.info("CODECOV_TOKEN is not set, codecov plugin will be disabled");
         return undefined;
     }
 
@@ -86,7 +86,8 @@ export function testConfig(): InlineConfig {
                 "vite.config.ts",
                 "vite.config-explorer.ts",
                 "common.ts",
-                "src/tool/wasm_exec.js"
+                "src/tool/wasm_exec.js",
+                "src/schema/schema.ts",
             ]
         }
     }
