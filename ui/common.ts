@@ -3,6 +3,7 @@ import {codecovVitePlugin} from "@codecov/vite-plugin";
 import * as path from "node:path";
 import react from "@vitejs/plugin-react-swc";
 import {execSync} from "node:child_process";
+import type { InlineConfig } from 'vitest';
 
 export function getSha(): string | undefined {
     const envs = process.env;
@@ -72,3 +73,22 @@ export function build(dir: string): BuildOptions {
         },
     }
 }
+
+export function testConfig(): InlineConfig {
+    return {
+        coverage: {
+            provider: "v8",
+            enabled: true,
+            exclude: [
+                "node_modules",
+                "dist",
+                "coverage",
+                "vite.config.ts",
+                "vite.config-explorer.ts",
+                "common.ts",
+                "src/tool/wasm_exec.js"
+            ]
+        }
+    }
+}
+

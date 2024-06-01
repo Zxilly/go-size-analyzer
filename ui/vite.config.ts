@@ -1,7 +1,7 @@
-import {defineConfig} from 'vite'
+import {defineConfig} from 'vitest/config';
 import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "node:fs"
-import {build, codecov, commonPlugin, getVersionTag} from "./common";
+import {build, codecov, commonPlugin, getVersionTag, testConfig} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
 
 
@@ -52,5 +52,6 @@ export default defineConfig({
         codecov("gsa-ui"),
     ],
     clearScreen: false,
-    build: build("webui")
+    build: build("webui"),
+    test: testConfig(),
 })

@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect, useMemo} from "react";
 import {useAsync} from "react-use";
 import gsa from "../../gsa.wasm?init";
-import {Entry} from "../tool/entry.ts";
+import {createEntry} from "../tool/entry.ts";
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {FileSelector} from "./file_selector.tsx";
 import TreeMap from "../TreeMap.tsx";
@@ -51,7 +51,7 @@ export const App: React.FC = () => {
             return null
         }
 
-        return new Entry(result)
+        return createEntry(result)
     }, [result])
 
     useEffect(() => {
