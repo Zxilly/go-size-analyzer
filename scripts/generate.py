@@ -1,10 +1,11 @@
 import csv
+from concurrent.futures import ThreadPoolExecutor
 
 import requests
 
-from .example import get_example_download_url
-from .remote import RemoteBinary, RemoteBinaryType, TestType, Target
-from .utils import get_binaries_path
+from tool.example import get_example_download_url
+from tool.remote import RemoteBinary, RemoteBinaryType, TestType, Target
+from tool.utils import get_binaries_path
 
 
 def add_exe(name: str, is_windows: bool) -> str:
@@ -128,7 +129,7 @@ def generate_vitess() -> list[RemoteBinary]:
 
 def generate_example() -> list[RemoteBinary]:
     ret = []
-    for v in ["1.16", "1.19", "1.22"]:
+    for v in ["1.21", "1.22"]:
         for o in ["linux", "windows", "darwin"]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
@@ -172,11 +173,18 @@ if __name__ == '__main__':
     remotes.extend(generate_prometheus())
     remotes.extend(generate_vitess())
 
-    for r in remotes:
-        print(f"Checking {r.name}...")
-        resp = requests.get(r.url, stream=True)
+    pool = ThreadPoolExecutor(max_workers=16)
+
+    def check_remote(tr: RemoteBinary):
+        print(f"Checking {tr.name}...", flush=True)
+        resp = requests.head(tr.url)
         resp.raise_for_status()
         resp.close()
+
+    for r in remotes:
+        pool.submit(check_remote, r)
+
+    pool.shutdown(wait=True)
 
     with open(get_binaries_path(), "w", newline="") as f:
         writer = csv.writer(f)
