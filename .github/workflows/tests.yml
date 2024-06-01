@@ -25,7 +25,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
         test: [ unit, integration-example, integration-real ]
-        profile: [ main, other ]
         include:
           - test: unit
             test_type: unit
@@ -81,10 +80,8 @@ jobs:
         run: python scripts/tests.py --${{ matrix.test }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PROFILE: ${{ matrix.profile }}
 
       - name: Upload coverage
-        if: ${{ matrix.profile == 'main' }}
         uses: codecov/codecov-action@v4.4.1
         with:
           disable_search: true
@@ -96,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ matrix.os }}-${{ matrix.test }}-${{ matrix.profile }}-results
+          name: ${{ matrix.os }}-${{ matrix.test }}-results
           path: results/
 
   merge:

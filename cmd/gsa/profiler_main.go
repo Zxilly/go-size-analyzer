@@ -18,19 +18,7 @@ func main() {
 		panic("OUTPUT_DIR environment variable is not set")
 	}
 
-	var targets []int
-
-	_, ci := os.LookupEnv("CI")
-	if ci {
-		mainProfile := os.Getenv("PROFILE")
-		if mainProfile == "main" {
-			targets = []int{profiler.Cpu, profiler.Mem}
-		} else {
-			targets = []int{profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
-		}
-	} else {
-		targets = []int{profiler.Cpu, profiler.Mem, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
-	}
+	targets := []int{profiler.Cpu, profiler.Mem, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
 
 	p := profiler.New(
 		profiler.Conf{
