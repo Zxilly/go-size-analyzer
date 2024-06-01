@@ -83,6 +83,7 @@ export function testConfig(): InlineConfig {
                 "node_modules",
                 "dist",
                 "coverage",
+                ".eslintrc.cjs",
                 "vite.config.ts",
                 "vite.config-explorer.ts",
                 "common.ts",
