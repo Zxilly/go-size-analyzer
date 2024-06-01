@@ -101,7 +101,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }} unit tests
           flags: ${{ matrix.os }}-unit
-          files: unit.xml,unit-embed.xml
+          files: unit.xml,unit_embed.xml
           verbose: true
 
       - name: Upload results
