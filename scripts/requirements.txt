@@ -2,3 +2,4 @@ requests
 tqdm
 matplotlib
 psutil
+junitparser

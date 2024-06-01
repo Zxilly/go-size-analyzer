@@ -3,10 +3,10 @@ from argparse import ArgumentParser
 
 import requests
 
-from lib.gsa import build_gsa
-from lib.merge import merge_covdata
-from lib.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
-from lib.utils import *
+from tool.gsa import build_gsa
+from tool.merge import merge_covdata
+from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
+from tool.utils import *
 
 
 def run_unit_tests():

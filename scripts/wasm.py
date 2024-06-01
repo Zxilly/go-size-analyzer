@@ -4,7 +4,7 @@ import shutil
 import subprocess
 import tempfile
 
-from lib.utils import get_project_root, require_go, log
+from tool.utils import get_project_root, require_go, log
 
 
 def wasm_location() -> str:

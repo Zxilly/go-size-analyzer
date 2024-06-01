@@ -3,8 +3,8 @@ import shutil
 import subprocess
 
 from tests import run_integration_tests
-from lib.gsa import build_pgo_gsa
-from lib.utils import get_project_root
+from tool.gsa import build_pgo_gsa
+from tool.utils import get_project_root
 
 
 def merge_profiles():
