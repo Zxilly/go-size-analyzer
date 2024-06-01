@@ -77,7 +77,7 @@ export function build(dir: string): BuildOptions {
 export function testConfig(): InlineConfig {
     return {
         coverage: {
-            provider: "v8",
+            provider: "istanbul",
             enabled: true,
             exclude: [
                 "node_modules",
@@ -88,7 +88,11 @@ export function testConfig(): InlineConfig {
                 "common.ts",
                 "src/tool/wasm_exec.js",
                 "src/schema/schema.ts",
-            ]
+            ],
+        },
+        reporters: ["junit", "default", "github-actions"],
+        outputFile: {
+            "junit": "test-results.xml",
         }
     }
 }

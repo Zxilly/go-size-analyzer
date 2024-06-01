@@ -18,6 +18,68 @@ jobs:
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  tests_ui:
+    name: Tests on UI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          standalone: true
+          package_json_file: 'ui/package.json'
+          version: latest
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        working-directory: ./ui
+        run: pnpm install
+
+      - name: Run tests
+        working-directory: ./ui
+        run: pnpm test:ui
+
+      - name: Upload coverage
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v4.4.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ui
+          name: Web UI tests
+          directory: ./ui
+          verbose: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: Web UI tests
+          flags: ui
+          file: ./ui/test-results.xml
+          verbose: true
+
   tests:
     name: Tests
     needs: build-ui

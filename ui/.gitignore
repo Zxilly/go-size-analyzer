@@ -27,3 +27,4 @@ data.json
 gsa.wasm
 
 coverage/
+test-results.xml
