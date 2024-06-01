@@ -47,6 +47,9 @@ jobs:
           cache: true
           check-latest: true
 
+      - name: Setup Go global dependencies
+        run: go install github.com/jstemmer/go-junit-report/v2@latest
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
