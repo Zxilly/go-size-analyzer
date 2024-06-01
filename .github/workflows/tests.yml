@@ -83,15 +83,27 @@ jobs:
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4.4.1
+        if: ${{ !cancelled() }}
         with:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ${{ matrix.test_type }}.profile
           flags: ${{ matrix.test_type }}
+          verbose: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() && matrix.test_type == 'unit' }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: ${{ matrix.os }} unit tests
+          flags: ${{ matrix.os }}-unit
+          files: unit.xml,unit-embed.xml
+          verbose: true
 
       - name: Upload results
         uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
           path: results/

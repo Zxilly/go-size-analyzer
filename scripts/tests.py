@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 import requests
 
 from tool.gsa import build_gsa
+from tool.junit import generate_junit
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
 from tool.utils import *
@@ -32,17 +33,18 @@ def run_unit_tests():
             ],
             text=True,
             cwd=get_project_root(),
-            stderr=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             stdout=subprocess.PIPE,
             timeout=600
         )
         embed_result.check_returncode()
         with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
             f.write(embed_result.stdout)
+
+        generate_junit(embed_result.stdout, os.path.join(get_project_root(), "unit_embed.xml"))
     except subprocess.CalledProcessError as e:
         log("Error running embed unit tests:")
         log(f"stdout: {e.stdout}")
-        log(f"stderr: {e.stderr}")
         exit(1)
 
     try:
@@ -58,17 +60,18 @@ def run_unit_tests():
             ],
             text=True,
             cwd=get_project_root(),
-            stderr=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             stdout=subprocess.PIPE,
             timeout=600
         )
         normal_result.check_returncode()
         with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
             f.write(normal_result.stdout)
+
+        generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
     except subprocess.CalledProcessError as e:
         log("Error running normal unit tests:")
         log(f"stdout: {e.stdout}")
-        log(f"stderr: {e.stderr}")
         exit(1)
 
     log("Unit tests passed.")

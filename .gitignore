@@ -24,3 +24,6 @@ default.pgo
 data.json
 
 *.sarif
+
+unit.xml
+unit_embed.xml
