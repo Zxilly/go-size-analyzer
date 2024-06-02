@@ -58,7 +58,7 @@ jobs:
 
       - name: Run tests
         working-directory: ./ui
-        run: pnpm test:ui
+        run: pnpm test
 
       - name: Upload coverage
         if: ${{ !cancelled() }}

@@ -10,8 +10,7 @@
     "dev:explorer": "vite -c vite.config-explorer.ts",
     "generate": "typia generate --input src/schema --output src/generated --project tsconfig.json",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test:ui": "vitest run -c vite.config.ts",
-    "test:explorer": "vitest run -c vite.config-explorer.ts"
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -28,6 +27,7 @@
   "devDependencies": {
     "@codecov/vite-plugin": "0.0.1-beta.8",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
+    "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
     "@types/d3-array": "^3.2.1",
     "@types/d3-color": "^3.1.3",

@@ -1,7 +1,7 @@
-import {defineConfig} from 'vitest/config';
+import {defineConfig} from 'vite';
 import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "node:fs"
-import {build, codecov, commonPlugin, getVersionTag, testConfig} from "./common";
+import {build, codecov, commonPlugin, getVersionTag} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
 
 
@@ -53,5 +53,4 @@ export default defineConfig({
     ],
     clearScreen: false,
     build: build("webui"),
-    test: testConfig(),
 })

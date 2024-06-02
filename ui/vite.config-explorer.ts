@@ -1,5 +1,5 @@
-import {defineConfig} from 'vitest/config';
-import {build, codecov, commonPlugin, getVersionTag, testConfig} from "./common";
+import {defineConfig} from 'vite';
+import {build, codecov, commonPlugin, getVersionTag} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
 
 export default defineConfig({
@@ -23,5 +23,4 @@ export default defineConfig({
             usePolling: true,
         },
     },
-    test: testConfig(),
 })

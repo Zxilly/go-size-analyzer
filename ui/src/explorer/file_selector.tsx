@@ -34,6 +34,13 @@ export const FileSelector = ({handler}: {
         setOpen(false)
     }, [])
 
+    const handleContinue = useCallback(() => {
+        if (pendingFile) {
+            handler(pendingFile)
+            setOpen(false)
+        }
+    }, [handler, pendingFile])
+
     return (
         <>
             <Dialog
@@ -50,10 +57,7 @@ export const FileSelector = ({handler}: {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => {
-                        handler(pendingFile!)
-                        setOpen(false)
-                    }}>Continue</Button>
+                    <Button onClick={handleContinue}>Continue</Button>
                 </DialogActions>
             </Dialog>
             <Box

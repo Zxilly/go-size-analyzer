@@ -10,6 +10,7 @@
   "include": [
     "vite.config.ts",
     "vite.config-explorer.ts",
+    "vitest.config.ts",
     "common.ts",
   ]
 }
