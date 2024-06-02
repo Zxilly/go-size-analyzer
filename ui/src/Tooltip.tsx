@@ -1,12 +1,11 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {HierarchyRectangularNode} from "d3-hierarchy";
 import {Entry} from "./tool/entry.ts";
 
 const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
 
 export interface TooltipProps {
-    node?: HierarchyRectangularNode<Entry>;
+    node?: Entry;
     visible: boolean;
 }
 
@@ -20,11 +19,11 @@ export const Tooltip: React.FC<TooltipProps> =
 
         const path = useMemo(() => {
             if (!node) return "";
-            return node.data.getName();
+            return node.getName();
         }, [node])
 
         const content = useMemo(() => {
-            return node?.data.toString() ?? "";
+            return node?.toString() ?? "";
         }, [node]);
 
         const updatePosition = useCallback((mouseCoords: { x: number; y: number }) => {
