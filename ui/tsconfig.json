@@ -23,11 +23,12 @@
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
     "types": [
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "@types/golang-wasm-exec"
     ]
   },
   "include": [
-    "src"
+    "src",
   ],
   "references": [
     {
