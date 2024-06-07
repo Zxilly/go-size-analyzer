@@ -1,5 +1,5 @@
 import {fireEvent, render} from '@testing-library/react';
-import {FileSelector} from './file_selector.tsx';
+import {FileSelector} from './FileSelector.tsx';
 import {expect, test, vi} from 'vitest';
 
 test('FileSelector should render correctly', () => {
