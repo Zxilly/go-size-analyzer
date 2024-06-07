@@ -3,7 +3,7 @@ import {useAsync} from "react-use";
 import gsa from "../../gsa.wasm?init";
 import {createEntry} from "../tool/entry.ts";
 import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import {FileSelector} from "./file_selector.tsx";
+import {FileSelector} from "./FileSelector.tsx";
 import TreeMap from "../TreeMap.tsx";
 
 type ModalState = {
@@ -16,7 +16,7 @@ type ModalState = {
 
 declare function gsa_analyze(name: string, data: Uint8Array): import("../generated/schema.ts").Result;
 
-export const App: React.FC = () => {
+export const Explorer: React.FC = () => {
     const go = useMemo(() => new Go(), [])
 
     const {value: inst, loading, error: loadError} = useAsync(async () => {
