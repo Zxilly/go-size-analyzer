@@ -4,12 +4,13 @@ import os.path
 import tarfile
 import zipfile
 from enum import Flag, Enum, auto
+from threading import Thread
 from urllib.parse import urlparse
 
 import requests
 from tqdm import tqdm
 
-from .utils import *
+from .utils import get_project_root, ensure_dir, run_process, get_bin_path, log, get_binaries_path
 
 
 class TestType(Flag):

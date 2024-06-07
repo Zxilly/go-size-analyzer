@@ -1,4 +1,6 @@
-from .utils import *
+import subprocess
+
+from .utils import dir_is_empty, get_project_root, log, get_covdata_unit_dir, get_covdata_integration_dir
 
 
 def merge_covdata():

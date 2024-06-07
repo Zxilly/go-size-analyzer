@@ -2,12 +2,15 @@ import os.path
 from argparse import ArgumentParser
 
 import requests
+import subprocess
+import time
 
 from tool.gsa import build_gsa
 from tool.junit import generate_junit
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
-from tool.utils import *
+from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
+    find_unused_port, assert_html_valid, init_dirs
 
 
 def run_unit_tests():
