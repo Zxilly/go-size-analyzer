@@ -9,7 +9,7 @@ import (
 )
 
 func (k *KnownInfo) TryLoadDwarf() bool {
-	dwarf, err := k.Wrapper.DWARF()
+	d, err := k.Wrapper.DWARF()
 	if err != nil {
 		slog.Warn(fmt.Sprintf("Failed to load DWARF: %v", err))
 		return false
@@ -21,7 +21,7 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 	}
 	defer out.Close()
 
-	r := dwarf.Reader()
+	r := d.Reader()
 	for {
 		entry, err := r.Next()
 		if entry == nil {
