@@ -1,6 +1,7 @@
-package internal
+package knowninfo
 
 import (
+	"log/slog"
 	"runtime/debug"
 
 	"github.com/ZxillyFork/gore"
@@ -16,19 +17,19 @@ type Dependencies struct {
 	k *KnownInfo
 
 	TopPkgs entity.PackageMap
-	trie    *trie.PathTrie[*entity.Package]
+	Trie    *trie.PathTrie[*entity.Package]
 }
 
 func NewDependencies(k *KnownInfo) *Dependencies {
 	return &Dependencies{
 		TopPkgs: make(entity.PackageMap),
 		k:       k,
-		trie:    trie.NewPathTrie[*entity.Package](),
+		Trie:    trie.NewPathTrie[*entity.Package](),
 	}
 }
 
 func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
-	p := m.trie.Get(name)
+	p := m.Trie.Get(name)
 	if p == nil {
 		return nil, false
 	}
@@ -37,7 +38,7 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 
 func (m *Dependencies) GetFunctions() []*entity.Function {
 	funcs := make([]*entity.Function, 0)
-	_ = m.trie.Walk(func(_ string, p *entity.Package) error {
+	_ = m.Trie.Walk(func(_ string, p *entity.Package) error {
 		funcs = append(funcs, p.GetFunctions()...)
 		return nil
 	})
@@ -46,7 +47,7 @@ func (m *Dependencies) GetFunctions() []*entity.Function {
 
 func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) {
 	for _, mod := range mods {
-		old := m.trie.Get(mod.Path)
+		old := m.Trie.Get(mod.Path)
 		if old != nil {
 			old.DebugMod = mod
 			continue
@@ -55,7 +56,7 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 		p.Name = utils.Deduplicate(mod.Path)
 		p.Type = typ
 		p.DebugMod = mod
-		m.trie.Put(mod.Path, p)
+		m.Trie.Put(mod.Path, p)
 	}
 }
 
@@ -66,11 +67,11 @@ func (m *Dependencies) FinishLoad() {
 	}
 
 	// load generated packages, they don't have a path
-	if m.trie.Value != nil {
-		m.TopPkgs[""] = *m.trie.Value
+	if m.Trie.Value != nil {
+		m.TopPkgs[""] = *m.Trie.Value
 	}
 
-	pending := []pair{{m.TopPkgs, m.trie}}
+	pending := []pair{{m.TopPkgs, m.Trie}}
 
 	load := func(packageMap entity.PackageMap, p *trie.PathTrie[*entity.Package]) {
 		for part, nxt := range p.RecursiveDirectChildren() {
@@ -106,10 +107,61 @@ func (m *Dependencies) Add(gp *gore.Package, typ entity.PackageType, pclntab *go
 	}
 
 	// we need merge since the gore relies on the broken std PackageName() function
-	old := m.trie.Get(name)
+	old := m.Trie.Get(name)
 	if old != nil {
 		// merge the old one
 		p.Merge(old)
 	}
-	m.trie.Put(name, p)
+	m.Trie.Put(name, p)
+}
+
+func (k *KnownInfo) LoadPackages() error {
+	slog.Info("Loading packages...")
+
+	pkgs := NewDependencies(k)
+	k.Deps = pkgs
+
+	pclntab, err := k.Gore.PCLNTab()
+	if err != nil {
+		return err
+	}
+
+	self, err := k.Gore.GetPackages()
+	if err != nil {
+		return err
+	}
+	for _, p := range self {
+		pkgs.Add(p, entity.PackageTypeMain, pclntab)
+	}
+
+	grStd, _ := k.Gore.GetSTDLib()
+	for _, p := range grStd {
+		pkgs.Add(p, entity.PackageTypeStd, pclntab)
+	}
+
+	grVendor, _ := k.Gore.GetVendors()
+	for _, p := range grVendor {
+		pkgs.Add(p, entity.PackageTypeVendor, pclntab)
+	}
+
+	grGenerated, _ := k.Gore.GetGeneratedPackages()
+	for _, p := range grGenerated {
+		pkgs.Add(p, entity.PackageTypeGenerated, pclntab)
+	}
+
+	grUnknown, _ := k.Gore.GetUnknown()
+	for _, p := range grUnknown {
+		pkgs.Add(p, entity.PackageTypeUnknown, pclntab)
+	}
+
+	if err = k.RequireModInfo(); err == nil {
+		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
+		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
+	}
+
+	pkgs.FinishLoad()
+
+	slog.Info("Loading packages done")
+
+	return nil
 }

@@ -1,6 +1,7 @@
 package wrapper
 
 import (
+	"debug/dwarf"
 	"debug/elf"
 	"encoding/binary"
 	"errors"
@@ -12,6 +13,10 @@ import (
 
 type ElfWrapper struct {
 	file *elf.File
+}
+
+func (e *ElfWrapper) DWARF() (*dwarf.Data, error) {
+	return e.file.DWARF()
 }
 
 func (*ElfWrapper) PclntabSections() []string {

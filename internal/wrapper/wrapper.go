@@ -1,6 +1,7 @@
 package wrapper
 
 import (
+	"debug/dwarf"
 	"debug/elf"
 	"debug/macho"
 	"debug/pe"
@@ -18,6 +19,7 @@ type RawFileWrapper interface {
 	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType) error) error
 	LoadSections() map[string]*entity.Section
 	PclntabSections() []string
+	DWARF() (*dwarf.Data, error)
 }
 
 func NewWrapper(file any) RawFileWrapper {

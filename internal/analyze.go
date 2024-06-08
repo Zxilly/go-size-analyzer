@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"io"
 	"log/slog"
 	"path"
@@ -30,15 +31,15 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	slog.Info("Parsing binary done")
 	slog.Info("Finding build info...")
 
-	k := &KnownInfo{
+	k := &knowninfo.KnownInfo{
 		Size:      size,
 		BuildInfo: file.BuildInfo,
 
-		gore:    file,
-		wrapper: wrapper.NewWrapper(file.GetParsedFile()),
+		Gore:    file,
+		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
 	}
 	k.KnownAddr = entity.NewKnownAddr()
-	k.UpdateVersionFlag()
+	k.VersionFlag = k.UpdateVersionFlag()
 
 	slog.Info("Build info found")
 
@@ -52,21 +53,25 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return nil, err
 	}
 
-	if !options.SkipSymbol {
-		err = k.AnalyzeSymbol()
-		if err != nil {
-			if !errors.Is(err, wrapper.ErrNoSymbolTable) {
-				return nil, err
+	ok := k.TryLoadDwarf()
+	if !ok {
+		// fallback to symbol and disasm
+		if !options.SkipSymbol {
+			err = k.AnalyzeSymbol()
+			if err != nil {
+				if !errors.Is(err, wrapper.ErrNoSymbolTable) {
+					return nil, err
 
+				}
+				slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
 			}
-			slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
 		}
-	}
 
-	if !options.SkipDisasm {
-		err = k.Disasm()
-		if err != nil {
-			return nil, err
+		if !options.SkipDisasm {
+			err = k.Disasm()
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 

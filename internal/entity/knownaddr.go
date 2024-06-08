@@ -10,6 +10,8 @@ type KnownAddr struct {
 
 	Symbol         AddrSpace
 	SymbolCoverage AddrCoverage
+
+	Dwarf AddrSpace
 }
 
 func NewKnownAddr() *KnownAddr {
@@ -103,4 +105,20 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, meta D
 	}
 
 	fn.disasm.Insert(&cur)
+}
+
+func (f *KnownAddr) InsertDwarf(entry uint64, size uint64, typ AddrType, pkg *Package, meta DwarfMeta) {
+	cur := Addr{
+		AddrPos: &AddrPos{
+			Addr: entry,
+			Size: size,
+			Type: typ,
+		},
+		Pkg:        pkg,
+		Function:   nil,
+		SourceType: AddrSourceDwarf,
+		Meta:       meta,
+	}
+
+	f.Dwarf.Insert(&cur)
 }
