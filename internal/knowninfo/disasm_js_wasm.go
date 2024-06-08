@@ -1,8 +1,10 @@
 //go:build wasm
 
-package internal
+package knowninfo
 
-import "log/slog"
+import (
+	"log/slog"
+)
 
 func (k *KnownInfo) Disasm() error {
 	slog.Info("disassembler disabled for wasm")

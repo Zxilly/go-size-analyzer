@@ -1,6 +1,7 @@
 package wrapper
 
 import (
+	"debug/dwarf"
 	"debug/pe"
 	"fmt"
 	"slices"
@@ -12,6 +13,10 @@ import (
 
 type PeWrapper struct {
 	file *pe.File
+}
+
+func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
+	return p.file.DWARF()
 }
 
 func (*PeWrapper) PclntabSections() []string {

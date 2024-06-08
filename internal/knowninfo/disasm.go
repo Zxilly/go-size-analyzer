@@ -1,6 +1,6 @@
 //go:build !wasm
 
-package internal
+package knowninfo
 
 import (
 	"context"
@@ -24,7 +24,7 @@ func (k *KnownInfo) Disasm() error {
 
 	fns := k.Deps.GetFunctions()
 
-	e, err := disasm.NewExtractor(k.wrapper, k.Size)
+	e, err := disasm.NewExtractor(k.Wrapper, k.Size)
 	if err != nil {
 		if errors.Is(err, disasm.ErrArchNotSupported) {
 			slog.Warn("Warning: disassembler not supported for this architecture")

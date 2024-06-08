@@ -1,6 +1,7 @@
 package wrapper
 
 import (
+	"debug/dwarf"
 	"debug/macho"
 	"fmt"
 	"slices"
@@ -11,6 +12,10 @@ import (
 
 type MachoWrapper struct {
 	file *macho.File
+}
+
+func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
+	return m.file.DWARF()
 }
 
 func (*MachoWrapper) PclntabSections() []string {

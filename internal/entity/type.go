@@ -14,4 +14,5 @@ const (
 	AddrSourceGoPclntab AddrSourceType = "pclntab"
 	AddrSourceSymbol    AddrSourceType = "symbol"
 	AddrSourceDisasm    AddrSourceType = "disasm"
+	AddrSourceDwarf     AddrSourceType = "dwarf"
 )
