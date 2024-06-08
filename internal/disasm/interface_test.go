@@ -1,6 +1,7 @@
 package disasm
 
 import (
+	"debug/dwarf"
 	"errors"
 	"testing"
 
@@ -15,6 +16,11 @@ type TestFileWrapper struct {
 	textStart uint64
 	text      []byte
 	textErr   error
+}
+
+func (t TestFileWrapper) DWARF() (*dwarf.Data, error) {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (t TestFileWrapper) Text() (textStart uint64, text []byte, err error) {
