@@ -19,8 +19,7 @@ type TestFileWrapper struct {
 }
 
 func (t TestFileWrapper) DWARF() (*dwarf.Data, error) {
-	//TODO implement me
-	panic("implement me")
+	panic("not reachable")
 }
 
 func (t TestFileWrapper) Text() (textStart uint64, text []byte, err error) {
@@ -32,19 +31,19 @@ func (t TestFileWrapper) GoArch() string {
 }
 
 func (TestFileWrapper) ReadAddr(_, _ uint64) ([]byte, error) {
-	panic("implement me")
+	panic("not reachable")
 }
 
 func (TestFileWrapper) LoadSymbols(_ func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
-	panic("implement me")
+	panic("not reachable")
 }
 
 func (TestFileWrapper) LoadSections() map[string]*entity.Section {
-	panic("implement me")
+	panic("not reachable")
 }
 
 func (TestFileWrapper) PclntabSections() []string {
-	panic("implement me")
+	panic("not reachable")
 }
 
 func TestNewExtractorNoText(t *testing.T) {
