@@ -8,6 +8,7 @@ import (
 	"errors"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 var ErrNoSymbolTable = errors.New("no symbol table found")
@@ -27,7 +28,7 @@ func NewWrapper(file any) RawFileWrapper {
 	case *elf.File:
 		return &ElfWrapper{f}
 	case *pe.File:
-		return &PeWrapper{f}
+		return &PeWrapper{f, utils.GetImageBase(f)}
 	case *macho.File:
 		return &MachoWrapper{f}
 	}

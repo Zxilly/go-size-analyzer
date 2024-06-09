@@ -2,10 +2,12 @@ package knowninfo
 
 import (
 	"fmt"
+
+	"github.com/ZxillyFork/gore"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/section"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"github.com/ZxillyFork/gore"
 )
 
 type VersionFlag struct {
@@ -16,7 +18,7 @@ type VersionFlag struct {
 type KnownInfo struct {
 	Size      uint64
 	BuildInfo *gore.BuildInfo
-	Sects     *section.SectionMap
+	Sects     *section.Store
 	Deps      *Dependencies
 	KnownAddr *entity.KnownAddr
 
@@ -26,6 +28,8 @@ type KnownInfo struct {
 	Wrapper wrapper.RawFileWrapper
 
 	VersionFlag VersionFlag
+
+	HasDWARF bool
 }
 
 func (k *KnownInfo) UpdateVersionFlag() VersionFlag {

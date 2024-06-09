@@ -2,7 +2,6 @@ package internal
 
 import (
 	"errors"
-	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"io"
 	"log/slog"
 	"path"
@@ -11,6 +10,7 @@ import (
 	"golang.org/x/exp/maps"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
@@ -18,6 +18,7 @@ import (
 type Options struct {
 	SkipSymbol bool
 	SkipDisasm bool
+	SkipDwarf  bool
 }
 
 func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*result.Result, error) {
@@ -53,8 +54,15 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return nil, err
 	}
 
-	ok := k.TryLoadDwarf()
-	if !ok {
+	dwarfOk := false
+	if !options.SkipDwarf {
+		dwarfOk = k.TryLoadDwarf()
+	}
+
+	// DWARF can still add new package
+	k.Deps.FinishLoad()
+
+	if !dwarfOk {
 		// fallback to symbol and disasm
 		if !options.SkipSymbol {
 			err = k.AnalyzeSymbol()

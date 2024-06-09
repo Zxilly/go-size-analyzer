@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"debug/dwarf"
 	"fmt"
 	"runtime/debug"
 
@@ -22,6 +23,7 @@ const (
 	PackageTypeVendor    PackageType = "vendor"
 	PackageTypeGenerated PackageType = "generated"
 	PackageTypeUnknown   PackageType = "unknown"
+	PackageTypeCGO       PackageType = "cgo"
 )
 
 type Package struct {
@@ -33,20 +35,23 @@ type Package struct {
 
 	Size uint64 `json:"size"` // late filled
 
+	filesCache map[string]*File
+	funcsCache map[string]*Function
+
 	loaded bool // mean it comes from gore
 
 	// should not be used to calculate size,
 	// since linker can create overlapped symbols.
 	// relies on coverage.
-	// currently only data symbol
 	Symbols []*Symbol `json:"symbols"`
 
 	symbolAddrSpace AddrSpace
 	coverage        *utils.ValueOnce[AddrCoverage]
 
-	// should have at least one of them
-	GorePkg  *gore.Package `json:"-"`
-	DebugMod *debug.Module `json:"-"`
+	// should have at least one of them, for cgo pesudo package all nil
+	GorePkg    *gore.Package `json:"-"`
+	DebugMod   *debug.Module `json:"-"`
+	DwarfEntry *dwarf.Entry  `json:"-"`
 }
 
 func NewPackage() *Package {
@@ -56,6 +61,8 @@ func NewPackage() *Package {
 		Symbols:         make([]*Symbol, 0),
 		coverage:        utils.NewOnce[AddrCoverage](),
 		symbolAddrSpace: AddrSpace{},
+		filesCache:      make(map[string]*File),
+		funcsCache:      make(map[string]*Function),
 	}
 }
 
@@ -96,15 +103,34 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 }
 
 func (p *Package) fileEnsureUnique() {
-	seen := make(map[string]*File)
+	fileSeen := make(map[string]*File)
+
 	for _, f := range p.Files {
-		if old, ok := seen[f.FilePath]; ok {
-			old.Functions = append(old.Functions, f.Functions...)
+		if old, ok := fileSeen[f.FilePath]; ok {
+			funcSeen := make(map[string]*Function)
+			for _, fn := range old.Functions {
+				funcSeen[fn.Name] = fn
+			}
+
+			for _, fn := range f.Functions {
+				if _, ok := funcSeen[fn.Name]; !ok {
+					old.Functions = append(old.Functions, fn)
+				}
+			}
 		} else {
-			seen[f.FilePath] = f
+			fileSeen[f.FilePath] = f
 		}
 	}
-	p.Files = maps.Values(seen)
+
+	p.Files = maps.Values(fileSeen)
+	p.filesCache = fileSeen
+
+	p.funcsCache = make(map[string]*Function)
+	for _, f := range p.Files {
+		for _, fn := range f.Functions {
+			p.funcsCache[fn.Name] = fn
+		}
+	}
 }
 
 func (p *Package) addFunction(path string, fn *Function) {
@@ -115,11 +141,18 @@ func (p *Package) addFunction(path string, fn *Function) {
 	file.Functions = append(file.Functions, fn)
 }
 
+func (p *Package) AddFuncIfNotExists(path string, fn *Function) bool {
+	if _, ok := p.funcsCache[fn.Name]; !ok {
+		p.addFunction(path, fn)
+		p.funcsCache[fn.Name] = fn
+		return true
+	}
+	return false
+}
+
 func (p *Package) getOrInitFile(s string) *File {
-	for _, f := range p.Files {
-		if f.FilePath == s {
-			return f
-		}
+	if f, ok := p.filesCache[s]; ok {
+		return f
 	}
 
 	f := &File{
@@ -129,6 +162,7 @@ func (p *Package) getOrInitFile(s string) *File {
 	}
 
 	p.Files = append(p.Files, f)
+	p.filesCache[f.FilePath] = f
 	return f
 }
 

@@ -24,7 +24,7 @@ export interface FileSymbol {
 }
 export interface Package {
     name: string;
-    type: 'main' | 'std' | 'vendor' | 'generated' | 'unknown';
+    type: 'main' | 'std' | 'vendor' | 'generated' | 'unknown' | 'cgo';
     subPackages: {
         [key: string]: Package;
     };
@@ -48,7 +48,7 @@ export const parseResult = (input: any): import("typia").Primitive<Result> => { 
             return true;
         return "object" === typeof value && null !== value && $io2(value);
     });
-    const $io2 = (input: any): boolean => "string" === typeof input.name && ("main" === input.type || "std" === input.type || "vendor" === input.type || "generated" === input.type || "unknown" === input.type) && ("object" === typeof input.subPackages && null !== input.subPackages && false === Array.isArray(input.subPackages) && $io3(input.subPackages)) && (Array.isArray(input.files) && input.files.every((elem: any) => "object" === typeof elem && null !== elem && $io4(elem))) && (Array.isArray(input.symbols) && input.symbols.every((elem: any) => "object" === typeof elem && null !== elem && $io5(elem))) && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000));
+    const $io2 = (input: any): boolean => "string" === typeof input.name && ("main" === input.type || "std" === input.type || "vendor" === input.type || "generated" === input.type || "unknown" === input.type || "cgo" === input.type) && ("object" === typeof input.subPackages && null !== input.subPackages && false === Array.isArray(input.subPackages) && $io3(input.subPackages)) && (Array.isArray(input.files) && input.files.every((elem: any) => "object" === typeof elem && null !== elem && $io4(elem))) && (Array.isArray(input.symbols) && input.symbols.every((elem: any) => "object" === typeof elem && null !== elem && $io5(elem))) && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000));
     const $io3 = (input: any): boolean => Object.keys(input).every((key: any) => {
         const value = input[key];
         if (undefined === value)
