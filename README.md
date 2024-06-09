@@ -143,6 +143,7 @@ Flags:
   -f, --format="text"    Output format, possible values: text,json,html,svg
       --no-disasm        Skip disassembly pass
       --no-symbol        Skip symbol pass
+      --no-dwarf         Skip dwarf pass
   -o, --output=STRING    Write to file
       --version          Show version
 
