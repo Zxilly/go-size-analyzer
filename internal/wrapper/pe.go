@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 type PeWrapper struct {
-	file *pe.File
+	file      *pe.File
+	ImageBase uint64
 }
 
 func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
@@ -27,8 +27,6 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 	if len(p.file.Symbols) == 0 {
 		return ErrNoSymbolTable
 	}
-
-	imageBase := utils.GetImageBase(p.file)
 
 	const (
 		nUndef = 0
@@ -69,7 +67,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 		sect := p.file.Sections[s.SectionNumber-1]
 		ch := sect.Characteristics
 
-		a := uint64(s.Value) + imageBase + uint64(sect.VirtualAddress)
+		a := uint64(s.Value) + p.ImageBase + uint64(sect.VirtualAddress)
 
 		var typ entity.AddrType
 		switch {
@@ -113,8 +111,6 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 }
 
 func (p *PeWrapper) LoadSections() map[string]*entity.Section {
-	imageBase := utils.GetImageBase(p.file)
-
 	ret := make(map[string]*entity.Section)
 	for _, section := range p.file.Sections {
 		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
@@ -129,8 +125,8 @@ func (p *PeWrapper) LoadSections() map[string]*entity.Section {
 			FileSize:     uint64(section.Size),
 			Offset:       uint64(section.Offset),
 			End:          uint64(section.Offset + section.Size),
-			Addr:         imageBase + uint64(section.VirtualAddress),
-			AddrEnd:      imageBase + uint64(section.VirtualAddress+section.VirtualSize),
+			Addr:         p.ImageBase + uint64(section.VirtualAddress),
+			AddrEnd:      p.ImageBase + uint64(section.VirtualAddress+section.VirtualSize),
 			OnlyInMemory: false, // pe file didn't have an only-in-memory section
 			Debug:        d,
 		}
@@ -153,13 +149,11 @@ func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 }
 
 func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
-	imageBase := utils.GetImageBase(p.file)
-
 	sect := p.file.Section(".text")
 	if sect == nil {
 		return 0, nil, fmt.Errorf("text section not found")
 	}
-	textStart = imageBase + uint64(sect.VirtualAddress)
+	textStart = p.ImageBase + uint64(sect.VirtualAddress)
 	text, err = sect.Data()
 	return textStart, text, err
 }

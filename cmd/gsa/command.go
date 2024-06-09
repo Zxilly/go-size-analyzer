@@ -15,6 +15,7 @@ var Options struct {
 
 	NoDisasm bool `help:"Skip disassembly pass"`
 	NoSymbol bool `help:"Skip symbol pass"`
+	NoDwarf  bool `help:"Skip dwarf pass"`
 
 	HideSections bool `help:"Hide sections" group:"text"`
 	HideMain     bool `help:"Hide main package" group:"text"`

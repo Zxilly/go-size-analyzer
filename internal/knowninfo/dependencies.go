@@ -90,14 +90,14 @@ func (m *Dependencies) FinishLoad() {
 	}
 }
 
-func (m *Dependencies) Add(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table) {
+func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table) {
 	name := utils.UglyGuess(gp.Name)
 
 	p := entity.NewPackageWithGorePackage(gp, name, typ, pclntab)
 
 	// update addrs
 	for _, f := range p.GetFunctions() {
-		m.k.KnownAddr.InsertPclntab(f.Addr, f.CodeSize, f, entity.GoPclntabMeta{
+		m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f, entity.GoPclntabMeta{
 			FuncName:    utils.Deduplicate(f.Name),
 			PackageName: utils.Deduplicate(p.Name),
 			Type:        utils.Deduplicate(f.Type),
@@ -131,35 +131,33 @@ func (k *KnownInfo) LoadPackages() error {
 		return err
 	}
 	for _, p := range self {
-		pkgs.Add(p, entity.PackageTypeMain, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeMain, pclntab)
 	}
 
 	grStd, _ := k.Gore.GetSTDLib()
 	for _, p := range grStd {
-		pkgs.Add(p, entity.PackageTypeStd, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeStd, pclntab)
 	}
 
 	grVendor, _ := k.Gore.GetVendors()
 	for _, p := range grVendor {
-		pkgs.Add(p, entity.PackageTypeVendor, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeVendor, pclntab)
 	}
 
 	grGenerated, _ := k.Gore.GetGeneratedPackages()
 	for _, p := range grGenerated {
-		pkgs.Add(p, entity.PackageTypeGenerated, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeGenerated, pclntab)
 	}
 
 	grUnknown, _ := k.Gore.GetUnknown()
 	for _, p := range grUnknown {
-		pkgs.Add(p, entity.PackageTypeUnknown, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeUnknown, pclntab)
 	}
 
 	if err = k.RequireModInfo(); err == nil {
 		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
 		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
 	}
-
-	pkgs.FinishLoad()
 
 	slog.Info("Loading packages done")
 

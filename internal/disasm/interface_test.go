@@ -18,7 +18,7 @@ type TestFileWrapper struct {
 	textErr   error
 }
 
-func (t TestFileWrapper) DWARF() (*dwarf.Data, error) {
+func (TestFileWrapper) DWARF() (*dwarf.Data, error) {
 	panic("not reachable")
 }
 

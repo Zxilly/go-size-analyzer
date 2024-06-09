@@ -38,3 +38,9 @@ func NewPclnSymbolSize(s *gosym.Func) PclnSymbolSize {
 		PCData:   s.PCDataSize(),
 	}
 }
+
+func NewEmptyPclnSymbolSize() PclnSymbolSize {
+	return PclnSymbolSize{
+		PCData: make(map[string]int),
+	}
+}

@@ -40,6 +40,7 @@ func entry() error {
 		internal.Options{
 			SkipSymbol: Options.NoSymbol,
 			SkipDisasm: Options.NoDisasm,
+			SkipDwarf:  Options.NoDwarf,
 		})
 	if err != nil {
 		return err

@@ -54,7 +54,7 @@ func TestSectionMap_AssertSize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &SectionMap{
+			s := &Store{
 				Sections: tt.fields.Sections,
 			}
 			if err := s.AssertSize(tt.args.size); (err != nil) != tt.wantErr {
@@ -97,7 +97,7 @@ func TestSectionMap_FindSection(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &SectionMap{
+			s := &Store{
 				Sections: tt.fields.Sections,
 			}
 			if got := s.FindSection(tt.args.addr, tt.args.size); !reflect.DeepEqual(got, tt.want) {

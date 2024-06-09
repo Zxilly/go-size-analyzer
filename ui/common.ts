@@ -28,12 +28,11 @@ export function getVersionTag(): HtmlTagDescriptor {
 
     return {
         tag: "script",
-        children: `
-        console.info("Branch: ${branchName}");
-        console.info("Commit: ${commitHash}");
-        console.info("Date: ${commitDate}");
-        console.info("Message: ${lastCommitMessage}");
-        `.trim(),
+        children:
+            `console.info("Branch: ${branchName}");` +
+            `console.info("Commit: ${commitHash}");` +
+            `console.info("Date: ${commitDate}");` +
+            `console.info("Message: ${lastCommitMessage}");`,
     }
 }
 

@@ -1,9 +1,10 @@
 package knowninfo
 
 import (
-	"github.com/ZxillyFork/gosym"
 	"log/slog"
 	"strings"
+
+	"github.com/ZxillyFork/gosym"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"

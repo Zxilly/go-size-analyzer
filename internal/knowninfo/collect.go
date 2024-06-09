@@ -10,7 +10,7 @@ import (
 
 func (k *KnownInfo) CollectCoverage() error {
 	// load coverage for pclntab and symbol
-	pclntabCov := k.KnownAddr.Pclntab.ToDirtyCoverage()
+	pclntabCov := k.KnownAddr.Text.ToDirtyCoverage()
 
 	// merge all
 	covs := make([]entity.AddrCoverage, 0)
@@ -70,10 +70,14 @@ foundPclntab:
 		}
 		s.KnownSize = uint64(math.Floor(float64(size) * mapper))
 
-		if s.KnownSize > s.FileSize {
+		if s.KnownSize > s.FileSize && s.FileSize != 0 {
 			// fixme: pclntab size calculation is not accurate
 			slog.Warn(fmt.Sprintf("section %s known size %d > file size %d, this is a known issue", s.Name, s.KnownSize, s.FileSize))
 			s.KnownSize = s.FileSize
+		}
+
+		if s.FileSize == 0 {
+			s.KnownSize = 0
 		}
 	}
 	return nil

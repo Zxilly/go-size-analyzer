@@ -104,12 +104,12 @@ linters-settings:
 
       - name: cognitive-complexity
         severity: warning
-        arguments: [ 50 ]
+        arguments: [ 300 ]
 
       - name: cyclomatic
-        arguments: [ 30 ]
+        arguments: [ 100 ]
 
-      - name: call-to-gc
+      - name: unchecked-type-assertion
         disabled: true
       - name: struct-tag
         disabled: true

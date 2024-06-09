@@ -6,23 +6,21 @@ import (
 )
 
 type KnownAddr struct {
-	Pclntab AddrSpace
+	Text AddrSpace
 
 	Symbol         AddrSpace
 	SymbolCoverage AddrCoverage
-
-	Dwarf AddrSpace
 }
 
 func NewKnownAddr() *KnownAddr {
 	return &KnownAddr{
-		Pclntab:        make(map[uint64]*Addr),
+		Text:           make(map[uint64]*Addr),
 		Symbol:         make(map[uint64]*Addr),
 		SymbolCoverage: make(AddrCoverage, 0),
 	}
 }
 
-func (f *KnownAddr) InsertPclntab(entry uint64, size uint64, fn *Function, meta GoPclntabMeta) {
+func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Function, meta GoPclntabMeta) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -35,7 +33,23 @@ func (f *KnownAddr) InsertPclntab(entry uint64, size uint64, fn *Function, meta 
 
 		Meta: meta,
 	}
-	f.Pclntab.Insert(&cur)
+	f.Text.Insert(&cur)
+}
+
+func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function, meta DwarfMeta) {
+	cur := Addr{
+		AddrPos: &AddrPos{
+			Addr: entry,
+			Size: size,
+			Type: AddrTypeText,
+		},
+		Pkg:        fn.pkg,
+		Function:   fn,
+		SourceType: AddrSourceDwarf,
+
+		Meta: meta,
+	}
+	f.Text.Insert(&cur)
 }
 
 func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
@@ -105,20 +119,4 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, meta D
 	}
 
 	fn.disasm.Insert(&cur)
-}
-
-func (f *KnownAddr) InsertDwarf(entry uint64, size uint64, typ AddrType, pkg *Package, meta DwarfMeta) {
-	cur := Addr{
-		AddrPos: &AddrPos{
-			Addr: entry,
-			Size: size,
-			Type: typ,
-		},
-		Pkg:        pkg,
-		Function:   nil,
-		SourceType: AddrSourceDwarf,
-		Meta:       meta,
-	}
-
-	f.Dwarf.Insert(&cur)
 }

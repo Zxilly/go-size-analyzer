@@ -28,7 +28,7 @@ export interface FileSymbol {
 
 export interface Package {
     name: string;
-    type: 'main' | 'std' | 'vendor' | 'generated' | 'unknown';
+    type: 'main' | 'std' | 'vendor' | 'generated' | 'unknown' | 'cgo';
     subPackages: { [key: string]: Package };
     files: File[];
     symbols: FileSymbol[];
