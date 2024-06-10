@@ -1,0 +1,1812 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`entry toString match 1`] = `
+"Result: path/to/bin-linux-1.22-amd64
+Size:   1.6 MB"
+`;
+
+exports[`entry toString match 2`] = `
+"The unknown size of the sections in the binary.
+
+Size: 1001.08 KB"
+`;
+
+exports[`entry toString match 3`] = `
+"Section:      .data
+Size:         15.08 KB
+File Size:    15.08 KB
+Known size:   1 B
+Unknown size: 15.08 KB
+Offset:       0x1047a0 - 0x1083f0
+Address:      0x5047a0 - 0x5083f0
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 4`] = `
+"Section:      .noptrbss
+Size:         0 B
+File Size:    0 B
+Known size:   0 B
+Unknown size: 0 B
+Offset:       0x0 - 0x0
+Address:      0x567ee0 - 0x56b900
+Memory:       true
+Debug:        false"
+`;
+
+exports[`entry toString match 5`] = `
+"Section:      .shstrtab
+Size:         263 B
+File Size:    263 B
+Known size:   0 B
+Unknown size: 263 B
+Offset:       0x198729 - 0x198830
+Address:      0x0 - 0x107
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 6`] = `
+"Section:      .strtab
+Size:         39.35 KB
+File Size:    39.35 KB
+Known size:   0 B
+Unknown size: 39.35 KB
+Offset:       0x18e9c0 - 0x198729
+Address:      0x0 - 0x9d69
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 7`] = `
+"Section:      .go.buildinfo
+Size:         224 B
+File Size:    224 B
+Known size:   0 B
+Unknown size: 224 B
+Offset:       0x101000 - 0x1010e0
+Address:      0x501000 - 0x5010e0
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 8`] = `
+"Section:      .gopclntab
+Size:         202.3 KB
+File Size:    353.23 KB
+Known size:   150.94 KB
+Unknown size: 202.3 KB
+Offset:       0xa7ee0 - 0x1003d0
+Address:      0x4a7ee0 - 0x5003d0
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 9`] = `
+"Section:      .debug_abbrev
+Size:         309 B
+File Size:    309 B
+Known size:   0 B
+Unknown size: 309 B
+Offset:       0x109000 - 0x109135
+Address:      0x0 - 0x214
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 10`] = `
+"Section:      .note.go.buildid
+Size:         100 B
+File Size:    100 B
+Known size:   0 B
+Unknown size: 100 B
+Offset:       0xf9c - 0x1000
+Address:      0x400f9c - 0x401000
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 11`] = `
+"Section:      .text
+Size:         1 B
+File Size:    444.41 KB
+Known size:   444.41 KB
+Unknown size: 1 B
+Offset:       0x1000 - 0x701a3
+Address:      0x401000 - 0x4701a3
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 12`] = `
+"Section:      .debug_frame
+Size:         21.32 KB
+File Size:    21.32 KB
+Known size:   0 B
+Unknown size: 21.32 KB
+Offset:       0x1245c9 - 0x129b15
+Address:      0x0 - 0xfe4c
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 13`] = `
+"Section:      .debug_gdb_scripts
+Size:         63 B
+File Size:    63 B
+Known size:   0 B
+Unknown size: 63 B
+Offset:       0x129b15 - 0x129b54
+Address:      0x0 - 0x3f
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 14`] = `
+"Section:      .debug_info
+Size:         221.74 KB
+File Size:    221.74 KB
+Known size:   0 B
+Unknown size: 221.74 KB
+Offset:       0x129b54 - 0x16124a
+Address:      0x0 - 0x84ef4
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 15`] = `
+"Section:      .debug_loc
+Size:         101.1 KB
+File Size:    101.1 KB
+Known size:   0 B
+Unknown size: 101.1 KB
+Offset:       0x16124a - 0x17a6b0
+Address:      0x0 - 0x940c9
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 16`] = `
+"Section:      .rodata
+Size:         195.59 KB
+File Size:    218.36 KB
+Known size:   22.77 KB
+Unknown size: 195.59 KB
+Offset:       0x71000 - 0xa7972
+Address:      0x471000 - 0x4a7972
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 17`] = `
+"Section:      .itablink
+Size:         88 B
+File Size:    88 B
+Known size:   0 B
+Unknown size: 88 B
+Offset:       0xa7e80 - 0xa7ed8
+Address:      0x4a7e80 - 0x4a7ed8
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 18`] = `
+"Section:      .noptrdata
+Size:         13.66 KB
+File Size:    13.66 KB
+Known size:   0 B
+Unknown size: 13.66 KB
+Offset:       0x1010e0 - 0x104788
+Address:      0x5010e0 - 0x504788
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 19`] = `
+"Section:      .bss
+Size:         0 B
+File Size:    0 B
+Known size:   0 B
+Unknown size: 0 B
+Offset:       0x0 - 0x0
+Address:      0x508400 - 0x567ed0
+Memory:       true
+Debug:        false"
+`;
+
+exports[`entry toString match 20`] = `
+"Section:      .debug_line
+Size:         109.14 KB
+File Size:    109.14 KB
+Known size:   0 B
+Unknown size: 109.14 KB
+Offset:       0x109135 - 0x1245c9
+Address:      0x0 - 0x302c9
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 21`] = `
+"Section:      .debug_ranges
+Size:         39.44 KB
+File Size:    39.44 KB
+Known size:   0 B
+Unknown size: 39.44 KB
+Offset:       0x17a6b0 - 0x184476
+Address:      0x0 - 0x37780
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry toString match 22`] = `
+"Section:      .symtab
+Size:         41.32 KB
+File Size:    41.32 KB
+Known size:   0 B
+Unknown size: 41.32 KB
+Offset:       0x184478 - 0x18e9c0
+Address:      0x0 - 0xa548
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 23`] = `
+"Section:      .typelink
+Size:         0 B
+File Size:    1.24 KB
+Known size:   1.24 KB
+Unknown size: 0 B
+Offset:       0xa7980 - 0xa7e74
+Address:      0x4a7980 - 0x4a7e74
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry toString match 24`] = `
+"The size of the std packages in the binary.
+
+Size: 597.96 KB"
+`;
+
+exports[`entry toString match 25`] = `
+"Package: internal/abi
+Type:    std
+Size:    1.88 KB"
+`;
+
+exports[`entry toString match 26`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/abi/type.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/abi/type.go
+Size:      1.61 KB
+Pcln Size: 690 B"
+`;
+
+exports[`entry toString match 27`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      275 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 28`] = `
+"Package: syscall
+Type:    std
+Size:    6.42 KB"
+`;
+
+exports[`entry toString match 29`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/syscall_linux.go
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 30`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime.go
+Size:      307 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 31`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      454 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 32`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/env_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/env_unix.go
+Size:      1.34 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 33`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall.go
+Size:      307 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 34`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/zsyscall_linux_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/zsyscall_linux_amd64.go
+Size:      2.74 KB
+Pcln Size: 920 B"
+`;
+
+exports[`entry toString match 35`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall_linux.go
+Size:      665 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 36`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/rlimit.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/rlimit.go
+Size:      275 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 37`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/syscall/syscall_unix.go
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 38`] = `
+"Package: runtime
+Type:    std
+Size:    507.66 KB"
+`;
+
+exports[`entry toString match 39`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/compare_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/compare_amd64.s
+Size:      131 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 40`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/equal_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/equal_amd64.s
+Size:      294 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 41`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      5.35 KB
+Pcln Size: 3.26 KB"
+`;
+
+exports[`entry toString match 42`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/alg.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/alg.go
+Size:      4.01 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry toString match 43`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 44`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgo_mmap.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgo_mmap.go
+Size:      1.01 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 45`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgo_sigaction.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgo_sigaction.go
+Size:      678 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 46`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgocall.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cgocall.go
+Size:      998 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 47`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/chan.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/chan.go
+Size:      7.24 KB
+Pcln Size: 1.46 KB"
+`;
+
+exports[`entry toString match 48`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/debugcall.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/debugcall.go
+Size:      3.82 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 49`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/env_posix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/env_posix.go
+Size:      435 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 50`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/error.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/error.go
+Size:      7.37 KB
+Pcln Size: 920 B"
+`;
+
+exports[`entry toString match 51`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/exithook.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/exithook.go
+Size:      889 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 52`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/fds_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/fds_unix.go
+Size:      595 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 53`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/hash64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/hash64.go
+Size:      1.06 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 54`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/iface.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/iface.go
+Size:      6.33 KB
+Pcln Size: 1.8 KB"
+`;
+
+exports[`entry toString match 55`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lfstack.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lfstack.go
+Size:      806 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 56`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lock_futex.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lock_futex.go
+Size:      2.95 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 57`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/malloc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/malloc.go
+Size:      9.86 KB
+Pcln Size: 1.8 KB"
+`;
+
+exports[`entry toString match 58`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map.go
+Size:      7.24 KB
+Pcln Size: 1.24 KB"
+`;
+
+exports[`entry toString match 59`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_fast32.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_fast32.go
+Size:      3.19 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 60`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_fast64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_fast64.go
+Size:      2.89 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 61`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_faststr.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/map_faststr.go
+Size:      4.69 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 62`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbarrier.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbarrier.go
+Size:      1.21 KB
+Pcln Size: 690 B"
+`;
+
+exports[`entry toString match 63`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap.go
+Size:      4.54 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 64`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap_allocheaders.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap_allocheaders.go
+Size:      5.19 KB
+Pcln Size: 1.35 KB"
+`;
+
+exports[`entry toString match 65`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcache.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcache.go
+Size:      2.97 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 66`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcheckmark.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcheckmark.go
+Size:      1.18 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 67`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mem.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mem.go
+Size:      1023 B
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 68`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mem_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mem_linux.go
+Size:      2.05 KB
+Pcln Size: 690 B"
+`;
+
+exports[`entry toString match 69`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mfinal.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mfinal.go
+Size:      723 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 70`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgc.go
+Size:      16.34 KB
+Pcln Size: 3.59 KB"
+`;
+
+exports[`entry toString match 71`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcmark.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcmark.go
+Size:      17.39 KB
+Pcln Size: 2.92 KB"
+`;
+
+exports[`entry toString match 72`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcpacer.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcpacer.go
+Size:      8.51 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry toString match 73`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcscavenge.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcscavenge.go
+Size:      11.61 KB
+Pcln Size: 3.14 KB"
+`;
+
+exports[`entry toString match 74`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcstack.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcstack.go
+Size:      1.64 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 75`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcsweep.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcsweep.go
+Size:      9.63 KB
+Pcln Size: 1.57 KB"
+`;
+
+exports[`entry toString match 76`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcwork.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgcwork.go
+Size:      5.28 KB
+Pcln Size: 1.91 KB"
+`;
+
+exports[`entry toString match 77`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mheap.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mheap.go
+Size:      14.48 KB
+Pcln Size: 3.26 KB"
+`;
+
+exports[`entry toString match 78`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagealloc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagealloc.go
+Size:      10.61 KB
+Pcln Size: 1.24 KB"
+`;
+
+exports[`entry toString match 79`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mprof.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mprof.go
+Size:      11.14 KB
+Pcln Size: 3.48 KB"
+`;
+
+exports[`entry toString match 80`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mranges.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mranges.go
+Size:      3.29 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 81`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mwbbuf.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mwbbuf.go
+Size:      1.29 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 82`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/netpoll.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/netpoll.go
+Size:      857 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 83`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/netpoll_epoll.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/netpoll_epoll.go
+Size:      1.87 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 84`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/os_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/os_linux.go
+Size:      7.62 KB
+Pcln Size: 2.25 KB"
+`;
+
+exports[`entry toString match 85`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/pagetrace_off.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/pagetrace_off.go
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 86`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/panic.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/panic.go
+Size:      15.38 KB
+Pcln Size: 4.94 KB"
+`;
+
+exports[`entry toString match 87`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/preempt.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/preempt.go
+Size:      3.47 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 88`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/print.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/print.go
+Size:      5.41 KB
+Pcln Size: 1.91 KB"
+`;
+
+exports[`entry toString match 89`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/proc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/proc.go
+Size:      79.21 KB
+Pcln Size: 18.64 KB"
+`;
+
+exports[`entry toString match 90`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rand.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rand.go
+Size:      2.16 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 91`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/retry.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/retry.go
+Size:      275 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 92`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Size:      4.35 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 93`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sema.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sema.go
+Size:      4.88 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 94`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/signal_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/signal_amd64.go
+Size:      1.91 KB
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 95`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/signal_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/signal_unix.go
+Size:      11.15 KB
+Pcln Size: 2.58 KB"
+`;
+
+exports[`entry toString match 96`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sigqueue.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sigqueue.go
+Size:      467 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 97`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/slice.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/slice.go
+Size:      3.01 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 98`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stack.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stack.go
+Size:      12.28 KB
+Pcln Size: 2.25 KB"
+`;
+
+exports[`entry toString match 99`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stkframe.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stkframe.go
+Size:      3.14 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 100`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/string.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/string.go
+Size:      4.93 KB
+Pcln Size: 1.46 KB"
+`;
+
+exports[`entry toString match 101`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stubs.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/stubs.go
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 102`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/symtab.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/symtab.go
+Size:      11.28 KB
+Pcln Size: 1.91 KB"
+`;
+
+exports[`entry toString match 103`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/symtabinl.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/symtabinl.go
+Size:      678 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 104`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time.go
+Size:      9.5 KB
+Pcln Size: 1.68 KB"
+`;
+
+exports[`entry toString match 105`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time_nofake.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time_nofake.go
+Size:      390 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 106`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2.go
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 107`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2buf.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2buf.go
+Size:      2.06 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 108`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2cpu.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2cpu.go
+Size:      755 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 109`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2runtime.go
+Size:      9.3 KB
+Pcln Size: 3.14 KB"
+`;
+
+exports[`entry toString match 110`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2stack.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2stack.go
+Size:      1.15 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 111`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/traceback.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/traceback.go
+Size:      19.78 KB
+Pcln Size: 4.16 KB"
+`;
+
+exports[`entry toString match 112`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/type.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/type.go
+Size:      7.8 KB
+Pcln Size: 920 B"
+`;
+
+exports[`entry toString match 113`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/unsafe.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/unsafe.go
+Size:      748 B
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 114`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/utf8.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/utf8.go
+Size:      595 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 115`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/vdso_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/vdso_linux.go
+Size:      3.16 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 116`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm.s
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 117`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm_amd64.s
+Size:      8.13 KB
+Pcln Size: 5.17 KB"
+`;
+
+exports[`entry toString match 118`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/duff_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/duff_amd64.s
+Size:      1.51 KB
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 119`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/memclr_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/memclr_amd64.s
+Size:      883 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 120`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/memmove_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/memmove_amd64.s
+Size:      1.8 KB
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 121`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/preempt_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/preempt_amd64.s
+Size:      563 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 122`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sys_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sys_linux_amd64.s
+Size:      6.41 KB
+Pcln Size: 4.16 KB"
+`;
+
+exports[`entry toString match 123`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/arena.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/arena.go
+Size:      921 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 124`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cpuflags_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cpuflags_amd64.go
+Size:      211 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 125`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cpuprof.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/cpuprof.go
+Size:      1.46 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 126`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/histogram.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/histogram.go
+Size:      307 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 127`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lockrank.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/lockrank.go
+Size:      211 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 128`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcentral.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mcentral.go
+Size:      1.87 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 129`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mfixalloc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mfixalloc.go
+Size:      953 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 130`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgclimit.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgclimit.go
+Size:      2.98 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 131`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagealloc_64bit.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagealloc_64bit.go
+Size:      3.63 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 132`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagecache.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpagecache.go
+Size:      2.26 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 133`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpallocbits.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mpallocbits.go
+Size:      3.21 KB
+Pcln Size: 920 B"
+`;
+
+exports[`entry toString match 134`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mspanset.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mspanset.go
+Size:      1.91 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 135`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mstats.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mstats.go
+Size:      1.34 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 136`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/pinner.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/pinner.go
+Size:      435 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 137`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/profbuf.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/profbuf.go
+Size:      2.29 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 138`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime.go
+Size:      646 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 139`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime2.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime2.go
+Size:      326 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 140`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rwmutex.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rwmutex.go
+Size:      857 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 141`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2event.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2event.go
+Size:      2.04 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 142`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2map.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2map.go
+Size:      1.48 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 143`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2region.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2region.go
+Size:      371 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 144`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2status.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2status.go
+Size:      870 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 145`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2string.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/trace2string.go
+Size:      1.31 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 146`] = `
+"Package: runtime/debug
+Type:    std
+Size:    403 B"
+`;
+
+exports[`entry toString match 147`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Size:      403 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 148`] = `
+"Package: runtime/internal/syscall
+Type:    std
+Size:    454 B"
+`;
+
+exports[`entry toString match 149`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/syscall_linux.go
+Size:      275 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 150`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/asm_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/syscall/asm_linux_amd64.s
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 151`] = `
+"Package: runtime/internal/atomic
+Type:    std
+Size:    390 B"
+`;
+
+exports[`entry toString match 152`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Size:      390 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 153`] = `
+"Package: runtime/internal/sys
+Type:    std
+Size:    243 B"
+`;
+
+exports[`entry toString match 154`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/sys/intrinsics.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/internal/sys/intrinsics.go
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 155`] = `
+"Symbol:  runtime.typelink
+Size:    1.24 KB
+Address: 0x4a7980
+Type:    data"
+`;
+
+exports[`entry toString match 156`] = `
+"Symbol:  runtime.findfunctab
+Size:    2.17 KB
+Address: 0x4a70c0
+Type:    data"
+`;
+
+exports[`entry toString match 157`] = `
+"Symbol:  runtime.mainPC
+Size:    8 B
+Address: 0x4a60a0
+Type:    data"
+`;
+
+exports[`entry toString match 158`] = `
+"Symbol:  runtime.defaultGOROOT.str
+Size:    35 B
+Address: 0x4a6300
+Type:    data"
+`;
+
+exports[`entry toString match 159`] = `
+"Symbol:  runtime.buildVersion.str
+Size:    9 B
+Address: 0x4a60b0
+Type:    data"
+`;
+
+exports[`entry toString match 160`] = `
+"Symbol:  runtime.modinfo.str
+Size:    174 B
+Address: 0x4a6a20
+Type:    data"
+`;
+
+exports[`entry toString match 161`] = `
+"Symbol:  runtime.textsectionmap
+Size:    24 B
+Address: 0x4a6240
+Type:    data"
+`;
+
+exports[`entry toString match 162`] = `
+"Disasm: runtime Disasm
+Size:   19.41 KB
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 163`] = `
+"Package: internal/bytealg
+Type:    std
+Size:    326 B"
+`;
+
+exports[`entry toString match 164`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/indexbyte_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/indexbyte_amd64.s
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 165`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/index_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/index_amd64.go
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 166`] = `
+"Package: strconv
+Type:    std
+Size:    1.72 KB"
+`;
+
+exports[`entry toString match 167`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/strconv/itoa.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/strconv/itoa.go
+Size:      1.72 KB
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 168`] = `
+"Package: internal/chacha8rand
+Type:    std
+Size:    2.51 KB"
+`;
+
+exports[`entry toString match 169`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/chacha8rand/chacha8_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/chacha8rand/chacha8_amd64.s
+Size:      1.55 KB
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 170`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/chacha8rand/chacha8.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/chacha8rand/chacha8.go
+Size:      985 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 171`] = `
+"Package: internal/cpu
+Type:    std
+Size:    4.64 KB"
+`;
+
+exports[`entry toString match 172`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu.go
+Size:      1.63 KB
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 173`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu_x86.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu_x86.go
+Size:      2.42 KB
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 174`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu_x86.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/cpu/cpu_x86.s
+Size:      441 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 175`] = `
+"Disasm: internal/cpu Disasm
+Size:   161 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 176`] = `
+"Package: errors
+Type:    std
+Size:    390 B"
+`;
+
+exports[`entry toString match 177`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 178`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/errors/errors.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/errors/errors.go
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 179`] = `
+"Package: math
+Type:    std
+Size:    147 B"
+`;
+
+exports[`entry toString match 180`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/math/exp_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/math/exp_amd64.go
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 181`] = `
+"Package: sync
+Type:    std
+Size:    6.45 KB"
+`;
+
+exports[`entry toString match 182`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mgc.go
+Size:      211 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 183`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mprof.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mprof.go
+Size:      371 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 184`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/panic.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/panic.go
+Size:      358 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 185`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/proc.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/proc.go
+Size:      422 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 186`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sema.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/sema.go
+Size:      1.03 KB
+Pcln Size: 575 B"
+`;
+
+exports[`entry toString match 187`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      211 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 188`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/pool.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/pool.go
+Size:      614 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 189`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/mutex.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/mutex.go
+Size:      1.27 KB
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 190`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/once.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/once.go
+Size:      825 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 191`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/runtime.go
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 192`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/rwmutex.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/rwmutex.go
+Size:      422 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 193`] = `
+"Package: sync/atomic
+Type:    std
+Size:    473 B"
+`;
+
+exports[`entry toString match 194`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/atomic_pointer.go
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 195`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 196`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/atomic/type.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/sync/atomic/type.go
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 197`] = `
+"Disasm: sync Disasm
+Size:   157 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 198`] = `
+"Package: embed
+Type:    std
+Size:    5.2 KB"
+`;
+
+exports[`entry toString match 199`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/embed/embed.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/embed/embed.go
+Size:      5.2 KB
+Pcln Size: 1.57 KB"
+`;
+
+exports[`entry toString match 200`] = `
+"Package: unicode
+Type:    std
+Size:    1.35 KB"
+`;
+
+exports[`entry toString match 201`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      851 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 202`] = `
+"Package: unicode/utf8
+Type:    std
+Size:    499 B"
+`;
+
+exports[`entry toString match 203`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/unicode/utf8/utf8.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/unicode/utf8/utf8.go
+Size:      499 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 204`] = `
+"Disasm: unicode Disasm
+Size:   30 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 205`] = `
+"Package: io/fs
+Type:    std
+Size:    3.51 KB"
+`;
+
+exports[`entry toString match 206`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      825 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 207`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/io/fs/format.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/io/fs/format.go
+Size:      1.36 KB
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 208`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/io/fs/fs.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/io/fs/fs.go
+Size:      1.32 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 209`] = `
+"Disasm: io/fs Disasm
+Size:   22 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 210`] = `
+"Package: internal/itoa
+Type:    std
+Size:    595 B"
+`;
+
+exports[`entry toString match 211`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/itoa/itoa.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/itoa/itoa.go
+Size:      595 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 212`] = `
+"Package: internal/reflectlite
+Type:    std
+Size:    1.84 KB"
+`;
+
+exports[`entry toString match 213`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Size:      179 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 214`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/reflectlite/type.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/reflectlite/type.go
+Size:      1.04 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 215`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      633 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 216`] = `
+"Package: time
+Type:    std
+Size:    41.9 KB"
+`;
+
+exports[`entry toString match 217`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/time_linux_amd64.s
+Size:      339 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 218`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/format.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/format.go
+Size:      15.66 KB
+Pcln Size: 805 B"
+`;
+
+exports[`entry toString match 219`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/sys_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/sys_unix.go
+Size:      857 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 220`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/time.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/time.go
+Size:      1.04 KB
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 221`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo.go
+Size:      8.79 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 222`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo_read.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo_read.go
+Size:      12.31 KB
+Pcln Size: 1.12 KB"
+`;
+
+exports[`entry toString match 223`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/zoneinfo_unix.go
+Size:      979 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 224`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      633 B
+Pcln Size: 345 B"
+`;
+
+exports[`entry toString match 225`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/format_rfc3339.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/time/format_rfc3339.go
+Size:      1.11 KB
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 226`] = `
+"Disasm: time Disasm
+Size:   251 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 227`] = `
+"Package: reflect
+Type:    std
+Size:    11.46 KB"
+`;
+
+exports[`entry toString match 228`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/mbitmap.go
+Size:      243 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 229`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/runtime1.go
+Size:      358 B
+Pcln Size: 230 B"
+`;
+
+exports[`entry toString match 230`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      1.11 KB
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 231`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/reflect/value.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/reflect/value.go
+Size:      4.26 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 232`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/reflect/type.go
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/reflect/type.go
+Size:      5.42 KB
+Pcln Size: 1.01 KB"
+`;
+
+exports[`entry toString match 233`] = `
+"Disasm: reflect Disasm
+Size:   87 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 234`] = `
+"The size of the generated packages in the binary.
+
+Size: 16.67 KB"
+`;
+
+exports[`entry toString match 235`] = `
+"Package: 
+Type:    generated
+Size:    16.67 KB"
+`;
+
+exports[`entry toString match 236`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      9.9 KB
+Pcln Size: 5.05 KB"
+`;
+
+exports[`entry toString match 237`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/compare_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/compare_amd64.s
+Size:      691 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 238`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/equal_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/equal_amd64.s
+Size:      483 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 239`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/indexbyte_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/internal/bytealg/indexbyte_amd64.s
+Size:      435 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 240`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/asm_amd64.s
+Size:      5.05 KB
+Pcln Size: 2.02 KB"
+`;
+
+exports[`entry toString match 241`] = `
+"File:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rt0_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.2/x64/src/runtime/rt0_linux_amd64.s
+Size:      147 B
+Pcln Size: 115 B"
+`;
+
+exports[`entry toString match 242`] = `
+"The size of the main packages in the binary.
+
+Size: 4.73 KB"
+`;
+
+exports[`entry toString match 243`] = `
+"Package: main
+Type:    main
+Size:    4.73 KB"
+`;
+
+exports[`entry toString match 244`] = `
+"File:      /home/runner/work/go-testdata/go-testdata/main.go
+Path:      /home/runner/work/go-testdata/go-testdata/main.go
+Size:      3.65 KB
+Pcln Size: 2.02 KB"
+`;
+
+exports[`entry toString match 245`] = `
+"File:      /home/runner/work/go-testdata/go-testdata/embed.go
+Path:      /home/runner/work/go-testdata/go-testdata/embed.go
+Size:      844 B
+Pcln Size: 460 B"
+`;
+
+exports[`entry toString match 246`] = `
+"Symbol:  main.goFiles.files
+Size:    168 B
+Address: 0x4a6960
+Type:    data"
+`;
+
+exports[`entry toString match 247`] = `
+"Disasm: main Disasm
+Size:   97 B
+
+This size was not accurate.The real size determined by disassembling can be larger."
+`;
+
+exports[`entry toString match 248`] = `
+"Size: 13.61 KB
+
+The unknown part in the binary.
+Can be ELF Header, Program Header, align offset...
+We just don't know."
+`;

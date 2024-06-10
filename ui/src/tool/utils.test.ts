@@ -1,7 +1,5 @@
-// @vitest-environment jsdom
-
-import {formatBytes, loadDataFromEmbed, title, trimPrefix} from './utils.ts';
 import {expect, test} from 'vitest';
+import {formatBytes, loadDataFromEmbed, title, trimPrefix} from './utils.ts';
 
 
 test('loadDataFromEmbed should throw error when data is not parsable', () => {

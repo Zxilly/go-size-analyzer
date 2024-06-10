@@ -1,6 +1,6 @@
 import {defineConfig} from 'vite';
-import {build, codecov, commonPlugin, getVersionTag} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
+import {build, codecov, commonPlugin, getVersionTag} from "./vite.common";
 
 const tags = [];
 const versionTag = getVersionTag();

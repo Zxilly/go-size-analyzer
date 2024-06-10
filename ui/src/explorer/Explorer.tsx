@@ -1,10 +1,10 @@
 import React, {ReactNode, useEffect, useMemo} from "react";
 import {useAsync} from "react-use";
+import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import gsa from "../../gsa.wasm?init";
 import {createEntry} from "../tool/entry.ts";
-import {Dialog, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import {FileSelector} from "./FileSelector.tsx";
 import TreeMap from "../TreeMap.tsx";
+import {FileSelector} from "./FileSelector.tsx";
 
 type ModalState = {
     isOpen: false

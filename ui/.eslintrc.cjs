@@ -8,10 +8,13 @@ module.exports = {
         'plugin:react/jsx-runtime',
         'plugin:@typescript-eslint/recommended-type-checked',
         'plugin:react-hooks/recommended',
+        'plugin:import/recommended',
+        'plugin:import/typescript'
     ],
     ignorePatterns: [
         'dist',
         '.eslintrc.cjs',
+        'coverage',
         'src/generated/schema.ts',
         'src/tool/wasm_exec.js',
     ],
@@ -21,6 +24,7 @@ module.exports = {
     ],
     rules: {
         'sort-imports': ['warn', {ignoreDeclarationSort: true}],
+        'import/no-unresolved': 'off',
         'react-refresh/only-export-components': [
             'warn',
             {allowConstantExport: true},

@@ -1,6 +1,6 @@
 import {fireEvent, render} from '@testing-library/react';
-import {FileSelector} from './FileSelector.tsx';
 import {expect, test, vi} from 'vitest';
+import {FileSelector} from './FileSelector.tsx';
 
 test('FileSelector should render correctly', () => {
     const mockHandler = vi.fn();

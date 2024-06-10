@@ -1,8 +1,8 @@
+import * as fs from "node:fs"
 import {HtmlTagDescriptor, defineConfig} from 'vite';
 import {viteSingleFile} from "vite-plugin-singlefile"
-import * as fs from "node:fs"
-import {build, codecov, commonPlugin, getVersionTag} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
+import {build, codecov, commonPlugin, getVersionTag} from "./vite.common";
 
 
 const placeHolder = `"GSA_PACKAGE_DATA"`

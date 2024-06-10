@@ -1,5 +1,5 @@
-import { aligner } from './aligner.ts';
 import { expect, test } from 'vitest';
+import { aligner } from './aligner.ts';
 
 test('aligner should correctly add and align strings', () => {
     const al = new aligner();

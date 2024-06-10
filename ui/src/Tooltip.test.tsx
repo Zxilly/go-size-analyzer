@@ -1,6 +1,6 @@
 import {fireEvent, render} from '@testing-library/react';
-import {Tooltip} from './Tooltip.tsx';
 import {assert, expect, test} from 'vitest';
+import {Tooltip} from './Tooltip.tsx';
 import {Entry, EntryChildren, type EntryType} from "./tool/entry.ts";
 
 function getTestNode(): Entry {
@@ -8,9 +8,7 @@ function getTestNode(): Entry {
         getChildren(): EntryChildren[EntryType] {
             return [];
         },
-        getType(): EntryType {
-            return "unknown";
-        }, getID(): number {
+        getID(): number {
             return 1;
         }, getName(): string {
             return "test";
@@ -31,14 +29,14 @@ test('Tooltip should render correctly when visible', () => {
 
 test('Tooltip should not render when not visible', () => {
     const r = render(<Tooltip visible={false}
-                                          node={getTestNode()}/>);
+                              node={getTestNode()}/>);
     // should have tooltip-hidden class
     expect(r.container.querySelector('.tooltip-hidden')).not.toBeNull();
 });
 
 test('Tooltip should update position on mouse move', () => {
-    const { getByText } = render(<Tooltip visible={true} node={getTestNode()} />);
-    fireEvent.mouseMove(document, { clientX: 100, clientY: 100 });
+    const {getByText} = render(<Tooltip visible={true} node={getTestNode()}/>);
+    fireEvent.mouseMove(document, {clientX: 100, clientY: 100});
     const tooltip = getByText('test').parentElement;
     if (!tooltip) {
         assert.isNotNull(tooltip);

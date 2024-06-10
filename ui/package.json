@@ -10,6 +10,7 @@
     "dev:explorer": "vite -c vite.config-explorer.ts",
     "generate": "typia generate --input src/schema --output src/generated --project tsconfig.json",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "test": "vitest run"
   },
   "dependencies": {
@@ -43,6 +44,7 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "@vitest/coverage-istanbul": "^1.6.0",
     "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",

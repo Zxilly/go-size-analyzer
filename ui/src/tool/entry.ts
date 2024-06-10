@@ -27,8 +27,6 @@ export interface EntryLike<T extends EntryType> {
 
     getSize(): number;
 
-    getType(): T;
-
     getName(): string;
 
     getChildren(): EntryChildren[T]
@@ -62,10 +60,6 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
         return this.data.file_size - this.data.known_size;
     }
 
-    getType(): "section" {
-        return "section";
-    }
-
     toString(): string {
         const align = new aligner();
         align.add("Section:", this.data.name)
@@ -96,10 +90,6 @@ export class FileImpl extends BaseImpl implements EntryLike<"file"> {
 
     getSize(): number {
         return this.data.size;
-    }
-
-    getType(): "file" {
-        return "file";
     }
 
     toString(): string {
@@ -151,10 +141,6 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
         return this.data.size;
     }
 
-    getType(): "package" {
-        return "package";
-    }
-
     toString(): string {
         const align = new aligner();
         align.add("Package:", this.data.name)
@@ -179,10 +165,6 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
 
     getSize(): number {
         return this.size;
-    }
-
-    getType(): "disasm" {
-        return "disasm";
     }
 
     toString(): string {
@@ -214,10 +196,6 @@ export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
         return this.data.size;
     }
 
-    getType(): "symbol" {
-        return "symbol";
-    }
-
     toString(): string {
         const align = new aligner();
         align.add("Symbol:", this.data.name)
@@ -246,10 +224,6 @@ export class ContainerImpl extends BaseImpl implements EntryLike<"container"> {
 
     getSize(): number {
         return this.size;
-    }
-
-    getType(): "container" {
-        return "container";
     }
 
     toString(): string {
@@ -357,10 +331,6 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
 
     getSize(): number {
         return this.data.size;
-    }
-
-    getType(): "result" {
-        return "result";
     }
 
     toString(): string {

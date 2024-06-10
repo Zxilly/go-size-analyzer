@@ -1,12 +1,10 @@
-// @vitest-environment jsdom
-
-import {expect, test} from "vitest";
 import {readFileSync} from "fs";
 import path from "node:path";
+import {expect, test} from "vitest";
+import {render} from '@testing-library/react'
 import {parseResult} from "./generated/schema.ts";
 import {createEntry} from "./tool/entry.ts";
 import TreeMap from "./TreeMap.tsx";
-import {render} from '@testing-library/react'
 
 test("Treemap", () => {
     const data = readFileSync(path.join(__dirname, 'testdata', 'testdata.json')).toString();

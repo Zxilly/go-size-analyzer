@@ -12,6 +12,6 @@
     "vite.config-explorer.ts",
     "vitest.config.ts",
     "vitest.setup.ts",
-    "common.ts",
+    "vite.common.ts"
   ]
 }
