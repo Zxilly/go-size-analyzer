@@ -20,19 +20,24 @@ export function getSha(): string | undefined {
     return envs.GITHUB_SHA;
 }
 
-export function getVersionTag(): HtmlTagDescriptor {
-    const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd();
-    const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd();
-    const commitHash = execSync('git rev-parse HEAD').toString().trimEnd();
-    const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd();
+export function getVersionTag(): HtmlTagDescriptor | null {
+    try {
+        const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd();
+        const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trimEnd();
+        const commitHash = execSync('git rev-parse HEAD').toString().trimEnd();
+        const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd();
 
-    return {
-        tag: "script",
-        children:
-            `console.info("Branch: ${branchName}");` +
-            `console.info("Commit: ${commitHash}");` +
-            `console.info("Date: ${commitDate}");` +
-            `console.info("Message: ${lastCommitMessage}");`,
+        return {
+            tag: "script",
+            children:
+                `console.info("Branch: ${branchName}");` +
+                `console.info("Commit: ${commitHash}");` +
+                `console.info("Date: ${commitDate}");` +
+                `console.info("Message: ${lastCommitMessage}");`,
+        }
+    } catch (e) {
+        console.warn("Failed to get git info", e)
+        return null;
     }
 }
 

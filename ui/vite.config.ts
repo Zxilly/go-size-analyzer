@@ -1,4 +1,4 @@
-import {defineConfig} from 'vite';
+import {HtmlTagDescriptor, defineConfig} from 'vite';
 import {viteSingleFile} from "vite-plugin-singlefile"
 import * as fs from "node:fs"
 import {build, codecov, commonPlugin, getVersionTag} from "./common";
@@ -23,26 +23,30 @@ const getPlaceHolder = (): string => {
     }
 }
 
+const tags: HtmlTagDescriptor[] = [
+    {
+        injectTo: "head",
+        tag: "script",
+        attrs: {
+            type: "application/json",
+            id: "data"
+        },
+        children: getPlaceHolder()
+    },
+
+]
+const versionTag = getVersionTag();
+if (versionTag) {
+    tags.push(versionTag);
+}
+
 export default defineConfig({
     plugins: [
         ...commonPlugin(),
         createHtmlPlugin({
             minify: true,
             entry: './src/main.tsx',
-            inject: {
-                tags: [
-                    {
-                        injectTo: "head",
-                        tag: "script",
-                        attrs: {
-                            type: "application/json",
-                            id: "data"
-                        },
-                        children: getPlaceHolder()
-                    },
-                    getVersionTag(),
-                ]
-            }
+            inject: {tags}
         }),
         viteSingleFile(
             {

@@ -2,7 +2,12 @@ import {defineConfig} from 'vite';
 import {build, codecov, commonPlugin, getVersionTag} from "./common";
 import {createHtmlPlugin} from "vite-plugin-html";
 
-const tags = [getVersionTag()];
+const tags = [];
+const versionTag = getVersionTag();
+if (versionTag) {
+    tags.push(versionTag);
+}
+
 if (process.env.GSA_TELEMETRY) {
     tags.push({
         tag: "script",
