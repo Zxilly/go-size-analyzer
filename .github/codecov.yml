@@ -1,6 +1,7 @@
 codecov:
   allow_pseudo_compare: true
   allow_coverage_offsets: true
+
 coverage:
   status:
     patch:
@@ -11,11 +12,6 @@ coverage:
       default:
         threshold: 5%
         target: 70%
-
-ignore:
-  - "internal/wrapper/*.go"
-  - "internal/knowninfo/dwarf_info.go"
-  - "cmd/gsa/*.go"
 
 comment:
   layout: "condensed_header, condensed_files, diff, flags, condensed_footer"
