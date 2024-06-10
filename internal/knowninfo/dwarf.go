@@ -210,7 +210,13 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 		}
 
 		abstractOrigin := entry.Val(dwarf.AttrAbstractOrigin)
-		return abstractOrigin != nil
+		if abstractOrigin != nil {
+			return true
+		}
+
+		specification := entry.Val(dwarf.AttrSpecification)
+
+		return specification != nil
 	}
 
 	var cuEntry *dwarf.Entry
