@@ -252,10 +252,6 @@ export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
         return this.size;
     }
 
-    getType(): "unknown" {
-        return "unknown";
-    }
-
     toString(): string {
         const align = new aligner();
         align.add("Size:", formatBytes(this.size));
