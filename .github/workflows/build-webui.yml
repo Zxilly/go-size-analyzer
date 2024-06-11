@@ -22,13 +22,14 @@ on:
       CODECOV_TOKEN:
         required: true
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   build_webui:
     name: Build Treemap WebUI
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:

@@ -5,8 +5,7 @@ on:
     tags:
       - "*"
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   build-ui:
@@ -17,6 +16,8 @@ jobs:
 
   goreleaser:
     name: Release
+    permissions:
+      contents: write
     needs: build-ui
     runs-on: ubuntu-latest
     steps:

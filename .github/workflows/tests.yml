@@ -6,10 +6,8 @@ on:
       - master
   pull_request:
 
-permissions:
-  contents: write
-  checks: write
-  pull-requests: read
+permissions: read-all
+
 
 jobs:
   build-ui:
@@ -21,6 +19,9 @@ jobs:
   tests_ui:
     name: Tests on UI
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      checks: write
     steps:
       - name: Checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
@@ -83,6 +84,9 @@ jobs:
   tests:
     name: Tests
     needs: build-ui
+    permissions:
+      contents: write
+      checks: write
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]

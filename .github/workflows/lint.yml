@@ -10,13 +10,12 @@ on:
 
 permissions:
   contents: read
-  security-events: write
-  actions: read
-  packages: read
-  checks: write
 
 jobs:
   eslint:
+    permissions:
+      security-events: write
+      checks: write
     name: ESLint
     runs-on: ubuntu-latest
     steps:
@@ -70,6 +69,9 @@ jobs:
   golangci-lint:
     name: GolangCI Lint
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      checks: write
     steps:
       - name: Checkout Actions Repository
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
@@ -77,15 +79,9 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
-          version: v1.59
+          version: v1.59.1
           args: '--out-format=colored-line-number,sarif:golangci-lint-results.sarif'
         continue-on-error: true
-
-      # fixme: remove this after https://github.com/golangci/golangci-lint/pull/4758 merged
-      - name: Workaround to fix the issue with golangci-lint sarif output
-        run: |
-          jq '(.runs[] | select(.results == null) | .results) = []' golangci-lint-results.sarif > tmp.sarif
-          mv tmp.sarif golangci-lint-results.sarif
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@2e230e8fe0ad3a14a340ad0815ddb96d599d2aff # v3.25.8

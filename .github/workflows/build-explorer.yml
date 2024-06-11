@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build_explorer:
@@ -104,6 +102,9 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-pages-deploy
       cancel-in-progress: true
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages
