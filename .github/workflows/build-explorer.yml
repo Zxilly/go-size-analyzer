@@ -15,17 +15,17 @@ jobs:
   build_explorer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: '21'
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         with:
           standalone: true
           package_json_file: 'ui/package.json'
@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -45,14 +45,14 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
           go-version-file: "go.mod"
           cache: true
           check-latest: true
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
           python-version: '3.12.3'
           check-latest: true
@@ -66,7 +66,7 @@ jobs:
 
       - name: Setup Binaryen
         # fixme: use acifani/setup-tinygo after pr acceptance
-        uses: Zxilly/setup-tinygo@main
+        uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
         with:
           install-tinygo: false
           binaryen-version: '117'
@@ -91,7 +91,7 @@ jobs:
           GSA_TELEMETRY: true
 
       - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: 'ui/dist/explorer/'
 
@@ -107,11 +107,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
 
 
 
