@@ -22,7 +22,8 @@ on:
       CODECOV_TOKEN:
         required: true
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   build_webui:
