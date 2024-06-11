@@ -12,6 +12,8 @@ permissions: read-all
 jobs:
   build-ui:
     name: Build Web UI
+    permissions:
+      contents: write
     uses: ./.github/workflows/build-webui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

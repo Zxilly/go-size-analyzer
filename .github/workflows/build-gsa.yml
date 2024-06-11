@@ -10,6 +10,8 @@ permissions: read-all
 jobs:
   build-ui:
     name: Build Treemap WebUI
+    permissions:
+      contents: write
     uses: ./.github/workflows/build-webui.yml
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
