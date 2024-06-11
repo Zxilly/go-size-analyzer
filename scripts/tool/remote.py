@@ -57,10 +57,10 @@ class IntegrationTest:
         return dir_path
 
     def output_filepath(self, typ: TestType):
-        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.txt")
+        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.output.txt")
 
     def performance_figure_filepath(self, typ: TestType):
-        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.png")
+        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.graph.svg")
 
     def generated_filepath(self, typ: TestType):
         ext = get_flag_str(typ)
@@ -75,13 +75,13 @@ class IntegrationTest:
         draw = not self.name.startswith("bin-")
 
         def run(pargs: list[str], typ: TestType):
-            [o, b] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)
+            [output_data, graph_data] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)
             with open(self.output_filepath(typ), "w") as f:
-                f.write(o)
+                f.write(output_data)
 
-            if draw:
+            if draw and len(graph_data) > 0:
                 with open(self.performance_figure_filepath(typ), "wb") as f:
-                    f.write(b)
+                    f.write(graph_data)
 
             log_typ(typ)
 

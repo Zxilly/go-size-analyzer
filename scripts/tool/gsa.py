@@ -39,6 +39,7 @@ def build_gsa():
 
     shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
 
+
 @contextlib.contextmanager
 def build_pgo_gsa():
     log("Building gsa...")

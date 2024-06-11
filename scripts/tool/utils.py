@@ -162,7 +162,7 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
                 memory_usage_mb.append(mem)
                 timestamps.append(elapsed_time)
 
-            time.sleep(0.1)
+            time.sleep(0.05)
     except TimeoutError as e:
         print(f"TimeoutError occurred: {e}")
         process.kill()
@@ -171,7 +171,7 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
 
     buf = BytesIO()
 
-    if draw:
+    if draw and timestamps[-1] >= 2:
         fig, ax1 = plt.subplots(figsize=(14, 5))
 
         color = 'tab:blue'
@@ -192,7 +192,7 @@ def run_process(pargs: list[str], name: str, timeout=240, profiler_dir: str = No
 
         plt.title('CPU and Memory Usage')
 
-        plt.savefig(buf, format='png')
+        plt.savefig(buf, format='svg')
         buf.seek(0)
 
         plt.clf()

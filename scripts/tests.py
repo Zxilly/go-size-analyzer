@@ -80,11 +80,11 @@ def run_unit_tests():
     log("Unit tests passed.")
 
 
-failed = 0
+global_failed = 0
 
 
 def run_integration_tests(typ: str, gsa_path: str):
-    i_failed = 0
+    scope_failed_count = 0
 
     log(f"Running integration tests {typ}...")
 
@@ -128,16 +128,16 @@ def run_integration_tests(typ: str, gsa_path: str):
             else:
                 print(e)
 
-            i_failed += 1
+            scope_failed_count += 1
 
         completed_tests += 1
 
-    if i_failed == 0:
+    if scope_failed_count == 0:
         log("Integration tests passed.")
     else:
-        log(f"{i_failed} integration tests failed.")
-        global failed
-        failed += i_failed
+        log(f"{scope_failed_count} integration tests failed.")
+        global global_failed
+        global_failed += scope_failed_count
 
 
 def run_web_test(entry: str):
@@ -225,8 +225,8 @@ if __name__ == "__main__":
 
     merge_covdata()
 
-    if failed == 0:
+    if global_failed == 0:
         log("All tests passed.")
     else:
-        log(f"{failed} tests failed.")
+        log(f"{global_failed} tests failed.")
         exit(1)
