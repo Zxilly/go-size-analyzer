@@ -24,3 +24,14 @@ flags:
     carryforward: true
   integration:
     carryforward: true
+
+component_management:
+  individual_components:
+    - component_id: "analyzer"
+      name: "Analyzer"
+      paths:
+        - "/**.go"
+    - component_id: "ui"
+      name: "Web UI"
+      paths:
+        - "ui/**"
