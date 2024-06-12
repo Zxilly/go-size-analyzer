@@ -39,7 +39,7 @@ jobs:
 
       - name: Add python dependencies
         run: |
-          pip install -r scripts/requirements.txt
+          pip install -r scripts/requirements.txt --require-hashes
 
       - name: Download deps
         run: go mod download
