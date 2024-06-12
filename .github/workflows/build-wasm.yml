@@ -1,0 +1,54 @@
+name: Build WASM
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build_wasm:
+    name: Build Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version-file: "go.mod"
+          cache: true
+          check-latest: true
+
+      - name: Setup Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        with:
+          python-version: '3.12.3'
+          check-latest: true
+          cache: 'pip'
+          cache-dependency-path: 'scripts/requirements.txt'
+
+      - name: Setup Binaryen
+        # fixme: use acifani/setup-tinygo after pr acceptance
+        uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
+        with:
+          install-tinygo: false
+          binaryen-version: '117'
+
+      - name: Add python dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: Download deps
+        run: go mod download
+
+      - name: Build wasm
+        run: |
+          python scripts/wasm.py
+
+      - name: Upload wasm artifact
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          path: 'ui/gsa.wasm'
