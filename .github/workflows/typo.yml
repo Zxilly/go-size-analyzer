@@ -18,3 +18,5 @@ jobs:
 
       - name: typos-action
         uses: crate-ci/typos@acbff432fb0e7c8cbb9f032311d8f13927dbaaf3 # v1.22.4
+        with:
+          config: .github/typos.yml
