@@ -1,0 +1,6 @@
+[files]
+extend-exclude = [
+    "*.snap",
+    "*.sum",
+    "*.mod"
+]
