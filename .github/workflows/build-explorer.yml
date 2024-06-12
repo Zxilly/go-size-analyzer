@@ -10,6 +10,10 @@ permissions:
   contents: read
 
 jobs:
+  build-wasm:
+    name: Build WASM
+    uses: ./.github/workflows/build-wasm.yml
+
   build_explorer:
     runs-on: ubuntu-latest
     steps:
@@ -42,43 +46,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Setup Go
-        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
-        with:
-          go-version-file: "go.mod"
-          cache: true
-          check-latest: true
-
-      - name: Setup Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
-        with:
-          python-version: '3.12.3'
-          check-latest: true
-          cache: 'pip'
-          cache-dependency-path: 'scripts/requirements.txt'
-
       - name: Install node dependencies
         working-directory: ./ui
         run: |
           pnpm install
 
-      - name: Setup Binaryen
-        # fixme: use acifani/setup-tinygo after pr acceptance
-        uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
+      - name: Download WASM
+        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
         with:
-          install-tinygo: false
-          binaryen-version: '117'
-
-      - name: Add python dependencies
-        run: |
-          pip install -r scripts/requirements.txt
-
-      - name: Download deps
-        run: go mod download
-
-      - name: Build wasm
-        run: |
-          python scripts/wasm.py
+          name: wasm
+          path: ui/
 
       - name: Build
         working-directory: ./ui
