@@ -75,6 +75,7 @@ export const FileSelector = ({handler}: {
                         type="file"
                         multiple={false}
                         onChange={handleChange}
+                        data-testid="file-selector"
                         hidden
                     />
                 </Button>

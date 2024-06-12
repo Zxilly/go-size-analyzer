@@ -1,10 +1,4 @@
-import {
-    File,
-    FileSymbol,
-    Package,
-    Result,
-    Section
-} from "../generated/schema.ts";
+import {File, FileSymbol, Package, Result, Section} from "../generated/schema.ts";
 import {orderedID} from "./id.ts";
 import {formatBytes, title} from "./utils.ts";
 import {aligner} from "./aligner.ts";
@@ -97,7 +91,9 @@ export class FileImpl extends BaseImpl implements EntryLike<"file"> {
         align.add("File:", this.data.file_path)
             .add("Path:", this.data.file_path)
             .add("Size:", formatBytes(this.data.size))
-            .add("Pcln Size:", formatBytes(this.data.pcln_size));
+        if (this.data.pcln_size > 0) {
+            align.add("Pcln Size:", formatBytes(this.data.pcln_size))
+        }
         return align.toString();
     }
 }

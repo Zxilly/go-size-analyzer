@@ -65,13 +65,16 @@ export const Explorer: React.FC = () => {
                 isOpen: true, title: "Loading", content:
                     <DialogContentText>Loading WebAssembly module...</DialogContentText>
             })
-        } else if (inst === undefined) {
+        } else if (!inst) {
             setModalState({
                 isOpen: true,
                 title: "Error",
-                content: <DialogContentText>Failed to load WebAssembly module</DialogContentText>
+                content:
+                    <DialogContentText>
+                        Failed to load WebAssembly module
+                    </DialogContentText>
             })
-        } else if (file === null) {
+        } else if (!file) {
             setModalState({
                 isOpen: true,
                 title: "Select a go binary",
