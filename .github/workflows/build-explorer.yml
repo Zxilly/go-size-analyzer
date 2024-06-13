@@ -1,20 +1,22 @@
 name: Build Explorer UI
 
 on:
-  workflow_run:
-    workflows:
-      - "Build WASM"
-    types:
-      - completed
+  push:
+    branches:
+      - master
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
+  build-wasm:
+    name: Build WASM
+    uses: ./.github/workflows/build-wasm.yml
+
   build_explorer:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
+    needs: build-wasm
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
@@ -55,7 +57,6 @@ jobs:
         with:
           name: wasm
           path: ui/
-          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Build
         working-directory: ./ui
