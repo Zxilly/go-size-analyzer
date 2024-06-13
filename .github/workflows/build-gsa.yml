@@ -82,4 +82,4 @@ jobs:
       - name: Attest build provenance
         uses: actions/attest-build-provenance@3119152b59607c0d91a135e8d80c0d339f241a12 # v1.3.0
         with:
-          subject-path: 'dist/go-size-analyzer*'
+          subject-path: 'dist/go-size-analyzer*.*'
