@@ -1,7 +1,10 @@
 name: Build WASM
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - master
+  pull_request:
 
 permissions:
   contents: read
