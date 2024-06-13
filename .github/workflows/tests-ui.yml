@@ -1,25 +1,23 @@
 name: Tests UI
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+  workflow_run:
+    workflows:
+      - "Build WASM"
+    types:
+      - completed
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
-  build-wasm:
-    name: Build WASM
-    uses: ./.github/workflows/build-wasm.yml
-
   tests_ui:
     name: Tests on UI
     runs-on: ubuntu-latest
-    needs: build-wasm
     permissions:
       contents: write
       checks: write
+      actions: read
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -60,6 +58,7 @@ jobs:
         with:
           name: wasm
           path: ui/
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Run tests
         working-directory: ./ui
