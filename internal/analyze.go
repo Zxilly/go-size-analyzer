@@ -59,6 +59,10 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		dwarfOk = k.TryLoadDwarf()
 	}
 
+	if !dwarfOk && !options.SkipDwarf {
+		slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
+	}
+
 	// DWARF can still add new package
 	k.Deps.FinishLoad()
 

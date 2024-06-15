@@ -12,7 +12,11 @@ import (
 
 type PeWrapper struct {
 	file      *pe.File
-	ImageBase uint64
+	imageBase uint64
+}
+
+func (p *PeWrapper) ImageBase() uint64 {
+	return p.imageBase
 }
 
 func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
@@ -67,7 +71,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 		sect := p.file.Sections[s.SectionNumber-1]
 		ch := sect.Characteristics
 
-		a := uint64(s.Value) + p.ImageBase + uint64(sect.VirtualAddress)
+		a := uint64(s.Value) + p.imageBase + uint64(sect.VirtualAddress)
 
 		var typ entity.AddrType
 		switch {
@@ -125,8 +129,8 @@ func (p *PeWrapper) LoadSections() map[string]*entity.Section {
 			FileSize:     uint64(section.Size),
 			Offset:       uint64(section.Offset),
 			End:          uint64(section.Offset + section.Size),
-			Addr:         p.ImageBase + uint64(section.VirtualAddress),
-			AddrEnd:      p.ImageBase + uint64(section.VirtualAddress+section.VirtualSize),
+			Addr:         p.imageBase + uint64(section.VirtualAddress),
+			AddrEnd:      p.imageBase + uint64(section.VirtualAddress+section.VirtualSize),
 			OnlyInMemory: false, // pe file didn't have an only-in-memory section
 			Debug:        d,
 		}
@@ -145,7 +149,7 @@ func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 			return data, nil
 		}
 	}
-	return nil, fmt.Errorf("address not found")
+	return nil, ErrAddrNotFound
 }
 
 func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
@@ -153,7 +157,7 @@ func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
 	if sect == nil {
 		return 0, nil, fmt.Errorf("text section not found")
 	}
-	textStart = p.ImageBase + uint64(sect.VirtualAddress)
+	textStart = p.imageBase + uint64(sect.VirtualAddress)
 	text, err = sect.Data()
 	return textStart, text, err
 }

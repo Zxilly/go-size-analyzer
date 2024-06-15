@@ -10,6 +10,7 @@ go.work
 dist/
 
 vendor/
+venv/
 
 .idea/
 .vscode/

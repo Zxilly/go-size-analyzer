@@ -1,4 +1,4 @@
-package knowninfo
+package dwarf
 
 import "strconv"
 

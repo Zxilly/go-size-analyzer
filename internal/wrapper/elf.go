@@ -15,6 +15,10 @@ type ElfWrapper struct {
 	file *elf.File
 }
 
+func (e *ElfWrapper) ImageBase() uint64 {
+	return 0
+}
+
 func (e *ElfWrapper) DWARF() (*dwarf.Data, error) {
 	return e.file.DWARF()
 }
@@ -133,7 +137,7 @@ func (e *ElfWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 			return data, nil
 		}
 	}
-	return nil, fmt.Errorf("address not found")
+	return nil, ErrAddrNotFound
 }
 
 func (e *ElfWrapper) Text() (textStart uint64, text []byte, err error) {

@@ -41,7 +41,7 @@ def run_unit_tests():
             timeout=600
         )
         embed_result.check_returncode()
-        with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w") as f:
+        with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w", encoding="utf-8") as f:
             f.write(embed_result.stdout)
 
         generate_junit(embed_result.stdout, os.path.join(get_project_root(), "unit_embed.xml"))
@@ -68,7 +68,7 @@ def run_unit_tests():
             timeout=600
         )
         normal_result.check_returncode()
-        with open(os.path.join(unit_output_dir, "unit.txt"), "w") as f:
+        with open(os.path.join(unit_output_dir, "unit.txt"), "w", encoding="utf-8") as f:
             f.write(normal_result.stdout)
 
         generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
@@ -123,7 +123,7 @@ def run_integration_tests(typ: str, gsa_path: str):
             log(f"{head} failed")
 
             if os.getenv("CI") is not None:
-                with open(os.getenv("GITHUB_STEP_SUMMARY"), "a") as f:
+                with open(os.getenv("GITHUB_STEP_SUMMARY"), "a", encoding="utf-8") as f:
                     f.write(f"```log\n{str(e)}\n```\n")
             else:
                 print(e)

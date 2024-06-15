@@ -11,7 +11,7 @@ def require_go_junit_report() -> str:
 
 def generate_junit(stdout: str, target: str):
     gjr = require_go_junit_report()
-    with open(target, "w") as f:
+    with open(target, "w", encoding="utf-8") as f:
         subprocess.run(
             [gjr],
             input=stdout,

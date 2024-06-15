@@ -1,6 +1,7 @@
 package wrapper
 
 import (
+	"errors"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
@@ -57,3 +58,5 @@ func init() {
 		ignoreSymbols.Add(sym)
 	}
 }
+
+var ErrAddrNotFound = errors.New("address not found")

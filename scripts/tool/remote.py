@@ -76,7 +76,7 @@ class IntegrationTest:
 
         def run(pargs: list[str], typ: TestType):
             [output_data, graph_data] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)
-            with open(self.output_filepath(typ), "w") as f:
+            with open(self.output_filepath(typ), "w", encoding="utf-8") as f:
                 f.write(output_data)
 
             if draw and len(graph_data) > 0:
@@ -177,7 +177,7 @@ class RemoteBinary:
             if not os.path.exists(target.path):
                 ok = False
                 break
-        if ok:
+        if ok and os.getenv("FORCE_REFRESH") is None:
             log(f"{self} already exists.")
             return
 
@@ -241,11 +241,14 @@ class RemoteBinary:
 def load_remote_binaries(typ: str) -> list[IntegrationTest]:
     log("Fetching remote binaries...")
 
-    with open(get_binaries_path(), "r") as f:
+    with open(get_binaries_path(), "r", encoding="utf-8") as f:
         reader = csv.reader(f)
         ret = [RemoteBinary.from_csv(line) for line in reader]
 
     def filter_binary(t: RemoteBinary):
+        if typ == "":
+            return True
+
         is_example = t.name.startswith("bin-")
         if typ == "example":
             return is_example

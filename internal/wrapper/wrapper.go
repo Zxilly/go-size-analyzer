@@ -21,6 +21,7 @@ type RawFileWrapper interface {
 	LoadSections() map[string]*entity.Section
 	PclntabSections() []string
 	DWARF() (*dwarf.Data, error)
+	ImageBase() uint64
 }
 
 func NewWrapper(file any) RawFileWrapper {

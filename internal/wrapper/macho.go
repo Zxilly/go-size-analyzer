@@ -14,6 +14,10 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
+func (m *MachoWrapper) ImageBase() uint64 {
+	return 0
+}
+
 func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	return m.file.DWARF()
 }
@@ -138,7 +142,7 @@ func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 			return data, nil
 		}
 	}
-	return nil, fmt.Errorf("address not found")
+	return nil, ErrAddrNotFound
 }
 
 func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {

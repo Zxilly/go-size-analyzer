@@ -186,7 +186,7 @@ if __name__ == '__main__':
 
     pool.shutdown(wait=True)
 
-    with open(get_binaries_path(), "w", newline="") as f:
+    with open(get_binaries_path(), "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         for remote in remotes:
             writer.writerow(remote.to_csv())
