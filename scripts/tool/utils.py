@@ -113,7 +113,7 @@ def find_unused_port(start_port=20000, end_port=60000):
 
 
 def load_skip() -> list[str]:
-    with open(os.path.join(get_project_root(), "scripts", "skip.txt"), "r", encoding="utf-8") as f:
+    with open(os.path.join(get_project_root(), "scripts", "skip.csv"), "r", encoding="utf-8") as f:
         return [line.strip() for line in f.readlines()]
 
 
