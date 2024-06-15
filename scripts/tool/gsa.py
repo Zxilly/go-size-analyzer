@@ -35,9 +35,10 @@ def build_gsa():
 
     log("Built gsa.")
 
-    yield temp_binary
-
     shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
+
+
+    yield temp_binary
 
 
 @contextlib.contextmanager

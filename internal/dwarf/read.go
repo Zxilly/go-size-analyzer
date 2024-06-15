@@ -36,13 +36,9 @@ func readIntTo64(data []byte) int64 {
 type MemoryReader func(addr, size uint64) ([]byte, error)
 
 func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
-	if len(structTyp.Field) != 2 {
-		return 0, 0, fmt.Errorf("string struct has %d fields", len(structTyp.Field))
-	}
-
-	// check field
-	if structTyp.Field[0].Name != "str" && structTyp.Field[1].Name != "len" {
-		return 0, 0, fmt.Errorf("string struct has wrong field name")
+	err = checkField(structTyp, "str", "len")
+	if err != nil {
+		return 0, 0, err
 	}
 
 	ptrSize := structTyp.Field[0].Type.Size()
@@ -68,13 +64,9 @@ func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint
 }
 
 func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
-	if len(typ.Field) != 3 {
-		return 0, 0, fmt.Errorf("byte slice struct has %d fields", len(typ.Field))
-	}
-
-	// check field
-	if typ.Field[0].Name != "array" && typ.Field[1].Name != "len" && typ.Field[2].Name != "cap" {
-		return 0, 0, fmt.Errorf("byte slice struct has wrong field name")
+	err = checkField(typ, "array", "len", "cap")
+	if err != nil {
+		return 0, 0, err
 	}
 
 	ptrSize := typ.Field[0].Type.Size()
@@ -108,13 +100,9 @@ func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (addr uint64, siz
 }
 
 func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, error) {
-	if len(typ.Field) != 1 {
-		return nil, fmt.Errorf("embed fs struct has %d fields", len(typ.Field))
-	}
-
-	// check field
-	if typ.Field[0].Name != "files" {
-		return nil, fmt.Errorf("embed fs struct has wrong field name")
+	err := checkField(typ, "files")
+	if err != nil {
+		return nil, err
 	}
 
 	// read ptr
