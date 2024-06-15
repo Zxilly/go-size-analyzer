@@ -131,9 +131,27 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 	return ret
 }
 
+func machoSectionShouldIgnore(sect *macho.Section) bool {
+	if sect.Name == "__bss" || sect.Offset == 0 {
+		return true
+	}
+
+	const SZeroFill = 0x1
+
+	if sect.Flags&SZeroFill != 0 {
+		return true
+	}
+
+	return false
+}
+
 func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	mf := m.file
 	for _, sect := range mf.Sections {
+		if machoSectionShouldIgnore(sect) {
+			continue
+		}
+
 		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
 			data := make([]byte, size)
 			if _, err := sect.ReadAt(data, int64(addr-sect.Addr)); err != nil {
