@@ -23,7 +23,9 @@ def get_new_temp_binary() -> str:
     os.makedirs(parent_dir, exist_ok=True)
     temp_dir = tempfile.mkdtemp(prefix="gsa_", dir=parent_dir)
 
-    return os.path.join(temp_dir, f"gsa{suffix}")
+    bin_hash = os.urandom(4).hex()
+
+    return os.path.join(temp_dir, f"gsa-{bin_hash}{suffix}")
 
 
 def get_project_root() -> str:
