@@ -164,12 +164,12 @@ func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pe
 
 	pkg := k.GetPackageFromDwarfCompileUnit(cuEntry)
 
-	raedFileName := dwarfG.EntryFileReader(cuEntry, d)
+	readFileName := dwarfG.EntryFileReader(cuEntry, d)
 
 	for _, subEntry := range pendingEntry {
 		switch subEntry.Tag {
 		case dwarf.TagSubprogram:
-			k.AddDwarfSubProgram(cuLang == dwarfG.DwLangGo, d, subEntry, pkg, raedFileName)
+			k.AddDwarfSubProgram(cuLang == dwarfG.DwLangGo, d, subEntry, pkg, readFileName)
 		case dwarf.TagVariable:
 			k.AddDwarfVariable(subEntry, d, pkg, ptrSize)
 		}
