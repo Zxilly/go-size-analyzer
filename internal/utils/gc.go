@@ -3,8 +3,11 @@
 package utils
 
 import (
+	"fmt"
+	"log/slog"
 	"runtime/debug"
 
+	"github.com/dustin/go-humanize"
 	"github.com/pbnjay/memory"
 )
 
@@ -17,5 +20,8 @@ func ApplyMemoryLimit() {
 
 	// at least we need 1GB
 	limit := max(use, oneGB)
+
+	slog.Debug(fmt.Sprintf("memory limit: %s", humanize.Bytes(limit)))
+
 	debug.SetMemoryLimit(int64(limit))
 }

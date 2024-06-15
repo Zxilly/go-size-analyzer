@@ -136,14 +136,14 @@ func machoSectionShouldIgnore(sect *macho.Section) bool {
 		return true
 	}
 
-	const SZeroFill = 0x1
-	const SGBZeroFill = 0xc
+	const sZeroFill = 0x1
+	const sGBZeroFill = 0xc
 
-	if sect.Flags&SZeroFill != 0 {
+	if sect.Flags&sZeroFill != 0 {
 		return true
 	}
 
-	if sect.Flags&SGBZeroFill != 0 {
+	if sect.Flags&sGBZeroFill != 0 {
 		return true
 	}
 

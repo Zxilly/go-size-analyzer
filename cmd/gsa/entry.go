@@ -21,13 +21,13 @@ import (
 )
 
 func entry() error {
-	utils.ApplyMemoryLimit()
-
 	if Options.Verbose {
 		utils.InitLogger(slog.LevelDebug)
 	} else {
 		utils.InitLogger(slog.LevelWarn)
 	}
+
+	utils.ApplyMemoryLimit()
 
 	reader, err := mmap.Open(Options.Binary)
 	if err != nil {
