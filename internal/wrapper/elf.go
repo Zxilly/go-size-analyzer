@@ -15,7 +15,7 @@ type ElfWrapper struct {
 	file *elf.File
 }
 
-func (e *ElfWrapper) ImageBase() uint64 {
+func (*ElfWrapper) ImageBase() uint64 {
 	return 0
 }
 

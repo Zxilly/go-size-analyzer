@@ -69,6 +69,23 @@ func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ Addr
 	return cur
 }
 
+func (f *KnownAddr) InsertSymbolFromDWARF(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
+	cur := &Addr{
+		AddrPos: &AddrPos{
+			Addr: entry,
+			Size: size,
+			Type: typ,
+		},
+		Pkg:        p,
+		Function:   nil, // TODO: try to find the function?
+		SourceType: AddrSourceDwarf,
+
+		Meta: meta,
+	}
+	f.Symbol.Insert(cur)
+	return cur
+}
+
 func (f *KnownAddr) BuildSymbolCoverage() {
 	f.SymbolCoverage = f.Symbol.ToDirtyCoverage()
 }

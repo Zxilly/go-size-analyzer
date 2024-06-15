@@ -3,36 +3,37 @@ package knowninfo
 import (
 	"debug/dwarf"
 	"fmt"
-	"github.com/ZxillyFork/gosym"
-	"github.com/go-delve/delve/pkg/dwarf/op"
 	"log/slog"
 	"math"
 
-	dwarfG "github.com/Zxilly/go-size-analyzer/internal/dwarf"
+	"github.com/ZxillyFork/gore"
+	"github.com/ZxillyFork/gosym"
+	"github.com/go-delve/delve/pkg/dwarf/op"
+
+	dwarfutil "github.com/Zxilly/go-size-analyzer/internal/dwarf"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
-	"github.com/ZxillyFork/gore"
 )
 
 func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
 	instsAny := entry.Val(dwarf.AttrLocation)
 	if instsAny == nil {
-		slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfG.EntryPrettyPrinter(entry)))
+		slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrinter(entry)))
 		return
 	}
 	insts, ok := instsAny.([]byte)
 	if !ok {
-		slog.Warn(fmt.Sprintf("location attribute is not []byte for %s", dwarfG.EntryPrettyPrinter(entry)))
+		slog.Warn(fmt.Sprintf("location attribute is not []byte for %s", dwarfutil.EntryPrettyPrinter(entry)))
 		return
 	}
 
 	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{StaticBase: k.Wrapper.ImageBase()}, insts, ptrSize, nil)
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to execute location attribute for %s: %v", dwarfG.EntryPrettyPrinter(entry), err))
+		slog.Warn(fmt.Sprintf("Failed to execute location attribute for %s: %v", dwarfutil.EntryPrettyPrinter(entry), err))
 		return
 	}
 
-	contents, typSize, err := dwarfG.SizeForDWARFVar(d, entry, func(addrCb, size uint64) ([]byte, error) {
+	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, func(addrCb, size uint64) ([]byte, error) {
 		if addrCb == math.MaxUint64 {
 			addrCb = uint64(addr)
 		}
@@ -40,13 +41,13 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return k.Wrapper.ReadAddr(addrCb, size)
 	})
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfG.EntryPrettyPrinter(entry), err))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrinter(entry), err))
 		return
 	}
 
 	entryName := utils.Deduplicate(entry.Val(dwarf.AttrName).(string))
 
-	ap := k.KnownAddr.InsertSymbol(uint64(addr), typSize, pkg, entity.AddrTypeData, entity.SymbolMeta{
+	ap := k.KnownAddr.InsertSymbolFromDWARF(uint64(addr), typSize, pkg, entity.AddrTypeData, entity.SymbolMeta{
 		SymbolName:  entryName,
 		PackageName: utils.Deduplicate(pkg.Name),
 	})
@@ -55,8 +56,18 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 	if len(contents) > 0 {
 		for _, content := range contents {
+			if content.Size == 0 {
+				slog.Debug(fmt.Sprintf("zero size for %s", entryName))
+				continue
+			}
+
+			if content.Addr == 0 {
+				slog.Debug(fmt.Sprintf("zero addr for %s", entryName))
+				continue
+			}
+
 			valueName := utils.Deduplicate(fmt.Sprintf("%s.%s", entryName, content.Name))
-			ap = k.KnownAddr.InsertSymbol(content.Addr, content.Size, pkg, entity.AddrTypeData, entity.SymbolMeta{
+			ap = k.KnownAddr.InsertSymbolFromDWARF(content.Addr, content.Size, pkg, entity.AddrTypeData, entity.SymbolMeta{
 				SymbolName:  valueName,
 				PackageName: utils.Deduplicate(pkg.Name),
 			})
@@ -130,7 +141,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 
 	var pkg *entity.Package
 
-	if cuLang == dwarfG.DwLangGo {
+	if cuLang == dwarfutil.DwLangGo {
 		// if we have load it with pclntab?
 		pkg = k.Deps.Trie.Get(cuName)
 		if pkg == nil {
@@ -146,7 +157,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 		}
 		pkg.Type = typ
 	} else {
-		pkgName := fmt.Sprintf("CGO %s", dwarfG.LanguageString(cuLang))
+		pkgName := fmt.Sprintf("CGO %s", dwarfutil.LanguageString(cuLang))
 		pkg = k.Deps.Trie.Get(pkgName)
 		if pkg == nil {
 			pkg = entity.NewPackage()
@@ -164,12 +175,12 @@ func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pe
 
 	pkg := k.GetPackageFromDwarfCompileUnit(cuEntry)
 
-	readFileName := dwarfG.EntryFileReader(cuEntry, d)
+	readFileName := dwarfutil.EntryFileReader(cuEntry, d)
 
 	for _, subEntry := range pendingEntry {
 		switch subEntry.Tag {
 		case dwarf.TagSubprogram:
-			k.AddDwarfSubProgram(cuLang == dwarfG.DwLangGo, d, subEntry, pkg, readFileName)
+			k.AddDwarfSubProgram(cuLang == dwarfutil.DwLangGo, d, subEntry, pkg, readFileName)
 		case dwarf.TagVariable:
 			k.AddDwarfVariable(subEntry, d, pkg, ptrSize)
 		}
@@ -223,11 +234,11 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 		case dwarf.TagCompileUnit:
 			cuEntry = entry
 		case dwarf.TagSubprogram:
-			if !dwarfG.EntryShouldIgnore(entry) {
+			if !dwarfutil.EntryShouldIgnore(entry) {
 				pendingEntry = append(pendingEntry, entry)
 			}
 		case dwarf.TagVariable:
-			if !dwarfG.EntryShouldIgnore(entry) && depth == 2 {
+			if !dwarfutil.EntryShouldIgnore(entry) && depth == 2 {
 				pendingEntry = append(pendingEntry, entry)
 			}
 		}

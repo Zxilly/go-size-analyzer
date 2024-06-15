@@ -14,7 +14,7 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
-func (m *MachoWrapper) ImageBase() uint64 {
+func (*MachoWrapper) ImageBase() uint64 {
 	return 0
 }
 

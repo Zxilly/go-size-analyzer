@@ -18,7 +18,7 @@ type TestFileWrapper struct {
 	textErr   error
 }
 
-func (t TestFileWrapper) ImageBase() uint64 {
+func (TestFileWrapper) ImageBase() uint64 {
 	return 0
 }
 

@@ -2,6 +2,7 @@ package wrapper
 
 import (
 	"errors"
+
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 

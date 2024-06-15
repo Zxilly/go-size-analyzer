@@ -5,34 +5,37 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"math"
+
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
-	"math"
 )
 
 func readUintTo64(data []byte) uint64 {
-	if len(data) == 4 {
+	switch len(data) {
+	case 4:
 		return uint64(binary.LittleEndian.Uint32(data))
-	} else if len(data) == 8 {
+	case 8:
 		return binary.LittleEndian.Uint64(data)
-	} else {
+	default:
 		panic(fmt.Sprintf("unexpected size: %d", len(data)))
 	}
 }
 
 func readIntTo64(data []byte) int64 {
-	if len(data) == 4 {
+	switch len(data) {
+	case 4:
 		return int64(binary.LittleEndian.Uint32(data))
-	} else if len(data) == 8 {
+	case 8:
 		return int64(binary.LittleEndian.Uint64(data))
-	} else {
+	default:
 		panic(fmt.Sprintf("unexpected size: %d", len(data)))
 	}
 }
 
 type MemoryReader func(addr, size uint64) ([]byte, error)
 
-func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (uint64, uint64, error) {
+func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
 	if len(structTyp.Field) != 2 {
 		return 0, 0, fmt.Errorf("string struct has %d fields", len(structTyp.Field))
 	}
@@ -64,7 +67,7 @@ func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (uint64, u
 	return ptr, uint64(strLen), nil
 }
 
-func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (uint64, uint64, error) {
+func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
 	if len(typ.Field) != 3 {
 		return 0, 0, fmt.Errorf("byte slice struct has %d fields", len(typ.Field))
 	}
