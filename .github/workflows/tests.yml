@@ -50,7 +50,7 @@ jobs:
           check-latest: true
 
       - name: Setup Go global dependencies
-        run: go install github.com/jstemmer/go-junit-report/v2@latest
+        run: go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
 
       - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
