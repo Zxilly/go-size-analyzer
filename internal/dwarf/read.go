@@ -36,7 +36,7 @@ func readIntTo64(data []byte) int64 {
 type MemoryReader func(addr, size uint64) ([]byte, error)
 
 func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
-	err = checkField(structTyp, "str", "len")
+	err = checkField(structTyp, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"})
 	if err != nil {
 		return 0, 0, err
 	}
@@ -63,8 +63,8 @@ func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint
 	return ptr, uint64(strLen), nil
 }
 
-func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
-	err = checkField(typ, "array", "len", "cap")
+func readSlice(typ *dwarf.StructType, readMemory MemoryReader, memberTyp string) (addr uint64, size uint64, err error) {
+	err = checkField(typ, fieldPattern{"array", memberTyp}, fieldPattern{"len", "int"}, fieldPattern{"cap", "int"})
 	if err != nil {
 		return 0, 0, err
 	}
@@ -100,7 +100,7 @@ func readSlice(typ *dwarf.StructType, readMemory MemoryReader) (addr uint64, siz
 }
 
 func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, error) {
-	err := checkField(typ, "files")
+	err := checkField(typ, fieldPattern{"files", "*struct []embed.file"})
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 			addr = ptr
 		}
 		return readMemory(addr, size)
-	})
+	}, "*embed.file")
 
 	if err != nil {
 		return nil, err

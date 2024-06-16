@@ -45,7 +45,7 @@ func SizeForDWARFVar(
 			}}, uint64(typ.Size()), nil
 		} else if structTyp.StructName == "[]uint8" {
 			// check byte slice, normally it comes from embed
-			dataAddr, size, err := readSlice(structTyp, readMemory)
+			dataAddr, size, err := readSlice(structTyp, readMemory, "*uint8")
 			if err != nil || size == 0 {
 				return nil, uint64(typ.Size()), err
 			}
