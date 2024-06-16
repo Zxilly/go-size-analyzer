@@ -76,7 +76,7 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 			typ = entity.AddrTypeText
 		}
 
-		if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
+		if machoSectionShouldIgnore(sect) {
 			continue // bss section, skip
 		}
 
@@ -98,7 +98,7 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 
 		d := strings.HasPrefix(section.Name, "__debug_") || strings.HasPrefix(section.Name, "__zdebug_")
 
-		if section.Offset == 0 {
+		if machoSectionShouldIgnore(section) {
 			// seems like .bss section
 			ret[section.Name] = &entity.Section{
 				Name:         section.Name,
@@ -132,7 +132,11 @@ func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
 }
 
 func machoSectionShouldIgnore(sect *macho.Section) bool {
-	if sect.Name == "__bss" || sect.Offset == 0 {
+	if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
+		return true
+	}
+
+	if sect.Offset == 0 {
 		return true
 	}
 
