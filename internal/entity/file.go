@@ -4,7 +4,7 @@ type File struct {
 	FilePath  string      `json:"file_path"`
 	Functions []*Function `json:"functions"`
 
-	Pkg *Package `json:"-"`
+	PkgName string `json:"-"`
 }
 
 func (f *File) FullSize() uint64 {

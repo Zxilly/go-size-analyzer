@@ -49,13 +49,13 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 	for _, mod := range mods {
 		old := m.Trie.Get(mod.Path)
 		if old != nil {
-			old.DebugMod = mod
+			old.SetDebugMod(mod)
 			continue
 		}
 		p := entity.NewPackage()
 		p.Name = utils.Deduplicate(mod.Path)
 		p.Type = typ
-		p.DebugMod = mod
+		p.SetDebugMod(mod)
 		m.Trie.Put(mod.Path, p)
 	}
 }
@@ -102,7 +102,7 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 			PackageName: utils.Deduplicate(p.Name),
 			Type:        utils.Deduplicate(f.Type),
 			Receiver:    utils.Deduplicate(f.Receiver),
-			Filepath:    utils.Deduplicate(f.File.FilePath),
+			Filepath:    utils.Deduplicate(f.GetFilepath()),
 		})
 	}
 

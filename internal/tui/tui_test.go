@@ -2,8 +2,7 @@ package tui
 
 import (
 	"bytes"
-	"path/filepath"
-	"runtime"
+	"github.com/Zxilly/go-size-analyzer/internal/test"
 	"testing"
 	"time"
 
@@ -11,44 +10,14 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/exp/teatest"
 	"github.com/muesli/termenv"
-	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
-
-	"github.com/Zxilly/go-size-analyzer/internal"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 func init() {
 	lipgloss.SetColorProfile(termenv.Ascii)
 }
 
-func GetProjectRoot() string {
-	_, filename, _, _ := runtime.Caller(0)
-	return filepath.Join(filepath.Dir(filename), "..", "..")
-}
-
-func GetTestResult(t *testing.T) *result.Result {
-	t.Helper()
-
-	// test against bin-linux-1.21-amd64
-	path := filepath.Join(GetProjectRoot(), "scripts", "bins", "bin-linux-1.21-amd64")
-	path, err := filepath.Abs(path)
-	if err != nil {
-		t.Fatalf("failed to get absolute path of %s: %v", path, err)
-	}
-
-	f, err := mmap.Open(path)
-	require.NoError(t, err)
-
-	r, err := internal.Analyze(path, f, uint64(f.Len()), internal.Options{})
-	if err != nil {
-		t.Fatalf("failed to analyze %s: %v", path, err)
-	}
-	return r
-}
-
 func TestFullOutput(t *testing.T) {
-	m := newMainModel(GetTestResult(t), 300, 100)
+	m := newMainModel(test.GetTestResult(t), 300, 100)
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(300, 100))
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {

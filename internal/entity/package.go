@@ -48,10 +48,10 @@ type Package struct {
 	symbolAddrSpace AddrSpace
 	coverage        *utils.ValueOnce[AddrCoverage]
 
-	// should have at least one of them, for cgo pesudo package all nil
-	GorePkg    *gore.Package `json:"-"`
-	DebugMod   *debug.Module `json:"-"`
-	DwarfEntry *dwarf.Entry  `json:"-"`
+	// should have at least one of them, for cgo pseudo package all nil
+	gorePkg    *gore.Package
+	debugMod   *debug.Module
+	dwarfEntry *dwarf.Entry
 }
 
 func NewPackage() *Package {
@@ -71,7 +71,7 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	p.Name = utils.Deduplicate(name)
 	p.Type = typ
 	p.loaded = true
-	p.GorePkg = gp
+	p.gorePkg = gp
 
 	getFunction := func(f *gore.Function) *Function {
 		return &Function{
@@ -100,6 +100,14 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	}
 
 	return p
+}
+
+func (p *Package) SetDebugMod(mod *debug.Module) {
+	p.debugMod = mod
+}
+
+func (p *Package) SetDwarfEntry(entry *dwarf.Entry) {
+	p.dwarfEntry = entry
 }
 
 func (p *Package) fileEnsureUnique() {
@@ -136,7 +144,7 @@ func (p *Package) fileEnsureUnique() {
 func (p *Package) addFunction(path string, fn *Function) {
 	file := p.getOrInitFile(path)
 
-	fn.File = file
+	fn.SetFile(file)
 
 	file.Functions = append(file.Functions, fn)
 }
@@ -157,7 +165,7 @@ func (p *Package) getOrInitFile(s string) *File {
 
 	f := &File{
 		FilePath:  utils.Deduplicate(s),
-		Pkg:       p,
+		PkgName:   p.Name,
 		Functions: make([]*Function, 0),
 	}
 

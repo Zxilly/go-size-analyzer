@@ -127,7 +127,7 @@ func (w *wrapper) Description() string {
 			writeln("File: %s", w.file.FilePath)
 			writeln("Size: %s (%d Bytes)",
 				humanize.Bytes(w.file.FullSize()), w.file.FullSize())
-			writeln("Package: %s", w.file.Pkg.Name)
+			writeln("Package: %s", w.file.PkgName)
 			if len(w.file.Functions) > 0 {
 				writeln("")
 				writeln("Functions:")

@@ -16,10 +16,18 @@ type Function struct {
 
 	PclnSize PclnSymbolSize `json:"pcln_size"`
 
-	File *File `json:"-"`
+	file *File
 
 	disasm AddrSpace
 	pkg    *Package
+}
+
+func (f *Function) SetFile(file *File) {
+	f.file = file
+}
+
+func (f *Function) GetFilepath() string {
+	return f.file.FilePath
 }
 
 func (f *Function) Size() uint64 {

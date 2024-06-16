@@ -148,7 +148,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 			pkg = entity.NewPackage()
 			pkg.Name = cuName
 		}
-		pkg.DwarfEntry = cuEntry
+		pkg.SetDwarfEntry(cuEntry)
 		typ := entity.PackageTypeVendor
 		if cuName == "main" {
 			typ = entity.PackageTypeMain
