@@ -134,7 +134,7 @@ def generate_example() -> list[RemoteBinary]:
             for pie in ["-pie", ""]:
                 for cgo in ["-cgo", ""]:
                     for a in ["amd64", "arm64", "386"]:
-                        for s in ["-strip", ""]:
+                        for s in ["-strip", "-stripdwarf", ""]:
                             if pie == "-pie" and cgo == "":
                                 continue
 
@@ -175,11 +175,13 @@ if __name__ == '__main__':
 
     pool = ThreadPoolExecutor(max_workers=16)
 
+
     def check_remote(tr: RemoteBinary):
         print(f"Checking {tr.name}...", flush=True)
         resp = requests.head(tr.url)
         resp.raise_for_status()
         resp.close()
+
 
     for r in remotes:
         pool.submit(check_remote, r)
