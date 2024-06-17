@@ -15,6 +15,9 @@ from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
+    if not full and not wasm and not no_embed:
+        return
+
     log("Running unit tests...")
     load_remote_for_tui_test()
 
