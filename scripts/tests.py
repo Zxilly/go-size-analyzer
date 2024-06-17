@@ -102,6 +102,8 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                         or k.startswith("STATS_")
                         or k.startswith("RUNNER_")
                         or k.startswith("LIBRARY_")
+                        or k.startswith("ANDROID_")
+                        or k.startswith("DOTNET")
                         or k == "_OLD_VIRTUAL_PATH"
                 ):
                     del env[raw]
@@ -118,15 +120,6 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                                     or "node" in lower):
                                 new_parts.append(part)
                         env[raw] = ";".join(new_parts)
-
-            env_size = 0
-            for k, v in env.items():
-                env_size += len(k) + len(v) + 1
-            if env_size > 4000:  # windows use utf-16
-                log("Environment size is too large")
-                for k, v in env.items():
-                    print(f"{k}={v}")
-                exit(1)
 
             env["GOOS"] = "js"
             env["GOARCH"] = "wasm"
