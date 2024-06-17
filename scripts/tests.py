@@ -1,4 +1,5 @@
 import os.path
+import platform
 import subprocess
 import time
 from argparse import ArgumentParser
@@ -105,10 +106,23 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                 ):
                     del env[raw]
 
+                if platform.system() == "Windows":
+                    if k == "PATH":
+                        parts = env[raw].split(";")
+                        new_parts = []
+                        for i, part in enumerate(parts):
+                            lower = part.lower()
+                            if ("go" in lower
+                                    or "pip" in lower
+                                    or "python" in lower
+                                    or "node" in lower):
+                                new_parts.append(part)
+                        env[raw] = ";".join(new_parts)
+
             env_size = 0
             for k, v in env.items():
                 env_size += len(k) + len(v) + 1
-            if env_size > 4000: # windows use utf-16
+            if env_size > 4000:  # windows use utf-16
                 log("Environment size is too large")
                 for k, v in env.items():
                     print(f"{k}={v}")
