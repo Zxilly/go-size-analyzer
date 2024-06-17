@@ -118,7 +118,7 @@ def run_unit_tests():
         env_size = 0
         for k, v in env.items():
             env_size += len(k) + len(v) + 1
-        if env_size > 8192:
+        if env_size > 7000:
             log("Environment size is too large")
             for k, v in env.items():
                 print(f"{k}={v}")
