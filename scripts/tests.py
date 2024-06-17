@@ -102,8 +102,8 @@ def run_unit_tests():
             log("Downloaded wasm_exec.js.")
 
         env = os.environ.copy()
-        for k in list(env.keys()):
-            k = k.upper()
+        for raw in list(env.keys()):
+            k = raw.upper()
             if (k.startswith("GITHUB_")
                     or k.startswith("JAVA_")
                     or k.startswith("PSMODULEPATH")
@@ -113,7 +113,7 @@ def run_unit_tests():
                     or k.startswith("LIBRARY_")
                     or k == "_OLD_VIRTUAL_PATH"
             ):
-                del env[k]
+                del env[raw]
 
         env_size = 0
         for k, v in env.items():
