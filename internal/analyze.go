@@ -1,10 +1,12 @@
 package internal
 
 import (
+	"cmp"
 	"errors"
 	"io"
 	"log/slog"
-	"path"
+	"path/filepath"
+	"slices"
 
 	"github.com/ZxillyFork/gore"
 	"golang.org/x/exp/maps"
@@ -104,10 +106,15 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	// for packages
 	k.CalculatePackageSize()
 
+	sections := maps.Values(k.Sects.Sections)
+	slices.SortFunc(sections, func(a, b *entity.Section) int {
+		return cmp.Compare(a.Name, b.Name)
+	})
+
 	return &result.Result{
-		Name:     path.Base(name),
+		Name:     filepath.Base(name),
 		Size:     k.Size,
 		Packages: k.Deps.TopPkgs,
-		Sections: maps.Values(k.Sects.Sections),
+		Sections: sections,
 	}, nil
 }

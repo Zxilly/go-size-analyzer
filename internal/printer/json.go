@@ -1,3 +1,5 @@
+//go:build !js && !wasm
+
 package printer
 
 import (
@@ -21,7 +23,10 @@ type JSONOption struct {
 func JSON(r *result.Result, options *JSONOption) error {
 	slog.Info("JSON encoding...")
 
-	var jsonOptions []json.Options
+	jsonOptions := []json.Options{
+		json.DefaultOptionsV2(),
+		json.Deterministic(true),
+	}
 	if options.Indent != nil {
 		jsonOptions = append(jsonOptions, jsontext.WithIndent(strings.Repeat(" ", *options.Indent)))
 	}
