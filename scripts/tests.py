@@ -108,7 +108,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
             env_size = 0
             for k, v in env.items():
                 env_size += len(k) + len(v) + 1
-            if env_size > 7000:
+            if env_size > 4000: # windows use utf-16
                 log("Environment size is too large")
                 for k, v in env.items():
                     print(f"{k}={v}")

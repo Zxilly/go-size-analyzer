@@ -59,5 +59,4 @@ func TestResultMarshalJavaScript(t *testing.T) {
 			assert.JSONEq(t, string(sectStr), jsStr)
 		}
 	})
-
 }
