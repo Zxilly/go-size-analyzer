@@ -136,13 +136,12 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "-v",
                     "-covermode=set",
                     "-cover",
-                    "-coverpkg=./..."
-                    "./internal/result",
-                    "-args",
-                    f"-test.gocoverdir={unit_path}"
+                    "-tags=test_js_marshaler",
+                    "-coverpkg=../../...",
+                    f"-test.gocoverdir={unit_path}",
                 ],
                 text=True,
-                cwd=get_project_root(),
+                cwd=os.path.join(get_project_root(), "internal", "result"),
                 stderr=subprocess.STDOUT,
                 stdout=subprocess.PIPE,
                 timeout=600,
