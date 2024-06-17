@@ -115,6 +115,15 @@ def run_unit_tests():
             ):
                 del env[k]
 
+        env_size = 0
+        for k, v in env.items():
+            env_size += len(k) + len(v) + 1
+        if env_size > 8192:
+            log("Environment size is too large")
+            for k, v in env.items():
+                print(f"{k}={v}")
+            exit(1)
+
         wasmbrowsertest = shutil.which("wasmbrowsertest")
         if wasmbrowsertest is None:
             raise Exception("wasmbrowsertest is not installed. Please install wasmbrowsertest and try again.")
