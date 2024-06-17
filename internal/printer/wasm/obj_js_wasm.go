@@ -9,5 +9,7 @@ import (
 )
 
 func JavaScript(r *result.Result) js.Value {
-	return r.MarshalJavaScript()
+	ret := r.MarshalJavaScript()
+
+	return js.ValueOf(ret)
 }

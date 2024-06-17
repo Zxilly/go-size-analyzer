@@ -2,14 +2,10 @@
 
 package entity
 
-import (
-	"syscall/js"
-)
-
-func (f *File) MarshalJavaScript() js.Value {
-	return js.ValueOf(map[string]any{
+func (f *File) MarshalJavaScript() any {
+	return map[string]any{
 		"file_path": f.FilePath,
 		"size":      f.FullSize(),
 		"pcln_size": f.PclnSize(),
-	})
+	}
 }

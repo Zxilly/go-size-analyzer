@@ -2,12 +2,8 @@
 
 package entity
 
-import (
-	"syscall/js"
-)
-
-func (s Section) MarshalJavaScript() js.Value {
-	return js.ValueOf(map[string]any{
+func (s Section) MarshalJavaScript() any {
+	return map[string]any{
 		"name":           s.Name,
 		"size":           s.Size,
 		"file_size":      s.FileSize,
@@ -18,5 +14,5 @@ func (s Section) MarshalJavaScript() js.Value {
 		"addr_end":       s.AddrEnd,
 		"only_in_memory": s.OnlyInMemory,
 		"debug":          s.Debug,
-	})
+	}
 }

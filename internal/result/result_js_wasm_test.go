@@ -34,8 +34,7 @@ func TestResultMarshalJavaScript(t *testing.T) {
 
 	// use JSON.stringify to compare the result
 	JSON := js.Global().Get("JSON")
-	stringify := JSON.Get("stringify")
-	jsonValue := stringify.Invoke(jsValue).String()
+	jsonValue := JSON.Call("stringify", jsValue).String()
 
 	assert.JSONEq(t, testdataJSON, jsonValue)
 }
