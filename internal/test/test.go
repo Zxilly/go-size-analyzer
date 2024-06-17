@@ -23,13 +23,10 @@ func GetTestBinPath(t *testing.T) string {
 
 	p := filepath.Join(GetProjectRoot(), "scripts", "bins", "bin-linux-1.21-amd64")
 	p, err := filepath.Abs(p)
-	if err != nil {
-		t.Fatalf("failed to get absolute path of %s: %v", p, err)
-	}
+	require.NoError(t, err)
 
-	if _, err := os.Stat(p); os.IsNotExist(err) {
-		t.Fatalf("bin not exist: %s", p)
-	}
+	_, err = os.Stat(p)
+	require.NoError(t, err)
 
 	return p
 }
@@ -45,10 +42,9 @@ func GetTestResult(t *testing.T) *result.Result {
 	r, err := internal.Analyze(path, f, uint64(f.Len()), internal.Options{
 		SkipDwarf:  true,
 		SkipDisasm: true,
-		SkipSymbol: true,
+		SkipSymbol: false,
 	})
-	if err != nil {
-		t.Fatalf("failed to analyze %s: %v", path, err)
-	}
+	require.NoError(t, err)
+
 	return r
 }

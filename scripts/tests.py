@@ -131,6 +131,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "-v",
                     "-covermode=atomic",
                     "-cover",
+                    "-tags=test_js_marshaler"
                     "./internal/result",
                     f"-test.gocoverdir={unit_path}"
                 ],

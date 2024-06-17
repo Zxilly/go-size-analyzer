@@ -90,8 +90,15 @@
           "pcln_size": 109
         }
       ],
-      "size": 5926,
-      "symbols": []
+      "size": 5998,
+      "symbols": [
+        {
+          "name": "internal/abi.(*Type).Uncommon.jump5",
+          "addr": 4881888,
+          "size": 72,
+          "type": "data"
+        }
+      ]
     },
     "internal/bytealg": {
       "name": "internal/bytealg",
@@ -257,8 +264,15 @@
           "pcln_size": 436
         }
       ],
-      "size": 6412,
-      "symbols": []
+      "size": 6628,
+      "symbols": [
+        {
+          "name": "main.goFiles.files",
+          "addr": 4883712,
+          "size": 216,
+          "type": "data"
+        }
+      ]
     },
     "math": {
       "name": "math",
@@ -390,8 +404,39 @@
               "pcln_size": 4578
             }
           ],
-          "size": 6460,
-          "symbols": []
+          "size": 7100,
+          "symbols": [
+            {
+              "name": "runtime/internal/atomic..dict.Pointer[runtime.g]",
+              "addr": 4882880,
+              "size": 128,
+              "type": "data"
+            },
+            {
+              "name": "runtime/internal/atomic..dict.Pointer[string]",
+              "addr": 4883008,
+              "size": 128,
+              "type": "data"
+            },
+            {
+              "name": "runtime/internal/atomic..dict.Pointer[func(string) func()]",
+              "addr": 4883136,
+              "size": 128,
+              "type": "data"
+            },
+            {
+              "name": "runtime/internal/atomic..dict.Pointer[func()]",
+              "addr": 4883264,
+              "size": 128,
+              "type": "data"
+            },
+            {
+              "name": "runtime/internal/atomic..dict.Pointer[runtime.spanSetBlock]",
+              "addr": 4883392,
+              "size": 128,
+              "type": "data"
+            }
+          ]
         },
         "/internal/sys": {
           "name": "runtime/internal/sys",
@@ -1019,8 +1064,111 @@
           "pcln_size": 2834
         }
       ],
-      "size": 563730,
-      "symbols": []
+      "size": 569373,
+      "symbols": [
+        {
+          "name": "runtime.printanycustomtype.jump3",
+          "addr": 4883520,
+          "size": 192,
+          "type": "data"
+        },
+        {
+          "name": "runtime.deltimer.jump7",
+          "addr": 4881984,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.modtimer.jump12",
+          "addr": 4882080,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.moveTimers.jump12",
+          "addr": 4882176,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.adjusttimers.jump15",
+          "addr": 4882272,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.runtimer.jump11",
+          "addr": 4882368,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.clearDeletedTimers.jump12",
+          "addr": 4882464,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.typesEqual.jump27",
+          "addr": 4882560,
+          "size": 80,
+          "type": "data"
+        },
+        {
+          "name": "runtime.typelink",
+          "addr": 4887936,
+          "size": 1256,
+          "type": "data"
+        },
+        {
+          "name": "runtime.findfunctab",
+          "addr": 4884992,
+          "size": 2633,
+          "type": "data"
+        },
+        {
+          "name": "runtime..dict.noEscapePtr[runtime.pcvalueCache]",
+          "addr": 4881600,
+          "size": 40,
+          "type": "data"
+        },
+        {
+          "name": "runtime.mainPC",
+          "addr": 4880832,
+          "size": 8,
+          "type": "data"
+        },
+        {
+          "name": "runtime.defaultGOROOT.str",
+          "addr": 4881536,
+          "size": 36,
+          "type": "data"
+        },
+        {
+          "name": "runtime.buildVersion.str",
+          "addr": 4880856,
+          "size": 10,
+          "type": "data"
+        },
+        {
+          "name": "runtime.modinfo.str",
+          "addr": 4883936,
+          "size": 233,
+          "type": "data"
+        },
+        {
+          "name": "runtime.godebugDefault.str",
+          "addr": 4880872,
+          "size": 11,
+          "type": "data"
+        },
+        {
+          "name": "runtime.textsectionmap",
+          "addr": 4881328,
+          "size": 24,
+          "type": "data"
+        }
+      ]
     },
     "strconv": {
       "name": "strconv",
@@ -1260,8 +1408,15 @@
           "pcln_size": 218
         }
       ],
-      "size": 85729,
-      "symbols": []
+      "size": 85737,
+      "symbols": [
+        {
+          "name": "time..dict.isDigit[string]",
+          "addr": 4880840,
+          "size": 8,
+          "type": "data"
+        }
+      ]
     },
     "unicode": {
       "name": "unicode",
@@ -1478,7 +1633,7 @@
       "name": ".rodata",
       "size": 148553,
       "file_size": 148553,
-      "known_size": 0,
+      "known_size": 4683,
       "offset": 544768,
       "end": 693321,
       "addr": 4739072,
@@ -1538,7 +1693,7 @@
       "name": ".typelink",
       "size": 1256,
       "file_size": 1256,
-      "known_size": 0,
+      "known_size": 1256,
       "offset": 693632,
       "end": 694888,
       "addr": 4887936,
