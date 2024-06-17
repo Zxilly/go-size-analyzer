@@ -126,7 +126,6 @@ def run_unit_tests():
                 "go",
                 "test",
                 "-v",
-                "-gcflags=all=-N -l",
                 "-covermode=count",
                 "-exec", "wasmbrowsertest",
                 "-cover",
