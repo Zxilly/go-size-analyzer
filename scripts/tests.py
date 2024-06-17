@@ -1,5 +1,4 @@
 import os.path
-import shutil
 import subprocess
 import time
 from argparse import ArgumentParser
@@ -14,7 +13,7 @@ from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip
     find_unused_port, assert_html_valid, init_dirs
 
 
-def run_unit_tests():
+def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
     log("Running unit tests...")
     load_remote_for_tui_test()
 
@@ -23,142 +22,128 @@ def run_unit_tests():
     unit_output_dir = os.path.join(get_project_root(), "results", "unit")
     ensure_dir(unit_output_dir)
 
-    try:
-        log("Running full unit tests...")
-        embed_result = subprocess.run(
-            [
-                "go",
-                "test",
-                "-v",
-                "-covermode=atomic",
-                "-cover",
-                "-tags=embed",
-                "./...",
-                f"-test.gocoverdir={unit_path}"
-            ],
-            text=True,
-            cwd=get_project_root(),
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE,
-            timeout=600
-        )
-        embed_result.check_returncode()
+    if full:
+        try:
+            log("Running full unit tests...")
+            embed_result = subprocess.run(
+                [
+                    "go",
+                    "test",
+                    "-v",
+                    "-covermode=atomic",
+                    "-cover",
+                    "-tags=embed",
+                    "./...",
+                    f"-test.gocoverdir={unit_path}"
+                ],
+                text=True,
+                cwd=get_project_root(),
+                stderr=subprocess.STDOUT,
+                stdout=subprocess.PIPE,
+                timeout=600
+            )
+            embed_result.check_returncode()
 
-        with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w", encoding="utf-8") as f:
-            f.write(embed_result.stdout)
+            with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w", encoding="utf-8") as f:
+                f.write(embed_result.stdout)
 
-        generate_junit(embed_result.stdout, os.path.join(get_project_root(), "unit_embed.xml"))
-    except subprocess.CalledProcessError as e:
-        log("Error running embed unit tests:")
-        log(f"stdout: {e.stdout}")
-        exit(1)
+            generate_junit(embed_result.stdout, os.path.join(get_project_root(), "unit_embed.xml"))
 
-    try:
-        log("Running normal unit tests for webui...")
-        normal_result = subprocess.run(
-            [
-                "go",
-                "test",
-                "-v",
-                "-covermode=atomic",
-                "-cover",
-                "./internal/webui",
-                f"-test.gocoverdir={unit_path}"
-            ],
-            text=True,
-            cwd=get_project_root(),
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE,
-            timeout=600
-        )
-        normal_result.check_returncode()
-
-        with open(os.path.join(unit_output_dir, "unit.txt"), "w", encoding="utf-8") as f:
-            f.write(normal_result.stdout)
-
-        generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
-    except subprocess.CalledProcessError as e:
-        log("Error running normal unit tests:")
-        log(f"stdout: {e.stdout}")
-        exit(1)
-
-    try:
-        log("Running WebAssembly unit tests...")
-
-        # download wasm_exec.js to workaround go toolchain
-        log("Ensuring wasm_exec.js...")
-        goroot = subprocess.run(["go", "env", "GOROOT"], text=True, stdout=subprocess.PIPE).stdout.strip()
-        wasm_exec_path = os.path.join(goroot, "misc", "wasm", "wasm_exec.js")
-
-        # mkdir
-        ensure_dir(os.path.dirname(wasm_exec_path))
-
-        if os.path.exists(wasm_exec_path):
-            log("wasm_exec.js already exists.")
-        else:
-            content = requests.get("https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js").text
-            with open(wasm_exec_path, "w", encoding="utf-8") as f:
-                f.write(content)
-            log("Downloaded wasm_exec.js.")
-
-        env = os.environ.copy()
-        for raw in list(env.keys()):
-            k = raw.upper()
-            if (k.startswith("GITHUB_")
-                    or k.startswith("JAVA_")
-                    or k.startswith("PSMODULEPATH")
-                    or k.startswith("PYTHONPATH")
-                    or k.startswith("STATS_")
-                    or k.startswith("RUNNER_")
-                    or k.startswith("LIBRARY_")
-                    or k == "_OLD_VIRTUAL_PATH"
-            ):
-                del env[raw]
-
-        env_size = 0
-        for k, v in env.items():
-            env_size += len(k) + len(v) + 1
-        if env_size > 7000:
-            log("Environment size is too large")
-            for k, v in env.items():
-                print(f"{k}={v}")
+            log("Full unit tests passed.")
+        except subprocess.CalledProcessError as e:
+            log("Error running embed unit tests:")
+            log(f"stdout: {e.stdout}")
             exit(1)
 
-        wasmbrowsertest = shutil.which("wasmbrowsertest")
-        if wasmbrowsertest is None:
-            raise Exception("wasmbrowsertest is not installed. Please install wasmbrowsertest and try again.")
+    if no_embed:
+        try:
+            log("Running normal unit tests for webui...")
+            normal_result = subprocess.run(
+                [
+                    "go",
+                    "test",
+                    "-v",
+                    "-covermode=atomic",
+                    "-cover",
+                    "./internal/webui",
+                    f"-test.gocoverdir={unit_path}"
+                ],
+                text=True,
+                cwd=get_project_root(),
+                stderr=subprocess.STDOUT,
+                stdout=subprocess.PIPE,
+                timeout=600
+            )
+            normal_result.check_returncode()
 
-        env["GOOS"] = "js"
-        env["GOARCH"] = "wasm"
+            with open(os.path.join(unit_output_dir, "unit.txt"), "w", encoding="utf-8") as f:
+                f.write(normal_result.stdout)
 
-        wasm_result = subprocess.run(
-            [
-                "go",
-                "test",
-                "-v",
-                "-covermode=atomic",
-                "-exec", "wasmbrowsertest",
-                "-cover",
-                "./internal/result",
-                f"-test.gocoverdir={unit_path}"
-            ],
-            text=True,
-            cwd=get_project_root(),
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE,
-            timeout=600,
-            env=env
-        )
-        wasm_result.check_returncode()
+            generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
 
-        with open(os.path.join(unit_output_dir, "unit_wasm.txt"), "w", encoding="utf-8") as f:
-            f.write(wasm_result.stdout)
+            log("Normal network unit tests passed.")
+        except subprocess.CalledProcessError as e:
+            log("Error running normal unit tests:")
+            log(f"stdout: {e.stdout}")
+            exit(1)
 
-        generate_junit(wasm_result.stdout, os.path.join(get_project_root(), "unit_wasm.xml"))
-    except subprocess.CalledProcessError as e:
-        log("Error running wasm unit tests:")
-        log(f"stdout: {e.stdout}")
-        exit(1)
+    if wasm:
+        try:
+            log("Running WebAssembly unit tests...")
+
+            env = os.environ.copy()
+            for raw in list(env.keys()):
+                k = raw.upper()
+                if (k.startswith("GITHUB_")
+                        or k.startswith("JAVA_")
+                        or k.startswith("PSMODULEPATH")
+                        or k.startswith("PYTHONPATH")
+                        or k.startswith("STATS_")
+                        or k.startswith("RUNNER_")
+                        or k.startswith("LIBRARY_")
+                        or k == "_OLD_VIRTUAL_PATH"
+                ):
+                    del env[raw]
+
+            env_size = 0
+            for k, v in env.items():
+                env_size += len(k) + len(v) + 1
+            if env_size > 7000:
+                log("Environment size is too large")
+                for k, v in env.items():
+                    print(f"{k}={v}")
+                exit(1)
+
+            env["GOOS"] = "js"
+            env["GOARCH"] = "wasm"
+
+            wasm_result = subprocess.run(
+                [
+                    "go",
+                    "test",
+                    "-v",
+                    "-covermode=atomic",
+                    "-cover",
+                    "./internal/result",
+                    f"-test.gocoverdir={unit_path}"
+                ],
+                text=True,
+                cwd=get_project_root(),
+                stderr=subprocess.STDOUT,
+                stdout=subprocess.PIPE,
+                timeout=600,
+                env=env
+            )
+            wasm_result.check_returncode()
+
+            with open(os.path.join(unit_output_dir, "unit_wasm.txt"), "w", encoding="utf-8") as f:
+                f.write(wasm_result.stdout)
+
+            generate_junit(wasm_result.stdout, os.path.join(get_project_root(), "unit_wasm.xml"))
+        except subprocess.CalledProcessError as e:
+            log("Error running wasm unit tests:")
+            log(f"stdout: {e.stdout}")
+            exit(1)
 
     log("Unit tests passed.")
 
@@ -272,7 +257,11 @@ def run_web_test(entry: str):
 def get_parser() -> ArgumentParser:
     ap = ArgumentParser()
 
+    ap.add_argument("--unit-full", action="store_true", help="Run full unit tests.")
+    ap.add_argument("--unit-wasm", action="store_true", help="Run unit tests for wasm.")
+    ap.add_argument("--unit-embed", action="store_true", help="Run unit tests for embed")
     ap.add_argument("--unit", action="store_true", help="Run unit tests.")
+
     ap.add_argument("--integration-example", action="store_true", help="Run integration tests for small binaries.")
     ap.add_argument("--integration-real", action="store_true", help="Run integration tests for large binaries.")
     ap.add_argument("--integration", action="store_true", help="Run all integration tests.")
@@ -290,16 +279,24 @@ if __name__ == "__main__":
         args.integration_example = True
         args.integration_real = True
 
-    if not args.unit and not args.integration_example and not args.integration_real:
+    if args.unit:
+        args.unit_full = True
+        args.unit_wasm = True
+        args.unit_embed = True
+
+    if (not args.unit and not args.unit_full and not args.unit_wasm and not args.unit_embed
+            and not args.integration_example and not args.integration_real):
         if os.getenv("CI") is None:
-            args.unit = True
+            args.unit_full = True
+            args.unit_wasm = True
+            args.unit_embed = True
             args.integration_example = True
             args.integration_real = True
         else:
             raise Exception("Please specify a test type to run.")
 
-    if args.unit:
-        run_unit_tests()
+    run_unit_tests(args.unit_full, args.unit_wasm, args.unit_embed)
+
     with build_gsa() as gsa:
         if args.integration_example:
             run_integration_tests("example", gsa)
