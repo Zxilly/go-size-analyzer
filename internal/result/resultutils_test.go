@@ -2,6 +2,7 @@ package result_test
 
 import (
 	"encoding/gob"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 

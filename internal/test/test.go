@@ -1,14 +1,16 @@
 package test
 
 import (
-	"github.com/Zxilly/go-size-analyzer/internal"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
-	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
 	"os"
 	"path/filepath"
 	"runtime"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/mmap"
+
+	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 func GetProjectRoot() string {

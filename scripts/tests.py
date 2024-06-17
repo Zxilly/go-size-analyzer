@@ -23,6 +23,7 @@ def run_unit_tests():
     ensure_dir(unit_output_dir)
 
     try:
+        log("Running full unit tests...")
         embed_result = subprocess.run(
             [
                 "go",
@@ -41,6 +42,7 @@ def run_unit_tests():
             timeout=600
         )
         embed_result.check_returncode()
+
         with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w", encoding="utf-8") as f:
             f.write(embed_result.stdout)
 
@@ -51,6 +53,7 @@ def run_unit_tests():
         exit(1)
 
     try:
+        log("Running normal unit tests for webui...")
         normal_result = subprocess.run(
             [
                 "go",
@@ -68,12 +71,47 @@ def run_unit_tests():
             timeout=600
         )
         normal_result.check_returncode()
+
         with open(os.path.join(unit_output_dir, "unit.txt"), "w", encoding="utf-8") as f:
             f.write(normal_result.stdout)
 
         generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
     except subprocess.CalledProcessError as e:
         log("Error running normal unit tests:")
+        log(f"stdout: {e.stdout}")
+        exit(1)
+
+    try:
+        log("Running WebAssembly unit tests...")
+        env = os.environ.copy()
+        env["GOOS"] = "js"
+        env["GOARCH"] = "wasm"
+
+        wasm_result = subprocess.run(
+            [
+                "go",
+                "test",
+                "-v",
+                "-covermode=atomic",
+                "-cover",
+                "./internal/result",
+                f"-test.gocoverdir={unit_path}"
+            ],
+            text=True,
+            cwd=get_project_root(),
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            timeout=600,
+            env=env
+        )
+        wasm_result.check_returncode()
+
+        with open(os.path.join(unit_output_dir, "unit_wasm.txt"), "w", encoding="utf-8") as f:
+            f.write(wasm_result.stdout)
+
+        generate_junit(wasm_result.stdout, os.path.join(get_project_root(), "unit_wasm.xml"))
+    except subprocess.CalledProcessError as e:
+        log("Error running wasm unit tests:")
         log(f"stdout: {e.stdout}")
         exit(1)
 

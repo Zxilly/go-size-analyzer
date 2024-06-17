@@ -2,7 +2,6 @@ package tui
 
 import (
 	"bytes"
-	"github.com/Zxilly/go-size-analyzer/internal/test"
 	"testing"
 	"time"
 
@@ -10,6 +9,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/exp/teatest"
 	"github.com/muesli/termenv"
+
+	"github.com/Zxilly/go-size-analyzer/internal/test"
 )
 
 func init() {

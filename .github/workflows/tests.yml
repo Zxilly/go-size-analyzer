@@ -50,7 +50,9 @@ jobs:
           check-latest: true
 
       - name: Setup Go global dependencies
-        run: go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
+        run: |
+          go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
+          go install github.com/Zxilly/go_js_wasm_exec@17f8c465d89b47d00637caf8ca7b38d20de31f5b
 
       - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
@@ -101,7 +103,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }} unit tests
           flags: ${{ matrix.os }}-unit
-          files: unit.xml,unit_embed.xml
+          files: unit.xml,unit_embed.xml,unit_wasm.xml
           verbose: true
 
       - name: Upload results
