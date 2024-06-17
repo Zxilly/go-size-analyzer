@@ -34,10 +34,11 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "go",
                     "test",
                     "-v",
-                    "-covermode=atomic",
+                    "-covermode=set",
                     "-cover",
                     "-tags=embed",
                     "./...",
+                    "-args",
                     f"-test.gocoverdir={unit_path}"
                 ],
                 text=True,
@@ -67,9 +68,10 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "go",
                     "test",
                     "-v",
-                    "-covermode=atomic",
+                    "-covermode=set",
                     "-cover",
                     "./internal/webui",
+                    "-args",
                     f"-test.gocoverdir={unit_path}"
                 ],
                 text=True,
@@ -132,10 +134,11 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "go",
                     "test",
                     "-v",
-                    "-covermode=atomic",
+                    "-covermode=set",
                     "-cover",
-                    "-tags=test_js_marshaler"
+                    "-coverpkg=./..."
                     "./internal/result",
+                    "-args",
                     f"-test.gocoverdir={unit_path}"
                 ],
                 text=True,
@@ -308,11 +311,12 @@ if __name__ == "__main__":
 
     run_unit_tests(args.unit_full, args.unit_wasm, args.unit_embed)
 
-    with build_gsa() as gsa:
-        if args.integration_example:
-            run_integration_tests("example", gsa)
-        if args.integration_real:
-            run_integration_tests("real", gsa)
+    if args.integration_example or args.integration_real:
+        with build_gsa() as gsa:
+            if args.integration_example:
+                run_integration_tests("example", gsa)
+            if args.integration_real:
+                run_integration_tests("real", gsa)
 
     merge_covdata()
 

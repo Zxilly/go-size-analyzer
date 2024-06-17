@@ -20,7 +20,7 @@ def build_gsa():
             "build",
             "-buildmode=exe",  # since windows use pie by default
             "-cover",
-            "-covermode=atomic",
+            "-covermode=set",
             "-tags",
             "embed,profiler",
             "-o",
@@ -37,8 +37,9 @@ def build_gsa():
 
     shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
 
-
     yield temp_binary
+
+    shutil.rmtree(os.path.dirname(temp_binary))
 
 
 @contextlib.contextmanager

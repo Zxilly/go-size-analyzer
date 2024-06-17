@@ -26,6 +26,4 @@ data.json
 
 *.sarif
 
-unit.xml
-unit_embed.xml
-unit_wasm.xml
+unit*.xml
