@@ -20,13 +20,14 @@ func (p *Package) MarshalJavaScript() any {
 	var symbols, files []any
 	symbols = lo.Map(p.Symbols, func(s *Symbol, _ int) any { return s.MarshalJavaScript() })
 	files = lo.Map(p.Files, func(f *File, _ int) any { return f.MarshalJavaScript() })
+	subs := p.SubPackages.MarshalJavaScript()
 
 	return map[string]any{
 		"name":        p.Name,
 		"type":        p.Type,
 		"size":        p.Size,
 		"symbols":     symbols,
-		"subPackages": p.SubPackages.MarshalJavaScript(),
+		"subPackages": subs,
 		"files":       files,
 	}
 }

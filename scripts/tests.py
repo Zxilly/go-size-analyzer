@@ -1,9 +1,10 @@
 import os.path
+import shutil
+import subprocess
+import time
 from argparse import ArgumentParser
 
 import requests
-import subprocess
-import time
 
 from tool.gsa import build_gsa
 from tool.junit import generate_junit
@@ -29,7 +30,7 @@ def run_unit_tests():
                 "go",
                 "test",
                 "-v",
-                "-covermode=atomic",
+                "-covermode=count",
                 "-cover",
                 "-tags=embed",
                 "./...",
@@ -59,7 +60,7 @@ def run_unit_tests():
                 "go",
                 "test",
                 "-v",
-                "-covermode=atomic",
+                "-covermode=count",
                 "-cover",
                 "./internal/webui",
                 f"-test.gocoverdir={unit_path}"
@@ -83,7 +84,40 @@ def run_unit_tests():
 
     try:
         log("Running WebAssembly unit tests...")
+
+        # download wasm_exec.js to workaround go toolchain
+        log("Ensuring wasm_exec.js...")
+        goroot = subprocess.run(["go", "env", "GOROOT"], text=True, stdout=subprocess.PIPE).stdout.strip()
+        wasm_exec_path = os.path.join(goroot, "misc", "wasm", "wasm_exec.js")
+
+        # mkdir
+        ensure_dir(os.path.dirname(wasm_exec_path))
+
+        if os.path.exists(wasm_exec_path):
+            log("wasm_exec.js already exists.")
+        else:
+            content = requests.get("https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js").text
+            with open(wasm_exec_path, "w", encoding="utf-8") as f:
+                f.write(content)
+            log("Downloaded wasm_exec.js.")
+
         env = os.environ.copy()
+        for k in list(env.keys()):
+            if (k.startswith("GITHUB_")
+                    or k.startswith("JAVA_")
+                    or k.startswith("PSMODULEPATH")
+                    or k.startswith("PYTHONPATH")
+                    or k.startswith("STATS_")
+                    or k.startswith("RUNNER_")
+                    or k.startswith("LIBRARY_")
+                    or k == "_OLD_VIRTUAL_PATH"
+            ):
+                del env[k]
+
+        wasmbrowsertest = shutil.which("wasmbrowsertest")
+        if wasmbrowsertest is None:
+            raise Exception("wasmbrowsertest is not installed. Please install wasmbrowsertest and try again.")
+
         env["GOOS"] = "js"
         env["GOARCH"] = "wasm"
 
@@ -92,7 +126,9 @@ def run_unit_tests():
                 "go",
                 "test",
                 "-v",
-                "-covermode=atomic",
+                "-gcflags=all=-N -l",
+                "-covermode=count",
+                "-exec", "wasmbrowsertest",
                 "-cover",
                 "./internal/result",
                 f"-test.gocoverdir={unit_path}"

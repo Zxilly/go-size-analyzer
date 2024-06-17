@@ -7,9 +7,10 @@ import (
 	"compress/gzip"
 	_ "embed"
 	"encoding/gob"
-
 	"syscall/js"
 	"testing"
+
+	"github.com/go-json-experiment/json"
 
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/stretchr/testify/assert"
@@ -26,15 +27,37 @@ func TestResultMarshalJavaScript(t *testing.T) {
 	decompressedReader, err := gzip.NewReader(bytes.NewReader(testdataGob))
 	require.NoError(t, err)
 
+	// use JSON.stringify to compare the result
+	JSON := js.Global().Get("JSON")
+	stringify := JSON.Get("stringify")
+
 	var r result.Result
 	err = gob.NewDecoder(decompressedReader).Decode(&r)
 	require.NoError(t, err)
 
-	jsValue := r.MarshalJavaScript()
+	t.Run("Result", func(t *testing.T) {
+		jsVal := r.MarshalJavaScript()
+		jsStr := stringify.Invoke(jsVal).String()
+		assert.JSONEq(t, testdataJSON, jsStr)
+	})
 
-	// use JSON.stringify to compare the result
-	JSON := js.Global().Get("JSON")
-	jsonValue := JSON.Call("stringify", jsValue).String()
+	var testdataJSONVal map[string]any
+	err = json.Unmarshal([]byte(testdataJSON), &testdataJSONVal)
+	require.NoError(t, err)
 
-	assert.JSONEq(t, testdataJSON, jsonValue)
+	t.Run("Section", func(t *testing.T) {
+		sectionsAny := testdataJSONVal["sections"].([]any)
+
+		for i, sect := range r.Sections {
+			jsVal := sect.MarshalJavaScript()
+			jsStr := stringify.Invoke(jsVal).String()
+
+			sectAny := sectionsAny[i]
+			sectStr, err := json.Marshal(sectAny)
+			require.NoError(t, err)
+
+			assert.JSONEq(t, string(sectStr), jsStr)
+		}
+	})
+
 }

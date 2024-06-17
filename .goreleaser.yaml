@@ -29,6 +29,7 @@ builds:
       - "-pgo=default.pgo"
     tags:
       - embed
+      - nethttpomithttp2
 
 archives:
   - format: tar.gz

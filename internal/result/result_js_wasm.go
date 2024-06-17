@@ -2,22 +2,18 @@
 
 package result
 
-import (
-	"github.com/samber/lo"
-
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
-)
-
 func (r *Result) MarshalJavaScript() any {
 	var sections []any
-	sections = lo.Map(r.Sections, func(s *entity.Section, _ int) any {
-		return s.MarshalJavaScript()
-	})
+	for _, s := range r.Sections {
+		sections = append(sections, s.MarshalJavaScript())
+	}
+
+	packages := r.Packages.MarshalJavaScript()
 
 	return map[string]any{
 		"name":     r.Name,
 		"size":     r.Size,
-		"packages": r.Packages.MarshalJavaScript(),
+		"packages": packages,
 		"sections": sections,
 	}
 }
