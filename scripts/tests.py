@@ -103,6 +103,7 @@ def run_unit_tests():
 
         env = os.environ.copy()
         for k in list(env.keys()):
+            k = k.upper()
             if (k.startswith("GITHUB_")
                     or k.startswith("JAVA_")
                     or k.startswith("PSMODULEPATH")
