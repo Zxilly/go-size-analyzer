@@ -22,14 +22,6 @@ jobs:
           cache: true
           check-latest: true
 
-      - name: Setup Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
-        with:
-          python-version: '3.12.3'
-          check-latest: true
-          cache: 'pip'
-          cache-dependency-path: 'scripts/requirements.txt'
-
       - name: Setup Binaryen
         # fixme: use acifani/setup-tinygo after pr acceptance
         uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
@@ -37,16 +29,13 @@ jobs:
           install-tinygo: false
           binaryen-version: '117'
 
-      - name: Add python dependencies
-        run: |
-          pip install -r scripts/requirements.txt --require-hashes
-
       - name: Download deps
         run: go mod download
 
-      - name: Build wasm
-        run: |
-          python scripts/wasm.py
+      - name: Collect profiles
+        uses: ./.github/actions/setup-script
+        with:
+          script: 'wasm.py'
 
       - name: Upload wasm artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3

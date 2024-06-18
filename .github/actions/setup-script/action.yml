@@ -1,0 +1,42 @@
+name: Setup test script
+description: 'Setup test script, should be called after checkout'
+inputs:
+  cache:
+    default: ""
+    description: 'Cache key for test'
+  script:
+    required: true
+    description: 'Script to run'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install poetry
+      shell: bash
+      run: pipx install poetry
+
+    - name: Setup Python
+      uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+      with:
+        python-version: '3.12'
+        check-latest: true
+        cache: 'poetry'
+
+    - name: Add python dependencies
+      shell: bash
+      working-directory: ./scripts
+      run: |
+        poetry install
+
+    - name: Cache test binaries
+      if: ${{ inputs.cache != '' }}
+      uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+      with:
+        path: ./scripts/bins
+        key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ inputs.cache }}
+        enableCrossOsArchive: true
+
+    - name: Run script
+      shell: bash
+      working-directory: ./scripts
+      run: |
+          poetry run python ${{ inputs.script }}

@@ -45,27 +45,11 @@ jobs:
           name: ui
           path: internal/webui
 
-      - name: Setup Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
-        with:
-          python-version: '3.12.3'
-          check-latest: true
-          cache: 'pip'
-          cache-dependency-path: 'scripts/requirements.txt'
-
-      - name: Add python dependencies
-        run: |
-          pip install -r scripts/requirements.txt --require-hashes
-
-      - name: Cache test binaries
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-        with:
-          path: scripts/bins
-          key: testbins-${{ hashFiles('scripts/binaries.csv') }}-integration-real-v3
-          enableCrossOsArchive: true
-
       - name: Collect profiles
-        run: python scripts/pgo.py
+        uses: ./.github/actions/setup-script
+        with:
+          cache: 'integration-real'
+          script: 'pgo.py'
 
       - name: Download deps
         run: go mod download
