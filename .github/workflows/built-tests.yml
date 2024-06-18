@@ -1,0 +1,309 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  build-ui:
+    name: Build Web UI
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-webui.yml
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    with:
+      release: ${{ github.event_name == 'push' }}
+
+  build-wasm:
+    name: Build Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version-file: "go.mod"
+          cache: true
+          check-latest: true
+
+      - name: Setup Binaryen
+        # fixme: use acifani/setup-tinygo after pr acceptance
+        uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
+        with:
+          install-tinygo: false
+          binaryen-version: '117'
+
+      - name: Download deps
+        run: go mod download
+
+      - name: Collect profiles
+        uses: ./.github/actions/setup-script
+        with:
+          script: 'wasm.py'
+
+      - name: Upload wasm artifact
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          path: 'ui/gsa.wasm'
+          name: wasm
+
+  tests:
+    name: Tests
+    needs:
+      - build-ui
+    permissions:
+      contents: write
+      checks: write
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+        test: [ unit, integration-example, integration-real ]
+        include:
+          - test: unit
+            test-type: unit
+          - test: integration-example
+            test-type: integration
+          - test: integration-real
+            test-type: integration
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version-file: "go.mod"
+          cache: true
+          check-latest: true
+
+      - name: Setup Go global dependencies
+        run: |
+          go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
+          go install github.com/Zxilly/go_js_wasm_exec@c8548ea8ad1d9748143c495f05f59ff0b4c94822
+
+      - name: Download UI file
+        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
+        with:
+          name: ui
+          path: internal/webui
+
+      - name: Download deps
+        run: go mod download
+
+      - name: Collect profiles
+        uses: ./.github/actions/setup-script
+        with:
+          cache: 'integration-real'
+          script: 'tests.py --${{ matrix.test }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        if: ${{ !cancelled() }}
+        with:
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ matrix.test-type }}.profile
+          flags: ${{ matrix.test-type }}
+          verbose: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() && matrix.test-type == 'unit' }}
+        uses: codecov/test-results-action@1b5b448b98e58ba90d1a1a1d9fcb72ca2263be46 # v1.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: ${{ matrix.os }} unit tests
+          flags: ${{ matrix.os }}-unit
+          files: unit.xml,unit_embed.xml,unit_wasm.xml
+          verbose: true
+
+      - name: Upload results
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        if: ${{ !cancelled() }}
+        with:
+          name: ${{ matrix.os }}-${{ matrix.test }}-results
+          path: results/
+
+  tests-ui:
+    name: Tests on UI
+    runs-on: ubuntu-latest
+    needs: build-wasm
+    permissions:
+      contents: write
+      checks: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: '22'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          standalone: true
+          package_json_file: 'ui/package.json'
+          version: latest
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        working-directory: ./ui
+        run: pnpm install
+
+      - name: Download WASM
+        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
+        with:
+          name: wasm
+          path: ui/
+
+      - name: Run tests
+        working-directory: ./ui
+        run: pnpm test
+
+      - name: Upload coverage
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ui
+          name: Web UI tests
+          directory: ./ui
+          verbose: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@1b5b448b98e58ba90d1a1a1d9fcb72ca2263be46 # v1.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: Web UI tests
+          flags: ui
+          file: ./ui/test-results.xml
+          verbose: true
+
+  build-explorer:
+    runs-on: ubuntu-latest
+    needs:
+      - build-wasm
+      - tests-ui
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: '21'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          standalone: true
+          package_json_file: 'ui/package.json'
+          version: latest
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install node dependencies
+        working-directory: ./ui
+        run: |
+          pnpm install
+
+      - name: Download WASM
+        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
+        with:
+          name: wasm
+          path: ui/
+
+      - name: Build
+        working-directory: ./ui
+        run: pnpm run build:explorer
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          PULL_REQUEST_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          GSA_TELEMETRY: true
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: 'ui/dist/explorer/'
+
+  deploy:
+    if: ${{ github.event_name == 'push' }}
+    needs: build-explorer
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-pages-deploy
+      cancel-in-progress: true
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+
+  merge:
+    name: Merge Go test results
+    needs: tests
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+    steps:
+      - name: Merge
+        uses: actions/upload-artifact/merge@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          name: ${{ matrix.os }}-results
+          compression-level: '9'
+          pattern: ${{ matrix.os }}-*-results
+          delete-merged: true
+          retention-days: 7
+

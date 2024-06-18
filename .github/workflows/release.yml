@@ -13,8 +13,8 @@ jobs:
     permissions:
       contents: write
     uses: ./.github/workflows/build-webui.yml
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    with:
+      release: false
 
   goreleaser:
     name: Release

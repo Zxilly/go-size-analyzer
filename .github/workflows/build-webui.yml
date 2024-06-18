@@ -1,23 +1,12 @@
 name: Build UI
 
 on:
-  push:
-    branches:
-      - master
-    paths: 
-      - 'ui/**'
-      - '.github/workflows/build-webui.yml'
-  pull_request:
-    paths:
-      - 'ui/**'
-      - '.github/workflows/build-webui.yml'
   workflow_call:
     inputs:
-      external_call:
-        description: 'To distinguish workflow_call from regular push'
+      release:
+        description: 'Make a release for the UI'
         type: boolean
-        required: false
-        default: true
+        required: true
     secrets:
       CODECOV_TOKEN:
         required: true
@@ -26,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  build_webui:
+  build-webui:
     name: Build Treemap WebUI
     runs-on: ubuntu-latest
     permissions:
@@ -73,7 +62,7 @@ jobs:
           PULL_REQUEST_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
 
       - name: Release
-        if: ${{ !inputs.external_call }}
+        if: ${{ inputs.release }}
         uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
         with:
           artifactErrorsFailBuild: true
