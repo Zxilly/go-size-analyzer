@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gsa-scripts"
+version = "0.1.0"
+authors = ["Zxilly <zxilly@outlook.com>"]
+license = "AGPL-3.0"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+tqdm = "^4.66.4"
+matplotlib = "^3.9.0"
+psutil = "^5.9.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
