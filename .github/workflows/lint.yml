@@ -88,3 +88,15 @@ jobs:
         with:
           sarif_file: ./golangci-lint-results.sarif
           wait-for-processing: true
+
+  typos:
+    name: Spell Check with Typos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: typos-action
+        uses: crate-ci/typos@cfe759ac8dd421e203cc293a373396fbc6fe0d4b # v1.22.7
+        with:
+          config: .github/typos.toml
