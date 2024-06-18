@@ -210,6 +210,7 @@ jobs:
           verbose: true
 
   build-explorer:
+    name: Build go-size-analyzer explorer
     runs-on: ubuntu-latest
     needs:
       - build-wasm
@@ -269,6 +270,7 @@ jobs:
           path: 'ui/dist/explorer/'
 
   deploy:
+    name: Deploy explorer to GitHub Pages
     if: ${{ github.event_name == 'push' }}
     needs: build-explorer
     environment:
