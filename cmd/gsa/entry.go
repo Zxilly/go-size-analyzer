@@ -21,12 +21,6 @@ import (
 )
 
 func entry() error {
-	if Options.Verbose {
-		utils.InitLogger(slog.LevelDebug)
-	} else {
-		utils.InitLogger(slog.LevelWarn)
-	}
-
 	utils.ApplyMemoryLimit()
 
 	reader, err := mmap.Open(Options.Binary)

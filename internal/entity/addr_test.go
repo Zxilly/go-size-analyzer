@@ -135,7 +135,7 @@ func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
 	}
 
 	expected := "Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
-		"AddrPos: Addr: 1000 CodeSize: 100 Type: data Pkg:  Function:  SourceType: disasm\n" +
+		"AddrPos: Addr: 1000 CodeSize: 100 Type: data SourceType: disasm\n" +
 		"AddrPos: Addr: 1000 CodeSize: 100 Type: data Pkg: main Function: main SourceType: symbol"
 	result := coveragePart.String()
 
@@ -178,7 +178,7 @@ func TestErrorReturnsExpectedErrorMessage(t *testing.T) {
 	}
 
 	expected := "addr 1000 pos Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
-		"AddrPos: <nil> Pkg:  Function:  SourceType:  and Pos: Addr: 10ff CodeSize: 100 Type: data\n" +
-		"AddrPos: <nil> Pkg:  Function:  SourceType:  conflict"
+		"AddrPos: <nil> SourceType:  and Pos: Addr: 10ff CodeSize: 100 Type: data\n" +
+		"AddrPos: <nil> SourceType:  conflict"
 	assert.Equal(t, expected, err.Error())
 }

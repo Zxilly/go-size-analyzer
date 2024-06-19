@@ -10,7 +10,7 @@ import (
 
 func (k *KnownInfo) CollectCoverage() error {
 	// load coverage for pclntab and symbol
-	pclntabCov := k.KnownAddr.Text.ToDirtyCoverage()
+	pclntabCov := k.KnownAddr.TextAddrSpace.ToDirtyCoverage()
 
 	// merge all
 	covs := make([]entity.AddrCoverage, 0)
@@ -34,7 +34,7 @@ func (k *KnownInfo) CalculateSectionSize() error {
 	for _, cp := range k.Coverage {
 		s := k.Sects.FindSection(cp.Pos.Addr, cp.Pos.Size)
 		if s == nil {
-			slog.Debug(fmt.Sprintf("section not found for coverage part %s", cp))
+			slog.Debug(fmt.Sprintf("possible bss addr %s", cp))
 			continue
 		}
 		t[s] += cp.Pos.Size

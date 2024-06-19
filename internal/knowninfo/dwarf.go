@@ -1,7 +1,9 @@
 package knowninfo
 
 import (
+	"context"
 	"debug/dwarf"
+	"errors"
 	"fmt"
 	"log/slog"
 	"math"
@@ -18,18 +20,28 @@ import (
 func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
 	instsAny := entry.Val(dwarf.AttrLocation)
 	if instsAny == nil {
-		slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrinter(entry)))
+		slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
 		return
 	}
 	insts, ok := instsAny.([]byte)
 	if !ok {
-		slog.Warn(fmt.Sprintf("location attribute is not []byte for %s", dwarfutil.EntryPrettyPrinter(entry)))
+		slog.Warn(fmt.Sprintf("location attribute is not []byte for %s", dwarfutil.EntryPrettyPrint(entry)))
 		return
 	}
 
 	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{StaticBase: k.Wrapper.ImageBase()}, insts, ptrSize, nil)
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to execute location attribute for %s: %v", dwarfutil.EntryPrettyPrinter(entry), err))
+		level := slog.LevelDebug
+		if !errors.Is(err, op.ErrMemoryReadUnavailable) {
+			level = slog.LevelWarn
+		}
+		slog.Log(context.Background(),
+			level,
+			fmt.Sprintf(
+				"Failed to execute location attribute for %s: %v",
+				dwarfutil.EntryPrettyPrint(entry), err,
+			),
+		)
 		return
 	}
 
@@ -41,7 +53,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return k.Wrapper.ReadAddr(addrCb, size)
 	})
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrinter(entry), err))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
 		return
 	}
 
@@ -86,7 +98,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 ) {
 	subEntryName, ok := subEntry.Val(dwarf.AttrName).(string)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrinter(subEntry)))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrint(subEntry)))
 		return
 	}
 
@@ -129,7 +141,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	added := pkg.AddFuncIfNotExists(filename, fn)
 
 	if added {
-		k.KnownAddr.Text.Insert(&entity.Addr{
+		k.KnownAddr.TextAddrSpace.Insert(&entity.Addr{
 			AddrPos:    &entity.AddrPos{Addr: addr, Size: size, Type: entity.AddrTypeText},
 			Pkg:        pkg,
 			Function:   fn,
@@ -142,12 +154,12 @@ func (k *KnownInfo) AddDwarfSubProgram(
 func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity.Package {
 	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
 		return nil
 	}
 	cuName, ok := cuEntry.Val(dwarf.AttrName).(string)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit name: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit name: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
 		return nil
 	}
 
@@ -185,7 +197,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pendingEntry []*dwarf.Entry, ptrSize int) {
 	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
 		return
 	}
 

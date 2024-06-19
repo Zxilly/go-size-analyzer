@@ -3,9 +3,12 @@
 package main
 
 import (
+	"log/slog"
+
 	"github.com/alecthomas/kong"
 
 	gsv "github.com/Zxilly/go-size-analyzer"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/webui"
 )
 
@@ -90,4 +93,10 @@ func init() {
 			return nil
 		}),
 	)
+
+	if Options.Verbose {
+		utils.InitLogger(slog.LevelDebug)
+	} else {
+		utils.InitLogger(slog.LevelWarn)
+	}
 }

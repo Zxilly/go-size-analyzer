@@ -4,6 +4,7 @@ import (
 	"debug/dwarf"
 	"fmt"
 	"log/slog"
+	"strconv"
 	"strings"
 )
 
@@ -86,17 +87,13 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 	declaration := entry.Val(dwarf.AttrDeclaration)
 	if declaration != nil {
 		val, ok := declaration.(bool)
-		if ok && val {
-			return true
-		}
+		return !ok || val
 	}
 
 	inline := entry.Val(dwarf.AttrInline)
 	if inline != nil {
 		val, ok := inline.(bool)
-		if ok && val {
-			return true
-		}
+		return !ok || val
 	}
 
 	abstractOrigin := entry.Val(dwarf.AttrAbstractOrigin)
@@ -124,12 +121,12 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 		if entry.Val(dwarf.AttrTrampoline) == nil {
 			fileIndexAny := entry.Val(dwarf.AttrDeclFile)
 			if fileIndexAny == nil {
-				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrinter(entry)))
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrint(entry)))
 				return defaultName
 			}
 			fileIndex, ok := fileIndexAny.(int64)
 			if !ok || fileIndex < 0 || int(fileIndex) >= len(files) {
-				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrinter(entry)))
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrint(entry)))
 				return defaultName
 			}
 
@@ -140,10 +137,14 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 	}
 }
 
-func EntryPrettyPrinter(entry *dwarf.Entry) string {
+func EntryPrettyPrint(entry *dwarf.Entry) string {
 	ret := new(strings.Builder)
+	ret.WriteString(entry.Tag.String())
+	ret.WriteString(" ")
+	ret.WriteString(strconv.Itoa(int(entry.Offset)))
+	ret.WriteString(" ")
 	for _, field := range entry.Field {
-		ret.WriteString(fmt.Sprintf("%#v", field))
+		ret.WriteString(fmt.Sprintf("%#v ", field))
 	}
 
 	return ret.String()

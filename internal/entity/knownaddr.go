@@ -6,17 +6,17 @@ import (
 )
 
 type KnownAddr struct {
-	Text AddrSpace
+	TextAddrSpace AddrSpace
 
-	Symbol         AddrSpace
-	SymbolCoverage AddrCoverage
+	SymbolAddrSpace AddrSpace
+	SymbolCoverage  AddrCoverage
 }
 
 func NewKnownAddr() *KnownAddr {
 	return &KnownAddr{
-		Text:           make(map[uint64]*Addr),
-		Symbol:         make(map[uint64]*Addr),
-		SymbolCoverage: make(AddrCoverage, 0),
+		TextAddrSpace:   make(map[uint64]*Addr),
+		SymbolAddrSpace: make(map[uint64]*Addr),
+		SymbolCoverage:  make(AddrCoverage, 0),
 	}
 }
 
@@ -33,7 +33,7 @@ func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Functio
 
 		Meta: meta,
 	}
-	f.Text.Insert(&cur)
+	f.TextAddrSpace.Insert(&cur)
 }
 
 func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function, meta DwarfMeta) {
@@ -49,7 +49,7 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function,
 
 		Meta: meta,
 	}
-	f.Text.Insert(&cur)
+	f.TextAddrSpace.Insert(&cur)
 }
 
 func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
@@ -60,12 +60,13 @@ func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ Addr
 			Type: typ,
 		},
 		Pkg:        p,
-		Function:   nil, // TODO: try to find the function?
+		Function:   nil,
+		Symbol:     NewSymbol(meta.SymbolName, entry, size, typ),
 		SourceType: AddrSourceSymbol,
 
 		Meta: meta,
 	}
-	f.Symbol.Insert(cur)
+	f.SymbolAddrSpace.Insert(cur)
 	return cur
 }
 
@@ -77,17 +78,18 @@ func (f *KnownAddr) InsertSymbolFromDWARF(entry uint64, size uint64, p *Package,
 			Type: typ,
 		},
 		Pkg:        p,
-		Function:   nil, // TODO: try to find the function?
+		Function:   nil,
+		Symbol:     NewSymbol(meta.SymbolName, entry, size, typ),
 		SourceType: AddrSourceDwarf,
 
 		Meta: meta,
 	}
-	f.Symbol.Insert(cur)
+	f.SymbolAddrSpace.Insert(cur)
 	return cur
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
-	f.SymbolCoverage = f.Symbol.ToDirtyCoverage()
+	f.SymbolCoverage = f.SymbolAddrSpace.ToDirtyCoverage()
 }
 
 func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {

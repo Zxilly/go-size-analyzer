@@ -1,6 +1,7 @@
 import os.path
 import platform
 import subprocess
+import threading
 import time
 from argparse import ArgumentParser
 
@@ -176,8 +177,9 @@ def run_integration_tests(typ: str, gsa_path: str):
     else:
         timeout = 60
 
-    if typ == "example":
+    if typ == "web":
         run_web_test(gsa_path)
+        return
 
     all_tests = len(targets)
     completed_tests = 0
@@ -242,14 +244,27 @@ def run_web_test(entry: str):
 
     log(f"Waiting for the server to start on port {port}...")
 
-    for line in iter(p.stdout.readline, ""):
-        if "localhost" in line:
-            break
-        stdout_data += line
+    timeout_seconds = 5
+    timeout_occurred = False
 
-    time.sleep(1)
+    def timeout_handler():
+        nonlocal timeout_occurred
+        timeout_occurred = True
+        p.kill()  # 强制终止进程
 
-    if p.poll() is not None:
+    timer = threading.Timer(timeout_seconds, timeout_handler)
+    timer.start()
+    try:
+        for line in iter(p.stdout.readline, ""):
+            if "localhost" in line:
+                break
+            stdout_data += line
+    finally:
+        timer.cancel()
+
+    if p.poll() is not None or timeout_occurred:
+        log(f"args: {p.args}")
+
         stdout_data += p.stdout.read()
         stderr_data = p.stderr.read()
 
@@ -313,6 +328,7 @@ if __name__ == "__main__":
     if args.integration_example or args.integration_real:
         with build_gsa() as gsa:
             if args.integration_example:
+                run_integration_tests("web", gsa)
                 run_integration_tests("example", gsa)
             if args.integration_real:
                 run_integration_tests("real", gsa)

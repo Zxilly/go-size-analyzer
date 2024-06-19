@@ -20,8 +20,10 @@ func (a *AddrPos) String() string {
 type Addr struct {
 	*AddrPos
 
-	Pkg      *Package  // package can be nil for cgo symbols
+	Pkg *Package // package can be nil for cgo symbols
+
 	Function *Function // for symbol source it will be a nil
+	Symbol   *Symbol   // for function source it will be a nil
 
 	SourceType AddrSourceType
 
@@ -29,14 +31,19 @@ type Addr struct {
 }
 
 func (a *Addr) String() string {
-	var pkgName, funcName string
+	ret := new(strings.Builder)
+	_, _ = fmt.Fprintf(ret, "AddrPos: %s", a.AddrPos)
 	if a.Pkg != nil {
-		pkgName = a.Pkg.Name
+		_, _ = fmt.Fprintf(ret, " Pkg: %s", a.Pkg.Name)
 	}
 	if a.Function != nil {
-		funcName = a.Function.Name
+		_, _ = fmt.Fprintf(ret, " Function: %s", a.Function.Name)
 	}
-	return fmt.Sprintf("AddrPos: %s Pkg: %s Function: %s SourceType: %s", a.AddrPos, pkgName, funcName, a.SourceType)
+	if a.Symbol != nil {
+		_, _ = fmt.Fprintf(ret, " Symbol: %s", a.Symbol.Name)
+	}
+	_, _ = fmt.Fprintf(ret, " SourceType: %s", a.SourceType)
+	return ret.String()
 }
 
 // AddrCoverage is a list of AddrPos, describe the coverage of the address space

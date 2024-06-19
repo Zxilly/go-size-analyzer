@@ -35,7 +35,8 @@ def build_gsa():
 
     log("Built gsa.")
 
-    shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"))
+    ext = ".exe" if os.name == "nt" else ""
+    shutil.copyfile(temp_binary, os.path.join(get_project_root(), "results", "gsa"+ext))
 
     yield temp_binary
 
