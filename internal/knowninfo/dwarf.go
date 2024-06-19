@@ -84,7 +84,11 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	pkg *entity.Package,
 	readFileName func(entry *dwarf.Entry) string,
 ) {
-	subEntryName := subEntry.Val(dwarf.AttrName).(string)
+	subEntryName, ok := subEntry.Val(dwarf.AttrName).(string)
+	if !ok {
+		slog.Warn(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrinter(subEntry)))
+		return
+	}
 
 	ranges, err := d.Ranges(subEntry)
 	if err != nil {
@@ -136,8 +140,16 @@ func (k *KnownInfo) AddDwarfSubProgram(
 }
 
 func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity.Package {
-	cuLang, _ := cuEntry.Val(dwarf.AttrLanguage).(int64)
-	cuName, _ := cuEntry.Val(dwarf.AttrName).(string)
+	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
+	if !ok {
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		return nil
+	}
+	cuName, ok := cuEntry.Val(dwarf.AttrName).(string)
+	if !ok {
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit name: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		return nil
+	}
 
 	var pkg *entity.Package
 
@@ -171,9 +183,16 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 }
 
 func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pendingEntry []*dwarf.Entry, ptrSize int) {
-	cuLang, _ := cuEntry.Val(dwarf.AttrLanguage).(int64)
+	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
+	if !ok {
+		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrinter(cuEntry)))
+		return
+	}
 
 	pkg := k.GetPackageFromDwarfCompileUnit(cuEntry)
+	if pkg == nil {
+		return
+	}
 
 	readFileName := dwarfutil.EntryFileReader(cuEntry, d)
 

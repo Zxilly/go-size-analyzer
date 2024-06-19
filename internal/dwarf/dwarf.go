@@ -21,7 +21,10 @@ func SizeForDWARFVar(
 	entry *dwarf.Entry,
 	readMemory MemoryReader,
 ) ([]Content, uint64, error) {
-	sizeOffset := entry.Val(dwarf.AttrType).(dwarf.Offset)
+	sizeOffset, ok := entry.Val(dwarf.AttrType).(dwarf.Offset)
+	if !ok {
+		return nil, 0, fmt.Errorf("failed to get type offset")
+	}
 
 	typ, err := d.Type(sizeOffset)
 	if err != nil {
@@ -82,16 +85,16 @@ func SizeForDWARFVar(
 func EntryShouldIgnore(entry *dwarf.Entry) bool {
 	declaration := entry.Val(dwarf.AttrDeclaration)
 	if declaration != nil {
-		val := declaration.(bool)
-		if val {
+		val, ok := declaration.(bool)
+		if ok && val {
 			return true
 		}
 	}
 
 	inline := entry.Val(dwarf.AttrInline)
 	if inline != nil {
-		val := inline.(int64)
-		if val > 0 {
+		val, ok := inline.(bool)
+		if ok && val {
 			return true
 		}
 	}
@@ -124,8 +127,8 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrinter(entry)))
 				return defaultName
 			}
-			fileIndex := fileIndexAny.(int64)
-			if fileIndex < 0 || int(fileIndex) >= len(files) {
+			fileIndex, ok := fileIndexAny.(int64)
+			if !ok || fileIndex < 0 || int(fileIndex) >= len(files) {
 				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrinter(entry)))
 				return defaultName
 			}

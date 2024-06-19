@@ -119,8 +119,14 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 
 	ptr := readUintTo64(data)
 
-	filesPtrType := typ.Field[0].Type.(*dwarf.PtrType)
-	filesType := filesPtrType.Type.(*dwarf.StructType)
+	filesPtrType, ok := typ.Field[0].Type.(*dwarf.PtrType)
+	if !ok {
+		return nil, fmt.Errorf("unexpected type: %T", typ.Field[0].Type)
+	}
+	filesType, ok := filesPtrType.Type.(*dwarf.StructType)
+	if !ok {
+		return nil, fmt.Errorf("unexpected type: %T", filesPtrType.Type)
+	}
 
 	filesAddr, filesLen, err := readSlice(filesType, func(addr, size uint64) ([]byte, error) {
 		if addr == math.MaxUint64 {

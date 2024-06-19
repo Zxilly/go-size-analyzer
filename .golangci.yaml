@@ -109,8 +109,6 @@ linters-settings:
       - name: cyclomatic
         arguments: [ 100 ]
 
-      - name: unchecked-type-assertion
-        disabled: true
       - name: struct-tag
         disabled: true
       - name: add-constant
