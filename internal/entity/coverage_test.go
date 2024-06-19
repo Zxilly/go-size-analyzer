@@ -63,9 +63,9 @@ func FuzzMergeAndCleanCoverage(f *testing.F) {
 	f.Add(uint64(42), uint64(233))
 
 	f.Fuzz(func(t *testing.T, seed1, seed2 uint64) {
-		r := rand.New(rand.NewPCG(seed1, seed2)) //nolint:gosec
+		r := rand.New(rand.NewPCG(seed1, seed2)) //nolint:gosec need for repeatable fuzzing
 
-		partCnt := rand.IntN(1024) + 2 //nolint:gosec
+		partCnt := rand.IntN(1024) + 2 //nolint:gosec need for repeatable fuzzing
 
 		coves := make([]entity.AddrCoverage, 0, partCnt)
 
