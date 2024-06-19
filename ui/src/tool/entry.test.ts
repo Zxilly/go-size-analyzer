@@ -8,7 +8,7 @@ test('entry type should met children type', () => {
     expectTypeOf<EntryType>().toEqualTypeOf<keyof EntryChildren>()
 })
 
-test('entry toString match', () => {
+test('entry match', () => {
     const data = readFileSync(path.join(__dirname, '..', 'testdata', 'testdata.json')).toString();
     
     const r = parseResult(data)
@@ -17,6 +17,8 @@ test('entry toString match', () => {
     const e = createEntry(r)
     
     const matchEntry = <T extends EntryType>(e: EntryLike<T>) => {
+        expect(e.getName()).toMatchSnapshot()
+        expect(e.getSize()).toMatchSnapshot()
         expect(e.toString()).toMatchSnapshot()
 
         e.getChildren().forEach(e => matchEntry(e))

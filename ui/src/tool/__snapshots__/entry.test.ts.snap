@@ -1,5 +1,6904 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`entry match 1`] = `"path/to/bin-linux-1.22-amd64"`;
+
+exports[`entry match 2`] = `1638888`;
+
+exports[`entry match 3`] = `
+"Result: path/to/bin-linux-1.22-amd64
+Size:   1.56 MB"
+`;
+
+exports[`entry match 4`] = `"Unknown Sections Size"`;
+
+exports[`entry match 5`] = `830200`;
+
+exports[`entry match 6`] = `
+"The unknown size of the sections in the binary.
+
+Size: 810.74 KB"
+`;
+
+exports[`entry match 7`] = `".noptrdata"`;
+
+exports[`entry match 8`] = `9635`;
+
+exports[`entry match 9`] = `
+"Section:      .noptrdata
+Size:         9.41 KB
+File Size:    13.73 KB
+Known size:   4.32 KB
+Unknown size: 9.41 KB
+Offset:       0x10d180 - 0x110868
+Address:      0x50d180 - 0x510868
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 10`] = `".debug_loc"`;
+
+exports[`entry match 11`] = `84060`;
+
+exports[`entry match 12`] = `
+"Section:      .debug_loc
+Size:         82.09 KB
+File Size:    82.09 KB
+Known size:   0 B
+Unknown size: 82.09 KB
+Offset:       0x15a9d6 - 0x16f232
+Address:      0x0 - 0x6a005
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 13`] = `".note.go.buildid"`;
+
+exports[`entry match 14`] = `100`;
+
+exports[`entry match 15`] = `
+"Section:      .note.go.buildid
+Size:         100 B
+File Size:    100 B
+Known size:   0 B
+Unknown size: 100 B
+Offset:       0xf9c - 0x1000
+Address:      0x400f9c - 0x401000
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 16`] = `".symtab"`;
+
+exports[`entry match 17`] = `60624`;
+
+exports[`entry match 18`] = `
+"Section:      .symtab
+Size:         59.2 KB
+File Size:    59.2 KB
+Known size:   0 B
+Unknown size: 59.2 KB
+Offset:       0x172518 - 0x1811e8
+Address:      0x0 - 0xecd0
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 19`] = `".debug_ranges"`;
+
+exports[`entry match 20`] = `13028`;
+
+exports[`entry match 21`] = `
+"Section:      .debug_ranges
+Size:         12.72 KB
+File Size:    12.72 KB
+Known size:   0 B
+Unknown size: 12.72 KB
+Offset:       0x16f232 - 0x172516
+Address:      0x0 - 0x102e0
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 22`] = `".text"`;
+
+exports[`entry match 23`] = `1`;
+
+exports[`entry match 24`] = `
+"Section:      .text
+Size:         1 B
+File Size:    543.38 KB
+Known size:   543.38 KB
+Unknown size: 1 B
+Offset:       0x1000 - 0x88d86
+Address:      0x401000 - 0x488d86
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 25`] = `".rodata"`;
+
+exports[`entry match 26`] = `158078`;
+
+exports[`entry match 27`] = `
+"Section:      .rodata
+Size:         154.37 KB
+File Size:    154.37 KB
+Known size:   0 B
+Unknown size: 154.37 KB
+Offset:       0x89000 - 0xaf97e
+Address:      0x489000 - 0x4af97e
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 28`] = `".go.buildinfo"`;
+
+exports[`entry match 29`] = `368`;
+
+exports[`entry match 30`] = `
+"Section:      .go.buildinfo
+Size:         368 B
+File Size:    368 B
+Known size:   0 B
+Unknown size: 368 B
+Offset:       0x10d000 - 0x10d170
+Address:      0x50d000 - 0x50d170
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 31`] = `".debug_frame"`;
+
+exports[`entry match 32`] = `30063`;
+
+exports[`entry match 33`] = `
+"Section:      .debug_frame
+Size:         29.36 KB
+File Size:    29.36 KB
+Known size:   0 B
+Unknown size: 29.36 KB
+Offset:       0x12901b - 0x13058a
+Address:      0x0 - 0x173fc
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 34`] = `".debug_gdb_scripts"`;
+
+exports[`entry match 35`] = `63`;
+
+exports[`entry match 36`] = `
+"Section:      .debug_gdb_scripts
+Size:         63 B
+File Size:    63 B
+Known size:   0 B
+Unknown size: 63 B
+Offset:       0x13058a - 0x1305c9
+Address:      0x0 - 0x3f
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 37`] = `".typelink"`;
+
+exports[`entry match 38`] = `1348`;
+
+exports[`entry match 39`] = `
+"Section:      .typelink
+Size:         1.32 KB
+File Size:    1.32 KB
+Known size:   0 B
+Unknown size: 1.32 KB
+Offset:       0xaf980 - 0xafec4
+Address:      0x4af980 - 0x4afec4
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 40`] = `".data"`;
+
+exports[`entry match 41`] = `5247`;
+
+exports[`entry match 42`] = `
+"Section:      .data
+Size:         5.12 KB
+File Size:    14.92 KB
+Known size:   9.8 KB
+Unknown size: 5.12 KB
+Offset:       0x110880 - 0x114430
+Address:      0x510880 - 0x514430
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 43`] = `".debug_line"`;
+
+exports[`entry match 44`] = `81638`;
+
+exports[`entry match 45`] = `
+"Section:      .debug_line
+Size:         79.72 KB
+File Size:    79.72 KB
+Known size:   0 B
+Unknown size: 79.72 KB
+Offset:       0x115135 - 0x12901b
+Address:      0x0 - 0x2766a
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 46`] = `".debug_info"`;
+
+exports[`entry match 47`] = `173069`;
+
+exports[`entry match 48`] = `
+"Section:      .debug_info
+Size:         169.01 KB
+File Size:    169.01 KB
+Known size:   0 B
+Unknown size: 169.01 KB
+Offset:       0x1305c9 - 0x15a9d6
+Address:      0x0 - 0x6a3e3
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 49`] = `".shstrtab"`;
+
+exports[`entry match 50`] = `263`;
+
+exports[`entry match 51`] = `
+"Section:      .shstrtab
+Size:         263 B
+File Size:    263 B
+Known size:   0 B
+Unknown size: 263 B
+Offset:       0x1900e1 - 0x1901e8
+Address:      0x0 - 0x107
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 52`] = `".itablink"`;
+
+exports[`entry match 53`] = `88`;
+
+exports[`entry match 54`] = `
+"Section:      .itablink
+Size:         88 B
+File Size:    88 B
+Known size:   0 B
+Unknown size: 88 B
+Offset:       0xafee0 - 0xaff38
+Address:      0x4afee0 - 0x4aff38
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 55`] = `".gopclntab"`;
+
+exports[`entry match 56`] = `151041`;
+
+exports[`entry match 57`] = `
+"Section:      .gopclntab
+Size:         147.5 KB
+File Size:    368.38 KB
+Known size:   220.87 KB
+Unknown size: 147.5 KB
+Offset:       0xaff40 - 0x10c0c0
+Address:      0x4aff40 - 0x50c0c0
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 58`] = `".bss"`;
+
+exports[`entry match 59`] = `0`;
+
+exports[`entry match 60`] = `
+"Section:      .bss
+Size:         0 B
+File Size:    0 B
+Known size:   0 B
+Unknown size: 0 B
+Offset:       0x0 - 0x0
+Address:      0x514440 - 0x574090
+Memory:       true
+Debug:        false"
+`;
+
+exports[`entry match 61`] = `".noptrbss"`;
+
+exports[`entry match 62`] = `0`;
+
+exports[`entry match 63`] = `
+"Section:      .noptrbss
+Size:         0 B
+File Size:    0 B
+Known size:   0 B
+Unknown size: 0 B
+Offset:       0x0 - 0x0
+Address:      0x5740a0 - 0x577ac0
+Memory:       true
+Debug:        false"
+`;
+
+exports[`entry match 64`] = `".debug_abbrev"`;
+
+exports[`entry match 65`] = `309`;
+
+exports[`entry match 66`] = `
+"Section:      .debug_abbrev
+Size:         309 B
+File Size:    309 B
+Known size:   0 B
+Unknown size: 309 B
+Offset:       0x115000 - 0x115135
+Address:      0x0 - 0x214
+Memory:       false
+Debug:        true"
+`;
+
+exports[`entry match 67`] = `".strtab"`;
+
+exports[`entry match 68`] = `61177`;
+
+exports[`entry match 69`] = `
+"Section:      .strtab
+Size:         59.74 KB
+File Size:    59.74 KB
+Known size:   0 B
+Unknown size: 59.74 KB
+Offset:       0x1811e8 - 0x1900e1
+Address:      0x0 - 0xeef9
+Memory:       false
+Debug:        false"
+`;
+
+exports[`entry match 70`] = `"Std Packages Size"`;
+
+exports[`entry match 71`] = `1698333`;
+
+exports[`entry match 72`] = `
+"The size of the std packages in the binary.
+
+Size: 1.62 MB"
+`;
+
+exports[`entry match 73`] = `"runtime"`;
+
+exports[`entry match 74`] = `1389145`;
+
+exports[`entry match 75`] = `
+"Package: runtime
+Type:    std
+Size:    1.32 MB"
+`;
+
+exports[`entry match 76`] = `"compare_amd64.s"`;
+
+exports[`entry match 77`] = `125`;
+
+exports[`entry match 78`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Size:      125 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 79`] = `"equal_amd64.s"`;
+
+exports[`entry match 80`] = `282`;
+
+exports[`entry match 81`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Size:      282 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 82`] = `"<autogenerated>"`;
+
+exports[`entry match 83`] = `10194`;
+
+exports[`entry match 84`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      9.96 KB
+Pcln Size: 3.09 KB"
+`;
+
+exports[`entry match 85`] = `"alg.go"`;
+
+exports[`entry match 86`] = `6731`;
+
+exports[`entry match 87`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/alg.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/alg.go
+Size:      6.57 KB
+Pcln Size: 2.45 KB"
+`;
+
+exports[`entry match 88`] = `"arena.go"`;
+
+exports[`entry match 89`] = `1733`;
+
+exports[`entry match 90`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/arena.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/arena.go
+Size:      1.69 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 91`] = `"atomic_pointer.go"`;
+
+exports[`entry match 92`] = `672`;
+
+exports[`entry match 93`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Size:      672 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 94`] = `"cgo_mmap.go"`;
+
+exports[`entry match 95`] = `1552`;
+
+exports[`entry match 96`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgo_mmap.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgo_mmap.go
+Size:      1.52 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 97`] = `"cgo_sigaction.go"`;
+
+exports[`entry match 98`] = `1090`;
+
+exports[`entry match 99`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgo_sigaction.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgo_sigaction.go
+Size:      1.06 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 100`] = `"cgocall.go"`;
+
+exports[`entry match 101`] = `1747`;
+
+exports[`entry match 102`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgocall.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cgocall.go
+Size:      1.71 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 103`] = `"chan.go"`;
+
+exports[`entry match 104`] = `12731`;
+
+exports[`entry match 105`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/chan.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/chan.go
+Size:      12.43 KB
+Pcln Size: 2.02 KB"
+`;
+
+exports[`entry match 106`] = `"debugcall.go"`;
+
+exports[`entry match 107`] = `6137`;
+
+exports[`entry match 108`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/debugcall.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/debugcall.go
+Size:      5.99 KB
+Pcln Size: 981 B"
+`;
+
+exports[`entry match 109`] = `"debuglog.go"`;
+
+exports[`entry match 110`] = `142`;
+
+exports[`entry match 111`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/debuglog.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/debuglog.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 112`] = `"env_posix.go"`;
+
+exports[`entry match 113`] = `1012`;
+
+exports[`entry match 114`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/env_posix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/env_posix.go
+Size:      1012 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 115`] = `"error.go"`;
+
+exports[`entry match 116`] = `13463`;
+
+exports[`entry match 117`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/error.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/error.go
+Size:      13.15 KB
+Pcln Size: 1.06 KB"
+`;
+
+exports[`entry match 118`] = `"exithook.go"`;
+
+exports[`entry match 119`] = `1382`;
+
+exports[`entry match 120`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/exithook.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/exithook.go
+Size:      1.35 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 121`] = `"extern.go"`;
+
+exports[`entry match 122`] = `572`;
+
+exports[`entry match 123`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/extern.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/extern.go
+Size:      572 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 124`] = `"fastlog2.go"`;
+
+exports[`entry match 125`] = `416`;
+
+exports[`entry match 126`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/fastlog2.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/fastlog2.go
+Size:      416 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 127`] = `"fds_unix.go"`;
+
+exports[`entry match 128`] = `1060`;
+
+exports[`entry match 129`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/fds_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/fds_unix.go
+Size:      1.04 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 130`] = `"float.go"`;
+
+exports[`entry match 131`] = `966`;
+
+exports[`entry match 132`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/float.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/float.go
+Size:      966 B
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 133`] = `"hash64.go"`;
+
+exports[`entry match 134`] = `3458`;
+
+exports[`entry match 135`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/hash64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/hash64.go
+Size:      3.38 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 136`] = `"iface.go"`;
+
+exports[`entry match 137`] = `11616`;
+
+exports[`entry match 138`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/iface.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/iface.go
+Size:      11.34 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 139`] = `"lfstack.go"`;
+
+exports[`entry match 140`] = `2208`;
+
+exports[`entry match 141`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lfstack.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lfstack.go
+Size:      2.16 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 142`] = `"lock_futex.go"`;
+
+exports[`entry match 143`] = `5682`;
+
+exports[`entry match 144`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lock_futex.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lock_futex.go
+Size:      5.55 KB
+Pcln Size: 1.38 KB"
+`;
+
+exports[`entry match 145`] = `"lockrank_off.go"`;
+
+exports[`entry match 146`] = `1864`;
+
+exports[`entry match 147`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lockrank_off.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lockrank_off.go
+Size:      1.82 KB
+Pcln Size: 1.28 KB"
+`;
+
+exports[`entry match 148`] = `"malloc.go"`;
+
+exports[`entry match 149`] = `18406`;
+
+exports[`entry match 150`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/malloc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/malloc.go
+Size:      17.97 KB
+Pcln Size: 2.02 KB"
+`;
+
+exports[`entry match 151`] = `"map.go"`;
+
+exports[`entry match 152`] = `17579`;
+
+exports[`entry match 153`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map.go
+Size:      17.17 KB
+Pcln Size: 2.87 KB"
+`;
+
+exports[`entry match 154`] = `"map_fast32.go"`;
+
+exports[`entry match 155`] = `7392`;
+
+exports[`entry match 156`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_fast32.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_fast32.go
+Size:      7.22 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 157`] = `"map_fast64.go"`;
+
+exports[`entry match 158`] = `6396`;
+
+exports[`entry match 159`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_fast64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_fast64.go
+Size:      6.25 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 160`] = `"map_faststr.go"`;
+
+exports[`entry match 161`] = `11923`;
+
+exports[`entry match 162`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_faststr.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/map_faststr.go
+Size:      11.64 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 163`] = `"mbarrier.go"`;
+
+exports[`entry match 164`] = `1656`;
+
+exports[`entry match 165`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbarrier.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbarrier.go
+Size:      1.62 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 166`] = `"mbitmap.go"`;
+
+exports[`entry match 167`] = `13475`;
+
+exports[`entry match 168`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap.go
+Size:      13.16 KB
+Pcln Size: 2.77 KB"
+`;
+
+exports[`entry match 169`] = `"mbitmap_allocheaders.go"`;
+
+exports[`entry match 170`] = `10649`;
+
+exports[`entry match 171`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap_allocheaders.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap_allocheaders.go
+Size:      10.4 KB
+Pcln Size: 1.81 KB"
+`;
+
+exports[`entry match 172`] = `"mcache.go"`;
+
+exports[`entry match 173`] = `5855`;
+
+exports[`entry match 174`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcache.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcache.go
+Size:      5.72 KB
+Pcln Size: 1.06 KB"
+`;
+
+exports[`entry match 175`] = `"mcheckmark.go"`;
+
+exports[`entry match 176`] = `2140`;
+
+exports[`entry match 177`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcheckmark.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcheckmark.go
+Size:      2.09 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 178`] = `"mem.go"`;
+
+exports[`entry match 179`] = `2422`;
+
+exports[`entry match 180`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mem.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mem.go
+Size:      2.37 KB
+Pcln Size: 981 B"
+`;
+
+exports[`entry match 181`] = `"mem_linux.go"`;
+
+exports[`entry match 182`] = `4232`;
+
+exports[`entry match 183`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mem_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mem_linux.go
+Size:      4.13 KB
+Pcln Size: 981 B"
+`;
+
+exports[`entry match 184`] = `"mfinal.go"`;
+
+exports[`entry match 185`] = `1805`;
+
+exports[`entry match 186`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mfinal.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mfinal.go
+Size:      1.76 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 187`] = `"mgc.go"`;
+
+exports[`entry match 188`] = `27630`;
+
+exports[`entry match 189`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgc.go
+Size:      26.98 KB
+Pcln Size: 3.83 KB"
+`;
+
+exports[`entry match 190`] = `"mgclimit.go"`;
+
+exports[`entry match 191`] = `7793`;
+
+exports[`entry match 192`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgclimit.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgclimit.go
+Size:      7.61 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 193`] = `"mgcmark.go"`;
+
+exports[`entry match 194`] = `32757`;
+
+exports[`entry match 195`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcmark.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcmark.go
+Size:      31.99 KB
+Pcln Size: 3.19 KB"
+`;
+
+exports[`entry match 196`] = `"mgcpacer.go"`;
+
+exports[`entry match 197`] = `19144`;
+
+exports[`entry match 198`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcpacer.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcpacer.go
+Size:      18.7 KB
+Pcln Size: 2.77 KB"
+`;
+
+exports[`entry match 199`] = `"mgcscavenge.go"`;
+
+exports[`entry match 200`] = `22811`;
+
+exports[`entry match 201`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcscavenge.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcscavenge.go
+Size:      22.28 KB
+Pcln Size: 4.26 KB"
+`;
+
+exports[`entry match 202`] = `"mgcstack.go"`;
+
+exports[`entry match 203`] = `3505`;
+
+exports[`entry match 204`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcstack.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcstack.go
+Size:      3.42 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 205`] = `"mgcsweep.go"`;
+
+exports[`entry match 206`] = `19294`;
+
+exports[`entry match 207`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcsweep.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcsweep.go
+Size:      18.84 KB
+Pcln Size: 2.66 KB"
+`;
+
+exports[`entry match 208`] = `"mgcwork.go"`;
+
+exports[`entry match 209`] = `8930`;
+
+exports[`entry match 210`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcwork.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgcwork.go
+Size:      8.72 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry match 211`] = `"mheap.go"`;
+
+exports[`entry match 212`] = `32995`;
+
+exports[`entry match 213`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mheap.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mheap.go
+Size:      32.22 KB
+Pcln Size: 6.07 KB"
+`;
+
+exports[`entry match 214`] = `"mpagealloc.go"`;
+
+exports[`entry match 215`] = `22863`;
+
+exports[`entry match 216`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagealloc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagealloc.go
+Size:      22.33 KB
+Pcln Size: 2.87 KB"
+`;
+
+exports[`entry match 217`] = `"mpallocbits.go"`;
+
+exports[`entry match 218`] = `9677`;
+
+exports[`entry match 219`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpallocbits.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpallocbits.go
+Size:      9.45 KB
+Pcln Size: 2.66 KB"
+`;
+
+exports[`entry match 220`] = `"mprof.go"`;
+
+exports[`entry match 221`] = `20397`;
+
+exports[`entry match 222`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mprof.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mprof.go
+Size:      19.92 KB
+Pcln Size: 4.26 KB"
+`;
+
+exports[`entry match 223`] = `"mranges.go"`;
+
+exports[`entry match 224`] = `9666`;
+
+exports[`entry match 225`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mranges.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mranges.go
+Size:      9.44 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry match 226`] = `"msize_allocheaders.go"`;
+
+exports[`entry match 227`] = `850`;
+
+exports[`entry match 228`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/msize_allocheaders.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/msize_allocheaders.go
+Size:      850 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 229`] = `"mspanset.go"`;
+
+exports[`entry match 230`] = `6800`;
+
+exports[`entry match 231`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mspanset.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mspanset.go
+Size:      6.64 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 232`] = `"mwbbuf.go"`;
+
+exports[`entry match 233`] = `2700`;
+
+exports[`entry match 234`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mwbbuf.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mwbbuf.go
+Size:      2.64 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 235`] = `"nbpipe_pipe2.go"`;
+
+exports[`entry match 236`] = `271`;
+
+exports[`entry match 237`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/nbpipe_pipe2.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/nbpipe_pipe2.go
+Size:      271 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 238`] = `"netpoll.go"`;
+
+exports[`entry match 239`] = `2814`;
+
+exports[`entry match 240`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/netpoll.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/netpoll.go
+Size:      2.75 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 241`] = `"netpoll_epoll.go"`;
+
+exports[`entry match 242`] = `3439`;
+
+exports[`entry match 243`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/netpoll_epoll.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/netpoll_epoll.go
+Size:      3.36 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 244`] = `"nonwindows_stub.go"`;
+
+exports[`entry match 245`] = `142`;
+
+exports[`entry match 246`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/nonwindows_stub.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/nonwindows_stub.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 247`] = `"os_linux.go"`;
+
+exports[`entry match 248`] = `15158`;
+
+exports[`entry match 249`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux.go
+Size:      14.8 KB
+Pcln Size: 3.3 KB"
+`;
+
+exports[`entry match 250`] = `"os_linux_generic.go"`;
+
+exports[`entry match 251`] = `701`;
+
+exports[`entry match 252`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_generic.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_generic.go
+Size:      701 B
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 253`] = `"os_linux_noauxv.go"`;
+
+exports[`entry match 254`] = `142`;
+
+exports[`entry match 255`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_noauxv.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_noauxv.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 256`] = `"os_linux_x86.go"`;
+
+exports[`entry match 257`] = `142`;
+
+exports[`entry match 258`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_x86.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_linux_x86.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 259`] = `"os_nonopenbsd.go"`;
+
+exports[`entry match 260`] = `284`;
+
+exports[`entry match 261`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_nonopenbsd.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/os_nonopenbsd.go
+Size:      284 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 262`] = `"pagetrace_off.go"`;
+
+exports[`entry match 263`] = `710`;
+
+exports[`entry match 264`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/pagetrace_off.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/pagetrace_off.go
+Size:      710 B
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 265`] = `"panic.go"`;
+
+exports[`entry match 266`] = `27422`;
+
+exports[`entry match 267`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/panic.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/panic.go
+Size:      26.78 KB
+Pcln Size: 5.43 KB"
+`;
+
+exports[`entry match 268`] = `"preempt.go"`;
+
+exports[`entry match 269`] = `5646`;
+
+exports[`entry match 270`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt.go
+Size:      5.51 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 271`] = `"preempt_nonwindows.go"`;
+
+exports[`entry match 272`] = `284`;
+
+exports[`entry match 273`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt_nonwindows.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt_nonwindows.go
+Size:      284 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 274`] = `"print.go"`;
+
+exports[`entry match 275`] = `8742`;
+
+exports[`entry match 276`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/print.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/print.go
+Size:      8.54 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 277`] = `"proc.go"`;
+
+exports[`entry match 278`] = `139494`;
+
+exports[`entry match 279`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/proc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/proc.go
+Size:      136.22 KB
+Pcln Size: 22.89 KB"
+`;
+
+exports[`entry match 280`] = `"profbuf.go"`;
+
+exports[`entry match 281`] = `6912`;
+
+exports[`entry match 282`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/profbuf.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/profbuf.go
+Size:      6.75 KB
+Pcln Size: 1.38 KB"
+`;
+
+exports[`entry match 283`] = `"rand.go"`;
+
+exports[`entry match 284`] = `3775`;
+
+exports[`entry match 285`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rand.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rand.go
+Size:      3.69 KB
+Pcln Size: 1.06 KB"
+`;
+
+exports[`entry match 286`] = `"retry.go"`;
+
+exports[`entry match 287`] = `352`;
+
+exports[`entry match 288`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/retry.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/retry.go
+Size:      352 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 289`] = `"runtime.go"`;
+
+exports[`entry match 290`] = `1412`;
+
+exports[`entry match 291`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime.go
+Size:      1.38 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 292`] = `"runtime1.go"`;
+
+exports[`entry match 293`] = `9506`;
+
+exports[`entry match 294`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Size:      9.28 KB
+Pcln Size: 1.38 KB"
+`;
+
+exports[`entry match 295`] = `"runtime2.go"`;
+
+exports[`entry match 296`] = `1999`;
+
+exports[`entry match 297`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime2.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime2.go
+Size:      1.95 KB
+Pcln Size: 1.38 KB"
+`;
+
+exports[`entry match 298`] = `"security_linux.go"`;
+
+exports[`entry match 299`] = `291`;
+
+exports[`entry match 300`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/security_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/security_linux.go
+Size:      291 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 301`] = `"security_unix.go"`;
+
+exports[`entry match 302`] = `1078`;
+
+exports[`entry match 303`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/security_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/security_unix.go
+Size:      1.05 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 304`] = `"sema.go"`;
+
+exports[`entry match 305`] = `9524`;
+
+exports[`entry match 306`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sema.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sema.go
+Size:      9.3 KB
+Pcln Size: 1.17 KB"
+`;
+
+exports[`entry match 307`] = `"signal_amd64.go"`;
+
+exports[`entry match 308`] = `4419`;
+
+exports[`entry match 309`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_amd64.go
+Size:      4.32 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 310`] = `"signal_unix.go"`;
+
+exports[`entry match 311`] = `20400`;
+
+exports[`entry match 312`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_unix.go
+Size:      19.92 KB
+Pcln Size: 3.62 KB"
+`;
+
+exports[`entry match 313`] = `"sigqueue.go"`;
+
+exports[`entry match 314`] = `1137`;
+
+exports[`entry match 315`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sigqueue.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sigqueue.go
+Size:      1.11 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 316`] = `"slice.go"`;
+
+exports[`entry match 317`] = `4163`;
+
+exports[`entry match 318`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/slice.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/slice.go
+Size:      4.07 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 319`] = `"stack.go"`;
+
+exports[`entry match 320`] = `25979`;
+
+exports[`entry match 321`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stack.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stack.go
+Size:      25.37 KB
+Pcln Size: 3.41 KB"
+`;
+
+exports[`entry match 322`] = `"stkframe.go"`;
+
+exports[`entry match 323`] = `5726`;
+
+exports[`entry match 324`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stkframe.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stkframe.go
+Size:      5.59 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 325`] = `"string.go"`;
+
+exports[`entry match 326`] = `9621`;
+
+exports[`entry match 327`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/string.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/string.go
+Size:      9.4 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry match 328`] = `"stubs.go"`;
+
+exports[`entry match 329`] = `1083`;
+
+exports[`entry match 330`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stubs.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stubs.go
+Size:      1.06 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 331`] = `"stubs2.go"`;
+
+exports[`entry match 332`] = `208`;
+
+exports[`entry match 333`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stubs2.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/stubs2.go
+Size:      208 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 334`] = `"symtab.go"`;
+
+exports[`entry match 335`] = `26030`;
+
+exports[`entry match 336`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/symtab.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/symtab.go
+Size:      25.42 KB
+Pcln Size: 4.04 KB"
+`;
+
+exports[`entry match 337`] = `"symtabinl.go"`;
+
+exports[`entry match 338`] = `2244`;
+
+exports[`entry match 339`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/symtabinl.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/symtabinl.go
+Size:      2.19 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 340`] = `"sys_x86.go"`;
+
+exports[`entry match 341`] = `339`;
+
+exports[`entry match 342`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sys_x86.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sys_x86.go
+Size:      339 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 343`] = `"tagptr_64bit.go"`;
+
+exports[`entry match 344`] = `452`;
+
+exports[`entry match 345`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/tagptr_64bit.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/tagptr_64bit.go
+Size:      452 B
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 346`] = `"time.go"`;
+
+exports[`entry match 347`] = `17930`;
+
+exports[`entry match 348`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time.go
+Size:      17.51 KB
+Pcln Size: 2.02 KB"
+`;
+
+exports[`entry match 349`] = `"time_nofake.go"`;
+
+exports[`entry match 350`] = `559`;
+
+exports[`entry match 351`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_nofake.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_nofake.go
+Size:      559 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 352`] = `"tls_stub.go"`;
+
+exports[`entry match 353`] = `142`;
+
+exports[`entry match 354`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/tls_stub.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/tls_stub.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 355`] = `"trace2.go"`;
+
+exports[`entry match 356`] = `852`;
+
+exports[`entry match 357`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2.go
+Size:      852 B
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 358`] = `"trace2buf.go"`;
+
+exports[`entry match 359`] = `4687`;
+
+exports[`entry match 360`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2buf.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2buf.go
+Size:      4.58 KB
+Pcln Size: 1.49 KB"
+`;
+
+exports[`entry match 361`] = `"trace2cpu.go"`;
+
+exports[`entry match 362`] = `1254`;
+
+exports[`entry match 363`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2cpu.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2cpu.go
+Size:      1.22 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 364`] = `"trace2runtime.go"`;
+
+exports[`entry match 365`] = `18340`;
+
+exports[`entry match 366`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2runtime.go
+Size:      17.91 KB
+Pcln Size: 4.58 KB"
+`;
+
+exports[`entry match 367`] = `"trace2stack.go"`;
+
+exports[`entry match 368`] = `2392`;
+
+exports[`entry match 369`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2stack.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2stack.go
+Size:      2.34 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 370`] = `"trace2time.go"`;
+
+exports[`entry match 371`] = `170`;
+
+exports[`entry match 372`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2time.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2time.go
+Size:      170 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 373`] = `"traceback.go"`;
+
+exports[`entry match 374`] = `36885`;
+
+exports[`entry match 375`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/traceback.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/traceback.go
+Size:      36.02 KB
+Pcln Size: 4.68 KB"
+`;
+
+exports[`entry match 376`] = `"type.go"`;
+
+exports[`entry match 377`] = `15207`;
+
+exports[`entry match 378`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/type.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/type.go
+Size:      14.85 KB
+Pcln Size: 1.49 KB"
+`;
+
+exports[`entry match 379`] = `"typekind.go"`;
+
+exports[`entry match 380`] = `152`;
+
+exports[`entry match 381`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/typekind.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/typekind.go
+Size:      152 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 382`] = `"unsafe.go"`;
+
+exports[`entry match 383`] = `1406`;
+
+exports[`entry match 384`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/unsafe.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/unsafe.go
+Size:      1.37 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 385`] = `"utf8.go"`;
+
+exports[`entry match 386`] = `1043`;
+
+exports[`entry match 387`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/utf8.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/utf8.go
+Size:      1.02 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 388`] = `"vdso_linux.go"`;
+
+exports[`entry match 389`] = `6821`;
+
+exports[`entry match 390`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/vdso_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/vdso_linux.go
+Size:      6.66 KB
+Pcln Size: 872 B"
+`;
+
+exports[`entry match 391`] = `"write_err.go"`;
+
+exports[`entry match 392`] = `299`;
+
+exports[`entry match 393`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/write_err.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/write_err.go
+Size:      299 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 394`] = `"asm.s"`;
+
+exports[`entry match 395`] = `142`;
+
+exports[`entry match 396`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm.s
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 397`] = `"asm_amd64.s"`;
+
+exports[`entry match 398`] = `12105`;
+
+exports[`entry match 399`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm_amd64.s
+Size:      11.82 KB
+Pcln Size: 5 KB"
+`;
+
+exports[`entry match 400`] = `"duff_amd64.s"`;
+
+exports[`entry match 401`] = `2796`;
+
+exports[`entry match 402`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/duff_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/duff_amd64.s
+Size:      2.73 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 403`] = `"memclr_amd64.s"`;
+
+exports[`entry match 404`] = `1620`;
+
+exports[`entry match 405`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/memclr_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/memclr_amd64.s
+Size:      1.58 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 406`] = `"memmove_amd64.s"`;
+
+exports[`entry match 407`] = `3564`;
+
+exports[`entry match 408`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/memmove_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/memmove_amd64.s
+Size:      3.48 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 409`] = `"preempt_amd64.s"`;
+
+exports[`entry match 410`] = `988`;
+
+exports[`entry match 411`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/preempt_amd64.s
+Size:      988 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 412`] = `"sys_linux_amd64.s"`;
+
+exports[`entry match 413`] = `8126`;
+
+exports[`entry match 414`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sys_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sys_linux_amd64.s
+Size:      7.94 KB
+Pcln Size: 3.94 KB"
+`;
+
+exports[`entry match 415`] = `"cpuflags_amd64.go"`;
+
+exports[`entry match 416`] = `289`;
+
+exports[`entry match 417`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cpuflags_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cpuflags_amd64.go
+Size:      289 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 418`] = `"cpuprof.go"`;
+
+exports[`entry match 419`] = `2527`;
+
+exports[`entry match 420`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cpuprof.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/cpuprof.go
+Size:      2.47 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 421`] = `"defs_linux_amd64.go"`;
+
+exports[`entry match 422`] = `224`;
+
+exports[`entry match 423`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/defs_linux_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/defs_linux_amd64.go
+Size:      224 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 424`] = `"histogram.go"`;
+
+exports[`entry match 425`] = `478`;
+
+exports[`entry match 426`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/histogram.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/histogram.go
+Size:      478 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 427`] = `"lockrank.go"`;
+
+exports[`entry match 428`] = `296`;
+
+exports[`entry match 429`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lockrank.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/lockrank.go
+Size:      296 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 430`] = `"mcentral.go"`;
+
+exports[`entry match 431`] = `4219`;
+
+exports[`entry match 432`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcentral.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mcentral.go
+Size:      4.12 KB
+Pcln Size: 872 B"
+`;
+
+exports[`entry match 433`] = `"mfixalloc.go"`;
+
+exports[`entry match 434`] = `1491`;
+
+exports[`entry match 435`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mfixalloc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mfixalloc.go
+Size:      1.46 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 436`] = `"mpagealloc_64bit.go"`;
+
+exports[`entry match 437`] = `6406`;
+
+exports[`entry match 438`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagealloc_64bit.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagealloc_64bit.go
+Size:      6.26 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 439`] = `"mpagecache.go"`;
+
+exports[`entry match 440`] = `4060`;
+
+exports[`entry match 441`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagecache.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mpagecache.go
+Size:      3.96 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 442`] = `"mstats.go"`;
+
+exports[`entry match 443`] = `2694`;
+
+exports[`entry match 444`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mstats.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mstats.go
+Size:      2.63 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 445`] = `"pinner.go"`;
+
+exports[`entry match 446`] = `1431`;
+
+exports[`entry match 447`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/pinner.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/pinner.go
+Size:      1.4 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 448`] = `"rwmutex.go"`;
+
+exports[`entry match 449`] = `1776`;
+
+exports[`entry match 450`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rwmutex.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rwmutex.go
+Size:      1.73 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 451`] = `"signal_linux_amd64.go"`;
+
+exports[`entry match 452`] = `5557`;
+
+exports[`entry match 453`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_linux_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/signal_linux_amd64.go
+Size:      5.43 KB
+Pcln Size: 2.77 KB"
+`;
+
+exports[`entry match 454`] = `"trace2event.go"`;
+
+exports[`entry match 455`] = `3906`;
+
+exports[`entry match 456`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2event.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2event.go
+Size:      3.81 KB
+Pcln Size: 872 B"
+`;
+
+exports[`entry match 457`] = `"trace2map.go"`;
+
+exports[`entry match 458`] = `3148`;
+
+exports[`entry match 459`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2map.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2map.go
+Size:      3.07 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 460`] = `"trace2region.go"`;
+
+exports[`entry match 461`] = `659`;
+
+exports[`entry match 462`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2region.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2region.go
+Size:      659 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 463`] = `"trace2status.go"`;
+
+exports[`entry match 464`] = `2982`;
+
+exports[`entry match 465`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2status.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2status.go
+Size:      2.91 KB
+Pcln Size: 763 B"
+`;
+
+exports[`entry match 466`] = `"trace2string.go"`;
+
+exports[`entry match 467`] = `1554`;
+
+exports[`entry match 468`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2string.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/trace2string.go
+Size:      1.52 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 469`] = `"types.go"`;
+
+exports[`entry match 470`] = `361`;
+
+exports[`entry match 471`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/atomic/types.go
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/atomic/types.go
+Size: 361 B"
+`;
+
+exports[`entry match 472`] = `"time_linux_amd64.s"`;
+
+exports[`entry match 473`] = `221`;
+
+exports[`entry match 474`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_linux_amd64.s
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_linux_amd64.s
+Size: 221 B"
+`;
+
+exports[`entry match 475`] = `"rt0_linux_amd64.s"`;
+
+exports[`entry match 476`] = `5`;
+
+exports[`entry match 477`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rt0_linux_amd64.s
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rt0_linux_amd64.s
+Size: 5 B"
+`;
+
+exports[`entry match 478`] = `"/internal/syscall"`;
+
+exports[`entry match 479`] = `1283`;
+
+exports[`entry match 480`] = `
+"Package: runtime/internal/syscall
+Type:    std
+Size:    1.25 KB"
+`;
+
+exports[`entry match 481`] = `"syscall_linux.go"`;
+
+exports[`entry match 482`] = `1048`;
+
+exports[`entry match 483`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/syscall_linux.go
+Size:      1.02 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 484`] = `"asm_linux_amd64.s"`;
+
+exports[`entry match 485`] = `227`;
+
+exports[`entry match 486`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/asm_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/asm_linux_amd64.s
+Size:      227 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 487`] = `"runtime/internal/syscall._zero"`;
+
+exports[`entry match 488`] = `8`;
+
+exports[`entry match 489`] = `
+"Symbol:  runtime/internal/syscall._zero
+Size:    8 B
+Address: 0x5742b0
+Type:    data"
+`;
+
+exports[`entry match 490`] = `"/internal/atomic"`;
+
+exports[`entry match 491`] = `7404`;
+
+exports[`entry match 492`] = `
+"Package: runtime/internal/atomic
+Type:    std
+Size:    7.23 KB"
+`;
+
+exports[`entry match 493`] = `"atomic_pointer.go"`;
+
+exports[`entry match 494`] = `346`;
+
+exports[`entry match 495`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Size:      346 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 496`] = `"types.go"`;
+
+exports[`entry match 497`] = `7038`;
+
+exports[`entry match 498`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/atomic/types.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/atomic/types.go
+Size:      6.87 KB
+Pcln Size: 4.79 KB"
+`;
+
+exports[`entry match 499`] = `"<autogenerated>"`;
+
+exports[`entry match 500`] = `20`;
+
+exports[`entry match 501`] = `
+"File: <autogenerated>
+Path: <autogenerated>
+Size: 20 B"
+`;
+
+exports[`entry match 502`] = `"/internal/sys"`;
+
+exports[`entry match 503`] = `678`;
+
+exports[`entry match 504`] = `
+"Package: runtime/internal/sys
+Type:    std
+Size:    678 B"
+`;
+
+exports[`entry match 505`] = `"intrinsics.go"`;
+
+exports[`entry match 506`] = `672`;
+
+exports[`entry match 507`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/sys/intrinsics.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/sys/intrinsics.go
+Size:      672 B
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 508`] = `"<autogenerated>"`;
+
+exports[`entry match 509`] = `6`;
+
+exports[`entry match 510`] = `
+"File: <autogenerated>
+Path: <autogenerated>
+Size: 6 B"
+`;
+
+exports[`entry match 511`] = `"/debug"`;
+
+exports[`entry match 512`] = `397`;
+
+exports[`entry match 513`] = `
+"Package: runtime/debug
+Type:    std
+Size:    397 B"
+`;
+
+exports[`entry match 514`] = `"runtime1.go"`;
+
+exports[`entry match 515`] = `397`;
+
+exports[`entry match 516`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Size:      397 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 517`] = `"runtime.useAeshash"`;
+
+exports[`entry match 518`] = `1`;
+
+exports[`entry match 519`] = `
+"Symbol:  runtime.useAeshash
+Size:    1 B
+Address: 0x5740a9
+Type:    data"
+`;
+
+exports[`entry match 520`] = `"runtime.aeskeysched"`;
+
+exports[`entry match 521`] = `128`;
+
+exports[`entry match 522`] = `
+"Symbol:  runtime.aeskeysched
+Size:    128 B
+Address: 0x5746e0
+Type:    data"
+`;
+
+exports[`entry match 523`] = `"runtime.hashkey"`;
+
+exports[`entry match 524`] = `32`;
+
+exports[`entry match 525`] = `
+"Symbol:  runtime.hashkey
+Size:    32 B
+Address: 0x574360
+Type:    data"
+`;
+
+exports[`entry match 526`] = `"runtime.userArenaState"`;
+
+exports[`entry match 527`] = `56`;
+
+exports[`entry match 528`] = `
+"Symbol:  runtime.userArenaState
+Size:    56 B
+Address: 0x514a40
+Type:    data"
+`;
+
+exports[`entry match 529`] = `"runtime.iscgo"`;
+
+exports[`entry match 530`] = `1`;
+
+exports[`entry match 531`] = `
+"Symbol:  runtime.iscgo
+Size:    1 B
+Address: 0x5740aa
+Type:    data"
+`;
+
+exports[`entry match 532`] = `"runtime.set_crosscall2"`;
+
+exports[`entry match 533`] = `8`;
+
+exports[`entry match 534`] = `
+"Symbol:  runtime.set_crosscall2
+Size:    8 B
+Address: 0x514470
+Type:    data"
+`;
+
+exports[`entry match 535`] = `"runtime.cgoHasExtraM"`;
+
+exports[`entry match 536`] = `1`;
+
+exports[`entry match 537`] = `
+"Symbol:  runtime.cgoHasExtraM
+Size:    1 B
+Address: 0x5740ab
+Type:    data"
+`;
+
+exports[`entry match 538`] = `"runtime.cgo_yield"`;
+
+exports[`entry match 539`] = `8`;
+
+exports[`entry match 540`] = `
+"Symbol:  runtime.cgo_yield
+Size:    8 B
+Address: 0x5108e0
+Type:    data"
+`;
+
+exports[`entry match 541`] = `"runtime.ncgocall"`;
+
+exports[`entry match 542`] = `8`;
+
+exports[`entry match 543`] = `
+"Symbol:  runtime.ncgocall
+Size:    8 B
+Address: 0x574128
+Type:    data"
+`;
+
+exports[`entry match 544`] = `"runtime.x86HasPOPCNT"`;
+
+exports[`entry match 545`] = `1`;
+
+exports[`entry match 546`] = `
+"Symbol:  runtime.x86HasPOPCNT
+Size:    1 B
+Address: 0x5740ac
+Type:    data"
+`;
+
+exports[`entry match 547`] = `"runtime.x86HasSSE41"`;
+
+exports[`entry match 548`] = `1`;
+
+exports[`entry match 549`] = `
+"Symbol:  runtime.x86HasSSE41
+Size:    1 B
+Address: 0x5740ad
+Type:    data"
+`;
+
+exports[`entry match 550`] = `"runtime.x86HasFMA"`;
+
+exports[`entry match 551`] = `1`;
+
+exports[`entry match 552`] = `
+"Symbol:  runtime.x86HasFMA
+Size:    1 B
+Address: 0x5740ae
+Type:    data"
+`;
+
+exports[`entry match 553`] = `"runtime.useAVXmemmove"`;
+
+exports[`entry match 554`] = `1`;
+
+exports[`entry match 555`] = `
+"Symbol:  runtime.useAVXmemmove
+Size:    1 B
+Address: 0x5740af
+Type:    data"
+`;
+
+exports[`entry match 556`] = `"runtime.cpuprof"`;
+
+exports[`entry match 557`] = `8048`;
+
+exports[`entry match 558`] = `
+"Symbol:  runtime.cpuprof
+Size:    7.86 KB
+Address: 0x5174c0
+Type:    data"
+`;
+
+exports[`entry match 559`] = `"runtime._cgo_setenv"`;
+
+exports[`entry match 560`] = `8`;
+
+exports[`entry match 561`] = `
+"Symbol:  runtime._cgo_setenv
+Size:    8 B
+Address: 0x514478
+Type:    data"
+`;
+
+exports[`entry match 562`] = `"runtime._cgo_unsetenv"`;
+
+exports[`entry match 563`] = `8`;
+
+exports[`entry match 564`] = `
+"Symbol:  runtime._cgo_unsetenv
+Size:    8 B
+Address: 0x514480
+Type:    data"
+`;
+
+exports[`entry match 565`] = `"runtime.boundsErrorFmts"`;
+
+exports[`entry match 566`] = `144`;
+
+exports[`entry match 567`] = `
+"Symbol:  runtime.boundsErrorFmts
+Size:    144 B
+Address: 0x511840
+Type:    data"
+`;
+
+exports[`entry match 568`] = `"runtime.boundsNegErrorFmts"`;
+
+exports[`entry match 569`] = `128`;
+
+exports[`entry match 570`] = `
+"Symbol:  runtime.boundsNegErrorFmts
+Size:    128 B
+Address: 0x5117c0
+Type:    data"
+`;
+
+exports[`entry match 571`] = `"runtime.exitHooks"`;
+
+exports[`entry match 572`] = `32`;
+
+exports[`entry match 573`] = `
+"Symbol:  runtime.exitHooks
+Size:    32 B
+Address: 0x5149c0
+Type:    data"
+`;
+
+exports[`entry match 574`] = `"runtime.defaultGOROOT"`;
+
+exports[`entry match 575`] = `16`;
+
+exports[`entry match 576`] = `
+"Symbol:  runtime.defaultGOROOT
+Size:    16 B
+Address: 0x510920
+Type:    data"
+`;
+
+exports[`entry match 577`] = `"runtime.buildVersion"`;
+
+exports[`entry match 578`] = `16`;
+
+exports[`entry match 579`] = `
+"Symbol:  runtime.buildVersion
+Size:    16 B
+Address: 0x510930
+Type:    data"
+`;
+
+exports[`entry match 580`] = `"runtime.fastlog2Table"`;
+
+exports[`entry match 581`] = `264`;
+
+exports[`entry match 582`] = `
+"Symbol:  runtime.fastlog2Table
+Size:    264 B
+Address: 0x50db00
+Type:    data"
+`;
+
+exports[`entry match 583`] = `"runtime.inf"`;
+
+exports[`entry match 584`] = `8`;
+
+exports[`entry match 585`] = `
+"Symbol:  runtime.inf
+Size:    8 B
+Address: 0x574130
+Type:    data"
+`;
+
+exports[`entry match 586`] = `"runtime.itabLock"`;
+
+exports[`entry match 587`] = `8`;
+
+exports[`entry match 588`] = `
+"Symbol:  runtime.itabLock
+Size:    8 B
+Address: 0x574138
+Type:    data"
+`;
+
+exports[`entry match 589`] = `"runtime.itabTable"`;
+
+exports[`entry match 590`] = `8`;
+
+exports[`entry match 591`] = `
+"Symbol:  runtime.itabTable
+Size:    8 B
+Address: 0x5108e8
+Type:    data"
+`;
+
+exports[`entry match 592`] = `"runtime.itabTableInit"`;
+
+exports[`entry match 593`] = `4112`;
+
+exports[`entry match 594`] = `
+"Symbol:  runtime.itabTableInit
+Size:    4.02 KB
+Address: 0x513420
+Type:    data"
+`;
+
+exports[`entry match 595`] = `"runtime.uint16Eface"`;
+
+exports[`entry match 596`] = `16`;
+
+exports[`entry match 597`] = `
+"Symbol:  runtime.uint16Eface
+Size:    16 B
+Address: 0x510940
+Type:    data"
+`;
+
+exports[`entry match 598`] = `"runtime.uint32Eface"`;
+
+exports[`entry match 599`] = `16`;
+
+exports[`entry match 600`] = `
+"Symbol:  runtime.uint32Eface
+Size:    16 B
+Address: 0x510950
+Type:    data"
+`;
+
+exports[`entry match 601`] = `"runtime.uint64Eface"`;
+
+exports[`entry match 602`] = `16`;
+
+exports[`entry match 603`] = `
+"Symbol:  runtime.uint64Eface
+Size:    16 B
+Address: 0x510960
+Type:    data"
+`;
+
+exports[`entry match 604`] = `"runtime.stringEface"`;
+
+exports[`entry match 605`] = `16`;
+
+exports[`entry match 606`] = `
+"Symbol:  runtime.stringEface
+Size:    16 B
+Address: 0x510970
+Type:    data"
+`;
+
+exports[`entry match 607`] = `"runtime.sliceEface"`;
+
+exports[`entry match 608`] = `16`;
+
+exports[`entry match 609`] = `
+"Symbol:  runtime.sliceEface
+Size:    16 B
+Address: 0x510980
+Type:    data"
+`;
+
+exports[`entry match 610`] = `"runtime.uint16Type"`;
+
+exports[`entry match 611`] = `8`;
+
+exports[`entry match 612`] = `
+"Symbol:  runtime.uint16Type
+Size:    8 B
+Address: 0x514488
+Type:    data"
+`;
+
+exports[`entry match 613`] = `"runtime.uint32Type"`;
+
+exports[`entry match 614`] = `8`;
+
+exports[`entry match 615`] = `
+"Symbol:  runtime.uint32Type
+Size:    8 B
+Address: 0x514490
+Type:    data"
+`;
+
+exports[`entry match 616`] = `"runtime.uint64Type"`;
+
+exports[`entry match 617`] = `8`;
+
+exports[`entry match 618`] = `
+"Symbol:  runtime.uint64Type
+Size:    8 B
+Address: 0x514498
+Type:    data"
+`;
+
+exports[`entry match 619`] = `"runtime.stringType"`;
+
+exports[`entry match 620`] = `8`;
+
+exports[`entry match 621`] = `
+"Symbol:  runtime.stringType
+Size:    8 B
+Address: 0x5144a0
+Type:    data"
+`;
+
+exports[`entry match 622`] = `"runtime.sliceType"`;
+
+exports[`entry match 623`] = `8`;
+
+exports[`entry match 624`] = `
+"Symbol:  runtime.sliceType
+Size:    8 B
+Address: 0x5144a8
+Type:    data"
+`;
+
+exports[`entry match 625`] = `"runtime.emptyInterfaceSwitchCache"`;
+
+exports[`entry match 626`] = `32`;
+
+exports[`entry match 627`] = `
+"Symbol:  runtime.emptyInterfaceSwitchCache
+Size:    32 B
+Address: 0x574380
+Type:    data"
+`;
+
+exports[`entry match 628`] = `"runtime.staticuint64s"`;
+
+exports[`entry match 629`] = `2048`;
+
+exports[`entry match 630`] = `
+"Symbol:  runtime.staticuint64s
+Size:    2 KB
+Address: 0x50e4e0
+Type:    data"
+`;
+
+exports[`entry match 631`] = `"runtime.lockNames"`;
+
+exports[`entry match 632`] = `24`;
+
+exports[`entry match 633`] = `
+"Symbol:  runtime.lockNames
+Size:    24 B
+Address: 0x510af0
+Type:    data"
+`;
+
+exports[`entry match 634`] = `"runtime.physPageSize"`;
+
+exports[`entry match 635`] = `8`;
+
+exports[`entry match 636`] = `
+"Symbol:  runtime.physPageSize
+Size:    8 B
+Address: 0x574140
+Type:    data"
+`;
+
+exports[`entry match 637`] = `"runtime.physHugePageSize"`;
+
+exports[`entry match 638`] = `8`;
+
+exports[`entry match 639`] = `
+"Symbol:  runtime.physHugePageSize
+Size:    8 B
+Address: 0x574148
+Type:    data"
+`;
+
+exports[`entry match 640`] = `"runtime.physHugePageShift"`;
+
+exports[`entry match 641`] = `8`;
+
+exports[`entry match 642`] = `
+"Symbol:  runtime.physHugePageShift
+Size:    8 B
+Address: 0x574150
+Type:    data"
+`;
+
+exports[`entry match 643`] = `"runtime.zerobase"`;
+
+exports[`entry match 644`] = `8`;
+
+exports[`entry match 645`] = `
+"Symbol:  runtime.zerobase
+Size:    8 B
+Address: 0x5740a0
+Type:    data"
+`;
+
+exports[`entry match 646`] = `"runtime.globalAlloc"`;
+
+exports[`entry match 647`] = `24`;
+
+exports[`entry match 648`] = `
+"Symbol:  runtime.globalAlloc
+Size:    24 B
+Address: 0x574300
+Type:    data"
+`;
+
+exports[`entry match 649`] = `"runtime.persistentChunks"`;
+
+exports[`entry match 650`] = `8`;
+
+exports[`entry match 651`] = `
+"Symbol:  runtime.persistentChunks
+Size:    8 B
+Address: 0x574158
+Type:    data"
+`;
+
+exports[`entry match 652`] = `"runtime.zeroVal"`;
+
+exports[`entry match 653`] = `1024`;
+
+exports[`entry match 654`] = `
+"Symbol:  runtime.zeroVal
+Size:    1 KB
+Address: 0x575480
+Type:    data"
+`;
+
+exports[`entry match 655`] = `"runtime.emptymspan"`;
+
+exports[`entry match 656`] = `160`;
+
+exports[`entry match 657`] = `
+"Symbol:  runtime.emptymspan
+Size:    160 B
+Address: 0x514b00
+Type:    data"
+`;
+
+exports[`entry match 658`] = `"runtime.useCheckmark"`;
+
+exports[`entry match 659`] = `1`;
+
+exports[`entry match 660`] = `
+"Symbol:  runtime.useCheckmark
+Size:    1 B
+Address: 0x5740b0
+Type:    data"
+`;
+
+exports[`entry match 661`] = `"runtime.adviseUnused"`;
+
+exports[`entry match 662`] = `4`;
+
+exports[`entry match 663`] = `
+"Symbol:  runtime.adviseUnused
+Size:    4 B
+Address: 0x50d188
+Type:    data"
+`;
+
+exports[`entry match 664`] = `"runtime.fingStatus"`;
+
+exports[`entry match 665`] = `4`;
+
+exports[`entry match 666`] = `
+"Symbol:  runtime.fingStatus
+Size:    4 B
+Address: 0x5740c0
+Type:    data"
+`;
+
+exports[`entry match 667`] = `"runtime.finlock"`;
+
+exports[`entry match 668`] = `8`;
+
+exports[`entry match 669`] = `
+"Symbol:  runtime.finlock
+Size:    8 B
+Address: 0x574160
+Type:    data"
+`;
+
+exports[`entry match 670`] = `"runtime.fing"`;
+
+exports[`entry match 671`] = `8`;
+
+exports[`entry match 672`] = `
+"Symbol:  runtime.fing
+Size:    8 B
+Address: 0x5144b0
+Type:    data"
+`;
+
+exports[`entry match 673`] = `"runtime.finq"`;
+
+exports[`entry match 674`] = `8`;
+
+exports[`entry match 675`] = `
+"Symbol:  runtime.finq
+Size:    8 B
+Address: 0x574168
+Type:    data"
+`;
+
+exports[`entry match 676`] = `"runtime.finc"`;
+
+exports[`entry match 677`] = `8`;
+
+exports[`entry match 678`] = `
+"Symbol:  runtime.finc
+Size:    8 B
+Address: 0x574170
+Type:    data"
+`;
+
+exports[`entry match 679`] = `"runtime.finptrmask"`;
+
+exports[`entry match 680`] = `64`;
+
+exports[`entry match 681`] = `
+"Symbol:  runtime.finptrmask
+Size:    64 B
+Address: 0x574500
+Type:    data"
+`;
+
+exports[`entry match 682`] = `"runtime.allfin"`;
+
+exports[`entry match 683`] = `8`;
+
+exports[`entry match 684`] = `
+"Symbol:  runtime.allfin
+Size:    8 B
+Address: 0x574178
+Type:    data"
+`;
+
+exports[`entry match 685`] = `"runtime.finalizer1"`;
+
+exports[`entry match 686`] = `5`;
+
+exports[`entry match 687`] = `
+"Symbol:  runtime.finalizer1
+Size:    5 B
+Address: 0x50d1a0
+Type:    data"
+`;
+
+exports[`entry match 688`] = `"runtime.gcphase"`;
+
+exports[`entry match 689`] = `4`;
+
+exports[`entry match 690`] = `
+"Symbol:  runtime.gcphase
+Size:    4 B
+Address: 0x5740c4
+Type:    data"
+`;
+
+exports[`entry match 691`] = `"runtime.writeBarrier"`;
+
+exports[`entry match 692`] = `16`;
+
+exports[`entry match 693`] = `
+"Symbol:  runtime.writeBarrier
+Size:    16 B
+Address: 0x5742e0
+Type:    data"
+`;
+
+exports[`entry match 694`] = `"runtime.gcBlackenEnabled"`;
+
+exports[`entry match 695`] = `4`;
+
+exports[`entry match 696`] = `
+"Symbol:  runtime.gcBlackenEnabled
+Size:    4 B
+Address: 0x5740c8
+Type:    data"
+`;
+
+exports[`entry match 697`] = `"runtime.work"`;
+
+exports[`entry match 698`] = `568`;
+
+exports[`entry match 699`] = `
+"Symbol:  runtime.work
+Size:    568 B
+Address: 0x514fc0
+Type:    data"
+`;
+
+exports[`entry match 700`] = `"runtime.gcMarkDoneFlushed"`;
+
+exports[`entry match 701`] = `4`;
+
+exports[`entry match 702`] = `
+"Symbol:  runtime.gcMarkDoneFlushed
+Size:    4 B
+Address: 0x5740cc
+Type:    data"
+`;
+
+exports[`entry match 703`] = `"runtime.poolcleanup"`;
+
+exports[`entry match 704`] = `8`;
+
+exports[`entry match 705`] = `
+"Symbol:  runtime.poolcleanup
+Size:    8 B
+Address: 0x5144b8
+Type:    data"
+`;
+
+exports[`entry match 706`] = `"runtime.boringCaches"`;
+
+exports[`entry match 707`] = `24`;
+
+exports[`entry match 708`] = `
+"Symbol:  runtime.boringCaches
+Size:    24 B
+Address: 0x514800
+Type:    data"
+`;
+
+exports[`entry match 709`] = `"runtime.gcCPULimiter"`;
+
+exports[`entry match 710`] = `88`;
+
+exports[`entry match 711`] = `
+"Symbol:  runtime.gcCPULimiter
+Size:    88 B
+Address: 0x574600
+Type:    data"
+`;
+
+exports[`entry match 712`] = `"runtime.oneptrmask"`;
+
+exports[`entry match 713`] = `1`;
+
+exports[`entry match 714`] = `
+"Symbol:  runtime.oneptrmask
+Size:    1 B
+Address: 0x50d181
+Type:    data"
+`;
+
+exports[`entry match 715`] = `"runtime.gcController"`;
+
+exports[`entry match 716`] = `392`;
+
+exports[`entry match 717`] = `
+"Symbol:  runtime.gcController
+Size:    392 B
+Address: 0x574c80
+Type:    data"
+`;
+
+exports[`entry match 718`] = `"runtime.scavenge"`;
+
+exports[`entry match 719`] = `32`;
+
+exports[`entry match 720`] = `
+"Symbol:  runtime.scavenge
+Size:    32 B
+Address: 0x5743a0
+Type:    data"
+`;
+
+exports[`entry match 721`] = `"runtime.scavenger"`;
+
+exports[`entry match 722`] = `160`;
+
+exports[`entry match 723`] = `
+"Symbol:  runtime.scavenger
+Size:    160 B
+Address: 0x514ba0
+Type:    data"
+`;
+
+exports[`entry match 724`] = `"runtime.sweep"`;
+
+exports[`entry match 725`] = `32`;
+
+exports[`entry match 726`] = `
+"Symbol:  runtime.sweep
+Size:    32 B
+Address: 0x5149e0
+Type:    data"
+`;
+
+exports[`entry match 727`] = `"runtime.mheap_"`;
+
+exports[`entry match 728`] = `92856`;
+
+exports[`entry match 729`] = `
+"Symbol:  runtime.mheap_
+Size:    90.68 KB
+Address: 0x51d300
+Type:    data"
+`;
+
+exports[`entry match 730`] = `"runtime.mSpanStateNames"`;
+
+exports[`entry match 731`] = `24`;
+
+exports[`entry match 732`] = `
+"Symbol:  runtime.mSpanStateNames
+Size:    24 B
+Address: 0x510b10
+Type:    data"
+`;
+
+exports[`entry match 733`] = `"runtime.gcBitsArenas"`;
+
+exports[`entry match 734`] = `40`;
+
+exports[`entry match 735`] = `
+"Symbol:  runtime.gcBitsArenas
+Size:    40 B
+Address: 0x574400
+Type:    data"
+`;
+
+exports[`entry match 736`] = `"runtime.levelBits"`;
+
+exports[`entry match 737`] = `40`;
+
+exports[`entry match 738`] = `
+"Symbol:  runtime.levelBits
+Size:    40 B
+Address: 0x50d3e0
+Type:    data"
+`;
+
+exports[`entry match 739`] = `"runtime.levelShift"`;
+
+exports[`entry match 740`] = `40`;
+
+exports[`entry match 741`] = `
+"Symbol:  runtime.levelShift
+Size:    40 B
+Address: 0x50d420
+Type:    data"
+`;
+
+exports[`entry match 742`] = `"runtime.levelLogPages"`;
+
+exports[`entry match 743`] = `40`;
+
+exports[`entry match 744`] = `
+"Symbol:  runtime.levelLogPages
+Size:    40 B
+Address: 0x50d460
+Type:    data"
+`;
+
+exports[`entry match 745`] = `"runtime.profInsertLock"`;
+
+exports[`entry match 746`] = `8`;
+
+exports[`entry match 747`] = `
+"Symbol:  runtime.profInsertLock
+Size:    8 B
+Address: 0x574180
+Type:    data"
+`;
+
+exports[`entry match 748`] = `"runtime.profBlockLock"`;
+
+exports[`entry match 749`] = `8`;
+
+exports[`entry match 750`] = `
+"Symbol:  runtime.profBlockLock
+Size:    8 B
+Address: 0x574188
+Type:    data"
+`;
+
+exports[`entry match 751`] = `"runtime.profMemActiveLock"`;
+
+exports[`entry match 752`] = `8`;
+
+exports[`entry match 753`] = `
+"Symbol:  runtime.profMemActiveLock
+Size:    8 B
+Address: 0x574190
+Type:    data"
+`;
+
+exports[`entry match 754`] = `"runtime.profMemFutureLock"`;
+
+exports[`entry match 755`] = `24`;
+
+exports[`entry match 756`] = `
+"Symbol:  runtime.profMemFutureLock
+Size:    24 B
+Address: 0x574320
+Type:    data"
+`;
+
+exports[`entry match 757`] = `"runtime.mbuckets"`;
+
+exports[`entry match 758`] = `8`;
+
+exports[`entry match 759`] = `
+"Symbol:  runtime.mbuckets
+Size:    8 B
+Address: 0x5144c0
+Type:    data"
+`;
+
+exports[`entry match 760`] = `"runtime.bbuckets"`;
+
+exports[`entry match 761`] = `8`;
+
+exports[`entry match 762`] = `
+"Symbol:  runtime.bbuckets
+Size:    8 B
+Address: 0x5144c8
+Type:    data"
+`;
+
+exports[`entry match 763`] = `"runtime.xbuckets"`;
+
+exports[`entry match 764`] = `8`;
+
+exports[`entry match 765`] = `
+"Symbol:  runtime.xbuckets
+Size:    8 B
+Address: 0x5144d0
+Type:    data"
+`;
+
+exports[`entry match 766`] = `"runtime.buckhash"`;
+
+exports[`entry match 767`] = `8`;
+
+exports[`entry match 768`] = `
+"Symbol:  runtime.buckhash
+Size:    8 B
+Address: 0x5144d8
+Type:    data"
+`;
+
+exports[`entry match 769`] = `"runtime.mProfCycle"`;
+
+exports[`entry match 770`] = `4`;
+
+exports[`entry match 771`] = `
+"Symbol:  runtime.mProfCycle
+Size:    4 B
+Address: 0x5740d0
+Type:    data"
+`;
+
+exports[`entry match 772`] = `"runtime.blockprofilerate"`;
+
+exports[`entry match 773`] = `8`;
+
+exports[`entry match 774`] = `
+"Symbol:  runtime.blockprofilerate
+Size:    8 B
+Address: 0x574198
+Type:    data"
+`;
+
+exports[`entry match 775`] = `"runtime.mutexprofilerate"`;
+
+exports[`entry match 776`] = `8`;
+
+exports[`entry match 777`] = `
+"Symbol:  runtime.mutexprofilerate
+Size:    8 B
+Address: 0x5741a0
+Type:    data"
+`;
+
+exports[`entry match 778`] = `"runtime.MemProfileRate"`;
+
+exports[`entry match 779`] = `8`;
+
+exports[`entry match 780`] = `
+"Symbol:  runtime.MemProfileRate
+Size:    8 B
+Address: 0x50d1d0
+Type:    data"
+`;
+
+exports[`entry match 781`] = `"runtime.disableMemoryProfiling"`;
+
+exports[`entry match 782`] = `1`;
+
+exports[`entry match 783`] = `
+"Symbol:  runtime.disableMemoryProfiling
+Size:    1 B
+Address: 0x510880
+Type:    data"
+`;
+
+exports[`entry match 784`] = `"runtime.goroutineProfile"`;
+
+exports[`entry match 785`] = `64`;
+
+exports[`entry match 786`] = `
+"Symbol:  runtime.goroutineProfile
+Size:    64 B
+Address: 0x511600
+Type:    data"
+`;
+
+exports[`entry match 787`] = `"runtime.tracelock"`;
+
+exports[`entry match 788`] = `8`;
+
+exports[`entry match 789`] = `
+"Symbol:  runtime.tracelock
+Size:    8 B
+Address: 0x5741a8
+Type:    data"
+`;
+
+exports[`entry match 790`] = `"runtime.minOffAddr"`;
+
+exports[`entry match 791`] = `8`;
+
+exports[`entry match 792`] = `
+"Symbol:  runtime.minOffAddr
+Size:    8 B
+Address: 0x50d1d8
+Type:    data"
+`;
+
+exports[`entry match 793`] = `"runtime.maxOffAddr"`;
+
+exports[`entry match 794`] = `8`;
+
+exports[`entry match 795`] = `
+"Symbol:  runtime.maxOffAddr
+Size:    8 B
+Address: 0x50d1e0
+Type:    data"
+`;
+
+exports[`entry match 796`] = `"runtime.spanSetBlockPool"`;
+
+exports[`entry match 797`] = `8`;
+
+exports[`entry match 798`] = `
+"Symbol:  runtime.spanSetBlockPool
+Size:    8 B
+Address: 0x5741b0
+Type:    data"
+`;
+
+exports[`entry match 799`] = `"runtime.memstats"`;
+
+exports[`entry match 800`] = `7744`;
+
+exports[`entry match 801`] = `
+"Symbol:  runtime.memstats
+Size:    7.56 KB
+Address: 0x575c80
+Type:    data"
+`;
+
+exports[`entry match 802`] = `"runtime.netpollInitLock"`;
+
+exports[`entry match 803`] = `8`;
+
+exports[`entry match 804`] = `
+"Symbol:  runtime.netpollInitLock
+Size:    8 B
+Address: 0x5741b8
+Type:    data"
+`;
+
+exports[`entry match 805`] = `"runtime.netpollInited"`;
+
+exports[`entry match 806`] = `4`;
+
+exports[`entry match 807`] = `
+"Symbol:  runtime.netpollInited
+Size:    4 B
+Address: 0x5740d4
+Type:    data"
+`;
+
+exports[`entry match 808`] = `"runtime.netpollWaiters"`;
+
+exports[`entry match 809`] = `4`;
+
+exports[`entry match 810`] = `
+"Symbol:  runtime.netpollWaiters
+Size:    4 B
+Address: 0x5740d8
+Type:    data"
+`;
+
+exports[`entry match 811`] = `"runtime.pdEface"`;
+
+exports[`entry match 812`] = `16`;
+
+exports[`entry match 813`] = `
+"Symbol:  runtime.pdEface
+Size:    16 B
+Address: 0x510990
+Type:    data"
+`;
+
+exports[`entry match 814`] = `"runtime.pdType"`;
+
+exports[`entry match 815`] = `8`;
+
+exports[`entry match 816`] = `
+"Symbol:  runtime.pdType
+Size:    8 B
+Address: 0x5144e0
+Type:    data"
+`;
+
+exports[`entry match 817`] = `"runtime.epfd"`;
+
+exports[`entry match 818`] = `4`;
+
+exports[`entry match 819`] = `
+"Symbol:  runtime.epfd
+Size:    4 B
+Address: 0x50d18c
+Type:    data"
+`;
+
+exports[`entry match 820`] = `"runtime.netpollBreakRd"`;
+
+exports[`entry match 821`] = `8`;
+
+exports[`entry match 822`] = `
+"Symbol:  runtime.netpollBreakRd
+Size:    8 B
+Address: 0x5741c0
+Type:    data"
+`;
+
+exports[`entry match 823`] = `"runtime.netpollBreakWr"`;
+
+exports[`entry match 824`] = `8`;
+
+exports[`entry match 825`] = `
+"Symbol:  runtime.netpollBreakWr
+Size:    8 B
+Address: 0x5741c8
+Type:    data"
+`;
+
+exports[`entry match 826`] = `"runtime.netpollWakeSig"`;
+
+exports[`entry match 827`] = `4`;
+
+exports[`entry match 828`] = `
+"Symbol:  runtime.netpollWakeSig
+Size:    4 B
+Address: 0x5740dc
+Type:    data"
+`;
+
+exports[`entry match 829`] = `"runtime.procAuxv"`;
+
+exports[`entry match 830`] = `24`;
+
+exports[`entry match 831`] = `
+"Symbol:  runtime.procAuxv
+Size:    24 B
+Address: 0x510b30
+Type:    data"
+`;
+
+exports[`entry match 832`] = `"runtime.addrspace_vec"`;
+
+exports[`entry match 833`] = `1`;
+
+exports[`entry match 834`] = `
+"Symbol:  runtime.addrspace_vec
+Size:    1 B
+Address: 0x5740b1
+Type:    data"
+`;
+
+exports[`entry match 835`] = `"runtime.auxvreadbuf"`;
+
+exports[`entry match 836`] = `1024`;
+
+exports[`entry match 837`] = `
+"Symbol:  runtime.auxvreadbuf
+Size:    1 KB
+Address: 0x575880
+Type:    data"
+`;
+
+exports[`entry match 838`] = `"runtime.secureMode"`;
+
+exports[`entry match 839`] = `1`;
+
+exports[`entry match 840`] = `
+"Symbol:  runtime.secureMode
+Size:    1 B
+Address: 0x5740b2
+Type:    data"
+`;
+
+exports[`entry match 841`] = `"runtime.sysTHPSizePath"`;
+
+exports[`entry match 842`] = `24`;
+
+exports[`entry match 843`] = `
+"Symbol:  runtime.sysTHPSizePath
+Size:    24 B
+Address: 0x510b50
+Type:    data"
+`;
+
+exports[`entry match 844`] = `"runtime.urandom_dev"`;
+
+exports[`entry match 845`] = `24`;
+
+exports[`entry match 846`] = `
+"Symbol:  runtime.urandom_dev
+Size:    24 B
+Address: 0x510b70
+Type:    data"
+`;
+
+exports[`entry match 847`] = `"runtime.perThreadSyscall"`;
+
+exports[`entry match 848`] = `72`;
+
+exports[`entry match 849`] = `
+"Symbol:  runtime.perThreadSyscall
+Size:    72 B
+Address: 0x574540
+Type:    data"
+`;
+
+exports[`entry match 850`] = `"runtime.sigset_all"`;
+
+exports[`entry match 851`] = `8`;
+
+exports[`entry match 852`] = `
+"Symbol:  runtime.sigset_all
+Size:    8 B
+Address: 0x50d1e8
+Type:    data"
+`;
+
+exports[`entry match 853`] = `"runtime.shiftError"`;
+
+exports[`entry match 854`] = `16`;
+
+exports[`entry match 855`] = `
+"Symbol:  runtime.shiftError
+Size:    16 B
+Address: 0x5109a0
+Type:    data"
+`;
+
+exports[`entry match 856`] = `"runtime.divideError"`;
+
+exports[`entry match 857`] = `16`;
+
+exports[`entry match 858`] = `
+"Symbol:  runtime.divideError
+Size:    16 B
+Address: 0x5109b0
+Type:    data"
+`;
+
+exports[`entry match 859`] = `"runtime.overflowError"`;
+
+exports[`entry match 860`] = `16`;
+
+exports[`entry match 861`] = `
+"Symbol:  runtime.overflowError
+Size:    16 B
+Address: 0x5109c0
+Type:    data"
+`;
+
+exports[`entry match 862`] = `"runtime.floatError"`;
+
+exports[`entry match 863`] = `16`;
+
+exports[`entry match 864`] = `
+"Symbol:  runtime.floatError
+Size:    16 B
+Address: 0x5109d0
+Type:    data"
+`;
+
+exports[`entry match 865`] = `"runtime.memoryError"`;
+
+exports[`entry match 866`] = `16`;
+
+exports[`entry match 867`] = `
+"Symbol:  runtime.memoryError
+Size:    16 B
+Address: 0x5109e0
+Type:    data"
+`;
+
+exports[`entry match 868`] = `"runtime.panicnil"`;
+
+exports[`entry match 869`] = `8`;
+
+exports[`entry match 870`] = `
+"Symbol:  runtime.panicnil
+Size:    8 B
+Address: 0x5108f0
+Type:    data"
+`;
+
+exports[`entry match 871`] = `"runtime.runningPanicDefers"`;
+
+exports[`entry match 872`] = `4`;
+
+exports[`entry match 873`] = `
+"Symbol:  runtime.runningPanicDefers
+Size:    4 B
+Address: 0x5740e0
+Type:    data"
+`;
+
+exports[`entry match 874`] = `"runtime.panicking"`;
+
+exports[`entry match 875`] = `4`;
+
+exports[`entry match 876`] = `
+"Symbol:  runtime.panicking
+Size:    4 B
+Address: 0x5740e4
+Type:    data"
+`;
+
+exports[`entry match 877`] = `"runtime.paniclk"`;
+
+exports[`entry match 878`] = `8`;
+
+exports[`entry match 879`] = `
+"Symbol:  runtime.paniclk
+Size:    8 B
+Address: 0x5741d0
+Type:    data"
+`;
+
+exports[`entry match 880`] = `"runtime.didothers"`;
+
+exports[`entry match 881`] = `1`;
+
+exports[`entry match 882`] = `
+"Symbol:  runtime.didothers
+Size:    1 B
+Address: 0x5740b3
+Type:    data"
+`;
+
+exports[`entry match 883`] = `"runtime.deadlock"`;
+
+exports[`entry match 884`] = `8`;
+
+exports[`entry match 885`] = `
+"Symbol:  runtime.deadlock
+Size:    8 B
+Address: 0x5741d8
+Type:    data"
+`;
+
+exports[`entry match 886`] = `"runtime.asyncPreemptStack"`;
+
+exports[`entry match 887`] = `8`;
+
+exports[`entry match 888`] = `
+"Symbol:  runtime.asyncPreemptStack
+Size:    8 B
+Address: 0x50d1f0
+Type:    data"
+`;
+
+exports[`entry match 889`] = `"runtime.printBacklog"`;
+
+exports[`entry match 890`] = `512`;
+
+exports[`entry match 891`] = `
+"Symbol:  runtime.printBacklog
+Size:    512 B
+Address: 0x574e20
+Type:    data"
+`;
+
+exports[`entry match 892`] = `"runtime.printBacklogIndex"`;
+
+exports[`entry match 893`] = `8`;
+
+exports[`entry match 894`] = `
+"Symbol:  runtime.printBacklogIndex
+Size:    8 B
+Address: 0x5741e0
+Type:    data"
+`;
+
+exports[`entry match 895`] = `"runtime.debuglock"`;
+
+exports[`entry match 896`] = `8`;
+
+exports[`entry match 897`] = `
+"Symbol:  runtime.debuglock
+Size:    8 B
+Address: 0x5741e8
+Type:    data"
+`;
+
+exports[`entry match 898`] = `"runtime.minhexdigits"`;
+
+exports[`entry match 899`] = `8`;
+
+exports[`entry match 900`] = `
+"Symbol:  runtime.minhexdigits
+Size:    8 B
+Address: 0x5741f0
+Type:    data"
+`;
+
+exports[`entry match 901`] = `"runtime.modinfo"`;
+
+exports[`entry match 902`] = `16`;
+
+exports[`entry match 903`] = `
+"Symbol:  runtime.modinfo
+Size:    16 B
+Address: 0x5109f0
+Type:    data"
+`;
+
+exports[`entry match 904`] = `"runtime.m0"`;
+
+exports[`entry match 905`] = `2024`;
+
+exports[`entry match 906`] = `
+"Symbol:  runtime.m0
+Size:    1.98 KB
+Address: 0x515200
+Type:    data"
+`;
+
+exports[`entry match 907`] = `"runtime.g0"`;
+
+exports[`entry match 908`] = `424`;
+
+exports[`entry match 909`] = `
+"Symbol:  runtime.g0
+Size:    424 B
+Address: 0x514c40
+Type:    data"
+`;
+
+exports[`entry match 910`] = `"runtime.mcache0"`;
+
+exports[`entry match 911`] = `8`;
+
+exports[`entry match 912`] = `
+"Symbol:  runtime.mcache0
+Size:    8 B
+Address: 0x5741f8
+Type:    data"
+`;
+
+exports[`entry match 913`] = `"runtime.runtime_inittasks"`;
+
+exports[`entry match 914`] = `24`;
+
+exports[`entry match 915`] = `
+"Symbol:  runtime.runtime_inittasks
+Size:    24 B
+Address: 0x50d360
+Type:    data"
+`;
+
+exports[`entry match 916`] = `"runtime.main_init_done"`;
+
+exports[`entry match 917`] = `8`;
+
+exports[`entry match 918`] = `
+"Symbol:  runtime.main_init_done
+Size:    8 B
+Address: 0x5144e8
+Type:    data"
+`;
+
+exports[`entry match 919`] = `"runtime.mainStarted"`;
+
+exports[`entry match 920`] = `1`;
+
+exports[`entry match 921`] = `
+"Symbol:  runtime.mainStarted
+Size:    1 B
+Address: 0x5740b4
+Type:    data"
+`;
+
+exports[`entry match 922`] = `"runtime.runtimeInitTime"`;
+
+exports[`entry match 923`] = `8`;
+
+exports[`entry match 924`] = `
+"Symbol:  runtime.runtimeInitTime
+Size:    8 B
+Address: 0x574200
+Type:    data"
+`;
+
+exports[`entry match 925`] = `"runtime.initSigmask"`;
+
+exports[`entry match 926`] = `8`;
+
+exports[`entry match 927`] = `
+"Symbol:  runtime.initSigmask
+Size:    8 B
+Address: 0x574208
+Type:    data"
+`;
+
+exports[`entry match 928`] = `"runtime.gcrash"`;
+
+exports[`entry match 929`] = `424`;
+
+exports[`entry match 930`] = `
+"Symbol:  runtime.gcrash
+Size:    424 B
+Address: 0x514e00
+Type:    data"
+`;
+
+exports[`entry match 931`] = `"runtime.crashingG"`;
+
+exports[`entry match 932`] = `8`;
+
+exports[`entry match 933`] = `
+"Symbol:  runtime.crashingG
+Size:    8 B
+Address: 0x5144f0
+Type:    data"
+`;
+
+exports[`entry match 934`] = `"runtime.allglock"`;
+
+exports[`entry match 935`] = `8`;
+
+exports[`entry match 936`] = `
+"Symbol:  runtime.allglock
+Size:    8 B
+Address: 0x574210
+Type:    data"
+`;
+
+exports[`entry match 937`] = `"runtime.allgs"`;
+
+exports[`entry match 938`] = `24`;
+
+exports[`entry match 939`] = `
+"Symbol:  runtime.allgs
+Size:    24 B
+Address: 0x514820
+Type:    data"
+`;
+
+exports[`entry match 940`] = `"runtime.allglen"`;
+
+exports[`entry match 941`] = `8`;
+
+exports[`entry match 942`] = `
+"Symbol:  runtime.allglen
+Size:    8 B
+Address: 0x574218
+Type:    data"
+`;
+
+exports[`entry match 943`] = `"runtime.allgptr"`;
+
+exports[`entry match 944`] = `8`;
+
+exports[`entry match 945`] = `
+"Symbol:  runtime.allgptr
+Size:    8 B
+Address: 0x5144f8
+Type:    data"
+`;
+
+exports[`entry match 946`] = `"runtime.freezing"`;
+
+exports[`entry match 947`] = `1`;
+
+exports[`entry match 948`] = `
+"Symbol:  runtime.freezing
+Size:    1 B
+Address: 0x5740b5
+Type:    data"
+`;
+
+exports[`entry match 949`] = `"runtime.casgstatusAlwaysTrack"`;
+
+exports[`entry match 950`] = `1`;
+
+exports[`entry match 951`] = `
+"Symbol:  runtime.casgstatusAlwaysTrack
+Size:    1 B
+Address: 0x5740b6
+Type:    data"
+`;
+
+exports[`entry match 952`] = `"runtime.stwReasonStrings"`;
+
+exports[`entry match 953`] = `272`;
+
+exports[`entry match 954`] = `
+"Symbol:  runtime.stwReasonStrings
+Size:    272 B
+Address: 0x511b20
+Type:    data"
+`;
+
+exports[`entry match 955`] = `"runtime.worldsema"`;
+
+exports[`entry match 956`] = `4`;
+
+exports[`entry match 957`] = `
+"Symbol:  runtime.worldsema
+Size:    4 B
+Address: 0x50d190
+Type:    data"
+`;
+
+exports[`entry match 958`] = `"runtime.gcsema"`;
+
+exports[`entry match 959`] = `4`;
+
+exports[`entry match 960`] = `
+"Symbol:  runtime.gcsema
+Size:    4 B
+Address: 0x50d194
+Type:    data"
+`;
+
+exports[`entry match 961`] = `"runtime.extraM"`;
+
+exports[`entry match 962`] = `8`;
+
+exports[`entry match 963`] = `
+"Symbol:  runtime.extraM
+Size:    8 B
+Address: 0x574220
+Type:    data"
+`;
+
+exports[`entry match 964`] = `"runtime.extraMLength"`;
+
+exports[`entry match 965`] = `4`;
+
+exports[`entry match 966`] = `
+"Symbol:  runtime.extraMLength
+Size:    4 B
+Address: 0x5740e8
+Type:    data"
+`;
+
+exports[`entry match 967`] = `"runtime.extraMWaiters"`;
+
+exports[`entry match 968`] = `4`;
+
+exports[`entry match 969`] = `
+"Symbol:  runtime.extraMWaiters
+Size:    4 B
+Address: 0x5740ec
+Type:    data"
+`;
+
+exports[`entry match 970`] = `"runtime.extraMInUse"`;
+
+exports[`entry match 971`] = `4`;
+
+exports[`entry match 972`] = `
+"Symbol:  runtime.extraMInUse
+Size:    4 B
+Address: 0x5740f0
+Type:    data"
+`;
+
+exports[`entry match 973`] = `"runtime.allocmLock"`;
+
+exports[`entry match 974`] = `56`;
+
+exports[`entry match 975`] = `
+"Symbol:  runtime.allocmLock
+Size:    56 B
+Address: 0x574480
+Type:    data"
+`;
+
+exports[`entry match 976`] = `"runtime.execLock"`;
+
+exports[`entry match 977`] = `56`;
+
+exports[`entry match 978`] = `
+"Symbol:  runtime.execLock
+Size:    56 B
+Address: 0x5744c0
+Type:    data"
+`;
+
+exports[`entry match 979`] = `"runtime.newmHandoff"`;
+
+exports[`entry match 980`] = `40`;
+
+exports[`entry match 981`] = `
+"Symbol:  runtime.newmHandoff
+Size:    40 B
+Address: 0x574440
+Type:    data"
+`;
+
+exports[`entry match 982`] = `"runtime.inForkedChild"`;
+
+exports[`entry match 983`] = `1`;
+
+exports[`entry match 984`] = `
+"Symbol:  runtime.inForkedChild
+Size:    1 B
+Address: 0x5740b7
+Type:    data"
+`;
+
+exports[`entry match 985`] = `"runtime.prof"`;
+
+exports[`entry match 986`] = `8`;
+
+exports[`entry match 987`] = `
+"Symbol:  runtime.prof
+Size:    8 B
+Address: 0x574228
+Type:    data"
+`;
+
+exports[`entry match 988`] = `"runtime.forcegcperiod"`;
+
+exports[`entry match 989`] = `8`;
+
+exports[`entry match 990`] = `
+"Symbol:  runtime.forcegcperiod
+Size:    8 B
+Address: 0x50d1f8
+Type:    data"
+`;
+
+exports[`entry match 991`] = `"runtime.starttime"`;
+
+exports[`entry match 992`] = `8`;
+
+exports[`entry match 993`] = `
+"Symbol:  runtime.starttime
+Size:    8 B
+Address: 0x574230
+Type:    data"
+`;
+
+exports[`entry match 994`] = `"runtime.stealOrder"`;
+
+exports[`entry match 995`] = `32`;
+
+exports[`entry match 996`] = `
+"Symbol:  runtime.stealOrder
+Size:    32 B
+Address: 0x514a00
+Type:    data"
+`;
+
+exports[`entry match 997`] = `"runtime.inittrace"`;
+
+exports[`entry match 998`] = `32`;
+
+exports[`entry match 999`] = `
+"Symbol:  runtime.inittrace
+Size:    32 B
+Address: 0x5743c0
+Type:    data"
+`;
+
+exports[`entry match 1000`] = `"runtime.startupRand"`;
+
+exports[`entry match 1001`] = `24`;
+
+exports[`entry match 1002`] = `
+"Symbol:  runtime.startupRand
+Size:    24 B
+Address: 0x514840
+Type:    data"
+`;
+
+exports[`entry match 1003`] = `"runtime.globalRand"`;
+
+exports[`entry match 1004`] = `352`;
+
+exports[`entry match 1005`] = `
+"Symbol:  runtime.globalRand
+Size:    352 B
+Address: 0x574b20
+Type:    data"
+`;
+
+exports[`entry match 1006`] = `"runtime.readRandomFailed"`;
+
+exports[`entry match 1007`] = `1`;
+
+exports[`entry match 1008`] = `
+"Symbol:  runtime.readRandomFailed
+Size:    1 B
+Address: 0x5740b8
+Type:    data"
+`;
+
+exports[`entry match 1009`] = `"runtime.ticks"`;
+
+exports[`entry match 1010`] = `32`;
+
+exports[`entry match 1011`] = `
+"Symbol:  runtime.ticks
+Size:    32 B
+Address: 0x5743e0
+Type:    data"
+`;
+
+exports[`entry match 1012`] = `"runtime.envs"`;
+
+exports[`entry match 1013`] = `24`;
+
+exports[`entry match 1014`] = `
+"Symbol:  runtime.envs
+Size:    24 B
+Address: 0x514860
+Type:    data"
+`;
+
+exports[`entry match 1015`] = `"runtime.argslice"`;
+
+exports[`entry match 1016`] = `24`;
+
+exports[`entry match 1017`] = `
+"Symbol:  runtime.argslice
+Size:    24 B
+Address: 0x514880
+Type:    data"
+`;
+
+exports[`entry match 1018`] = `"runtime.godebugDefault"`;
+
+exports[`entry match 1019`] = `16`;
+
+exports[`entry match 1020`] = `
+"Symbol:  runtime.godebugDefault
+Size:    16 B
+Address: 0x510a00
+Type:    data"
+`;
+
+exports[`entry match 1021`] = `"runtime.godebugEnv"`;
+
+exports[`entry match 1022`] = `8`;
+
+exports[`entry match 1023`] = `
+"Symbol:  runtime.godebugEnv
+Size:    8 B
+Address: 0x514500
+Type:    data"
+`;
+
+exports[`entry match 1024`] = `"runtime.godebugNewIncNonDefault"`;
+
+exports[`entry match 1025`] = `8`;
+
+exports[`entry match 1026`] = `
+"Symbol:  runtime.godebugNewIncNonDefault
+Size:    8 B
+Address: 0x514508
+Type:    data"
+`;
+
+exports[`entry match 1027`] = `"runtime.auxv"`;
+
+exports[`entry match 1028`] = `24`;
+
+exports[`entry match 1029`] = `
+"Symbol:  runtime.auxv
+Size:    24 B
+Address: 0x5148a0
+Type:    data"
+`;
+
+exports[`entry match 1030`] = `"runtime.traceback_cache"`;
+
+exports[`entry match 1031`] = `4`;
+
+exports[`entry match 1032`] = `
+"Symbol:  runtime.traceback_cache
+Size:    4 B
+Address: 0x50d198
+Type:    data"
+`;
+
+exports[`entry match 1033`] = `"runtime.traceback_env"`;
+
+exports[`entry match 1034`] = `4`;
+
+exports[`entry match 1035`] = `
+"Symbol:  runtime.traceback_env
+Size:    4 B
+Address: 0x5740f4
+Type:    data"
+`;
+
+exports[`entry match 1036`] = `"runtime.argc"`;
+
+exports[`entry match 1037`] = `4`;
+
+exports[`entry match 1038`] = `
+"Symbol:  runtime.argc
+Size:    4 B
+Address: 0x5740f8
+Type:    data"
+`;
+
+exports[`entry match 1039`] = `"runtime.argv"`;
+
+exports[`entry match 1040`] = `8`;
+
+exports[`entry match 1041`] = `
+"Symbol:  runtime.argv
+Size:    8 B
+Address: 0x514510
+Type:    data"
+`;
+
+exports[`entry match 1042`] = `"runtime.test_z64"`;
+
+exports[`entry match 1043`] = `8`;
+
+exports[`entry match 1044`] = `
+"Symbol:  runtime.test_z64
+Size:    8 B
+Address: 0x574238
+Type:    data"
+`;
+
+exports[`entry match 1045`] = `"runtime.test_x64"`;
+
+exports[`entry match 1046`] = `8`;
+
+exports[`entry match 1047`] = `
+"Symbol:  runtime.test_x64
+Size:    8 B
+Address: 0x574240
+Type:    data"
+`;
+
+exports[`entry match 1048`] = `"runtime.debug"`;
+
+exports[`entry match 1049`] = `108`;
+
+exports[`entry match 1050`] = `
+"Symbol:  runtime.debug
+Size:    108 B
+Address: 0x574660
+Type:    data"
+`;
+
+exports[`entry match 1051`] = `"runtime.dbgvars"`;
+
+exports[`entry match 1052`] = `24`;
+
+exports[`entry match 1053`] = `
+"Symbol:  runtime.dbgvars
+Size:    24 B
+Address: 0x510b90
+Type:    data"
+`;
+
+exports[`entry match 1054`] = `"runtime.waitReasonStrings"`;
+
+exports[`entry match 1055`] = `592`;
+
+exports[`entry match 1056`] = `
+"Symbol:  runtime.waitReasonStrings
+Size:    592 B
+Address: 0x511fc0
+Type:    data"
+`;
+
+exports[`entry match 1057`] = `"runtime.allm"`;
+
+exports[`entry match 1058`] = `8`;
+
+exports[`entry match 1059`] = `
+"Symbol:  runtime.allm
+Size:    8 B
+Address: 0x514518
+Type:    data"
+`;
+
+exports[`entry match 1060`] = `"runtime.gomaxprocs"`;
+
+exports[`entry match 1061`] = `4`;
+
+exports[`entry match 1062`] = `
+"Symbol:  runtime.gomaxprocs
+Size:    4 B
+Address: 0x5740fc
+Type:    data"
+`;
+
+exports[`entry match 1063`] = `"runtime.ncpu"`;
+
+exports[`entry match 1064`] = `4`;
+
+exports[`entry match 1065`] = `
+"Symbol:  runtime.ncpu
+Size:    4 B
+Address: 0x574100
+Type:    data"
+`;
+
+exports[`entry match 1066`] = `"runtime.forcegc"`;
+
+exports[`entry match 1067`] = `24`;
+
+exports[`entry match 1068`] = `
+"Symbol:  runtime.forcegc
+Size:    24 B
+Address: 0x5148c0
+Type:    data"
+`;
+
+exports[`entry match 1069`] = `"runtime.sched"`;
+
+exports[`entry match 1070`] = `6824`;
+
+exports[`entry match 1071`] = `
+"Symbol:  runtime.sched
+Size:    6.66 KB
+Address: 0x515a00
+Type:    data"
+`;
+
+exports[`entry match 1072`] = `"runtime.newprocs"`;
+
+exports[`entry match 1073`] = `4`;
+
+exports[`entry match 1074`] = `
+"Symbol:  runtime.newprocs
+Size:    4 B
+Address: 0x574104
+Type:    data"
+`;
+
+exports[`entry match 1075`] = `"runtime.allpLock"`;
+
+exports[`entry match 1076`] = `8`;
+
+exports[`entry match 1077`] = `
+"Symbol:  runtime.allpLock
+Size:    8 B
+Address: 0x574248
+Type:    data"
+`;
+
+exports[`entry match 1078`] = `"runtime.allp"`;
+
+exports[`entry match 1079`] = `24`;
+
+exports[`entry match 1080`] = `
+"Symbol:  runtime.allp
+Size:    24 B
+Address: 0x5148e0
+Type:    data"
+`;
+
+exports[`entry match 1081`] = `"runtime.idlepMask"`;
+
+exports[`entry match 1082`] = `24`;
+
+exports[`entry match 1083`] = `
+"Symbol:  runtime.idlepMask
+Size:    24 B
+Address: 0x514900
+Type:    data"
+`;
+
+exports[`entry match 1084`] = `"runtime.timerpMask"`;
+
+exports[`entry match 1085`] = `24`;
+
+exports[`entry match 1086`] = `
+"Symbol:  runtime.timerpMask
+Size:    24 B
+Address: 0x514920
+Type:    data"
+`;
+
+exports[`entry match 1087`] = `"runtime.gcBgMarkWorkerPool"`;
+
+exports[`entry match 1088`] = `8`;
+
+exports[`entry match 1089`] = `
+"Symbol:  runtime.gcBgMarkWorkerPool
+Size:    8 B
+Address: 0x574250
+Type:    data"
+`;
+
+exports[`entry match 1090`] = `"runtime.gcBgMarkWorkerCount"`;
+
+exports[`entry match 1091`] = `4`;
+
+exports[`entry match 1092`] = `
+"Symbol:  runtime.gcBgMarkWorkerCount
+Size:    4 B
+Address: 0x574108
+Type:    data"
+`;
+
+exports[`entry match 1093`] = `"runtime.processorVersionInfo"`;
+
+exports[`entry match 1094`] = `4`;
+
+exports[`entry match 1095`] = `
+"Symbol:  runtime.processorVersionInfo
+Size:    4 B
+Address: 0x57410c
+Type:    data"
+`;
+
+exports[`entry match 1096`] = `"runtime.isIntel"`;
+
+exports[`entry match 1097`] = `1`;
+
+exports[`entry match 1098`] = `
+"Symbol:  runtime.isIntel
+Size:    1 B
+Address: 0x5740b9
+Type:    data"
+`;
+
+exports[`entry match 1099`] = `"runtime.islibrary"`;
+
+exports[`entry match 1100`] = `1`;
+
+exports[`entry match 1101`] = `
+"Symbol:  runtime.islibrary
+Size:    1 B
+Address: 0x5740ba
+Type:    data"
+`;
+
+exports[`entry match 1102`] = `"runtime.isarchive"`;
+
+exports[`entry match 1103`] = `1`;
+
+exports[`entry match 1104`] = `
+"Symbol:  runtime.isarchive
+Size:    1 B
+Address: 0x5740bb
+Type:    data"
+`;
+
+exports[`entry match 1105`] = `"runtime.chansendpc"`;
+
+exports[`entry match 1106`] = `8`;
+
+exports[`entry match 1107`] = `
+"Symbol:  runtime.chansendpc
+Size:    8 B
+Address: 0x574258
+Type:    data"
+`;
+
+exports[`entry match 1108`] = `"runtime.chanrecvpc"`;
+
+exports[`entry match 1109`] = `8`;
+
+exports[`entry match 1110`] = `
+"Symbol:  runtime.chanrecvpc
+Size:    8 B
+Address: 0x574260
+Type:    data"
+`;
+
+exports[`entry match 1111`] = `"runtime.semtable"`;
+
+exports[`entry match 1112`] = `16064`;
+
+exports[`entry match 1113`] = `
+"Symbol:  runtime.semtable
+Size:    15.69 KB
+Address: 0x519440
+Type:    data"
+`;
+
+exports[`entry match 1114`] = `"runtime.fwdSig"`;
+
+exports[`entry match 1115`] = `520`;
+
+exports[`entry match 1116`] = `
+"Symbol:  runtime.fwdSig
+Size:    520 B
+Address: 0x575020
+Type:    data"
+`;
+
+exports[`entry match 1117`] = `"runtime.handlingSig"`;
+
+exports[`entry match 1118`] = `260`;
+
+exports[`entry match 1119`] = `
+"Symbol:  runtime.handlingSig
+Size:    260 B
+Address: 0x574a00
+Type:    data"
+`;
+
+exports[`entry match 1120`] = `"runtime.signalsOK"`;
+
+exports[`entry match 1121`] = `1`;
+
+exports[`entry match 1122`] = `
+"Symbol:  runtime.signalsOK
+Size:    1 B
+Address: 0x5740bc
+Type:    data"
+`;
+
+exports[`entry match 1123`] = `"runtime.sigprofCallers"`;
+
+exports[`entry match 1124`] = `256`;
+
+exports[`entry match 1125`] = `
+"Symbol:  runtime.sigprofCallers
+Size:    256 B
+Address: 0x574800
+Type:    data"
+`;
+
+exports[`entry match 1126`] = `"runtime.sigprofCallersUse"`;
+
+exports[`entry match 1127`] = `4`;
+
+exports[`entry match 1128`] = `
+"Symbol:  runtime.sigprofCallersUse
+Size:    4 B
+Address: 0x574110
+Type:    data"
+`;
+
+exports[`entry match 1129`] = `"runtime.crashing"`;
+
+exports[`entry match 1130`] = `4`;
+
+exports[`entry match 1131`] = `
+"Symbol:  runtime.crashing
+Size:    4 B
+Address: 0x574114
+Type:    data"
+`;
+
+exports[`entry match 1132`] = `"runtime.testSigtrap"`;
+
+exports[`entry match 1133`] = `8`;
+
+exports[`entry match 1134`] = `
+"Symbol:  runtime.testSigtrap
+Size:    8 B
+Address: 0x514520
+Type:    data"
+`;
+
+exports[`entry match 1135`] = `"runtime.testSigusr1"`;
+
+exports[`entry match 1136`] = `8`;
+
+exports[`entry match 1137`] = `
+"Symbol:  runtime.testSigusr1
+Size:    8 B
+Address: 0x514528
+Type:    data"
+`;
+
+exports[`entry match 1138`] = `"runtime.sigsetAllExiting"`;
+
+exports[`entry match 1139`] = `8`;
+
+exports[`entry match 1140`] = `
+"Symbol:  runtime.sigsetAllExiting
+Size:    8 B
+Address: 0x574268
+Type:    data"
+`;
+
+exports[`entry match 1141`] = `"runtime.sig"`;
+
+exports[`entry match 1142`] = `72`;
+
+exports[`entry match 1143`] = `
+"Symbol:  runtime.sig
+Size:    72 B
+Address: 0x5745a0
+Type:    data"
+`;
+
+exports[`entry match 1144`] = `"runtime.sigtable"`;
+
+exports[`entry match 1145`] = `1560`;
+
+exports[`entry match 1146`] = `
+"Symbol:  runtime.sigtable
+Size:    1.52 KB
+Address: 0x5125a0
+Type:    data"
+`;
+
+exports[`entry match 1147`] = `"runtime.class_to_size"`;
+
+exports[`entry match 1148`] = `136`;
+
+exports[`entry match 1149`] = `
+"Symbol:  runtime.class_to_size
+Size:    136 B
+Address: 0x50d860
+Type:    data"
+`;
+
+exports[`entry match 1150`] = `"runtime.class_to_allocnpages"`;
+
+exports[`entry match 1151`] = `68`;
+
+exports[`entry match 1152`] = `
+"Symbol:  runtime.class_to_allocnpages
+Size:    68 B
+Address: 0x50d5e0
+Type:    data"
+`;
+
+exports[`entry match 1153`] = `"runtime.class_to_divmagic"`;
+
+exports[`entry match 1154`] = `272`;
+
+exports[`entry match 1155`] = `
+"Symbol:  runtime.class_to_divmagic
+Size:    272 B
+Address: 0x50dc20
+Type:    data"
+`;
+
+exports[`entry match 1156`] = `"runtime.size_to_class8"`;
+
+exports[`entry match 1157`] = `129`;
+
+exports[`entry match 1158`] = `
+"Symbol:  runtime.size_to_class8
+Size:    129 B
+Address: 0x50d7c0
+Type:    data"
+`;
+
+exports[`entry match 1159`] = `"runtime.size_to_class128"`;
+
+exports[`entry match 1160`] = `249`;
+
+exports[`entry match 1161`] = `
+"Symbol:  runtime.size_to_class128
+Size:    249 B
+Address: 0x50d900
+Type:    data"
+`;
+
+exports[`entry match 1162`] = `"runtime.stackPoisonCopy"`;
+
+exports[`entry match 1163`] = `8`;
+
+exports[`entry match 1164`] = `
+"Symbol:  runtime.stackPoisonCopy
+Size:    8 B
+Address: 0x574270
+Type:    data"
+`;
+
+exports[`entry match 1165`] = `"runtime.stackpool"`;
+
+exports[`entry match 1166`] = `256`;
+
+exports[`entry match 1167`] = `
+"Symbol:  runtime.stackpool
+Size:    256 B
+Address: 0x574900
+Type:    data"
+`;
+
+exports[`entry match 1168`] = `"runtime.stackLarge"`;
+
+exports[`entry match 1169`] = `568`;
+
+exports[`entry match 1170`] = `
+"Symbol:  runtime.stackLarge
+Size:    568 B
+Address: 0x575240
+Type:    data"
+`;
+
+exports[`entry match 1171`] = `"runtime.maxstacksize"`;
+
+exports[`entry match 1172`] = `8`;
+
+exports[`entry match 1173`] = `
+"Symbol:  runtime.maxstacksize
+Size:    8 B
+Address: 0x50d200
+Type:    data"
+`;
+
+exports[`entry match 1174`] = `"runtime.maxstackceiling"`;
+
+exports[`entry match 1175`] = `8`;
+
+exports[`entry match 1176`] = `
+"Symbol:  runtime.maxstackceiling
+Size:    8 B
+Address: 0x574278
+Type:    data"
+`;
+
+exports[`entry match 1177`] = `"runtime.startingStackSize"`;
+
+exports[`entry match 1178`] = `4`;
+
+exports[`entry match 1179`] = `
+"Symbol:  runtime.startingStackSize
+Size:    4 B
+Address: 0x50d19c
+Type:    data"
+`;
+
+exports[`entry match 1180`] = `"runtime.methodValueCallFrameObjs"`;
+
+exports[`entry match 1181`] = `16`;
+
+exports[`entry match 1182`] = `
+"Symbol:  runtime.methodValueCallFrameObjs
+Size:    16 B
+Address: 0x5742f0
+Type:    data"
+`;
+
+exports[`entry match 1183`] = `"runtime.pinnedTypemaps"`;
+
+exports[`entry match 1184`] = `24`;
+
+exports[`entry match 1185`] = `
+"Symbol:  runtime.pinnedTypemaps
+Size:    24 B
+Address: 0x514940
+Type:    data"
+`;
+
+exports[`entry match 1186`] = `"runtime.firstmoduledata"`;
+
+exports[`entry match 1187`] = `592`;
+
+exports[`entry match 1188`] = `
+"Symbol:  runtime.firstmoduledata
+Size:    592 B
+Address: 0x50dd40
+Type:    data"
+`;
+
+exports[`entry match 1189`] = `"runtime.modulesSlice"`;
+
+exports[`entry match 1190`] = `8`;
+
+exports[`entry match 1191`] = `
+"Symbol:  runtime.modulesSlice
+Size:    8 B
+Address: 0x514530
+Type:    data"
+`;
+
+exports[`entry match 1192`] = `"runtime.faketime"`;
+
+exports[`entry match 1193`] = `8`;
+
+exports[`entry match 1194`] = `
+"Symbol:  runtime.faketime
+Size:    8 B
+Address: 0x574280
+Type:    data"
+`;
+
+exports[`entry match 1195`] = `"runtime.overrideWrite"`;
+
+exports[`entry match 1196`] = `8`;
+
+exports[`entry match 1197`] = `
+"Symbol:  runtime.overrideWrite
+Size:    8 B
+Address: 0x514538
+Type:    data"
+`;
+
+exports[`entry match 1198`] = `"runtime.trace"`;
+
+exports[`entry match 1199`] = `262864`;
+
+exports[`entry match 1200`] = `
+"Symbol:  runtime.trace
+Size:    256.7 KB
+Address: 0x533dc0
+Type:    data"
+`;
+
+exports[`entry match 1201`] = `"runtime.gStatusStrings"`;
+
+exports[`entry match 1202`] = `160`;
+
+exports[`entry match 1203`] = `
+"Symbol:  runtime.gStatusStrings
+Size:    160 B
+Address: 0x5118e0
+Type:    data"
+`;
+
+exports[`entry match 1204`] = `"runtime.cgoTraceback"`;
+
+exports[`entry match 1205`] = `8`;
+
+exports[`entry match 1206`] = `
+"Symbol:  runtime.cgoTraceback
+Size:    8 B
+Address: 0x514540
+Type:    data"
+`;
+
+exports[`entry match 1207`] = `"runtime.cgoSymbolizer"`;
+
+exports[`entry match 1208`] = `8`;
+
+exports[`entry match 1209`] = `
+"Symbol:  runtime.cgoSymbolizer
+Size:    8 B
+Address: 0x514548
+Type:    data"
+`;
+
+exports[`entry match 1210`] = `"runtime.reflectOffs"`;
+
+exports[`entry match 1211`] = `32`;
+
+exports[`entry match 1212`] = `
+"Symbol:  runtime.reflectOffs
+Size:    32 B
+Address: 0x514a20
+Type:    data"
+`;
+
+exports[`entry match 1213`] = `"runtime.vdsoLinuxVersion"`;
+
+exports[`entry match 1214`] = `24`;
+
+exports[`entry match 1215`] = `
+"Symbol:  runtime.vdsoLinuxVersion
+Size:    24 B
+Address: 0x510bb0
+Type:    data"
+`;
+
+exports[`entry match 1216`] = `"runtime.vdsoSymbolKeys"`;
+
+exports[`entry match 1217`] = `24`;
+
+exports[`entry match 1218`] = `
+"Symbol:  runtime.vdsoSymbolKeys
+Size:    24 B
+Address: 0x510bd0
+Type:    data"
+`;
+
+exports[`entry match 1219`] = `"runtime.vdsoGettimeofdaySym"`;
+
+exports[`entry match 1220`] = `8`;
+
+exports[`entry match 1221`] = `
+"Symbol:  runtime.vdsoGettimeofdaySym
+Size:    8 B
+Address: 0x574288
+Type:    data"
+`;
+
+exports[`entry match 1222`] = `"runtime.vdsoClockgettimeSym"`;
+
+exports[`entry match 1223`] = `8`;
+
+exports[`entry match 1224`] = `
+"Symbol:  runtime.vdsoClockgettimeSym
+Size:    8 B
+Address: 0x574290
+Type:    data"
+`;
+
+exports[`entry match 1225`] = `"_cgo_init"`;
+
+exports[`entry match 1226`] = `8`;
+
+exports[`entry match 1227`] = `
+"Symbol:  _cgo_init
+Size:    8 B
+Address: 0x514570
+Type:    data"
+`;
+
+exports[`entry match 1228`] = `"_cgo_thread_start"`;
+
+exports[`entry match 1229`] = `8`;
+
+exports[`entry match 1230`] = `
+"Symbol:  _cgo_thread_start
+Size:    8 B
+Address: 0x514578
+Type:    data"
+`;
+
+exports[`entry match 1231`] = `"_cgo_notify_runtime_init_done"`;
+
+exports[`entry match 1232`] = `8`;
+
+exports[`entry match 1233`] = `
+"Symbol:  _cgo_notify_runtime_init_done
+Size:    8 B
+Address: 0x514580
+Type:    data"
+`;
+
+exports[`entry match 1234`] = `"_cgo_callers"`;
+
+exports[`entry match 1235`] = `8`;
+
+exports[`entry match 1236`] = `
+"Symbol:  _cgo_callers
+Size:    8 B
+Address: 0x514588
+Type:    data"
+`;
+
+exports[`entry match 1237`] = `"_cgo_yield"`;
+
+exports[`entry match 1238`] = `8`;
+
+exports[`entry match 1239`] = `
+"Symbol:  _cgo_yield
+Size:    8 B
+Address: 0x514590
+Type:    data"
+`;
+
+exports[`entry match 1240`] = `"_cgo_pthread_key_created"`;
+
+exports[`entry match 1241`] = `8`;
+
+exports[`entry match 1242`] = `
+"Symbol:  _cgo_pthread_key_created
+Size:    8 B
+Address: 0x514598
+Type:    data"
+`;
+
+exports[`entry match 1243`] = `"_cgo_getstackbound"`;
+
+exports[`entry match 1244`] = `8`;
+
+exports[`entry match 1245`] = `
+"Symbol:  _cgo_getstackbound
+Size:    8 B
+Address: 0x5145a0
+Type:    data"
+`;
+
+exports[`entry match 1246`] = `"_cgo_mmap"`;
+
+exports[`entry match 1247`] = `8`;
+
+exports[`entry match 1248`] = `
+"Symbol:  _cgo_mmap
+Size:    8 B
+Address: 0x5145a8
+Type:    data"
+`;
+
+exports[`entry match 1249`] = `"_cgo_munmap"`;
+
+exports[`entry match 1250`] = `8`;
+
+exports[`entry match 1251`] = `
+"Symbol:  _cgo_munmap
+Size:    8 B
+Address: 0x5145b0
+Type:    data"
+`;
+
+exports[`entry match 1252`] = `"_cgo_sigaction"`;
+
+exports[`entry match 1253`] = `8`;
+
+exports[`entry match 1254`] = `
+"Symbol:  _cgo_sigaction
+Size:    8 B
+Address: 0x5145b8
+Type:    data"
+`;
+
+exports[`entry match 1255`] = `"embed"`;
+
+exports[`entry match 1256`] = `16323`;
+
+exports[`entry match 1257`] = `
+"Package: embed
+Type:    std
+Size:    15.94 KB"
+`;
+
+exports[`entry match 1258`] = `"embed.go"`;
+
+exports[`entry match 1259`] = `15239`;
+
+exports[`entry match 1260`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/embed/embed.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/embed/embed.go
+Size:      14.88 KB
+Pcln Size: 1.7 KB"
+`;
+
+exports[`entry match 1261`] = `"<autogenerated>"`;
+
+exports[`entry match 1262`] = `1076`;
+
+exports[`entry match 1263`] = `
+"File: <autogenerated>
+Path: <autogenerated>
+Size: 1.05 KB"
+`;
+
+exports[`entry match 1264`] = `"embed.dotFile"`;
+
+exports[`entry match 1265`] = `8`;
+
+exports[`entry match 1266`] = `
+"Symbol:  embed.dotFile
+Size:    8 B
+Address: 0x510890
+Type:    data"
+`;
+
+exports[`entry match 1267`] = `"errors"`;
+
+exports[`entry match 1268`] = `1254`;
+
+exports[`entry match 1269`] = `
+"Package: errors
+Type:    std
+Size:    1.22 KB"
+`;
+
+exports[`entry match 1270`] = `"<autogenerated>"`;
+
+exports[`entry match 1271`] = `530`;
+
+exports[`entry match 1272`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      530 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1273`] = `"errors.go"`;
+
+exports[`entry match 1274`] = `692`;
+
+exports[`entry match 1275`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/errors/errors.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/errors/errors.go
+Size:      692 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1276`] = `"errors.ErrUnsupported"`;
+
+exports[`entry match 1277`] = `16`;
+
+exports[`entry match 1278`] = `
+"Symbol:  errors.ErrUnsupported
+Size:    16 B
+Address: 0x5145e0
+Type:    data"
+`;
+
+exports[`entry match 1279`] = `"errors.errorType"`;
+
+exports[`entry match 1280`] = `16`;
+
+exports[`entry match 1281`] = `
+"Symbol:  errors.errorType
+Size:    16 B
+Address: 0x5145f0
+Type:    data"
+`;
+
+exports[`entry match 1282`] = `"internal/chacha8rand"`;
+
+exports[`entry match 1283`] = `5267`;
+
+exports[`entry match 1284`] = `
+"Package: internal/chacha8rand
+Type:    std
+Size:    5.14 KB"
+`;
+
+exports[`entry match 1285`] = `"chacha8.go"`;
+
+exports[`entry match 1286`] = `2215`;
+
+exports[`entry match 1287`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/chacha8rand/chacha8.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/chacha8rand/chacha8.go
+Size:      2.16 KB
+Pcln Size: 654 B"
+`;
+
+exports[`entry match 1288`] = `"chacha8_amd64.s"`;
+
+exports[`entry match 1289`] = `3052`;
+
+exports[`entry match 1290`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/chacha8rand/chacha8_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/chacha8rand/chacha8_amd64.s
+Size:      2.98 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1291`] = `"internal/reflectlite"`;
+
+exports[`entry match 1292`] = `5426`;
+
+exports[`entry match 1293`] = `
+"Package: internal/reflectlite
+Type:    std
+Size:    5.3 KB"
+`;
+
+exports[`entry match 1294`] = `"runtime1.go"`;
+
+exports[`entry match 1295`] = `173`;
+
+exports[`entry match 1296`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Size:      173 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1297`] = `"type.go"`;
+
+exports[`entry match 1298`] = `3811`;
+
+exports[`entry match 1299`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/reflectlite/type.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/reflectlite/type.go
+Size:      3.72 KB
+Pcln Size: 981 B"
+`;
+
+exports[`entry match 1300`] = `"value.go"`;
+
+exports[`entry match 1301`] = `215`;
+
+exports[`entry match 1302`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/reflectlite/value.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/reflectlite/value.go
+Size:      215 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1303`] = `"<autogenerated>"`;
+
+exports[`entry match 1304`] = `1227`;
+
+exports[`entry match 1305`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      1.2 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1306`] = `"internal/oserror"`;
+
+exports[`entry match 1307`] = `941`;
+
+exports[`entry match 1308`] = `
+"Package: internal/oserror
+Type:    std
+Size:    941 B"
+`;
+
+exports[`entry match 1309`] = `"<autogenerated>"`;
+
+exports[`entry match 1310`] = `861`;
+
+exports[`entry match 1311`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      861 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1312`] = `"internal/oserror.ErrInvalid"`;
+
+exports[`entry match 1313`] = `16`;
+
+exports[`entry match 1314`] = `
+"Symbol:  internal/oserror.ErrInvalid
+Size:    16 B
+Address: 0x514760
+Type:    data"
+`;
+
+exports[`entry match 1315`] = `"internal/oserror.ErrPermission"`;
+
+exports[`entry match 1316`] = `16`;
+
+exports[`entry match 1317`] = `
+"Symbol:  internal/oserror.ErrPermission
+Size:    16 B
+Address: 0x514770
+Type:    data"
+`;
+
+exports[`entry match 1318`] = `"internal/oserror.ErrExist"`;
+
+exports[`entry match 1319`] = `16`;
+
+exports[`entry match 1320`] = `
+"Symbol:  internal/oserror.ErrExist
+Size:    16 B
+Address: 0x514780
+Type:    data"
+`;
+
+exports[`entry match 1321`] = `"internal/oserror.ErrNotExist"`;
+
+exports[`entry match 1322`] = `16`;
+
+exports[`entry match 1323`] = `
+"Symbol:  internal/oserror.ErrNotExist
+Size:    16 B
+Address: 0x514790
+Type:    data"
+`;
+
+exports[`entry match 1324`] = `"internal/oserror.ErrClosed"`;
+
+exports[`entry match 1325`] = `16`;
+
+exports[`entry match 1326`] = `
+"Symbol:  internal/oserror.ErrClosed
+Size:    16 B
+Address: 0x5147a0
+Type:    data"
+`;
+
+exports[`entry match 1327`] = `"sync"`;
+
+exports[`entry match 1328`] = `11753`;
+
+exports[`entry match 1329`] = `
+"Package: sync
+Type:    std
+Size:    11.48 KB"
+`;
+
+exports[`entry match 1330`] = `"mgc.go"`;
+
+exports[`entry match 1331`] = `205`;
+
+exports[`entry match 1332`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mgc.go
+Size:      205 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1333`] = `"mprof.go"`;
+
+exports[`entry match 1334`] = `269`;
+
+exports[`entry match 1335`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mprof.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mprof.go
+Size:      269 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1336`] = `"panic.go"`;
+
+exports[`entry match 1337`] = `346`;
+
+exports[`entry match 1338`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/panic.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/panic.go
+Size:      346 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1339`] = `"proc.go"`;
+
+exports[`entry match 1340`] = `442`;
+
+exports[`entry match 1341`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/proc.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/proc.go
+Size:      442 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1342`] = `"sema.go"`;
+
+exports[`entry match 1343`] = `993`;
+
+exports[`entry match 1344`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sema.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sema.go
+Size:      993 B
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 1345`] = `"<autogenerated>"`;
+
+exports[`entry match 1346`] = `428`;
+
+exports[`entry match 1347`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      428 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1348`] = `"pool.go"`;
+
+exports[`entry match 1349`] = `1383`;
+
+exports[`entry match 1350`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/pool.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/pool.go
+Size:      1.35 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1351`] = `"mutex.go"`;
+
+exports[`entry match 1352`] = `3261`;
+
+exports[`entry match 1353`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/mutex.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/mutex.go
+Size:      3.18 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1354`] = `"once.go"`;
+
+exports[`entry match 1355`] = `1741`;
+
+exports[`entry match 1356`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/once.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/once.go
+Size:      1.7 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1357`] = `"runtime.go"`;
+
+exports[`entry match 1358`] = `223`;
+
+exports[`entry match 1359`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/runtime.go
+Size:      223 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1360`] = `"rwmutex.go"`;
+
+exports[`entry match 1361`] = `1205`;
+
+exports[`entry match 1362`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/rwmutex.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/rwmutex.go
+Size:      1.18 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1363`] = `"/atomic"`;
+
+exports[`entry match 1364`] = `1201`;
+
+exports[`entry match 1365`] = `
+"Package: sync/atomic
+Type:    std
+Size:    1.17 KB"
+`;
+
+exports[`entry match 1366`] = `"atomic_pointer.go"`;
+
+exports[`entry match 1367`] = `173`;
+
+exports[`entry match 1368`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/atomic_pointer.go
+Size:      173 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1369`] = `"<autogenerated>"`;
+
+exports[`entry match 1370`] = `155`;
+
+exports[`entry match 1371`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      155 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1372`] = `"type.go"`;
+
+exports[`entry match 1373`] = `873`;
+
+exports[`entry match 1374`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/atomic/type.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/sync/atomic/type.go
+Size:      873 B
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1375`] = `"sync.expunged"`;
+
+exports[`entry match 1376`] = `8`;
+
+exports[`entry match 1377`] = `
+"Symbol:  sync.expunged
+Size:    8 B
+Address: 0x514458
+Type:    data"
+`;
+
+exports[`entry match 1378`] = `"sync.allPools"`;
+
+exports[`entry match 1379`] = `24`;
+
+exports[`entry match 1380`] = `
+"Symbol:  sync.allPools
+Size:    24 B
+Address: 0x5147c0
+Type:    data"
+`;
+
+exports[`entry match 1381`] = `"sync.oldPools"`;
+
+exports[`entry match 1382`] = `24`;
+
+exports[`entry match 1383`] = `
+"Symbol:  sync.oldPools
+Size:    24 B
+Address: 0x5147e0
+Type:    data"
+`;
+
+exports[`entry match 1384`] = `"internal/cpu"`;
+
+exports[`entry match 1385`] = `9990`;
+
+exports[`entry match 1386`] = `
+"Package: internal/cpu
+Type:    std
+Size:    9.76 KB"
+`;
+
+exports[`entry match 1387`] = `"cpu.go"`;
+
+exports[`entry match 1388`] = `3157`;
+
+exports[`entry match 1389`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu.go
+Size:      3.08 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1390`] = `"cpu_x86.go"`;
+
+exports[`entry match 1391`] = `5485`;
+
+exports[`entry match 1392`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu_x86.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu_x86.go
+Size:      5.36 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1393`] = `"cpu_x86.s"`;
+
+exports[`entry match 1394`] = `476`;
+
+exports[`entry match 1395`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu_x86.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/cpu/cpu_x86.s
+Size:      476 B
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1396`] = `"<autogenerated>"`;
+
+exports[`entry match 1397`] = `687`;
+
+exports[`entry match 1398`] = `
+"File: <autogenerated>
+Path: <autogenerated>
+Size: 687 B"
+`;
+
+exports[`entry match 1399`] = `"internal/cpu.DebugOptions"`;
+
+exports[`entry match 1400`] = `1`;
+
+exports[`entry match 1401`] = `
+"Symbol:  internal/cpu.DebugOptions
+Size:    1 B
+Address: 0x5740bd
+Type:    data"
+`;
+
+exports[`entry match 1402`] = `"internal/cpu.CacheLineSize"`;
+
+exports[`entry match 1403`] = `8`;
+
+exports[`entry match 1404`] = `
+"Symbol:  internal/cpu.CacheLineSize
+Size:    8 B
+Address: 0x50d210
+Type:    data"
+`;
+
+exports[`entry match 1405`] = `"internal/cpu.X86"`;
+
+exports[`entry match 1406`] = `148`;
+
+exports[`entry match 1407`] = `
+"Symbol:  internal/cpu.X86
+Size:    148 B
+Address: 0x574760
+Type:    data"
+`;
+
+exports[`entry match 1408`] = `"internal/cpu.options"`;
+
+exports[`entry match 1409`] = `24`;
+
+exports[`entry match 1410`] = `
+"Symbol:  internal/cpu.options
+Size:    24 B
+Address: 0x514980
+Type:    data"
+`;
+
+exports[`entry match 1411`] = `"internal/cpu.maxExtendedFunctionInformation"`;
+
+exports[`entry match 1412`] = `4`;
+
+exports[`entry match 1413`] = `
+"Symbol:  internal/cpu.maxExtendedFunctionInformation
+Size:    4 B
+Address: 0x57411c
+Type:    data"
+`;
+
+exports[`entry match 1414`] = `"math"`;
+
+exports[`entry match 1415`] = `453`;
+
+exports[`entry match 1416`] = `
+"Package: math
+Type:    std
+Size:    453 B"
+`;
+
+exports[`entry match 1417`] = `"<autogenerated>"`;
+
+exports[`entry match 1418`] = `230`;
+
+exports[`entry match 1419`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      230 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1420`] = `"/bits"`;
+
+exports[`entry match 1421`] = `222`;
+
+exports[`entry match 1422`] = `
+"Package: math/bits
+Type:    std
+Size:    222 B"
+`;
+
+exports[`entry match 1423`] = `"bits.go"`;
+
+exports[`entry match 1424`] = `222`;
+
+exports[`entry match 1425`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/math/bits/bits.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/math/bits/bits.go
+Size:      222 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1426`] = `"math.useFMA"`;
+
+exports[`entry match 1427`] = `1`;
+
+exports[`entry match 1428`] = `
+"Symbol:  math.useFMA
+Size:    1 B
+Address: 0x5740a8
+Type:    data"
+`;
+
+exports[`entry match 1429`] = `"unicode"`;
+
+exports[`entry match 1430`] = `4413`;
+
+exports[`entry match 1431`] = `
+"Package: unicode
+Type:    std
+Size:    4.31 KB"
+`;
+
+exports[`entry match 1432`] = `"<autogenerated>"`;
+
+exports[`entry match 1433`] = `1825`;
+
+exports[`entry match 1434`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      1.78 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1435`] = `"/utf8"`;
+
+exports[`entry match 1436`] = `2500`;
+
+exports[`entry match 1437`] = `
+"Package: unicode/utf8
+Type:    std
+Size:    2.44 KB"
+`;
+
+exports[`entry match 1438`] = `"utf8.go"`;
+
+exports[`entry match 1439`] = `2212`;
+
+exports[`entry match 1440`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/unicode/utf8/utf8.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/unicode/utf8/utf8.go
+Size:      2.16 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1441`] = `"unicode/utf8.first"`;
+
+exports[`entry match 1442`] = `256`;
+
+exports[`entry match 1443`] = `
+"Symbol:  unicode/utf8.first
+Size:    256 B
+Address: 0x50da00
+Type:    data"
+`;
+
+exports[`entry match 1444`] = `"unicode/utf8.acceptRanges"`;
+
+exports[`entry match 1445`] = `32`;
+
+exports[`entry match 1446`] = `
+"Symbol:  unicode/utf8.acceptRanges
+Size:    32 B
+Address: 0x50d3c0
+Type:    data"
+`;
+
+exports[`entry match 1447`] = `"unicode.FoldCategory"`;
+
+exports[`entry match 1448`] = `8`;
+
+exports[`entry match 1449`] = `
+"Symbol:  unicode.FoldCategory
+Size:    8 B
+Address: 0x514460
+Type:    data"
+`;
+
+exports[`entry match 1450`] = `"unicode.foldL"`;
+
+exports[`entry match 1451`] = `8`;
+
+exports[`entry match 1452`] = `
+"Symbol:  unicode.foldL
+Size:    8 B
+Address: 0x510898
+Type:    data"
+`;
+
+exports[`entry match 1453`] = `"unicode.foldLl"`;
+
+exports[`entry match 1454`] = `8`;
+
+exports[`entry match 1455`] = `
+"Symbol:  unicode.foldLl
+Size:    8 B
+Address: 0x5108a0
+Type:    data"
+`;
+
+exports[`entry match 1456`] = `"unicode.foldLt"`;
+
+exports[`entry match 1457`] = `8`;
+
+exports[`entry match 1458`] = `
+"Symbol:  unicode.foldLt
+Size:    8 B
+Address: 0x5108a8
+Type:    data"
+`;
+
+exports[`entry match 1459`] = `"unicode.foldLu"`;
+
+exports[`entry match 1460`] = `8`;
+
+exports[`entry match 1461`] = `
+"Symbol:  unicode.foldLu
+Size:    8 B
+Address: 0x5108b0
+Type:    data"
+`;
+
+exports[`entry match 1462`] = `"unicode.foldM"`;
+
+exports[`entry match 1463`] = `8`;
+
+exports[`entry match 1464`] = `
+"Symbol:  unicode.foldM
+Size:    8 B
+Address: 0x5108b8
+Type:    data"
+`;
+
+exports[`entry match 1465`] = `"unicode.foldMn"`;
+
+exports[`entry match 1466`] = `8`;
+
+exports[`entry match 1467`] = `
+"Symbol:  unicode.foldMn
+Size:    8 B
+Address: 0x5108c0
+Type:    data"
+`;
+
+exports[`entry match 1468`] = `"unicode.FoldScript"`;
+
+exports[`entry match 1469`] = `8`;
+
+exports[`entry match 1470`] = `
+"Symbol:  unicode.FoldScript
+Size:    8 B
+Address: 0x514468
+Type:    data"
+`;
+
+exports[`entry match 1471`] = `"unicode.foldCommon"`;
+
+exports[`entry match 1472`] = `8`;
+
+exports[`entry match 1473`] = `
+"Symbol:  unicode.foldCommon
+Size:    8 B
+Address: 0x5108c8
+Type:    data"
+`;
+
+exports[`entry match 1474`] = `"unicode.foldGreek"`;
+
+exports[`entry match 1475`] = `8`;
+
+exports[`entry match 1476`] = `
+"Symbol:  unicode.foldGreek
+Size:    8 B
+Address: 0x5108d0
+Type:    data"
+`;
+
+exports[`entry match 1477`] = `"unicode.foldInherited"`;
+
+exports[`entry match 1478`] = `8`;
+
+exports[`entry match 1479`] = `
+"Symbol:  unicode.foldInherited
+Size:    8 B
+Address: 0x5108d8
+Type:    data"
+`;
+
+exports[`entry match 1480`] = `"reflect"`;
+
+exports[`entry match 1481`] = `38281`;
+
+exports[`entry match 1482`] = `
+"Package: reflect
+Type:    std
+Size:    37.38 KB"
+`;
+
+exports[`entry match 1483`] = `"mbitmap.go"`;
+
+exports[`entry match 1484`] = `205`;
+
+exports[`entry match 1485`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/mbitmap.go
+Size:      205 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1486`] = `"runtime1.go"`;
+
+exports[`entry match 1487`] = `378`;
+
+exports[`entry match 1488`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime1.go
+Size:      378 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1489`] = `"<autogenerated>"`;
+
+exports[`entry match 1490`] = `2597`;
+
+exports[`entry match 1491`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      2.54 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1492`] = `"type.go"`;
+
+exports[`entry match 1493`] = `16562`;
+
+exports[`entry match 1494`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/reflect/type.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/reflect/type.go
+Size:      16.17 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 1495`] = `"value.go"`;
+
+exports[`entry match 1496`] = `18491`;
+
+exports[`entry match 1497`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/reflect/value.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/reflect/value.go
+Size:      18.06 KB
+Pcln Size: 2.13 KB"
+`;
+
+exports[`entry match 1498`] = `"reflect.kindNames"`;
+
+exports[`entry match 1499`] = `24`;
+
+exports[`entry match 1500`] = `
+"Symbol:  reflect.kindNames
+Size:    24 B
+Address: 0x510ab0
+Type:    data"
+`;
+
+exports[`entry match 1501`] = `"reflect.bytesType"`;
+
+exports[`entry match 1502`] = `8`;
+
+exports[`entry match 1503`] = `
+"Symbol:  reflect.bytesType
+Size:    8 B
+Address: 0x514440
+Type:    data"
+`;
+
+exports[`entry match 1504`] = `"reflect.uint8Type"`;
+
+exports[`entry match 1505`] = `8`;
+
+exports[`entry match 1506`] = `
+"Symbol:  reflect.uint8Type
+Size:    8 B
+Address: 0x514448
+Type:    data"
+`;
+
+exports[`entry match 1507`] = `"reflect.stringType"`;
+
+exports[`entry match 1508`] = `8`;
+
+exports[`entry match 1509`] = `
+"Symbol:  reflect.stringType
+Size:    8 B
+Address: 0x514450
+Type:    data"
+`;
+
+exports[`entry match 1510`] = `"strconv"`;
+
+exports[`entry match 1511`] = `7180`;
+
+exports[`entry match 1512`] = `
+"Package: strconv
+Type:    std
+Size:    7.01 KB"
+`;
+
+exports[`entry match 1513`] = `"<autogenerated>"`;
+
+exports[`entry match 1514`] = `471`;
+
+exports[`entry match 1515`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      471 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1516`] = `"itoa.go"`;
+
+exports[`entry match 1517`] = `6677`;
+
+exports[`entry match 1518`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/strconv/itoa.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/strconv/itoa.go
+Size:      6.52 KB
+Pcln Size: 545 B"
+`;
+
+exports[`entry match 1519`] = `"strconv.ErrRange"`;
+
+exports[`entry match 1520`] = `16`;
+
+exports[`entry match 1521`] = `
+"Symbol:  strconv.ErrRange
+Size:    16 B
+Address: 0x5145c0
+Type:    data"
+`;
+
+exports[`entry match 1522`] = `"strconv.ErrSyntax"`;
+
+exports[`entry match 1523`] = `16`;
+
+exports[`entry match 1524`] = `
+"Symbol:  strconv.ErrSyntax
+Size:    16 B
+Address: 0x5145d0
+Type:    data"
+`;
+
+exports[`entry match 1525`] = `"syscall"`;
+
+exports[`entry match 1526`] = `19275`;
+
+exports[`entry match 1527`] = `
+"Package: syscall
+Type:    std
+Size:    18.82 KB"
+`;
+
+exports[`entry match 1528`] = `"syscall_linux.go"`;
+
+exports[`entry match 1529`] = `141`;
+
+exports[`entry match 1530`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/internal/syscall/syscall_linux.go
+Size:      141 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1531`] = `"runtime.go"`;
+
+exports[`entry match 1532`] = `301`;
+
+exports[`entry match 1533`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/runtime.go
+Size:      301 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1534`] = `"<autogenerated>"`;
+
+exports[`entry match 1535`] = `941`;
+
+exports[`entry match 1536`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      941 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1537`] = `"env_unix.go"`;
+
+exports[`entry match 1538`] = `3516`;
+
+exports[`entry match 1539`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/env_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/env_unix.go
+Size:      3.43 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1540`] = `"rlimit_stub.go"`;
+
+exports[`entry match 1541`] = `147`;
+
+exports[`entry match 1542`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/rlimit_stub.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/rlimit_stub.go
+Size:      147 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1543`] = `"syscall.go"`;
+
+exports[`entry match 1544`] = `2040`;
+
+exports[`entry match 1545`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall.go
+Size:      1.99 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1546`] = `"syscall_linux.go"`;
+
+exports[`entry match 1547`] = `2108`;
+
+exports[`entry match 1548`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall_linux.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall_linux.go
+Size:      2.06 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1549`] = `"syscall_unix.go"`;
+
+exports[`entry match 1550`] = `1830`;
+
+exports[`entry match 1551`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/syscall_unix.go
+Size:      1.79 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1552`] = `"zsyscall_linux_amd64.go"`;
+
+exports[`entry match 1553`] = `5362`;
+
+exports[`entry match 1554`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/zsyscall_linux_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/zsyscall_linux_amd64.go
+Size:      5.24 KB
+Pcln Size: 872 B"
+`;
+
+exports[`entry match 1555`] = `"rlimit.go"`;
+
+exports[`entry match 1556`] = `540`;
+
+exports[`entry match 1557`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/rlimit.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/syscall/rlimit.go
+Size:      540 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1558`] = `"type.go"`;
+
+exports[`entry match 1559`] = `89`;
+
+exports[`entry match 1560`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/sync/atomic/type.go
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/sync/atomic/type.go
+Size: 89 B"
+`;
+
+exports[`entry match 1561`] = `"syscall.envOnce"`;
+
+exports[`entry match 1562`] = `12`;
+
+exports[`entry match 1563`] = `
+"Symbol:  syscall.envOnce
+Size:    12 B
+Address: 0x5742d0
+Type:    data"
+`;
+
+exports[`entry match 1564`] = `"syscall.envLock"`;
+
+exports[`entry match 1565`] = `24`;
+
+exports[`entry match 1566`] = `
+"Symbol:  syscall.envLock
+Size:    24 B
+Address: 0x574340
+Type:    data"
+`;
+
+exports[`entry match 1567`] = `"syscall.env"`;
+
+exports[`entry match 1568`] = `8`;
+
+exports[`entry match 1569`] = `
+"Symbol:  syscall.env
+Size:    8 B
+Address: 0x514560
+Type:    data"
+`;
+
+exports[`entry match 1570`] = `"syscall.envs"`;
+
+exports[`entry match 1571`] = `24`;
+
+exports[`entry match 1572`] = `
+"Symbol:  syscall.envs
+Size:    24 B
+Address: 0x5149a0
+Type:    data"
+`;
+
+exports[`entry match 1573`] = `"syscall.origRlimitNofile"`;
+
+exports[`entry match 1574`] = `8`;
+
+exports[`entry match 1575`] = `
+"Symbol:  syscall.origRlimitNofile
+Size:    8 B
+Address: 0x514568
+Type:    data"
+`;
+
+exports[`entry match 1576`] = `"syscall._zero"`;
+
+exports[`entry match 1577`] = `8`;
+
+exports[`entry match 1578`] = `
+"Symbol:  syscall._zero
+Size:    8 B
+Address: 0x5742b8
+Type:    data"
+`;
+
+exports[`entry match 1579`] = `"syscall.errEAGAIN"`;
+
+exports[`entry match 1580`] = `16`;
+
+exports[`entry match 1581`] = `
+"Symbol:  syscall.errEAGAIN
+Size:    16 B
+Address: 0x510a60
+Type:    data"
+`;
+
+exports[`entry match 1582`] = `"syscall.errEINVAL"`;
+
+exports[`entry match 1583`] = `16`;
+
+exports[`entry match 1584`] = `
+"Symbol:  syscall.errEINVAL
+Size:    16 B
+Address: 0x510a70
+Type:    data"
+`;
+
+exports[`entry match 1585`] = `"syscall.errENOENT"`;
+
+exports[`entry match 1586`] = `16`;
+
+exports[`entry match 1587`] = `
+"Symbol:  syscall.errENOENT
+Size:    16 B
+Address: 0x510a80
+Type:    data"
+`;
+
+exports[`entry match 1588`] = `"syscall.errors"`;
+
+exports[`entry match 1589`] = `2128`;
+
+exports[`entry match 1590`] = `
+"Symbol:  syscall.errors
+Size:    2.08 KB
+Address: 0x512bc0
+Type:    data"
+`;
+
+exports[`entry match 1591`] = `"internal/race"`;
+
+exports[`entry match 1592`] = `142`;
+
+exports[`entry match 1593`] = `
+"Package: internal/race
+Type:    std
+Size:    142 B"
+`;
+
+exports[`entry match 1594`] = `"norace.go"`;
+
+exports[`entry match 1595`] = `142`;
+
+exports[`entry match 1596`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/race/norace.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/race/norace.go
+Size:      142 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1597`] = `"path"`;
+
+exports[`entry match 1598`] = `313`;
+
+exports[`entry match 1599`] = `
+"Package: path
+Type:    std
+Size:    313 B"
+`;
+
+exports[`entry match 1600`] = `"<autogenerated>"`;
+
+exports[`entry match 1601`] = `297`;
+
+exports[`entry match 1602`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      297 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1603`] = `"path.ErrBadPattern"`;
+
+exports[`entry match 1604`] = `16`;
+
+exports[`entry match 1605`] = `
+"Symbol:  path.ErrBadPattern
+Size:    16 B
+Address: 0x5147b0
+Type:    data"
+`;
+
+exports[`entry match 1606`] = `"time"`;
+
+exports[`entry match 1607`] = `162925`;
+
+exports[`entry match 1608`] = `
+"Package: time
+Type:    std
+Size:    159.11 KB"
+`;
+
+exports[`entry match 1609`] = `"time.go"`;
+
+exports[`entry match 1610`] = `346`;
+
+exports[`entry match 1611`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time.go
+Size:      346 B
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1612`] = `"time_linux_amd64.s"`;
+
+exports[`entry match 1613`] = `333`;
+
+exports[`entry match 1614`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/time_linux_amd64.s
+Size:      333 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1615`] = `"format.go"`;
+
+exports[`entry match 1616`] = `63932`;
+
+exports[`entry match 1617`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/format.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/format.go
+Size:      62.43 KB
+Pcln Size: 1.38 KB"
+`;
+
+exports[`entry match 1618`] = `"sys_unix.go"`;
+
+exports[`entry match 1619`] = `2805`;
+
+exports[`entry match 1620`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/sys_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/sys_unix.go
+Size:      2.74 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1621`] = `"time.go"`;
+
+exports[`entry match 1622`] = `9056`;
+
+exports[`entry match 1623`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/time.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/time.go
+Size:      8.84 KB
+Pcln Size: 1.49 KB"
+`;
+
+exports[`entry match 1624`] = `"zoneinfo.go"`;
+
+exports[`entry match 1625`] = `30861`;
+
+exports[`entry match 1626`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo.go
+Size:      30.14 KB
+Pcln Size: 1.17 KB"
+`;
+
+exports[`entry match 1627`] = `"zoneinfo_goroot.go"`;
+
+exports[`entry match 1628`] = `474`;
+
+exports[`entry match 1629`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_goroot.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_goroot.go
+Size:      474 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1630`] = `"zoneinfo_read.go"`;
+
+exports[`entry match 1631`] = `43239`;
+
+exports[`entry match 1632`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_read.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_read.go
+Size:      42.23 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 1633`] = `"zoneinfo_unix.go"`;
+
+exports[`entry match 1634`] = `5149`;
+
+exports[`entry match 1635`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_unix.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/zoneinfo_unix.go
+Size:      5.03 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1636`] = `"<autogenerated>"`;
+
+exports[`entry match 1637`] = `2238`;
+
+exports[`entry match 1638`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      2.19 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1639`] = `"format_rfc3339.go"`;
+
+exports[`entry match 1640`] = `3996`;
+
+exports[`entry match 1641`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/format_rfc3339.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/time/format_rfc3339.go
+Size:      3.9 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1642`] = `"time.std0x"`;
+
+exports[`entry match 1643`] = `48`;
+
+exports[`entry match 1644`] = `
+"Symbol:  time.std0x
+Size:    48 B
+Address: 0x50d4a0
+Type:    data"
+`;
+
+exports[`entry match 1645`] = `"time.longDayNames"`;
+
+exports[`entry match 1646`] = `24`;
+
+exports[`entry match 1647`] = `
+"Symbol:  time.longDayNames
+Size:    24 B
+Address: 0x510c10
+Type:    data"
+`;
+
+exports[`entry match 1648`] = `"time.longMonthNames"`;
+
+exports[`entry match 1649`] = `24`;
+
+exports[`entry match 1650`] = `
+"Symbol:  time.longMonthNames
+Size:    24 B
+Address: 0x510c30
+Type:    data"
+`;
+
+exports[`entry match 1651`] = `"time.errAtoi"`;
+
+exports[`entry match 1652`] = `16`;
+
+exports[`entry match 1653`] = `
+"Symbol:  time.errAtoi
+Size:    16 B
+Address: 0x514710
+Type:    data"
+`;
+
+exports[`entry match 1654`] = `"time.errBad"`;
+
+exports[`entry match 1655`] = `16`;
+
+exports[`entry match 1656`] = `
+"Symbol:  time.errBad
+Size:    16 B
+Address: 0x514720
+Type:    data"
+`;
+
+exports[`entry match 1657`] = `"time.errLeadingInt"`;
+
+exports[`entry match 1658`] = `16`;
+
+exports[`entry match 1659`] = `
+"Symbol:  time.errLeadingInt
+Size:    16 B
+Address: 0x514730
+Type:    data"
+`;
+
+exports[`entry match 1660`] = `"time.daysBefore"`;
+
+exports[`entry match 1661`] = `52`;
+
+exports[`entry match 1662`] = `
+"Symbol:  time.daysBefore
+Size:    52 B
+Address: 0x50d520
+Type:    data"
+`;
+
+exports[`entry match 1663`] = `"time.startNano"`;
+
+exports[`entry match 1664`] = `8`;
+
+exports[`entry match 1665`] = `
+"Symbol:  time.startNano
+Size:    8 B
+Address: 0x5742a8
+Type:    data"
+`;
+
+exports[`entry match 1666`] = `"time.utcLoc"`;
+
+exports[`entry match 1667`] = `104`;
+
+exports[`entry match 1668`] = `
+"Symbol:  time.utcLoc
+Size:    104 B
+Address: 0x5116c0
+Type:    data"
+`;
+
+exports[`entry match 1669`] = `"time.localLoc"`;
+
+exports[`entry match 1670`] = `104`;
+
+exports[`entry match 1671`] = `
+"Symbol:  time.localLoc
+Size:    104 B
+Address: 0x514a80
+Type:    data"
+`;
+
+exports[`entry match 1672`] = `"time.localOnce"`;
+
+exports[`entry match 1673`] = `12`;
+
+exports[`entry match 1674`] = `
+"Symbol:  time.localOnce
+Size:    12 B
+Address: 0x5742c0
+Type:    data"
+`;
+
+exports[`entry match 1675`] = `"time.errLocation"`;
+
+exports[`entry match 1676`] = `16`;
+
+exports[`entry match 1677`] = `
+"Symbol:  time.errLocation
+Size:    16 B
+Address: 0x514740
+Type:    data"
+`;
+
+exports[`entry match 1678`] = `"time.loadFromEmbeddedTZData"`;
+
+exports[`entry match 1679`] = `8`;
+
+exports[`entry match 1680`] = `
+"Symbol:  time.loadFromEmbeddedTZData
+Size:    8 B
+Address: 0x514550
+Type:    data"
+`;
+
+exports[`entry match 1681`] = `"time.errBadData"`;
+
+exports[`entry match 1682`] = `16`;
+
+exports[`entry match 1683`] = `
+"Symbol:  time.errBadData
+Size:    16 B
+Address: 0x514750
+Type:    data"
+`;
+
+exports[`entry match 1684`] = `"time.loadTzinfoFromTzdata"`;
+
+exports[`entry match 1685`] = `8`;
+
+exports[`entry match 1686`] = `
+"Symbol:  time.loadTzinfoFromTzdata
+Size:    8 B
+Address: 0x514558
+Type:    data"
+`;
+
+exports[`entry match 1687`] = `"time.platformZoneSources"`;
+
+exports[`entry match 1688`] = `24`;
+
+exports[`entry match 1689`] = `
+"Symbol:  time.platformZoneSources
+Size:    24 B
+Address: 0x510c50
+Type:    data"
+`;
+
+exports[`entry match 1690`] = `"internal/bytealg"`;
+
+exports[`entry match 1691`] = `1642`;
+
+exports[`entry match 1692`] = `
+"Package: internal/bytealg
+Type:    std
+Size:    1.6 KB"
+`;
+
+exports[`entry match 1693`] = `"indexbyte_amd64.s"`;
+
+exports[`entry match 1694`] = `462`;
+
+exports[`entry match 1695`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/indexbyte_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/indexbyte_amd64.s
+Size:      462 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1696`] = `"index_amd64.go"`;
+
+exports[`entry match 1697`] = `207`;
+
+exports[`entry match 1698`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/index_amd64.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/index_amd64.go
+Size:      207 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1699`] = `"compare_amd64.s"`;
+
+exports[`entry match 1700`] = `571`;
+
+exports[`entry match 1701`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Size: 571 B"
+`;
+
+exports[`entry match 1702`] = `"equal_amd64.s"`;
+
+exports[`entry match 1703`] = `394`;
+
+exports[`entry match 1704`] = `
+"File: /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Path: /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Size: 394 B"
+`;
+
+exports[`entry match 1705`] = `"internal/bytealg.MaxLen"`;
+
+exports[`entry match 1706`] = `8`;
+
+exports[`entry match 1707`] = `
+"Symbol:  internal/bytealg.MaxLen
+Size:    8 B
+Address: 0x574120
+Type:    data"
+`;
+
+exports[`entry match 1708`] = `"io"`;
+
+exports[`entry match 1709`] = `13134`;
+
+exports[`entry match 1710`] = `
+"Package: io
+Type:    std
+Size:    12.83 KB"
+`;
+
+exports[`entry match 1711`] = `"<autogenerated>"`;
+
+exports[`entry match 1712`] = `1378`;
+
+exports[`entry match 1713`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      1.35 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1714`] = `"/fs"`;
+
+exports[`entry match 1715`] = `11612`;
+
+exports[`entry match 1716`] = `
+"Package: io/fs
+Type:    std
+Size:    11.34 KB"
+`;
+
+exports[`entry match 1717`] = `"<autogenerated>"`;
+
+exports[`entry match 1718`] = `2164`;
+
+exports[`entry match 1719`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      2.11 KB
+Pcln Size: 327 B"
+`;
+
+exports[`entry match 1720`] = `"format.go"`;
+
+exports[`entry match 1721`] = `4306`;
+
+exports[`entry match 1722`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/io/fs/format.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/io/fs/format.go
+Size:      4.21 KB
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1723`] = `"fs.go"`;
+
+exports[`entry match 1724`] = `5030`;
+
+exports[`entry match 1725`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/io/fs/fs.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/io/fs/fs.go
+Size:      4.91 KB
+Pcln Size: 981 B"
+`;
+
+exports[`entry match 1726`] = `"io/fs.ErrInvalid"`;
+
+exports[`entry match 1727`] = `16`;
+
+exports[`entry match 1728`] = `
+"Symbol:  io/fs.ErrInvalid
+Size:    16 B
+Address: 0x5146a0
+Type:    data"
+`;
+
+exports[`entry match 1729`] = `"io/fs.ErrPermission"`;
+
+exports[`entry match 1730`] = `16`;
+
+exports[`entry match 1731`] = `
+"Symbol:  io/fs.ErrPermission
+Size:    16 B
+Address: 0x5146b0
+Type:    data"
+`;
+
+exports[`entry match 1732`] = `"io/fs.ErrExist"`;
+
+exports[`entry match 1733`] = `16`;
+
+exports[`entry match 1734`] = `
+"Symbol:  io/fs.ErrExist
+Size:    16 B
+Address: 0x5146c0
+Type:    data"
+`;
+
+exports[`entry match 1735`] = `"io/fs.ErrNotExist"`;
+
+exports[`entry match 1736`] = `16`;
+
+exports[`entry match 1737`] = `
+"Symbol:  io/fs.ErrNotExist
+Size:    16 B
+Address: 0x5146d0
+Type:    data"
+`;
+
+exports[`entry match 1738`] = `"io/fs.ErrClosed"`;
+
+exports[`entry match 1739`] = `16`;
+
+exports[`entry match 1740`] = `
+"Symbol:  io/fs.ErrClosed
+Size:    16 B
+Address: 0x5146e0
+Type:    data"
+`;
+
+exports[`entry match 1741`] = `"io/fs.SkipDir"`;
+
+exports[`entry match 1742`] = `16`;
+
+exports[`entry match 1743`] = `
+"Symbol:  io/fs.SkipDir
+Size:    16 B
+Address: 0x5146f0
+Type:    data"
+`;
+
+exports[`entry match 1744`] = `"io/fs.SkipAll"`;
+
+exports[`entry match 1745`] = `16`;
+
+exports[`entry match 1746`] = `
+"Symbol:  io/fs.SkipAll
+Size:    16 B
+Address: 0x514700
+Type:    data"
+`;
+
+exports[`entry match 1747`] = `"io.ErrShortWrite"`;
+
+exports[`entry match 1748`] = `16`;
+
+exports[`entry match 1749`] = `
+"Symbol:  io.ErrShortWrite
+Size:    16 B
+Address: 0x514610
+Type:    data"
+`;
+
+exports[`entry match 1750`] = `"io.errInvalidWrite"`;
+
+exports[`entry match 1751`] = `16`;
+
+exports[`entry match 1752`] = `
+"Symbol:  io.errInvalidWrite
+Size:    16 B
+Address: 0x514620
+Type:    data"
+`;
+
+exports[`entry match 1753`] = `"io.ErrShortBuffer"`;
+
+exports[`entry match 1754`] = `16`;
+
+exports[`entry match 1755`] = `
+"Symbol:  io.ErrShortBuffer
+Size:    16 B
+Address: 0x514630
+Type:    data"
+`;
+
+exports[`entry match 1756`] = `"io.EOF"`;
+
+exports[`entry match 1757`] = `16`;
+
+exports[`entry match 1758`] = `
+"Symbol:  io.EOF
+Size:    16 B
+Address: 0x514640
+Type:    data"
+`;
+
+exports[`entry match 1759`] = `"io.ErrUnexpectedEOF"`;
+
+exports[`entry match 1760`] = `16`;
+
+exports[`entry match 1761`] = `
+"Symbol:  io.ErrUnexpectedEOF
+Size:    16 B
+Address: 0x514650
+Type:    data"
+`;
+
+exports[`entry match 1762`] = `"io.ErrNoProgress"`;
+
+exports[`entry match 1763`] = `16`;
+
+exports[`entry match 1764`] = `
+"Symbol:  io.ErrNoProgress
+Size:    16 B
+Address: 0x514660
+Type:    data"
+`;
+
+exports[`entry match 1765`] = `"io.errWhence"`;
+
+exports[`entry match 1766`] = `16`;
+
+exports[`entry match 1767`] = `
+"Symbol:  io.errWhence
+Size:    16 B
+Address: 0x514670
+Type:    data"
+`;
+
+exports[`entry match 1768`] = `"io.errOffset"`;
+
+exports[`entry match 1769`] = `16`;
+
+exports[`entry match 1770`] = `
+"Symbol:  io.errOffset
+Size:    16 B
+Address: 0x514680
+Type:    data"
+`;
+
+exports[`entry match 1771`] = `"io.ErrClosedPipe"`;
+
+exports[`entry match 1772`] = `16`;
+
+exports[`entry match 1773`] = `
+"Symbol:  io.ErrClosedPipe
+Size:    16 B
+Address: 0x514690
+Type:    data"
+`;
+
+exports[`entry match 1774`] = `"internal/abi"`;
+
+exports[`entry match 1775`] = `9022`;
+
+exports[`entry match 1776`] = `
+"Package: internal/abi
+Type:    std
+Size:    8.81 KB"
+`;
+
+exports[`entry match 1777`] = `"switch.go"`;
+
+exports[`entry match 1778`] = `733`;
+
+exports[`entry match 1779`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/abi/switch.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/abi/switch.go
+Size:      733 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1780`] = `"type.go"`;
+
+exports[`entry match 1781`] = `7881`;
+
+exports[`entry match 1782`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/abi/type.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/abi/type.go
+Size:      7.7 KB
+Pcln Size: 3.09 KB"
+`;
+
+exports[`entry match 1783`] = `"<autogenerated>"`;
+
+exports[`entry match 1784`] = `384`;
+
+exports[`entry match 1785`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      384 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1786`] = `"internal/abi.kindNames"`;
+
+exports[`entry match 1787`] = `24`;
+
+exports[`entry match 1788`] = `
+"Symbol:  internal/abi.kindNames
+Size:    24 B
+Address: 0x510ad0
+Type:    data"
+`;
+
+exports[`entry match 1789`] = `"internal/itoa"`;
+
+exports[`entry match 1790`] = `1281`;
+
+exports[`entry match 1791`] = `
+"Package: internal/itoa
+Type:    std
+Size:    1.25 KB"
+`;
+
+exports[`entry match 1792`] = `"itoa.go"`;
+
+exports[`entry match 1793`] = `1281`;
+
+exports[`entry match 1794`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/itoa/itoa.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/itoa/itoa.go
+Size:      1.25 KB
+Pcln Size: 218 B"
+`;
+
+exports[`entry match 1795`] = `"os/signal"`;
+
+exports[`entry match 1796`] = `173`;
+
+exports[`entry match 1797`] = `
+"Package: os/signal
+Type:    std
+Size:    173 B"
+`;
+
+exports[`entry match 1798`] = `"sigqueue.go"`;
+
+exports[`entry match 1799`] = `173`;
+
+exports[`entry match 1800`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sigqueue.go
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/sigqueue.go
+Size:      173 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1801`] = `"Main Packages Size"`;
+
+exports[`entry match 1802`] = `7433`;
+
+exports[`entry match 1803`] = `
+"The size of the main packages in the binary.
+
+Size: 7.26 KB"
+`;
+
+exports[`entry match 1804`] = `"main"`;
+
+exports[`entry match 1805`] = `7433`;
+
+exports[`entry match 1806`] = `
+"Package: main
+Type:    main
+Size:    7.26 KB"
+`;
+
+exports[`entry match 1807`] = `"main.go"`;
+
+exports[`entry match 1808`] = `5420`;
+
+exports[`entry match 1809`] = `
+"File:      /home/runner/work/go-testdata/go-testdata/main.go
+Path:      /home/runner/work/go-testdata/go-testdata/main.go
+Size:      5.29 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 1810`] = `"embed.go"`;
+
+exports[`entry match 1811`] = `1683`;
+
+exports[`entry match 1812`] = `
+"File:      /home/runner/work/go-testdata/go-testdata/embed.go
+Path:      /home/runner/work/go-testdata/go-testdata/embed.go
+Size:      1.64 KB
+Pcln Size: 436 B"
+`;
+
+exports[`entry match 1813`] = `"<autogenerated>"`;
+
+exports[`entry match 1814`] = `229`;
+
+exports[`entry match 1815`] = `
+"File: <autogenerated>
+Path: <autogenerated>
+Size: 229 B"
+`;
+
+exports[`entry match 1816`] = `"main.GlobalInt"`;
+
+exports[`entry match 1817`] = `8`;
+
+exports[`entry match 1818`] = `
+"Symbol:  main.GlobalInt
+Size:    8 B
+Address: 0x50d1c0
+Type:    data"
+`;
+
+exports[`entry match 1819`] = `"main.GlobalString"`;
+
+exports[`entry match 1820`] = `16`;
+
+exports[`entry match 1821`] = `
+"Symbol:  main.GlobalString
+Size:    16 B
+Address: 0x510900
+Type:    data"
+`;
+
+exports[`entry match 1822`] = `"main.GlobalBool"`;
+
+exports[`entry match 1823`] = `1`;
+
+exports[`entry match 1824`] = `
+"Symbol:  main.GlobalBool
+Size:    1 B
+Address: 0x50d180
+Type:    data"
+`;
+
+exports[`entry match 1825`] = `"main.GlobalFloat"`;
+
+exports[`entry match 1826`] = `8`;
+
+exports[`entry match 1827`] = `
+"Symbol:  main.GlobalFloat
+Size:    8 B
+Address: 0x50d1c8
+Type:    data"
+`;
+
+exports[`entry match 1828`] = `"main.GlobalComplex"`;
+
+exports[`entry match 1829`] = `16`;
+
+exports[`entry match 1830`] = `
+"Symbol:  main.GlobalComplex
+Size:    16 B
+Address: 0x50d280
+Type:    data"
+`;
+
+exports[`entry match 1831`] = `"main.GlobalRune"`;
+
+exports[`entry match 1832`] = `4`;
+
+exports[`entry match 1833`] = `
+"Symbol:  main.GlobalRune
+Size:    4 B
+Address: 0x50d184
+Type:    data"
+`;
+
+exports[`entry match 1834`] = `"main.licenseBytes"`;
+
+exports[`entry match 1835`] = `24`;
+
+exports[`entry match 1836`] = `
+"Symbol:  main.licenseBytes
+Size:    24 B
+Address: 0x510a90
+Type:    data"
+`;
+
+exports[`entry match 1837`] = `"main.readme"`;
+
+exports[`entry match 1838`] = `16`;
+
+exports[`entry match 1839`] = `
+"Symbol:  main.readme
+Size:    16 B
+Address: 0x510910
+Type:    data"
+`;
+
+exports[`entry match 1840`] = `"main.goFiles"`;
+
+exports[`entry match 1841`] = `8`;
+
+exports[`entry match 1842`] = `
+"Symbol:  main.goFiles
+Size:    8 B
+Address: 0x510888
+Type:    data"
+`;
+
+exports[`entry match 1843`] = `"Generated Packages Size"`;
+
+exports[`entry match 1844`] = `19062`;
+
+exports[`entry match 1845`] = `
+"The size of the generated packages in the binary.
+
+Size: 18.62 KB"
+`;
+
+exports[`entry match 1846`] = `""`;
+
+exports[`entry match 1847`] = `19062`;
+
+exports[`entry match 1848`] = `
+"Package: 
+Type:    generated
+Size:    18.62 KB"
+`;
+
+exports[`entry match 1849`] = `"<autogenerated>"`;
+
+exports[`entry match 1850`] = `12264`;
+
+exports[`entry match 1851`] = `
+"File:      <autogenerated>
+Path:      <autogenerated>
+Size:      11.98 KB
+Pcln Size: 5 KB"
+`;
+
+exports[`entry match 1852`] = `"compare_amd64.s"`;
+
+exports[`entry match 1853`] = `685`;
+
+exports[`entry match 1854`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/compare_amd64.s
+Size:      685 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1855`] = `"equal_amd64.s"`;
+
+exports[`entry match 1856`] = `477`;
+
+exports[`entry match 1857`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/equal_amd64.s
+Size:      477 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1858`] = `"indexbyte_amd64.s"`;
+
+exports[`entry match 1859`] = `429`;
+
+exports[`entry match 1860`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/indexbyte_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/internal/bytealg/indexbyte_amd64.s
+Size:      429 B
+Pcln Size: 109 B"
+`;
+
+exports[`entry match 1861`] = `"asm_amd64.s"`;
+
+exports[`entry match 1862`] = `5066`;
+
+exports[`entry match 1863`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/asm_amd64.s
+Size:      4.95 KB
+Pcln Size: 1.92 KB"
+`;
+
+exports[`entry match 1864`] = `"rt0_linux_amd64.s"`;
+
+exports[`entry match 1865`] = `141`;
+
+exports[`entry match 1866`] = `
+"File:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rt0_linux_amd64.s
+Path:      /opt/hostedtoolcache/go/1.22.4/x64/src/runtime/rt0_linux_amd64.s
+Size:      141 B
+Pcln Size: 109 B"
+`;
+
 exports[`entry toString match 1`] = `
 "Result: path/to/bin-linux-1.22-amd64
 Size:   1.56 MB"

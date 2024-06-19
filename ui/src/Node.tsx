@@ -42,9 +42,13 @@ export const Node: React.FC<NodeProps> = (
     }, [children, height, width])
 
     const title = useMemo(() => {
-        const t = trimPrefix(node.data.getName(), node.parent?.data.getName() ?? "")
-        return trimPrefix(t, "/")
-    }, [node.data, node.parent?.data])
+        const t = node.data.getName()
+        let display  = trimPrefix(t, "/")
+        if (node.data.getType() === "symbol") {
+            display = trimPrefix(display, ".")
+        }
+        return display
+    }, [node.data])
 
     useLayoutEffect(() => {
         if (width == 0 || height == 0 || !textRef.current) {

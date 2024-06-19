@@ -1457,6 +1457,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 159,
+              "parent": "runtime",
             },
             PackageImpl {
               "children": [
@@ -1510,6 +1511,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 163,
+              "parent": "runtime",
             },
             PackageImpl {
               "children": [
@@ -1550,6 +1552,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 167,
+              "parent": "runtime",
             },
             PackageImpl {
               "children": [
@@ -1577,6 +1580,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 170,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -6034,6 +6038,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 24,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6090,6 +6095,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 418,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6161,6 +6167,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 422,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6201,6 +6208,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 427,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6267,6 +6275,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 430,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6370,6 +6379,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 435,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6513,6 +6523,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 454,
+              "parent": "sync",
             },
             SymbolImpl {
               "data": {
@@ -6651,6 +6662,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 442,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6793,6 +6805,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 461,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6830,6 +6843,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 473,
+              "parent": "math",
             },
             SymbolImpl {
               "data": {
@@ -6878,6 +6892,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 471,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -6946,6 +6961,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 478,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7157,6 +7173,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 476,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -7297,6 +7314,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 493,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -7368,6 +7386,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 503,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -7676,6 +7695,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 508,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -7703,6 +7723,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 530,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -7746,6 +7767,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 532,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8144,6 +8166,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 535,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8226,6 +8249,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 563,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8395,6 +8419,7 @@ ResultImpl {
                 "type": "std",
               },
               "id": 571,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8616,6 +8641,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 569,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8685,6 +8711,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 591,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8712,6 +8739,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 596,
+          "parent": undefined,
         },
         PackageImpl {
           "children": [
@@ -8739,6 +8767,7 @@ ResultImpl {
             "type": "std",
           },
           "id": 598,
+          "parent": undefined,
         },
       ],
       "explain": "The size of the std packages in the binary.",
@@ -8936,6 +8965,7 @@ ResultImpl {
             "type": "main",
           },
           "id": 601,
+          "parent": undefined,
         },
       ],
       "explain": "The size of the main packages in the binary.",
@@ -9036,6 +9066,7 @@ ResultImpl {
             "type": "generated",
           },
           "id": 615,
+          "parent": undefined,
         },
       ],
       "explain": "The size of the generated packages in the binary.",
@@ -14098,7 +14129,7 @@ exports[`Treemap 2`] = `
           x="3"
           y="1.5"
         >
-          .go
+          errors.go
         </text>
       </g>
       <g
@@ -14866,7 +14897,7 @@ exports[`Treemap 2`] = `
           x="21"
           y="40"
         >
-          .go
+          embed.go
         </text>
       </g>
       <g
@@ -14914,7 +14945,7 @@ exports[`Treemap 2`] = `
           x="0.5"
           y="4"
         >
-          _linux.go
+          syscall_linux.go
         </text>
       </g>
       <g
@@ -15034,7 +15065,7 @@ exports[`Treemap 2`] = `
           x="7"
           y="12.5"
         >
-          _unix.go
+          syscall_unix.go
         </text>
       </g>
       <g
@@ -15058,7 +15089,7 @@ exports[`Treemap 2`] = `
           x="8"
           y="12.5"
         >
-          .go
+          syscall.go
         </text>
       </g>
       <g
@@ -15082,7 +15113,7 @@ exports[`Treemap 2`] = `
           x="8.5"
           y="12.5"
         >
-          _linux.go
+          syscall_linux.go
         </text>
       </g>
       <g
@@ -15106,7 +15137,7 @@ exports[`Treemap 2`] = `
           x="12.5"
           y="8.5"
         >
-          .errors
+          syscall.errors
         </text>
       </g>
       <g
@@ -15298,7 +15329,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="0.5"
         >
-          .daysBefore
+          time.daysBefore
         </text>
       </g>
       <g
@@ -15322,7 +15353,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="2"
         >
-          .utcLoc
+          time.utcLoc
         </text>
       </g>
       <g
@@ -15346,7 +15377,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="2"
         >
-          .localLoc
+          time.localLoc
         </text>
       </g>
       <g
@@ -15370,7 +15401,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="8.5"
         >
-          _linux_amd64.s
+          time_linux_amd64.s
         </text>
       </g>
       <g
@@ -15394,7 +15425,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="9"
         >
-          .go
+          time.go
         </text>
       </g>
       <g
@@ -15538,7 +15569,7 @@ exports[`Treemap 2`] = `
           x="53.5"
           y="9"
         >
-          .go
+          time.go
         </text>
       </g>
       <g
@@ -15706,7 +15737,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4"
         >
-          .size_to_class128
+          runtime.size_to_class128
         </text>
       </g>
       <g
@@ -15730,7 +15761,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          .sigprofCallers
+          runtime.sigprofCallers
         </text>
       </g>
       <g
@@ -15754,7 +15785,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          .stackpool
+          runtime.stackpool
         </text>
       </g>
       <g
@@ -15778,7 +15809,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          .handlingSig
+          runtime.handlingSig
         </text>
       </g>
       <g
@@ -15802,7 +15833,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          .fastlog2Table
+          runtime.fastlog2Table
         </text>
       </g>
       <g
@@ -15850,7 +15881,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="5"
         >
-          .stwReasonStrings
+          runtime.stwReasonStrings
         </text>
       </g>
       <g
@@ -15874,7 +15905,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          .class_to_divmagic
+          runtime.class_to_divmagic
         </text>
       </g>
       <g
@@ -16114,7 +16145,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="6.5"
         >
-          .globalRand
+          runtime.globalRand
         </text>
       </g>
       <g
@@ -16162,7 +16193,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="7.5"
         >
-          .gcController
+          runtime.gcController
         </text>
       </g>
       <g
@@ -16210,7 +16241,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="8"
         >
-          .g0
+          runtime.g0
         </text>
       </g>
       <g
@@ -16234,7 +16265,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="8"
         >
-          .gcrash
+          runtime.gcrash
         </text>
       </g>
       <g
@@ -16306,7 +16337,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="10"
         >
-          .printBacklog
+          runtime.printBacklog
         </text>
       </g>
       <g
@@ -16330,7 +16361,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="10"
         >
-          .fwdSig
+          runtime.fwdSig
         </text>
       </g>
       <g
@@ -16378,7 +16409,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11"
         >
-          .work
+          runtime.work
         </text>
       </g>
       <g
@@ -16402,7 +16433,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11"
         >
-          .stackLarge
+          runtime.stackLarge
         </text>
       </g>
       <g
@@ -16450,7 +16481,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11.5"
         >
-          .waitReasonStrings
+          runtime.waitReasonStrings
         </text>
       </g>
       <g
@@ -16474,7 +16505,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11.5"
         >
-          .firstmoduledata
+          runtime.firstmoduledata
         </text>
       </g>
       <g
@@ -16714,7 +16745,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="5"
         >
-          .zeroVal
+          runtime.zeroVal
         </text>
       </g>
       <g
@@ -16738,7 +16769,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="5.5"
         >
-          .auxvreadbuf
+          runtime.auxvreadbuf
         </text>
       </g>
       <g
@@ -16978,7 +17009,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="8"
         >
-          .go
+          runtime.go
         </text>
       </g>
       <g
@@ -17098,7 +17129,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="9"
         >
-          .sigtable
+          runtime.sigtable
         </text>
       </g>
       <g
@@ -17290,7 +17321,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="11"
         >
-          2.go
+          runtime2.go
         </text>
       </g>
       <g
@@ -17314,7 +17345,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="11.5"
         >
-          .m0
+          runtime.m0
         </text>
       </g>
       <g
@@ -17338,7 +17369,7 @@ exports[`Treemap 2`] = `
           x="18"
           y="7"
         >
-          .staticuint64s
+          runtime.staticuint64s
         </text>
       </g>
       <g
@@ -17818,7 +17849,7 @@ exports[`Treemap 2`] = `
           x="18"
           y="15"
         >
-          .itabTableInit
+          runtime.itabTableInit
         </text>
       </g>
       <g
@@ -18226,7 +18257,7 @@ exports[`Treemap 2`] = `
           x="24.5"
           y="17.5"
         >
-          .sched
+          runtime.sched
         </text>
       </g>
       <g
@@ -18298,7 +18329,7 @@ exports[`Treemap 2`] = `
           x="16"
           y="32"
         >
-          .memstats
+          runtime.memstats
         </text>
       </g>
       <g
@@ -18346,7 +18377,7 @@ exports[`Treemap 2`] = `
           x="16.5"
           y="32"
         >
-          .cpuprof
+          runtime.cpuprof
         </text>
       </g>
       <g
@@ -18442,7 +18473,7 @@ exports[`Treemap 2`] = `
           x="19.5"
           y="32"
         >
-          1.go
+          runtime1.go
         </text>
       </g>
       <g
@@ -18802,7 +18833,7 @@ exports[`Treemap 2`] = `
           x="39.5"
           y="27"
         >
-          .semtable
+          runtime.semtable
         </text>
       </g>
       <g
@@ -19234,7 +19265,7 @@ exports[`Treemap 2`] = `
           x="61.5"
           y="104"
         >
-          .mheap_
+          runtime.mheap_
         </text>
       </g>
       <g
@@ -19282,7 +19313,7 @@ exports[`Treemap 2`] = `
           x="180"
           y="102"
         >
-          .trace
+          runtime.trace
         </text>
       </g>
       <g

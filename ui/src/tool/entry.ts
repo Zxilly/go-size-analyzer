@@ -1,6 +1,6 @@
 import {File, FileSymbol, Package, Result, Section} from "../generated/schema.ts";
 import {orderedID} from "./id.ts";
-import {formatBytes, title} from "./utils.ts";
+import {formatBytes, title, trimPrefix} from "./utils.ts";
 import {aligner} from "./aligner.ts";
 
 export type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
@@ -26,6 +26,8 @@ export interface EntryLike<T extends EntryType> {
     getChildren(): EntryChildren[T]
 
     getID(): number;
+
+    getType(): T;
 }
 
 class BaseImpl {
@@ -67,6 +69,10 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
             .add("Debug:", this.data.debug.toString());
         return align.toString();
     }
+
+    getType(): "section" {
+        return "section";
+    }
 }
 
 export class FileImpl extends BaseImpl implements EntryLike<"file"> {
@@ -96,12 +102,16 @@ export class FileImpl extends BaseImpl implements EntryLike<"file"> {
         }
         return align.toString();
     }
+
+    getType(): "file" {
+        return "file";
+    }
 }
 
 export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
     private readonly children: EntryChildren["package"];
 
-    constructor(private readonly data: Package) {
+    constructor(private readonly data: Package, private readonly parent?: string) {
         super();
 
         const children: EntryChildren["package"] = [];
@@ -109,7 +119,7 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
             children.push(new FileImpl(file));
         }
         for (const subPackage of Object.values(data.subPackages)) {
-            children.push(new PackageImpl(subPackage));
+            children.push(new PackageImpl(subPackage, data.name));
         }
 
         for (const s of data.symbols) {
@@ -130,6 +140,10 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
     }
 
     getName(): string {
+        if (this.parent != null) {
+            return trimPrefix(this.data.name, this.parent);
+        }
+
         return this.data.name;
     }
 
@@ -143,6 +157,10 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
             .add("Type:", this.data.type)
             .add("Size:", formatBytes(this.data.size));
         return align.toString();
+    }
+
+    getType(): "package" {
+        return "package";
     }
 }
 
@@ -173,6 +191,10 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
             "The real size determined by disassembling can be larger.";
         return ret;
     }
+
+    getType(): "disasm" {
+        return "disasm";
+    }
 }
 
 export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
@@ -199,6 +221,10 @@ export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
             .add("Address:", `0x${this.data.addr.toString(16)}`)
             .add("Type:", this.data.type);
         return align.toString();
+    }
+
+    getType(): "symbol" {
+        return "symbol";
     }
 }
 
@@ -229,6 +255,10 @@ export class ContainerImpl extends BaseImpl implements EntryLike<"container"> {
         ret += "\n" + align.toString();
         return ret;
     }
+
+    getType(): "container" {
+        return "container";
+    }
 }
 
 export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
@@ -257,6 +287,10 @@ export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
             "Can be ELF Header, Program Header, align offset...\n" +
             "We just don't know.";
         return ret;
+    }
+
+    getType(): "unknown" {
+        return "unknown";
     }
 }
 
@@ -330,6 +364,10 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
         align.add("Result:", this.data.name)
             .add("Size:", formatBytes(this.data.size));
         return align.toString();
+    }
+
+    getType(): "result" {
+        return "result";
     }
 }
 
