@@ -9,7 +9,7 @@ on:
         required: true
     secrets:
       CODECOV_TOKEN:
-        required: true
+        required: false
 
 permissions:
   contents: read
