@@ -54,12 +54,14 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 		}
 	}
 
-	ap := k.KnownAddr.InsertSymbol(addr, size, pkg, typ, entity.SymbolMeta{
+	symbol := entity.NewSymbol(name, addr, size, typ)
+
+	ap := k.KnownAddr.InsertSymbol(symbol, pkg, entity.SymbolMeta{
 		SymbolName:  utils.Deduplicate(name),
 		PackageName: utils.Deduplicate(pkgName),
 	})
 
-	pkg.AddSymbol(addr, size, typ, name, ap)
+	pkg.AddSymbol(symbol, ap)
 
 	return nil
 }

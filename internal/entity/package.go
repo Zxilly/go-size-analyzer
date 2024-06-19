@@ -250,10 +250,10 @@ func (p *Package) AssignPackageSize() {
 	p.Size = pkgSize
 }
 
-func (p *Package) AddSymbol(addr uint64, size uint64, typ AddrType, name string, ap *Addr) {
+func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 	// first, load as coverage
 	p.symbolAddrSpace.Insert(ap)
 
 	// then, add to the symbol list
-	p.Symbols = append(p.Symbols, NewSymbol(name, addr, size, typ))
+	p.Symbols = append(p.Symbols, symbol)
 }

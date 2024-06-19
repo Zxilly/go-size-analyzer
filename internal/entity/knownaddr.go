@@ -52,16 +52,16 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function,
 	f.TextAddrSpace.Insert(&cur)
 }
 
-func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
+func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, meta SymbolMeta) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{
-			Addr: entry,
-			Size: size,
-			Type: typ,
+			Addr: symbol.Addr,
+			Size: symbol.Size,
+			Type: symbol.Type,
 		},
 		Pkg:        p,
 		Function:   nil,
-		Symbol:     NewSymbol(meta.SymbolName, entry, size, typ),
+		Symbol:     symbol,
 		SourceType: AddrSourceSymbol,
 
 		Meta: meta,
@@ -70,16 +70,16 @@ func (f *KnownAddr) InsertSymbol(entry uint64, size uint64, p *Package, typ Addr
 	return cur
 }
 
-func (f *KnownAddr) InsertSymbolFromDWARF(entry uint64, size uint64, p *Package, typ AddrType, meta SymbolMeta) *Addr {
+func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package, meta SymbolMeta) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{
-			Addr: entry,
-			Size: size,
-			Type: typ,
+			Addr: symbol.Addr,
+			Size: symbol.Size,
+			Type: symbol.Type,
 		},
 		Pkg:        p,
 		Function:   nil,
-		Symbol:     NewSymbol(meta.SymbolName, entry, size, typ),
+		Symbol:     symbol,
 		SourceType: AddrSourceDwarf,
 
 		Meta: meta,

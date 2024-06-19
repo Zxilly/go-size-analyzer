@@ -59,12 +59,14 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 	entryName := utils.Deduplicate(entry.Val(dwarf.AttrName).(string))
 
-	ap := k.KnownAddr.InsertSymbolFromDWARF(uint64(addr), typSize, pkg, entity.AddrTypeData, entity.SymbolMeta{
+	symbol := entity.NewSymbol(entryName, uint64(addr), typSize, entity.AddrTypeData)
+
+	ap := k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg, entity.SymbolMeta{
 		SymbolName:  entryName,
 		PackageName: utils.Deduplicate(pkg.Name),
 	})
 
-	pkg.AddSymbol(uint64(addr), typSize, entity.AddrTypeData, entryName, ap)
+	pkg.AddSymbol(symbol, ap)
 
 	if len(contents) > 0 {
 		for _, content := range contents {
@@ -79,12 +81,15 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 			}
 
 			valueName := utils.Deduplicate(fmt.Sprintf("%s.%s", entryName, content.Name))
-			ap = k.KnownAddr.InsertSymbolFromDWARF(content.Addr, content.Size, pkg, entity.AddrTypeData, entity.SymbolMeta{
+
+			symbol := entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
+
+			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg, entity.SymbolMeta{
 				SymbolName:  valueName,
 				PackageName: utils.Deduplicate(pkg.Name),
 			})
 
-			pkg.AddSymbol(content.Addr, content.Size, entity.AddrTypeData, valueName, ap)
+			pkg.AddSymbol(symbol, ap)
 		}
 	}
 }
