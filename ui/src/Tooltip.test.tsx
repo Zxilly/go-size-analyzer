@@ -16,6 +16,8 @@ function getTestNode(): Entry {
             return 12345;
         }, toString(): string {
             return "test content";
+        }, getType(): EntryType {
+            return "unknown"
         }
     }
 }
