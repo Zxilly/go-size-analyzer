@@ -64,6 +64,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attest build provenance
+        id: attest
         uses: actions/attest-build-provenance@bdd51370e0416ac948727f861e03c2f05d32d78e # v1.3.2
         with:
           subject-path: 'dist/go-size-analyzer*.*'
+
+      - name: Upload build provenance
+        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd # v2.9.0
+        with:
+          asset_name: attestations.intoto.jsonl
+          file: ${{ steps.attest.outputs.bundle-path }}
+          overwrite: false
