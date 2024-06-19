@@ -105,7 +105,7 @@ jobs:
       - name: Collect profiles
         uses: ./.github/actions/setup-script
         with:
-          cache: 'integration-real'
+          cache: ${{ matrix.test }}
           script: 'tests.py --${{ matrix.test }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

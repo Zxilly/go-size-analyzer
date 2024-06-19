@@ -33,7 +33,7 @@ runs:
       uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
       with:
         path: ./scripts/bins
-        key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ inputs.cache }}
+        key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ inputs.cache }}-v2
         enableCrossOsArchive: true
 
     - name: Run script
