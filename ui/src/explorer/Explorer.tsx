@@ -105,7 +105,7 @@ export const Explorer: React.FC = () => {
         if (entry) {
             window.location.hash = entry.getName()
         } else {
-            window.location.hash = ""
+            history.replaceState(null, "", ' ');
         }
     }, [entry])
 
