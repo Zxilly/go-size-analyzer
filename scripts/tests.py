@@ -137,7 +137,6 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                     "-v",
                     "-covermode=set",
                     "-cover",
-                    "-tags=test_js_marshaler",
                     "-coverpkg=../../...",
                     f"-test.gocoverdir={unit_path}",
                 ],

@@ -1,4 +1,4 @@
-//go:build (js && wasm) || test_js_marshaler
+//go:build js && wasm
 
 package entity
 

@@ -1,4 +1,4 @@
-//go:build test_js_marshaler
+//go:build js && wasm
 
 package result_test
 
