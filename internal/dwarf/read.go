@@ -182,21 +182,30 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 		dataLen := readUintTo64(data[offset+ptrSize*3 : offset+ptrSize*4])
 
 		hashAddr := offset + ptrSize*4
-		hashLen := 16
+		hashLen := uint64(16)
 
-		contents = append(contents, Content{
-			Name: utils.Deduplicate(fmt.Sprintf("%s.name", name)),
-			Addr: nameAddr,
-			Size: nameLen,
-		}, Content{
-			Name: utils.Deduplicate(fmt.Sprintf("%s.data", name)),
-			Addr: dataAddr,
-			Size: dataLen,
-		}, Content{
+		fileContent := make([]Content, 0, 3)
+		if nameLen > 0 {
+			fileContent = append(fileContent, Content{
+				Name: utils.Deduplicate(fmt.Sprintf("%s.name", name)),
+				Addr: nameAddr,
+				Size: nameLen,
+			})
+		}
+		if dataLen > 0 {
+			fileContent = append(fileContent, Content{
+				Name: utils.Deduplicate(fmt.Sprintf("%s.data", name)),
+				Addr: dataAddr,
+				Size: dataLen,
+			})
+		}
+		fileContent = append(fileContent, Content{
 			Name: utils.Deduplicate(fmt.Sprintf("%s.hash", name)),
 			Addr: uint64(hashAddr),
-			Size: uint64(hashLen),
+			Size: hashLen,
 		})
+
+		contents = append(contents, fileContent...)
 	}
 
 	return contents, nil

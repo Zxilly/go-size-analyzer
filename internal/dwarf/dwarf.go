@@ -92,14 +92,13 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 
 	inline := entry.Val(dwarf.AttrInline)
 	if inline != nil {
-		val, ok := inline.(bool)
-		return !ok || val
+		val, ok := inline.(int64)
+		return !ok || val != 0
 	}
 
 	var boolIgnores = []dwarf.Attr{
 		dwarf.AttrCallAllCalls,
 		dwarf.AttrCallAllTailCalls,
-		dwarf.AttrExternal,
 	}
 
 	for _, ignore := range boolIgnores {
@@ -107,7 +106,7 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		if valAny != nil {
 			val, ok := valAny.(bool)
 			if !ok {
-				slog.Warn(fmt.Sprintf("Failed to load DWARF function as type unexpected %T: %s", valAny, EntryPrettyPrint(entry)))
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function as bool field type unexpected %T: %s", valAny, EntryPrettyPrint(entry)))
 				return true
 			}
 			if val {
@@ -124,6 +123,22 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 	for _, ignore := range ignores {
 		if entry.Val(ignore) != nil {
 			return true
+		}
+	}
+
+	externalAny := entry.Val(dwarf.AttrExternal)
+	if externalAny != nil {
+		external, ok := externalAny.(bool)
+		if !ok {
+			slog.Debug(fmt.Sprintf("Failed to load DWARF function as dwarf.AttrExternal type unexpected %T: %s", externalAny, EntryPrettyPrint(entry)))
+			return true
+		}
+
+		if external {
+			if entry.Tag == dwarf.TagSubprogram {
+				// external function doesn't exist in this entry
+				return true
+			}
 		}
 	}
 
