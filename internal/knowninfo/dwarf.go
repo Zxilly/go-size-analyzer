@@ -20,7 +20,35 @@ import (
 func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
 	instsAny := entry.Val(dwarf.AttrLocation)
 	if instsAny == nil {
-		slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
+		printErr := false
+		defer func() {
+			if printErr {
+				slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
+			}
+		}()
+
+		typOffset, ok := entry.Val(dwarf.AttrType).(dwarf.Offset)
+		if !ok {
+			slog.Warn(fmt.Sprintf("no type attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
+			printErr = true
+			return
+		}
+
+		typEntry, err := d.Type(typOffset)
+		if err != nil {
+			slog.Warn(fmt.Sprintf("failed to get type for %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
+			printErr = true
+			return
+		}
+
+		_, ok = typEntry.(*dwarf.QualType)
+		if ok {
+			// fixme: we ignore const values for now, support this if possible
+			return
+		}
+		printErr = true
+		slog.Warn(fmt.Sprintf("unexpected type %T for %s: ", typEntry, dwarfutil.EntryPrettyPrint(entry)))
+
 		return
 	}
 	insts, ok := instsAny.([]byte)
@@ -116,7 +144,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	if len(ranges) == 0 {
 		// fixme: maybe compiler optimize it?
 		// example: sqlite3 simpleDestroy
-		slog.Warn(fmt.Sprintf("Failed to load DWARF function size, no range: %s", subEntryName))
+		slog.Debug(fmt.Sprintf("Failed to load DWARF function size, no range: %s", subEntryName))
 		return
 	}
 

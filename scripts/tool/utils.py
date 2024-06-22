@@ -16,6 +16,15 @@ import psutil
 matplotlib.use('agg')
 
 
+def write_github_summary(s: str, fallback: bool = True):
+    if os.getenv("CI") is not None:
+        with open(os.getenv("GITHUB_STEP_SUMMARY"), "a", encoding="utf-8") as f:
+            f.write(f"{s}\n")
+    else:
+        if fallback:
+            print(s)
+
+
 def get_new_temp_binary() -> str:
     suffix = ".exe" if os.name == "nt" else ""
 

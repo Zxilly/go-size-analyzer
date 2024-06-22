@@ -96,14 +96,19 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		return !ok || val
 	}
 
-	abstractOrigin := entry.Val(dwarf.AttrAbstractOrigin)
-	if abstractOrigin != nil {
-		return true
+	var ignores = []dwarf.Attr{
+		dwarf.AttrAbstractOrigin,
+		dwarf.AttrSpecification,
+		dwarf.AttrCallAllCalls,
 	}
 
-	specification := entry.Val(dwarf.AttrSpecification)
+	for _, ignore := range ignores {
+		if entry.Val(ignore) != nil {
+			return true
+		}
+	}
 
-	return specification != nil
+	return false
 }
 
 func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) string {
@@ -121,12 +126,12 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 		if entry.Val(dwarf.AttrTrampoline) == nil {
 			fileIndexAny := entry.Val(dwarf.AttrDeclFile)
 			if fileIndexAny == nil {
-				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrint(entry)))
+				slog.Debug(fmt.Sprintf("Failed to load DWARF function file as no field: %s", EntryPrettyPrint(entry)))
 				return defaultName
 			}
 			fileIndex, ok := fileIndexAny.(int64)
 			if !ok || fileIndex < 0 || int(fileIndex) >= len(files) {
-				slog.Warn(fmt.Sprintf("Failed to load DWARF function file: %s", EntryPrettyPrint(entry)))
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function file as type unexpected %T: %s", fileIndexAny, EntryPrettyPrint(entry)))
 				return defaultName
 			}
 

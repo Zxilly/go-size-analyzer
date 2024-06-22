@@ -12,7 +12,7 @@ from tool.junit import generate_junit
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
-    find_unused_port, assert_html_valid, init_dirs
+    find_unused_port, assert_html_valid, init_dirs, write_github_summary
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
@@ -204,11 +204,7 @@ def run_integration_tests(typ: str, gsa_path: str):
         except Exception as e:
             log(f"{head} failed")
 
-            if os.getenv("CI") is not None:
-                with open(os.getenv("GITHUB_STEP_SUMMARY"), "a", encoding="utf-8") as f:
-                    f.write(f"```log\n{str(e)}\n```\n")
-            else:
-                print(e)
+            write_github_summary(f"```log\n{str(e)}\n```")
 
             scope_failed_count += 1
 
