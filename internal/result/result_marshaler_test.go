@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
@@ -31,7 +31,7 @@ func TestResultMarshalJavaScriptCross(t *testing.T) {
 	jsonPrinterResult, err := json.Marshal(r,
 		json.DefaultOptionsV2(),
 		json.Deterministic(true),
-		json.WithMarshalers(entity.FileMarshalerCompact))
+		json.WithMarshalers(marshaler.GetFileCompactMarshaler()))
 	require.NoError(t, err)
 
 	resultJSAny := r.MarshalJavaScript()

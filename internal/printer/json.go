@@ -10,7 +10,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
 
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
@@ -31,7 +31,7 @@ func JSON(r *result.Result, options *JSONOption) error {
 		jsonOptions = append(jsonOptions, jsontext.WithIndent(strings.Repeat(" ", *options.Indent)))
 	}
 	if options.HideDetail {
-		jsonOptions = append(jsonOptions, json.WithMarshalers(entity.FileMarshalerCompact))
+		jsonOptions = append(jsonOptions, json.WithMarshalers(marshaler.GetFileCompactMarshaler()))
 	}
 
 	err := json.MarshalWrite(options.Writer, r, jsonOptions...)

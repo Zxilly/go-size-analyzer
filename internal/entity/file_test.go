@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
 )
 
 func TestFile_MarshalJSON(t *testing.T) {
@@ -22,7 +23,7 @@ func TestFile_MarshalJSON(t *testing.T) {
 	}
 
 	t.Run("Compact mode", func(t *testing.T) {
-		data, err := json.Marshal(file, json.WithMarshalers(entity.FileMarshalerCompact))
+		data, err := json.Marshal(file, json.WithMarshalers(marshaler.GetFileCompactMarshaler()))
 		// Verify the result
 		require.NoError(t, err)
 		expected := `{"file_path":"/path/to/file","pcln_size":0,"size":60}`
