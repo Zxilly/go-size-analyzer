@@ -29,7 +29,7 @@ func (k *KnownInfo) CollectCoverage() error {
 }
 
 func (k *KnownInfo) CalculateSectionSize() error {
-	t := make(map[*entity.Section]uint64)
+	sectCache := make(map[*entity.Section]uint64)
 	// minus coverage part
 	for _, cp := range k.Coverage {
 		s := k.Sects.FindSection(cp.Pos.Addr, cp.Pos.Size)
@@ -37,7 +37,7 @@ func (k *KnownInfo) CalculateSectionSize() error {
 			slog.Debug(fmt.Sprintf("possible bss addr %s", cp))
 			continue
 		}
-		t[s] += cp.Pos.Size
+		sectCache[s] += cp.Pos.Size
 	}
 
 	pclntabSize := uint64(0)
@@ -49,20 +49,21 @@ func (k *KnownInfo) CalculateSectionSize() error {
 	})
 
 	// minus pclntab size
-	possibleNames := k.Wrapper.PclntabSections()
-	for name, s := range k.Sects.Sections {
-		for _, possibleName := range possibleNames {
-			if possibleName == name {
-				t[s] += pclntabSize
-				goto foundPclntab
-			}
+	pclntabAddr := k.Gore.GetPCLNTableAddr()
+	var pclntabSection *entity.Section
+	for _, s := range k.Sects.Sections {
+		if s.Addr <= pclntabAddr && pclntabAddr < s.AddrEnd {
+			pclntabSection = s
+			sectCache[s] += pclntabSize
+			break
 		}
 	}
-	return fmt.Errorf("pclntab section not found when calculate known size")
-foundPclntab:
+	if pclntabSection == nil {
+		slog.Warn(fmt.Sprintf("pclntab addr %d not in any section", pclntabAddr))
+	}
 
 	// linear map virtual size to file size
-	for s, size := range t {
+	for s, size := range sectCache {
 		mapper := 1.0
 		if s.Size != s.FileSize {
 			// need to map to file size
@@ -71,8 +72,11 @@ foundPclntab:
 		s.KnownSize = uint64(math.Floor(float64(size) * mapper))
 
 		if s.KnownSize > s.FileSize && s.FileSize != 0 {
-			// fixme: pclntab size calculation is not accurate
-			slog.Warn(fmt.Sprintf("section %s known size %d > file size %d, this is a known issue", s.Name, s.KnownSize, s.FileSize))
+			if s != pclntabSection {
+				// pclntab contains lots of reuse
+				// todo: add coverage support for pclntab size
+				slog.Warn(fmt.Sprintf("section %s known size %d > file size %d", s.Name, s.KnownSize, s.FileSize))
+			}
 			s.KnownSize = s.FileSize
 		}
 

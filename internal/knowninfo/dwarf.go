@@ -20,35 +20,7 @@ import (
 func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
 	instsAny := entry.Val(dwarf.AttrLocation)
 	if instsAny == nil {
-		printErr := false
-		defer func() {
-			if printErr {
-				slog.Warn(fmt.Sprintf("no location attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
-			}
-		}()
-
-		typOffset, ok := entry.Val(dwarf.AttrType).(dwarf.Offset)
-		if !ok {
-			slog.Warn(fmt.Sprintf("no type attribute for %s", dwarfutil.EntryPrettyPrint(entry)))
-			printErr = true
-			return
-		}
-
-		typEntry, err := d.Type(typOffset)
-		if err != nil {
-			slog.Warn(fmt.Sprintf("failed to get type for %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
-			printErr = true
-			return
-		}
-
-		_, ok = typEntry.(*dwarf.QualType)
-		if ok {
-			// fixme: we ignore const values for now, support this if possible
-			return
-		}
-		printErr = true
-		slog.Warn(fmt.Sprintf("unexpected type %T for %s: ", typEntry, dwarfutil.EntryPrettyPrint(entry)))
-
+		// todo: support const on this case, for others we can't do anything
 		return
 	}
 	insts, ok := instsAny.([]byte)
@@ -131,13 +103,13 @@ func (k *KnownInfo) AddDwarfSubProgram(
 ) {
 	subEntryName, ok := subEntry.Val(dwarf.AttrName).(string)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrint(subEntry)))
+		slog.Debug(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrint(subEntry)))
 		return
 	}
 
 	ranges, err := d.Ranges(subEntry)
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF function size: %v", err))
+		slog.Debug(fmt.Sprintf("Failed to load DWARF function size: %v", err))
 		return
 	}
 
@@ -254,7 +226,7 @@ func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pe
 func (k *KnownInfo) TryLoadDwarf() bool {
 	d, err := k.Wrapper.DWARF()
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF: %v", err))
+		slog.Debug(fmt.Sprintf("Failed to load DWARF: %v", err))
 		return false
 	}
 

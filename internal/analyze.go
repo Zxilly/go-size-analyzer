@@ -77,7 +77,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 					return nil, err
 
 				}
-				slog.Warn("Warning: no symbol table found, this can lead to inaccurate results")
+				slog.Warn("No symbol table found, this can lead to inaccurate results")
 			}
 		}
 

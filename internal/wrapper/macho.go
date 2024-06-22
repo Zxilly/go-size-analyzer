@@ -22,10 +22,6 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	return m.file.DWARF()
 }
 
-func (*MachoWrapper) PclntabSections() []string {
-	return []string{"__gopclntab __TEXT", "__gopclntab __DATA_CONST"}
-}
-
 func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	if m.file.Symtab == nil || len(m.file.Symtab.Syms) == 0 {
 		return ErrNoSymbolTable

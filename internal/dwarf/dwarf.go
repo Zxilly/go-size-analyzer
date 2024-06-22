@@ -96,10 +96,29 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		return !ok || val
 	}
 
+	var boolIgnores = []dwarf.Attr{
+		dwarf.AttrCallAllCalls,
+		dwarf.AttrCallAllTailCalls,
+		dwarf.AttrExternal,
+	}
+
+	for _, ignore := range boolIgnores {
+		valAny := entry.Val(ignore)
+		if valAny != nil {
+			val, ok := valAny.(bool)
+			if !ok {
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function as type unexpected %T: %s", valAny, EntryPrettyPrint(entry)))
+				return true
+			}
+			if val {
+				return true
+			}
+		}
+	}
+
 	var ignores = []dwarf.Attr{
 		dwarf.AttrAbstractOrigin,
 		dwarf.AttrSpecification,
-		dwarf.AttrCallAllCalls,
 	}
 
 	for _, ignore := range ignores {
@@ -130,8 +149,12 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 				return defaultName
 			}
 			fileIndex, ok := fileIndexAny.(int64)
-			if !ok || fileIndex < 0 || int(fileIndex) >= len(files) {
+			if !ok {
 				slog.Warn(fmt.Sprintf("Failed to load DWARF function file as type unexpected %T: %s", fileIndexAny, EntryPrettyPrint(entry)))
+				return defaultName
+			}
+			if fileIndex < 0 || int(fileIndex) >= len(files) {
+				slog.Warn(fmt.Sprintf("Failed to load DWARF function file as index out of range %d: %s", fileIndex, EntryPrettyPrint(entry)))
 				return defaultName
 			}
 

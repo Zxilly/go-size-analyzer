@@ -15,6 +15,8 @@ import psutil
 
 matplotlib.use('agg')
 
+def details(s: str) -> str:
+    return f"<details><summary>Details</summary>\n\n{s}\n</details>"
 
 def write_github_summary(s: str, fallback: bool = True):
     if os.getenv("CI") is not None:

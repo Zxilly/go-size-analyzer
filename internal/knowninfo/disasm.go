@@ -27,7 +27,7 @@ func (k *KnownInfo) Disasm() error {
 	e, err := disasm.NewExtractor(k.Wrapper, k.Size)
 	if err != nil {
 		if errors.Is(err, disasm.ErrArchNotSupported) {
-			slog.Warn("Warning: disassembler not supported for this architecture")
+			slog.Warn("Disassembler not supported on this architecture")
 			return nil
 		}
 		return err

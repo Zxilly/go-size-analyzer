@@ -46,10 +46,6 @@ func (TestFileWrapper) LoadSections() map[string]*entity.Section {
 	panic("not reachable")
 }
 
-func (TestFileWrapper) PclntabSections() []string {
-	panic("not reachable")
-}
-
 func TestNewExtractorNoText(t *testing.T) {
 	wrapper := TestFileWrapper{textErr: errors.New("text error")}
 	_, err := NewExtractor(wrapper, 0)

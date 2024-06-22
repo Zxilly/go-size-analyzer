@@ -23,10 +23,6 @@ func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
 	return p.file.DWARF()
 }
 
-func (*PeWrapper) PclntabSections() []string {
-	return []string{".rdata"} // FIXME: get real position from gore, can be .text
-}
-
 func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
 	if len(p.file.Symbols) == 0 {
 		return ErrNoSymbolTable

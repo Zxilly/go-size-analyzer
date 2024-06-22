@@ -6,6 +6,7 @@ import time
 from argparse import ArgumentParser
 
 import requests
+from markdown_strings import code_block
 
 from tool.gsa import build_gsa
 from tool.junit import generate_junit
@@ -189,7 +190,7 @@ def run_integration_tests(typ: str, gsa_path: str):
         head = f"[{completed_tests + 1}/{all_tests}] Test {os.path.basename(target.path)}"
         log(f"{head} start")
 
-        if target.path in skips:
+        if target.name in skips:
             log(f"{head} is skipped.")
             continue
 
@@ -204,7 +205,7 @@ def run_integration_tests(typ: str, gsa_path: str):
         except Exception as e:
             log(f"{head} failed")
 
-            write_github_summary(f"```log\n{str(e)}\n```")
+            write_github_summary(code_block(str(e)))
 
             scope_failed_count += 1
 
@@ -225,6 +226,9 @@ def run_web_test(entry: str):
     env["GOCOVERDIR"] = get_covdata_integration_dir()
     env["OUTPUT_DIR"] = os.path.join(get_project_root(), "results", "web", "profiler")
     ensure_dir(env["OUTPUT_DIR"])
+
+    output_dir = os.path.join(get_project_root(), "results", "web")
+    output_file = os.path.join(output_dir, "web.output.txt")
 
     port = find_unused_port()
     if port is None:
@@ -274,6 +278,13 @@ def run_web_test(entry: str):
 
     p.terminate()
     p.wait()
+
+    stdout_data += p.stdout.read()
+    stderr_data += p.stderr.read()
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(f"stdout:\n{stdout_data}\nstderr:\n{stderr_data}\n")
+
     log("Web test passed.")
 
 
