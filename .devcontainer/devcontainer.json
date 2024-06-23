@@ -4,7 +4,8 @@
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/go:1": {},
     "ghcr.io/devcontainers/features/python:1": {
-      "toolsToInstall": "flake8,autopep8,black,yapf,mypy,pydocstyle,pycodestyle,bandit,pytest,pylint,pipx,poetry"
+      "version": "3.12",
+      "toolsToInstall": "flake8,autopep8,pipx,poetry"
     },
     "ghcr.io/devcontainers/features/git:1": {}
   }
