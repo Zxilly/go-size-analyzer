@@ -10,7 +10,8 @@ from urllib.parse import urlparse
 import requests
 from tqdm import tqdm
 
-from .utils import get_project_root, ensure_dir, run_process, get_bin_path, log, get_binaries_path
+from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_path
+from .process import run_process
 
 
 class TestType(Flag):
@@ -79,7 +80,7 @@ class IntegrationTest:
             with open(self.output_filepath(typ), "w", encoding="utf-8") as f:
                 f.write(output_data)
 
-            if draw and len(graph_data) > 0:
+            if draw and graph_data is not None:
                 with open(self.performance_figure_filepath(typ), "wb") as f:
                     f.write(graph_data)
 

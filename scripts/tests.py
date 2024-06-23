@@ -13,7 +13,8 @@ from tool.junit import generate_junit
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
-    find_unused_port, assert_html_valid, init_dirs, write_github_summary
+    find_unused_port, init_dirs, write_github_summary
+from tool.html import assert_html_valid
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
