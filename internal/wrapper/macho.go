@@ -14,10 +14,6 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
-func (*MachoWrapper) ImageBase() uint64 {
-	return 0
-}
-
 func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	return m.file.DWARF()
 }

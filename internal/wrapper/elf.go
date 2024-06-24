@@ -15,10 +15,6 @@ type ElfWrapper struct {
 	file *elf.File
 }
 
-func (*ElfWrapper) ImageBase() uint64 {
-	return 0
-}
-
 func (e *ElfWrapper) DWARF() (*dwarf.Data, error) {
 	return e.file.DWARF()
 }

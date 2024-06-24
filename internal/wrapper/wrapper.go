@@ -20,7 +20,6 @@ type RawFileWrapper interface {
 	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType) error) error
 	LoadSections() map[string]*entity.Section
 	DWARF() (*dwarf.Data, error)
-	ImageBase() uint64
 }
 
 func NewWrapper(file any) RawFileWrapper {

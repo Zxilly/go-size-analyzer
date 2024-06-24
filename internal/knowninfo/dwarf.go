@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"math"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
@@ -29,7 +28,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return
 	}
 
-	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{StaticBase: k.Wrapper.ImageBase()}, insts, ptrSize, nil)
+	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{}, insts, ptrSize, nil)
 	if err != nil {
 		level := slog.LevelDebug
 		if !errors.Is(err, op.ErrMemoryReadUnavailable) {
@@ -45,13 +44,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return
 	}
 
-	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, func(addrCb, size uint64) ([]byte, error) {
-		if addrCb == math.MaxUint64 {
-			addrCb = uint64(addr)
-		}
-
-		return k.Wrapper.ReadAddr(addrCb, size)
-	})
+	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, uint64(addr), k.Wrapper.ReadAddr)
 	if err != nil {
 		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
 		return

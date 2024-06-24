@@ -5,7 +5,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"math"
 
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
@@ -35,7 +34,7 @@ func readIntTo64(data []byte) int64 {
 
 type MemoryReader func(addr, size uint64) ([]byte, error)
 
-func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint64, size uint64, err error) {
+func readString(structTyp *dwarf.StructType, typAddr uint64, readMemory MemoryReader) (addr uint64, size uint64, err error) {
 	err = checkField(structTyp, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"})
 	if err != nil {
 		return 0, 0, err
@@ -46,7 +45,7 @@ func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint
 
 	readSize := structTyp.Size()
 
-	data, err := readMemory(math.MaxUint64, uint64(readSize))
+	data, err := readMemory(typAddr, uint64(readSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -63,7 +62,7 @@ func readString(structTyp *dwarf.StructType, readMemory MemoryReader) (addr uint
 	return ptr, uint64(strLen), nil
 }
 
-func readSlice(typ *dwarf.StructType, readMemory MemoryReader, memberTyp string) (addr uint64, size uint64, err error) {
+func readSlice(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader, memberTyp string) (addr uint64, size uint64, err error) {
 	err = checkField(typ, fieldPattern{"array", memberTyp}, fieldPattern{"len", "int"}, fieldPattern{"cap", "int"})
 	if err != nil {
 		return 0, 0, err
@@ -77,7 +76,7 @@ func readSlice(typ *dwarf.StructType, readMemory MemoryReader, memberTyp string)
 
 	readSize := typ.Size()
 
-	data, err := readMemory(math.MaxUint64, uint64(readSize))
+	data, err := readMemory(typAddr, uint64(readSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -99,7 +98,7 @@ func readSlice(typ *dwarf.StructType, readMemory MemoryReader, memberTyp string)
 	return ptr, dataLen, nil
 }
 
-func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, error) {
+func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader) ([]Content, error) {
 	err := checkField(typ, fieldPattern{"files", "*struct []embed.file"})
 	if err != nil {
 		return nil, err
@@ -107,7 +106,7 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 
 	// read ptr
 	ptrSize := typ.Field[0].Type.Size()
-	data, err := readMemory(math.MaxUint64, uint64(ptrSize))
+	data, err := readMemory(typAddr, uint64(ptrSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -128,12 +127,7 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 		return nil, fmt.Errorf("unexpected type: %T", filesPtrType.Type)
 	}
 
-	filesAddr, filesLen, err := readSlice(filesType, func(addr, size uint64) ([]byte, error) {
-		if addr == math.MaxUint64 {
-			addr = ptr
-		}
-		return readMemory(addr, size)
-	}, "*embed.file")
+	filesAddr, filesLen, err := readSlice(filesType, ptr, readMemory, "*embed.file")
 
 	if err != nil {
 		return nil, err
@@ -145,10 +139,10 @@ func readEmbedFS(typ *dwarf.StructType, readMemory MemoryReader) ([]Content, err
 	}
 
 	// read files
-	// tired of check size, just assume this not change
+	// tired of check size, just assume this not changes
 
-	// A file is a single file in the FS.
-	// It implements fs.FileInfo and fs.DirEntry.
+	// a file struct is a single file in the FS.
+	// it implements fs.FileInfo and fs.DirEntry.
 	// type file struct {
 	// 	// The compiler knows the layout of this struct.
 	// 	// See cmd/compile/internal/staticdata's WriteEmbed.

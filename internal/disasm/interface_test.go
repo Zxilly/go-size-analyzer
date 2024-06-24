@@ -18,10 +18,6 @@ type TestFileWrapper struct {
 	textErr   error
 }
 
-func (TestFileWrapper) ImageBase() uint64 {
-	return 0
-}
-
 func (TestFileWrapper) DWARF() (*dwarf.Data, error) {
 	panic("not reachable")
 }

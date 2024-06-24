@@ -15,10 +15,6 @@ type PeWrapper struct {
 	imageBase uint64
 }
 
-func (p *PeWrapper) ImageBase() uint64 {
-	return p.imageBase
-}
-
 func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
 	return p.file.DWARF()
 }
@@ -135,9 +131,12 @@ func (p *PeWrapper) LoadSections() map[string]*entity.Section {
 }
 
 func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
-	pf := p.file
-	for _, sect := range pf.Sections {
-		if uint64(sect.VirtualAddress) <= addr && addr+size <= uint64(sect.VirtualAddress+sect.VirtualSize) {
+	if addr < p.imageBase {
+		return nil, ErrAddrNotFound
+	}
+	addr -= p.imageBase
+	for _, sect := range p.file.Sections {
+		if uint64(sect.VirtualAddress) <= addr && addr+size <= uint64(sect.VirtualAddress+sect.Size) {
 			data := make([]byte, size)
 			if _, err := sect.ReadAt(data, int64(addr-uint64(sect.VirtualAddress))); err != nil {
 				return nil, err
