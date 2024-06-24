@@ -1,7 +1,7 @@
 import base64
 import os
 
-import brotli
+import zstd
 import requests
 from markdown_strings import header, code_block
 
@@ -55,13 +55,13 @@ def generate_image_url(p: str) -> str:
         data = f.read()
 
     # compress the image
-    data = brotli.compress(data, mode=brotli.MODE_TEXT, quality=11)
+    data = zstd.compress(data, 22)
 
     # encode base64
     data = base64.b64encode(data).decode("utf-8")
 
     req = requests.Request("GET", "https://bin2image.zxilly.dev", params={
-        "type": "brotli",
+        "type": "zstd",
         "data": data
     })
 

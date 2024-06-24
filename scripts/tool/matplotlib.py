@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from .svgo import optimize_svg
 
 matplotlib.use('svg')
+matplotlib.rcParams['svg.fonttype'] = 'none'
 
 
 def draw_usage(
