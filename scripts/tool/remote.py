@@ -82,7 +82,7 @@ class IntegrationTest:
 
             if draw and graph_data is not None:
                 with open(self.performance_figure_filepath(typ), "wb") as f:
-                    f.write(graph_data)
+                    f.write(graph_data.encode("utf-8"))
 
             log_typ(typ)
 

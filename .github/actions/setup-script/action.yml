@@ -4,6 +4,10 @@ inputs:
   cache:
     default: ""
     description: 'Cache key for test'
+  report:
+    default: "false"
+    required: false
+    description: 'Report results'
   script:
     required: true
     description: 'Script to run'
@@ -28,6 +32,11 @@ runs:
       run: |
         poetry install
 
+    - name: Install svgo
+      if: ${{ inputs.report == 'true' }}
+      shell: bash
+      run: npm install -g svgo
+
     - name: Cache test binaries
       if: ${{ inputs.cache != '' }}
       uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
@@ -39,5 +48,10 @@ runs:
     - name: Run script
       shell: bash
       working-directory: ./scripts
-      run: |
-          poetry run python ${{ inputs.script }}
+      run: poetry run python ${{ inputs.script }}
+
+    - name: Report results
+      if: ${{ inputs.report == 'true' }}
+      shell: bash
+      working-directory: ./scripts
+      run: poetry run python scripts/report.py

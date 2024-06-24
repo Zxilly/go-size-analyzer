@@ -45,29 +45,26 @@ def run_process(
         ps_process = psutil.Process(process.pid)
 
         while process.poll() is None:
+            percent = ps_process.cpu_percent(interval=0.1)
+            mem = ps_process.memory_info().rss / (1024 * 1024)
             elapsed_time = time.time() - start_time
             if elapsed_time > timeout:
                 raise TimeoutError(f"Process {name} timed out after {timeout} seconds.")
 
             if draw:
-                percent = ps_process.cpu_percent()
-                mem = ps_process.memory_info().rss / (1024 * 1024)
-
-                # ensure all data is valid
                 cpu_percentages.append(percent)
                 memory_usage_mb.append(mem)
                 timestamps.append(elapsed_time)
 
-            time.sleep(0.05)
     except TimeoutError as e:
         print(f"TimeoutError occurred: {e}")
         process.kill()
     except psutil.NoSuchProcess:
         pass
 
-    pic = None
+    pic: None | str = None
 
     if draw and timestamps[-1] >= 2:
-        pic = draw_usage(cpu_percentages, memory_usage_mb, timestamps)
+        pic = draw_usage(name, cpu_percentages, memory_usage_mb, timestamps)
 
     return [output, pic]

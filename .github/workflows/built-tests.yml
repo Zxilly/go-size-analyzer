@@ -107,6 +107,7 @@ jobs:
         with:
           cache: ${{ matrix.test }}
           script: 'tests.py --${{ matrix.test }}'
+          report: 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -308,4 +309,3 @@ jobs:
           pattern: ${{ matrix.os }}-*-results
           delete-merged: true
           retention-days: 7
-

@@ -1,6 +1,11 @@
+import base64
 import os
 
-from tool.utils import get_project_root
+import brotli
+import requests
+from markdown_strings import header, code_block, image, inline_code
+
+from tool.utils import get_project_root, write_github_summary, details
 
 # these are the tips that are not considered as errors
 tips = [
@@ -10,12 +15,12 @@ tips = [
 ]
 
 
-def check_line(s: str) -> bool:
-    if not "WARN" in s and not "ERROR" in s:
+def check_line(line: str) -> bool:
+    if "WARN" not in line and "ERROR" not in line:
         return False
 
     for tip in tips:
-        if tip in s:
+        if tip in line:
             return False
 
     return True
@@ -30,10 +35,40 @@ def need_report(f: str) -> bool:
 
 
 def filter_output(f: str) -> str:
+    ret = []
     with open(f, "r") as f:
         lines = f.readlines()
-        return "\n".join([line for line in lines if check_line(line)])
+        for line in lines:
+            if check_line(line):
+                ret.append(line)
 
+    # truncate the output if it's more than 50 lines
+    if len(ret) > 50:
+        ret = ret[:50]
+        ret.append("truncated output...")
+
+    return "".join(ret)
+
+
+def generate_image_url(p: str) -> str:
+    with open(p, "rb") as f:
+        data = f.read()
+
+    # compress the image
+    data = brotli.compress(data, mode=brotli.MODE_TEXT, quality=11)
+
+    # encode base64
+    data = base64.b64encode(data).decode("utf-8")
+
+    req = requests.Request("GET", "https://bin2image.zxilly.dev", params={
+        "type": "brotli",
+        "data": data
+    })
+
+    return req.prepare().url
+
+
+is_ci = os.getenv("CI", False)
 
 if __name__ == '__main__':
     results = os.path.join(get_project_root(), "results")
@@ -46,6 +81,10 @@ if __name__ == '__main__':
             if file.endswith(".output.txt"):
                 output_file_path = str(os.path.join(root, file))
                 if need_report(output_file_path):
-                    print(f"Found bad case in {output_file_path}:\n\n")
-                    print(filter_output(output_file_path))
+                    write_github_summary(header(f"Found bad case in {inline_code(output_file_path)}", header_level=2))
+                    write_github_summary(details(code_block(filter_output(output_file_path))))
                     break
+
+            if file.endswith(".svg"):
+                image_url = generate_image_url(str(os.path.join(root, file)))
+                write_github_summary(image(file, image_url))
