@@ -81,10 +81,10 @@ if __name__ == '__main__':
             if file.endswith(".output.txt"):
                 output_file_path = str(os.path.join(root, file))
                 if need_report(output_file_path):
-                    write_github_summary(header(f"Found bad case in {inline_code(output_file_path)}", header_level=2))
-                    write_github_summary(details(code_block(filter_output(output_file_path))))
+                    write_github_summary(header(f"Found bad case in {inline_code(output_file_path)}", header_level=2)+'\n')
+                    write_github_summary(details(code_block(filter_output(output_file_path)))+'\n')
                     break
 
-            if file.endswith(".svg"):
+            if file.endswith(".graph.svg"):
                 image_url = generate_image_url(str(os.path.join(root, file)))
-                write_github_summary(image(file, image_url))
+                write_github_summary(image(file, image_url) + '\n')
