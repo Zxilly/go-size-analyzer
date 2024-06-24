@@ -16,7 +16,7 @@ tips = [
 
 
 def check_line(line: str) -> bool:
-    if "WARN" not in line and "ERROR" not in line:
+    if "level=WARN" not in line and "level=ERROR" not in line:
         return False
 
     for tip in tips:
@@ -81,10 +81,11 @@ if __name__ == '__main__':
             if file.endswith(".output.txt"):
                 output_file_path = str(os.path.join(root, file))
                 if need_report(output_file_path):
-                    write_github_summary(header(f"Found bad case in {inline_code(output_file_path)}", header_level=2)+'\n')
+                    write_github_summary(header(f"Found bad case in {output_file_path}", header_level=3)+'\n')
                     write_github_summary(details(code_block(filter_output(output_file_path)))+'\n')
                     break
 
-            if file.endswith(".graph.svg"):
-                image_url = generate_image_url(str(os.path.join(root, file)))
-                write_github_summary(image(file, image_url) + '\n')
+            # camo limit the url length
+            # if file.endswith(".graph.svg"):
+            #     image_url = generate_image_url(str(os.path.join(root, file)))
+            #     write_github_summary(image(file, image_url) + '\n')
