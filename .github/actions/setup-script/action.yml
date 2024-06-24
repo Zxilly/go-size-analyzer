@@ -54,4 +54,4 @@ runs:
       if: ${{ inputs.report == 'true' }}
       shell: bash
       working-directory: ./scripts
-      run: poetry run python scripts/report.py
+      run: poetry run python report.py
