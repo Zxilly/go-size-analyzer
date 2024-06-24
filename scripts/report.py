@@ -3,7 +3,7 @@ import os
 
 import zstd
 import requests
-from markdown_strings import header, code_block
+from markdown_strings import header, code_block, image
 
 from tool.utils import get_project_root, write_github_summary, details
 
@@ -85,7 +85,6 @@ if __name__ == '__main__':
                     write_github_summary(details(code_block(filter_output(output_file_path)))+'\n')
                     break
 
-            # camo limit the url length
-            # if file.endswith(".graph.svg"):
-            #     image_url = generate_image_url(str(os.path.join(root, file)))
-            #     write_github_summary(image(file, image_url) + '\n')
+            if file.endswith(".graph.svg"):
+                image_url = generate_image_url(str(os.path.join(root, file)))
+                write_github_summary(image(file, image_url) + '\n')
