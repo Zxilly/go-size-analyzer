@@ -3,7 +3,7 @@ import os
 
 import brotli
 import requests
-from markdown_strings import header, code_block, image, inline_code
+from markdown_strings import header, code_block
 
 from tool.utils import get_project_root, write_github_summary, details
 
