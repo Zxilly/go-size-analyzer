@@ -37,7 +37,7 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/charmbracelet/x/ansi v0.1.2 // indirect
-	github.com/charmbracelet/x/exp/golden v0.0.0-20240617190524-788ec55faed1 // indirect
+	github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e // indirect
 	github.com/charmbracelet/x/input v0.1.2 // indirect
 	github.com/charmbracelet/x/windows v0.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

@@ -26,6 +26,8 @@ github.com/charmbracelet/x/exp/golden v0.0.0-20240525152034-77596eb8760e h1:i7sa
 github.com/charmbracelet/x/exp/golden v0.0.0-20240525152034-77596eb8760e/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
 github.com/charmbracelet/x/exp/golden v0.0.0-20240617190524-788ec55faed1 h1:MW7arc+KIDoURwm0KKr5tdPUZM+liJf54Oe7Ld+hNqw=
 github.com/charmbracelet/x/exp/golden v0.0.0-20240617190524-788ec55faed1/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
+github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e h1:RHVibg7mp++RILPdzcaeVhXWI46uH2qnwG747jazKWI=
+github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240606154654-7c42867b53c7 h1:S/o60nDjY4g1AKIifpYvHPV44I8qKazVTOqI86E2QJ8=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240606154654-7c42867b53c7/go.mod h1:5SXVy5IiqnjEZF82fNe+h5NZv70UnQ8irVnG1gvXlDw=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240625134410-de32bb7b5d4e h1:ai+YxFNZzfs8+195zZZMw95dRFCor965XGw8OT/A/7I=
