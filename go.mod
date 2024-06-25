@@ -10,7 +10,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v0.9.0
 	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
-	github.com/charmbracelet/bubbletea v0.26.5
+	github.com/charmbracelet/bubbletea v0.26.6
 	github.com/charmbracelet/lipgloss v0.11.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240606154654-7c42867b53c7
 	github.com/charmbracelet/x/term v0.1.1
