@@ -94,7 +94,9 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 	inline := entry.Val(dwarf.AttrInline)
 	if inline != nil {
 		val, ok := inline.(int64)
-		return !ok || val != 0
+		if ok && val != 0 {
+			return true
+		}
 	}
 
 	var boolIgnores = []dwarf.Attr{
@@ -161,7 +163,7 @@ func EntryFileReader(cu *dwarf.Entry, d *dwarf.Data) func(entry *dwarf.Entry) st
 		if entry.Val(dwarf.AttrTrampoline) == nil {
 			fileIndexAny := entry.Val(dwarf.AttrDeclFile)
 			if fileIndexAny == nil {
-				slog.Debug(fmt.Sprintf("Failed to load DWARF function file as no field: %s", EntryPrettyPrint(entry)))
+				slog.Debug(fmt.Sprintf("Failed to load DWARF function file as no AttrDeclFile field: %s", EntryPrettyPrint(entry)))
 				return defaultName
 			}
 			fileIndex, ok := fileIndexAny.(int64)
