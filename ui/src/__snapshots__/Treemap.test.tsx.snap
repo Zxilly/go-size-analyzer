@@ -324,6 +324,7 @@ ResultImpl {
       "explain": "The unknown size of the sections in the binary.",
       "id": 23,
       "name": "Unknown Sections Size",
+      "shortName": "unk-sections",
       "size": 830200,
     },
     ContainerImpl {
@@ -1428,6 +1429,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 162,
+                  "parent": "runtime/internal/syscall",
                 },
               ],
               "data": {
@@ -1590,6 +1592,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 172,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1599,6 +1602,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 173,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1608,6 +1612,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 174,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1617,6 +1622,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 175,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1626,6 +1632,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 176,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1635,6 +1642,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 177,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1644,6 +1652,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 178,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1653,6 +1662,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 179,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1662,6 +1672,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 180,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1671,6 +1682,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 181,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1680,6 +1692,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 182,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1689,6 +1702,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 183,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1698,6 +1712,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 184,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1707,6 +1722,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 185,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1716,6 +1732,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 186,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1725,6 +1742,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 187,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1734,6 +1752,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 188,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1743,6 +1762,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 189,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1752,6 +1772,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 190,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1761,6 +1782,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 191,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1770,6 +1792,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 192,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1779,6 +1802,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 193,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1788,6 +1812,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 194,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1797,6 +1822,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 195,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1806,6 +1832,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 196,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1815,6 +1842,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 197,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1824,6 +1852,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 198,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1833,6 +1862,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 199,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1842,6 +1872,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 200,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1851,6 +1882,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 201,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1860,6 +1892,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 202,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1869,6 +1902,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 203,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1878,6 +1912,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 204,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1887,6 +1922,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 205,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1896,6 +1932,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 206,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1905,6 +1942,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 207,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1914,6 +1952,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 208,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1923,6 +1962,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 209,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1932,6 +1972,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 210,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1941,6 +1982,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 211,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1950,6 +1992,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 212,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1959,6 +2002,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 213,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1968,6 +2012,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 214,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1977,6 +2022,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 215,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1986,6 +2032,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 216,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -1995,6 +2042,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 217,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2004,6 +2052,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 218,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2013,6 +2062,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 219,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2022,6 +2072,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 220,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2031,6 +2082,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 221,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2040,6 +2092,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 222,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2049,6 +2102,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 223,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2058,6 +2112,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 224,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2067,6 +2122,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 225,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2076,6 +2132,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 226,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2085,6 +2142,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 227,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2094,6 +2152,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 228,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2103,6 +2162,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 229,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2112,6 +2172,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 230,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2121,6 +2182,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 231,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2130,6 +2192,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 232,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2139,6 +2202,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 233,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2148,6 +2212,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 234,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2157,6 +2222,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 235,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2166,6 +2232,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 236,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2175,6 +2242,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 237,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2184,6 +2252,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 238,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2193,6 +2262,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 239,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2202,6 +2272,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 240,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2211,6 +2282,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 241,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2220,6 +2292,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 242,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2229,6 +2302,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 243,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2238,6 +2312,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 244,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2247,6 +2322,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 245,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2256,6 +2332,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 246,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2265,6 +2342,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 247,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2274,6 +2352,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 248,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2283,6 +2362,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 249,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2292,6 +2372,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 250,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2301,6 +2382,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 251,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2310,6 +2392,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 252,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2319,6 +2402,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 253,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2328,6 +2412,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 254,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2337,6 +2422,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 255,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2346,6 +2432,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 256,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2355,6 +2442,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 257,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2364,6 +2452,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 258,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2373,6 +2462,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 259,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2382,6 +2472,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 260,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2391,6 +2482,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 261,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2400,6 +2492,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 262,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2409,6 +2502,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 263,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2418,6 +2512,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 264,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2427,6 +2522,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 265,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2436,6 +2532,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 266,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2445,6 +2542,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 267,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2454,6 +2552,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 268,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2463,6 +2562,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 269,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2472,6 +2572,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 270,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2481,6 +2582,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 271,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2490,6 +2592,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 272,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2499,6 +2602,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 273,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2508,6 +2612,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 274,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2517,6 +2622,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 275,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2526,6 +2632,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 276,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2535,6 +2642,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 277,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2544,6 +2652,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 278,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2553,6 +2662,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 279,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2562,6 +2672,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 280,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2571,6 +2682,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 281,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2580,6 +2692,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 282,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2589,6 +2702,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 283,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2598,6 +2712,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 284,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2607,6 +2722,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 285,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2616,6 +2732,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 286,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2625,6 +2742,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 287,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2634,6 +2752,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 288,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2643,6 +2762,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 289,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2652,6 +2772,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 290,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2661,6 +2782,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 291,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2670,6 +2792,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 292,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2679,6 +2802,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 293,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2688,6 +2812,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 294,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2697,6 +2822,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 295,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2706,6 +2832,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 296,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2715,6 +2842,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 297,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2724,6 +2852,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 298,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2733,6 +2862,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 299,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2742,6 +2872,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 300,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2751,6 +2882,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 301,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2760,6 +2892,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 302,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2769,6 +2902,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 303,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2778,6 +2912,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 304,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2787,6 +2922,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 305,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2796,6 +2932,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 306,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2805,6 +2942,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 307,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2814,6 +2952,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 308,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2823,6 +2962,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 309,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2832,6 +2972,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 310,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2841,6 +2982,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 311,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2850,6 +2992,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 312,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2859,6 +3002,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 313,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2868,6 +3012,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 314,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2877,6 +3022,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 315,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2886,6 +3032,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 316,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2895,6 +3042,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 317,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2904,6 +3052,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 318,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2913,6 +3062,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 319,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2922,6 +3072,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 320,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2931,6 +3082,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 321,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2940,6 +3092,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 322,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2949,6 +3102,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 323,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2958,6 +3112,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 324,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2967,6 +3122,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 325,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2976,6 +3132,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 326,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2985,6 +3142,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 327,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -2994,6 +3152,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 328,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3003,6 +3162,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 329,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3012,6 +3172,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 330,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3021,6 +3182,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 331,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3030,6 +3192,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 332,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3039,6 +3202,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 333,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3048,6 +3212,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 334,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3057,6 +3222,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 335,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3066,6 +3232,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 336,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3075,6 +3242,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 337,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3084,6 +3252,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 338,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3093,6 +3262,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 339,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3102,6 +3272,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 340,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3111,6 +3282,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 341,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3120,6 +3292,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 342,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3129,6 +3302,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 343,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3138,6 +3312,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 344,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3147,6 +3322,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 345,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3156,6 +3332,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 346,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3165,6 +3342,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 347,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3174,6 +3352,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 348,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3183,6 +3362,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 349,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3192,6 +3372,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 350,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3201,6 +3382,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 351,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3210,6 +3392,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 352,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3219,6 +3402,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 353,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3228,6 +3412,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 354,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3237,6 +3422,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 355,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3246,6 +3432,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 356,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3255,6 +3442,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 357,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3264,6 +3452,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 358,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3273,6 +3462,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 359,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3282,6 +3472,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 360,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3291,6 +3482,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 361,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3300,6 +3492,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 362,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3309,6 +3502,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 363,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3318,6 +3512,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 364,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3327,6 +3522,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 365,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3336,6 +3532,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 366,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3345,6 +3542,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 367,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3354,6 +3552,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 368,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3363,6 +3562,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 369,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3372,6 +3572,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 370,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3381,6 +3582,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 371,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3390,6 +3592,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 372,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3399,6 +3602,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 373,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3408,6 +3612,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 374,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3417,6 +3622,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 375,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3426,6 +3632,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 376,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3435,6 +3642,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 377,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3444,6 +3652,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 378,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3453,6 +3662,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 379,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3462,6 +3672,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 380,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3471,6 +3682,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 381,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3480,6 +3692,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 382,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3489,6 +3702,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 383,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3498,6 +3712,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 384,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3507,6 +3722,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 385,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3516,6 +3732,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 386,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3525,6 +3742,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 387,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3534,6 +3752,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 388,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3543,6 +3762,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 389,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3552,6 +3772,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 390,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3561,6 +3782,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 391,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3570,6 +3792,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 392,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3579,6 +3802,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 393,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3588,6 +3812,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 394,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3597,6 +3822,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 395,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3606,6 +3832,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 396,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3615,6 +3842,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 397,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3624,6 +3852,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 398,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3633,6 +3862,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 399,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3642,6 +3872,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 400,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3651,6 +3882,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 401,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3660,6 +3892,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 402,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3669,6 +3902,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 403,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3678,6 +3912,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 404,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3687,6 +3922,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 405,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3696,6 +3932,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 406,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3705,6 +3942,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 407,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3714,6 +3952,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 408,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3723,6 +3962,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 409,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3732,6 +3972,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 410,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3741,6 +3982,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 411,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3750,6 +3992,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 412,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3759,6 +4002,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 413,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3768,6 +4012,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 414,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3777,6 +4022,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 415,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3786,6 +4032,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 416,
+              "parent": "runtime",
             },
             SymbolImpl {
               "data": {
@@ -3795,6 +4042,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 417,
+              "parent": "runtime",
             },
           ],
           "data": {
@@ -6066,6 +6314,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 421,
+              "parent": "embed",
             },
           ],
           "data": {
@@ -6123,6 +6372,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 425,
+              "parent": "errors",
             },
             SymbolImpl {
               "data": {
@@ -6132,6 +6382,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 426,
+              "parent": "errors",
             },
           ],
           "data": {
@@ -6295,6 +6546,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 437,
+              "parent": "internal/oserror",
             },
             SymbolImpl {
               "data": {
@@ -6304,6 +6556,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 438,
+              "parent": "internal/oserror",
             },
             SymbolImpl {
               "data": {
@@ -6313,6 +6566,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 439,
+              "parent": "internal/oserror",
             },
             SymbolImpl {
               "data": {
@@ -6322,6 +6576,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 440,
+              "parent": "internal/oserror",
             },
             SymbolImpl {
               "data": {
@@ -6331,6 +6586,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 441,
+              "parent": "internal/oserror",
             },
           ],
           "data": {
@@ -6533,6 +6789,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 458,
+              "parent": "sync",
             },
             SymbolImpl {
               "data": {
@@ -6542,6 +6799,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 459,
+              "parent": "sync",
             },
             SymbolImpl {
               "data": {
@@ -6551,6 +6809,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 460,
+              "parent": "sync",
             },
           ],
           "data": {
@@ -6706,6 +6965,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 466,
+              "parent": "internal/cpu",
             },
             SymbolImpl {
               "data": {
@@ -6715,6 +6975,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 467,
+              "parent": "internal/cpu",
             },
             SymbolImpl {
               "data": {
@@ -6724,6 +6985,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 468,
+              "parent": "internal/cpu",
             },
             SymbolImpl {
               "data": {
@@ -6733,6 +6995,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 469,
+              "parent": "internal/cpu",
             },
             SymbolImpl {
               "data": {
@@ -6742,6 +7005,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 470,
+              "parent": "internal/cpu",
             },
           ],
           "data": {
@@ -6853,6 +7117,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 475,
+              "parent": "math",
             },
           ],
           "data": {
@@ -6922,6 +7187,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 480,
+                  "parent": "unicode/utf8",
                 },
                 SymbolImpl {
                   "data": {
@@ -6931,6 +7197,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 481,
+                  "parent": "unicode/utf8",
                 },
               ],
               "data": {
@@ -6971,6 +7238,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 482,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -6980,6 +7248,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 483,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -6989,6 +7258,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 484,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -6998,6 +7268,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 485,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7007,6 +7278,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 486,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7016,6 +7288,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 487,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7025,6 +7298,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 488,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7034,6 +7308,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 489,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7043,6 +7318,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 490,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7052,6 +7328,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 491,
+              "parent": "unicode",
             },
             SymbolImpl {
               "data": {
@@ -7061,6 +7338,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 492,
+              "parent": "unicode",
             },
           ],
           "data": {
@@ -7225,6 +7503,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 499,
+              "parent": "reflect",
             },
             SymbolImpl {
               "data": {
@@ -7234,6 +7513,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 500,
+              "parent": "reflect",
             },
             SymbolImpl {
               "data": {
@@ -7243,6 +7523,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 501,
+              "parent": "reflect",
             },
             SymbolImpl {
               "data": {
@@ -7252,6 +7533,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 502,
+              "parent": "reflect",
             },
           ],
           "data": {
@@ -7342,6 +7624,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 506,
+              "parent": "strconv",
             },
             SymbolImpl {
               "data": {
@@ -7351,6 +7634,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 507,
+              "parent": "strconv",
             },
           ],
           "data": {
@@ -7486,6 +7770,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 520,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7495,6 +7780,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 521,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7504,6 +7790,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 522,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7513,6 +7800,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 523,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7522,6 +7810,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 524,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7531,6 +7820,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 525,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7540,6 +7830,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 526,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7549,6 +7840,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 527,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7558,6 +7850,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 528,
+              "parent": "syscall",
             },
             SymbolImpl {
               "data": {
@@ -7567,6 +7860,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 529,
+              "parent": "syscall",
             },
           ],
           "data": {
@@ -7743,6 +8037,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 534,
+              "parent": "path",
             },
           ],
           "data": {
@@ -7867,6 +8162,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 547,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7876,6 +8172,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 548,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7885,6 +8182,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 549,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7894,6 +8192,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 550,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7903,6 +8202,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 551,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7912,6 +8212,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 552,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7921,6 +8222,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 553,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7930,6 +8232,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 554,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7939,6 +8242,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 555,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7948,6 +8252,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 556,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7957,6 +8262,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 557,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7966,6 +8272,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 558,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7975,6 +8282,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 559,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7984,6 +8292,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 560,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -7993,6 +8302,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 561,
+              "parent": "time",
             },
             SymbolImpl {
               "data": {
@@ -8002,6 +8312,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 562,
+              "parent": "time",
             },
           ],
           "data": {
@@ -8210,6 +8521,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 568,
+              "parent": "internal/bytealg",
             },
           ],
           "data": {
@@ -8295,6 +8607,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 575,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8304,6 +8617,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 576,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8313,6 +8627,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 577,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8322,6 +8637,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 578,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8331,6 +8647,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 579,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8340,6 +8657,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 580,
+                  "parent": "io/fs",
                 },
                 SymbolImpl {
                   "data": {
@@ -8349,6 +8667,7 @@ ResultImpl {
                     "type": "data",
                   },
                   "id": 581,
+                  "parent": "io/fs",
                 },
               ],
               "data": {
@@ -8429,6 +8748,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 582,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8438,6 +8758,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 583,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8447,6 +8768,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 584,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8456,6 +8778,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 585,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8465,6 +8788,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 586,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8474,6 +8798,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 587,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8483,6 +8808,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 588,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8492,6 +8818,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 589,
+              "parent": "io",
             },
             SymbolImpl {
               "data": {
@@ -8501,6 +8828,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 590,
+              "parent": "io",
             },
           ],
           "data": {
@@ -8677,6 +9005,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 595,
+              "parent": "internal/abi",
             },
           ],
           "data": {
@@ -8773,6 +9102,7 @@ ResultImpl {
       "explain": "The size of the std packages in the binary.",
       "id": 600,
       "name": "Std Packages Size",
+      "shortName": "std-packages",
       "size": 1698333,
     },
     ContainerImpl {
@@ -8811,6 +9141,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 605,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8820,6 +9151,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 606,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8829,6 +9161,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 607,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8838,6 +9171,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 608,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8847,6 +9181,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 609,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8856,6 +9191,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 610,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8865,6 +9201,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 611,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8874,6 +9211,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 612,
+              "parent": "main",
             },
             SymbolImpl {
               "data": {
@@ -8883,6 +9221,7 @@ ResultImpl {
                 "type": "data",
               },
               "id": 613,
+              "parent": "main",
             },
           ],
           "data": {
@@ -8971,6 +9310,7 @@ ResultImpl {
       "explain": "The size of the main packages in the binary.",
       "id": 614,
       "name": "Main Packages Size",
+      "shortName": "main-packages",
       "size": 7433,
     },
     ContainerImpl {
@@ -9072,6 +9412,7 @@ ResultImpl {
       "explain": "The size of the generated packages in the binary.",
       "id": 622,
       "name": "Generated Packages Size",
+      "shortName": "generated-packages",
       "size": 19062,
     },
   ],
@@ -15137,7 +15478,7 @@ exports[`Treemap 2`] = `
           x="12.5"
           y="8.5"
         >
-          syscall.errors
+          errors
         </text>
       </g>
       <g
@@ -15329,7 +15670,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="0.5"
         >
-          time.daysBefore
+          daysBefore
         </text>
       </g>
       <g
@@ -15353,7 +15694,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="2"
         >
-          time.utcLoc
+          utcLoc
         </text>
       </g>
       <g
@@ -15377,7 +15718,7 @@ exports[`Treemap 2`] = `
           x="1"
           y="2"
         >
-          time.localLoc
+          localLoc
         </text>
       </g>
       <g
@@ -15737,7 +16078,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4"
         >
-          runtime.size_to_class128
+          size_to_class128
         </text>
       </g>
       <g
@@ -15761,7 +16102,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          runtime.sigprofCallers
+          sigprofCallers
         </text>
       </g>
       <g
@@ -15785,7 +16126,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          runtime.stackpool
+          stackpool
         </text>
       </g>
       <g
@@ -15809,7 +16150,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          runtime.handlingSig
+          handlingSig
         </text>
       </g>
       <g
@@ -15833,7 +16174,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          runtime.fastlog2Table
+          fastlog2Table
         </text>
       </g>
       <g
@@ -15881,7 +16222,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="5"
         >
-          runtime.stwReasonStrings
+          stwReasonStrings
         </text>
       </g>
       <g
@@ -15905,7 +16246,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="4.5"
         >
-          runtime.class_to_divmagic
+          class_to_divmagic
         </text>
       </g>
       <g
@@ -16145,7 +16486,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="6.5"
         >
-          runtime.globalRand
+          globalRand
         </text>
       </g>
       <g
@@ -16193,7 +16534,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="7.5"
         >
-          runtime.gcController
+          gcController
         </text>
       </g>
       <g
@@ -16241,7 +16582,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="8"
         >
-          runtime.g0
+          g0
         </text>
       </g>
       <g
@@ -16265,7 +16606,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="8"
         >
-          runtime.gcrash
+          gcrash
         </text>
       </g>
       <g
@@ -16337,7 +16678,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="10"
         >
-          runtime.printBacklog
+          printBacklog
         </text>
       </g>
       <g
@@ -16361,7 +16702,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="10"
         >
-          runtime.fwdSig
+          fwdSig
         </text>
       </g>
       <g
@@ -16409,7 +16750,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11"
         >
-          runtime.work
+          work
         </text>
       </g>
       <g
@@ -16433,7 +16774,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11"
         >
-          runtime.stackLarge
+          stackLarge
         </text>
       </g>
       <g
@@ -16481,7 +16822,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11.5"
         >
-          runtime.waitReasonStrings
+          waitReasonStrings
         </text>
       </g>
       <g
@@ -16505,7 +16846,7 @@ exports[`Treemap 2`] = `
           x="2"
           y="11.5"
         >
-          runtime.firstmoduledata
+          firstmoduledata
         </text>
       </g>
       <g
@@ -16745,7 +17086,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="5"
         >
-          runtime.zeroVal
+          zeroVal
         </text>
       </g>
       <g
@@ -16769,7 +17110,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="5.5"
         >
-          runtime.auxvreadbuf
+          auxvreadbuf
         </text>
       </g>
       <g
@@ -17129,7 +17470,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="9"
         >
-          runtime.sigtable
+          sigtable
         </text>
       </g>
       <g
@@ -17345,7 +17686,7 @@ exports[`Treemap 2`] = `
           x="10.5"
           y="11.5"
         >
-          runtime.m0
+          m0
         </text>
       </g>
       <g
@@ -17369,7 +17710,7 @@ exports[`Treemap 2`] = `
           x="18"
           y="7"
         >
-          runtime.staticuint64s
+          staticuint64s
         </text>
       </g>
       <g
@@ -17849,7 +18190,7 @@ exports[`Treemap 2`] = `
           x="18"
           y="15"
         >
-          runtime.itabTableInit
+          itabTableInit
         </text>
       </g>
       <g
@@ -18257,7 +18598,7 @@ exports[`Treemap 2`] = `
           x="24.5"
           y="17.5"
         >
-          runtime.sched
+          sched
         </text>
       </g>
       <g
@@ -18329,7 +18670,7 @@ exports[`Treemap 2`] = `
           x="16"
           y="32"
         >
-          runtime.memstats
+          memstats
         </text>
       </g>
       <g
@@ -18377,7 +18718,7 @@ exports[`Treemap 2`] = `
           x="16.5"
           y="32"
         >
-          runtime.cpuprof
+          cpuprof
         </text>
       </g>
       <g
@@ -18833,7 +19174,7 @@ exports[`Treemap 2`] = `
           x="39.5"
           y="27"
         >
-          runtime.semtable
+          semtable
         </text>
       </g>
       <g
@@ -19265,7 +19606,7 @@ exports[`Treemap 2`] = `
           x="61.5"
           y="104"
         >
-          runtime.mheap_
+          mheap_
         </text>
       </g>
       <g
@@ -19313,7 +19654,7 @@ exports[`Treemap 2`] = `
           x="180"
           y="102"
         >
-          runtime.trace
+          trace
         </text>
       </g>
       <g
