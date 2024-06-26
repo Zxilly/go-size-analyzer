@@ -3,7 +3,6 @@ import React, {useLayoutEffect, useMemo, useRef} from "react";
 import {Entry} from "./tool/entry.ts";
 import {NodeColorGetter} from "./tool/color.ts";
 import {PADDING, TOP_PADDING} from "./tool/const.ts";
-import {trimPrefix} from "./tool/utils.ts";
 
 type NodeEventHandler = (event: HierarchyRectangularNode<Entry>) => void;
 
@@ -42,12 +41,7 @@ export const Node: React.FC<NodeProps> = (
     }, [children, height, width])
 
     const title = useMemo(() => {
-        const t = node.data.getName()
-        let display  = trimPrefix(t, "/")
-        if (node.data.getType() === "symbol") {
-            display = trimPrefix(display, ".")
-        }
-        return display
+        return node.data.getName()
     }, [node.data])
 
     useLayoutEffect(() => {

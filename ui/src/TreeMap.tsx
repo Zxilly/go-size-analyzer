@@ -9,6 +9,8 @@ import {Tooltip} from "./Tooltip.tsx";
 import {Node} from "./Node.tsx";
 
 import "./style.scss"
+import {trimPrefix} from "./tool/utils.ts";
+import {useHash} from "./tool/useHash.ts";
 
 interface TreeMapProps {
     entry: Entry
@@ -16,7 +18,11 @@ interface TreeMapProps {
 
 function TreeMap({entry}: TreeMapProps) {
     // Set the document title to the name of the entry
-    useTitle(entry.getName())
+    useTitle(entry.getName(), {
+        restoreOnUnmount: true
+    })
+
+    const [hash, setHash] = useHash()
 
     // Get the window size
     const {width, height} = useWindowSize()
@@ -94,6 +100,50 @@ function TreeMap({entry}: TreeMapProps) {
         return cache;
     }, [root])
 
+    const setSelectedNodeWithHash = useCallback((node: HierarchyRectangularNode<Entry> | null) => {
+        setSelectedNode(node)
+
+        if (node === null) {
+            setHash("")
+            return
+        }
+
+        setHash(
+            node
+                .ancestors()
+                .map((d) => {
+                    return d.data.getURLSafeName()
+                })
+                .reverse()
+                .join("#")
+        )
+    }, [setHash])
+
+    useEffect(() => {
+        const parts = trimPrefix(hash, "#").split("#")
+        if (parts.length >= 1) {
+            const base = parts[0]
+            if (base !== entry.getURLSafeName()) {
+                return
+            }
+        }
+        let cur = root
+        for (let i = 1; i < parts.length; i++) {
+            const part = parts[i]
+            if (!cur.children) {
+                return;
+            }
+
+            const found = cur.children.find((d) => d.data.getURLSafeName() === part)
+            if (!found) {
+                return;
+            }
+            cur = found
+        }
+
+        setSelectedNode(cur)
+    }, [hash, root, entry])
+
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipNode, setTooltipNode] =
         useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
@@ -161,10 +211,10 @@ function TreeMap({entry}: TreeMapProps) {
                 nestedData={nestedData}
                 selectedNode={selectedNode}
                 getModuleColor={getModuleColor}
-                setSelectedNode={setSelectedNode}
+                setSelectedNode={setSelectedNodeWithHash}
             />
         )
-    }, [getModuleColor, nestedData, selectedNode])
+    }, [getModuleColor, nestedData, selectedNode, setSelectedNodeWithHash])
 
     return (
         <>

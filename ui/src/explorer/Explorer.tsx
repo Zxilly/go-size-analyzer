@@ -101,14 +101,6 @@ export const Explorer: React.FC = () => {
         }
     }, [loadError, loading, file, result, analyzing, inst, entry])
 
-    useEffect(() => {
-        if (entry) {
-            window.location.hash = entry.getName()
-        } else {
-            history.replaceState(null, "", ' ');
-        }
-    }, [entry])
-
     return <>
         <Dialog
             open={modalState.isOpen}

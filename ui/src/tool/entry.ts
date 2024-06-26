@@ -23,6 +23,8 @@ export interface EntryLike<T extends EntryType> {
 
     getName(): string;
 
+    getURLSafeName(): string;
+
     getChildren(): EntryChildren[T]
 
     getID(): number;
@@ -36,6 +38,14 @@ class BaseImpl {
     getID(): number {
         return this.id;
     }
+
+    getName(): string {
+        throw new Error("Not implemented");
+    }
+
+    getURLSafeName(): string {
+        return this.getName();
+    }
 }
 
 export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
@@ -48,7 +58,7 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
     }
 
 
-    getName(): string {
+    override getName(): string {
         return this.data.name;
     }
 
@@ -84,7 +94,7 @@ export class FileImpl extends BaseImpl implements EntryLike<"file"> {
         return [];
     }
 
-    getName(): string {
+    override getName(): string {
         return this.data.file_path.split("/").pop()!;
     }
 
@@ -123,7 +133,7 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
         }
 
         for (const s of data.symbols) {
-            children.push(new SymbolImpl(s));
+            children.push(new SymbolImpl(s, data.name));
         }
 
         const leftSize = data.size - children.reduce((acc, child) => acc + child.getSize(), 0);
@@ -139,9 +149,9 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
         return this.children;
     }
 
-    getName(): string {
+    override getName(): string {
         if (this.parent != null) {
-            return trimPrefix(this.data.name, this.parent);
+            return trimPrefix(this.data.name, this.parent + "/");
         }
 
         return this.data.name;
@@ -173,7 +183,7 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
         return [];
     }
 
-    getName(): string {
+    override getName(): string {
         return this.name;
     }
 
@@ -198,7 +208,7 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
 }
 
 export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
-    constructor(private readonly data: FileSymbol) {
+    constructor(private readonly data: FileSymbol, private readonly parent: string) {
         super();
     }
 
@@ -206,8 +216,8 @@ export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
         return [];
     }
 
-    getName(): string {
-        return this.data.name;
+    override getName(): string {
+        return trimPrefix(this.data.name, this.parent + ".")
     }
 
     getSize(): number {
@@ -230,17 +240,22 @@ export class SymbolImpl extends BaseImpl implements EntryLike<"symbol"> {
 
 export class ContainerImpl extends BaseImpl implements EntryLike<"container"> {
     constructor(private readonly name: string,
+                private readonly shortName: string,
                 private readonly size: number,
                 private readonly children: EntryChildren["container"],
                 private readonly explain: string = "") {
         super();
     }
 
+    override getURLSafeName(): string {
+        return this.shortName;
+    }
+
     getChildren(): EntryChildren["container"] {
         return this.children;
     }
 
-    getName(): string {
+    override getName(): string {
         return this.name;
     }
 
@@ -270,7 +285,7 @@ export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
         return [];
     }
 
-    getName(): string {
+    override getName(): string {
         return "Unknown";
     }
 
@@ -309,6 +324,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
         const sectionContainerSize = sectionContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
         const sectionContainer = new ContainerImpl(
             "Unknown Sections Size",
+            "unk-sections",
             sectionContainerSize,
             sectionContainerChildren,
             "The unknown size of the sections in the binary.");
@@ -330,6 +346,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
             const packageContainerSize = packageContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
             const packageContainer = new ContainerImpl(
                 `${title(type)} Packages Size`,
+                `${type}-packages`,
                 packageContainerSize,
                 packageContainerChildren,
                 `The size of the ${type} packages in the binary.`
@@ -351,7 +368,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
         return this.children;
     }
 
-    getName(): string {
+    override getName(): string {
         return this.data.name;
     }
 
