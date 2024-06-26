@@ -18,6 +18,8 @@ function getTestNode(): Entry {
             return "test content";
         }, getType(): EntryType {
             return "unknown"
+        }, getURLSafeName(): string {
+            return "test";
         }
     }
 }
