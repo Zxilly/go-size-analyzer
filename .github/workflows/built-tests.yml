@@ -138,6 +138,37 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
           path: results/
 
+  merge:
+    name: Merge Go test results
+    needs: tests
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+    steps:
+      - name: Merge
+        uses: actions/upload-artifact/merge@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          name: ${{ matrix.os }}-results
+          compression-level: '9'
+          pattern: ${{ matrix.os }}-*-results
+          delete-merged: true
+          retention-days: 7
+
+  tests-result:
+    name: Tests result
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+            || contains(needs.*.result, 'skipped')
+          }}
+
   tests-ui:
     name: UI Tests
     runs-on: ubuntu-latest
@@ -292,21 +323,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
-
-  merge:
-    name: Merge Go test results
-    needs: tests
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
-    steps:
-      - name: Merge
-        uses: actions/upload-artifact/merge@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
-        with:
-          name: ${{ matrix.os }}-results
-          compression-level: '9'
-          pattern: ${{ matrix.os }}-*-results
-          delete-merged: true
-          retention-days: 7
