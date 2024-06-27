@@ -114,5 +114,8 @@ func TestCollect(t *testing.T) {
 	}
 	seq := maps.Keys(args)
 
-	assert.Equal(t, []string{"foo", "bar", "baz"}, Collect(seq))
+	result := Collect(seq)
+	for k := range args {
+		assert.Contains(t, result, k)
+	}
 }
