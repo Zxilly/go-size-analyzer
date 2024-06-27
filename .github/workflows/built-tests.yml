@@ -139,7 +139,7 @@ jobs:
           path: results/
 
   tests-ui:
-    name: Tests on UI
+    name: UI Tests
     runs-on: ubuntu-latest
     needs: build-wasm
     permissions:
