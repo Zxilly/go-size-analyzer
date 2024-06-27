@@ -40,8 +40,8 @@ importers:
         version: 17.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@codecov/vite-plugin':
-        specifier: 0.0.1-beta.8
-        version: 0.0.1-beta.8(vite@5.3.1(@types/node@20.14.2)(lightningcss@1.25.1)(sass@1.77.5)(terser@5.31.1))
+        specifier: 0.0.1-beta.10
+        version: 0.0.1-beta.10(vite@5.3.1(@types/node@20.14.2)(lightningcss@1.25.1)(sass@1.77.5)(terser@5.31.1))
       '@microsoft/eslint-formatter-sarif':
         specifier: ^3.1.0
         version: 3.1.0
@@ -236,12 +236,12 @@ packages:
     resolution: {integrity: sha512-XEFXSlxiG5td2EJRe8vOmRbaXVgfcBlszKujvVmWIK/UpywWljQCfzAv3RQCGujWQ1RD4YYWEAqDXfuJiy8f5Q==}
     engines: {node: '>=6.9.0'}
 
-  '@codecov/bundler-plugin-core@0.0.1-beta.9':
-    resolution: {integrity: sha512-zxMpUhhplvjuwNVmLtOi64d7LGPAhoLsQwVky9Rkx8oRHaDKqDvuisrs+NP5mIE9tQYPnGZKgiv0gnEJ3AHULw==}
+  '@codecov/bundler-plugin-core@0.0.1-beta.10':
+    resolution: {integrity: sha512-fOgy02gc0Z0ipKVe8QqN7mcmzQYjHb2UzT6RtHR+tqyYwpe1r1Kg5E/pbIOXKLaJGXK+AaOX23qtgp6kvUn+iA==}
     engines: {node: '>=18.0.0'}
 
-  '@codecov/vite-plugin@0.0.1-beta.8':
-    resolution: {integrity: sha512-bMpn2k4w0HUnmbzQmaE8nzsVKqX72eUQVB5VlU7j+Pr225cCqj3DxWQpYibC+LAUzytZKxVEMZnrYOMTQSXHDA==}
+  '@codecov/vite-plugin@0.0.1-beta.10':
+    resolution: {integrity: sha512-ZoNKEGTMUIwQbwjxu/YUMaGlBUw24c2rZG0E0Lsa2SjZ+DBL+yTe2Kz+7vB6rzW+2Y/EpxxqVWCVjjK03Z7l1w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       vite: 4.x || 5.x
@@ -3253,16 +3253,16 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@codecov/bundler-plugin-core@0.0.1-beta.9':
+  '@codecov/bundler-plugin-core@0.0.1-beta.10':
     dependencies:
       chalk: 4.1.2
       semver: 7.6.2
       unplugin: 1.10.1
       zod: 3.23.8
 
-  '@codecov/vite-plugin@0.0.1-beta.8(vite@5.3.1(@types/node@20.14.2)(lightningcss@1.25.1)(sass@1.77.5)(terser@5.31.1))':
+  '@codecov/vite-plugin@0.0.1-beta.10(vite@5.3.1(@types/node@20.14.2)(lightningcss@1.25.1)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
-      '@codecov/bundler-plugin-core': 0.0.1-beta.9
+      '@codecov/bundler-plugin-core': 0.0.1-beta.10
       unplugin: 1.10.1
       vite: 5.3.1(@types/node@20.14.2)(lightningcss@1.25.1)(sass@1.77.5)(terser@5.31.1)
 
