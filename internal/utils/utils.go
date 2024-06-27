@@ -3,11 +3,12 @@ package utils
 import (
 	"debug/pe"
 	"fmt"
+	"iter"
 	"log/slog"
 	"strconv"
 	"strings"
+	"unique"
 
-	"go4.org/intern"
 	"golang.org/x/net/publicsuffix"
 )
 
@@ -23,7 +24,7 @@ func GetImageBase(file *pe.File) uint64 {
 }
 
 func Deduplicate(s string) string {
-	return intern.GetByString(s).Get().(string) //nolint: revive // should be replaced with unique after 1.23
+	return unique.Make(s).Value()
 }
 
 // UglyGuess an ugly hack for a known issue about golang compiler
@@ -121,4 +122,14 @@ func Must(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func Collect[K comparable](seq iter.Seq[K]) []K {
+	m := make([]K, 0)
+
+	for k := range seq {
+		m = append(m, k)
+	}
+
+	return m
 }

@@ -1,6 +1,6 @@
 package utils
 
-import "golang.org/x/exp/maps"
+import "maps"
 
 type Set[T comparable] map[T]struct{}
 
@@ -22,5 +22,5 @@ func (s Set[T]) Contains(item T) bool {
 }
 
 func (s Set[T]) ToSlice() []T {
-	return maps.Keys(s)
+	return Collect(maps.Keys(s))
 }

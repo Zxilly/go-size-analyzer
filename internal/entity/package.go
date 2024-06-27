@@ -3,12 +3,12 @@ package entity
 import (
 	"debug/dwarf"
 	"fmt"
+	"maps"
 	"runtime/debug"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
 	"github.com/samber/lo"
-	"golang.org/x/exp/maps"
 
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
@@ -130,7 +130,7 @@ func (p *Package) fileEnsureUnique() {
 		}
 	}
 
-	p.Files = maps.Values(fileSeen)
+	p.Files = utils.Collect(maps.Values(fileSeen))
 	p.filesCache = fileSeen
 
 	p.funcsCache = make(map[string]*Function)

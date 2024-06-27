@@ -3,6 +3,7 @@ package utils
 import (
 	"debug/gosym"
 	"fmt"
+	"maps"
 	"reflect"
 	"testing"
 	"unsafe"
@@ -103,4 +104,15 @@ func TestMust(t *testing.T) {
 	t.Run("panics for non-nil error", func(t *testing.T) {
 		assert.Panics(t, func() { Must(fmt.Errorf("test error")) })
 	})
+}
+
+func TestCollect(t *testing.T) {
+	args := map[string]struct{}{
+		"foo": {},
+		"bar": {},
+		"baz": {},
+	}
+	seq := maps.Keys(args)
+
+	assert.Equal(t, []string{"foo", "bar", "baz"}, Collect(seq))
 }

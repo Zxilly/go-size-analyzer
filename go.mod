@@ -1,8 +1,6 @@
 module github.com/Zxilly/go-size-analyzer
 
-go 1.22
-
-toolchain go1.22.4
+go 1.23rc1
 
 require (
 	github.com/ZxillyFork/gore v0.0.0-20240622181243-e08af164b21c
@@ -24,9 +22,8 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/samber/lo v1.39.0
+	github.com/samber/lo v1.41.0
 	github.com/stretchr/testify v1.9.0
-	go4.org/intern v0.0.0-20230525184215-6c62f75575cb
 	golang.org/x/arch v0.8.0
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
 	golang.org/x/net v0.26.0
@@ -53,7 +50,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect

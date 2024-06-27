@@ -7,16 +7,17 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"maps"
 	"path/filepath"
 	"slices"
 
 	"github.com/dustin/go-humanize"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/samber/lo"
-	"golang.org/x/exp/maps"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func percentString(f float64) string {
@@ -49,7 +50,7 @@ func Text(r *result.Result, options *CommonOption) error {
 
 	entries := make([]sizeEntry, 0)
 
-	pkgs := maps.Values(r.Packages)
+	pkgs := utils.Collect(maps.Values(r.Packages))
 	for _, p := range pkgs {
 		if options.HideMain && p.Type == entity.PackageTypeMain {
 			continue

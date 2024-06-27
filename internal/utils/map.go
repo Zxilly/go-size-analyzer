@@ -2,13 +2,12 @@ package utils
 
 import (
 	"cmp"
+	"maps"
 	"slices"
-
-	"golang.org/x/exp/maps"
 )
 
 func SortedKeys[T cmp.Ordered, U any](m map[T]U) []T {
-	keys := maps.Keys(m)
+	keys := Collect(maps.Keys(m))
 	slices.Sort(keys)
 	return keys
 }

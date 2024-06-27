@@ -3,17 +3,19 @@ package internal
 import (
 	"cmp"
 	"errors"
+
 	"io"
 	"log/slog"
+	"maps"
 	"path/filepath"
 	"slices"
 
 	"github.com/ZxillyFork/gore"
-	"golang.org/x/exp/maps"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
@@ -106,7 +108,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	// for packages
 	k.CalculatePackageSize()
 
-	sections := maps.Values(k.Sects.Sections)
+	sections := utils.Collect(maps.Values(k.Sects.Sections))
 	slices.SortFunc(sections, func(a, b *entity.Section) int {
 		return cmp.Compare(a.Name, b.Name)
 	})

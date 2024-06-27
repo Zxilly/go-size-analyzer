@@ -76,18 +76,19 @@ jobs:
       - name: Checkout Actions Repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
-        with:
-          version: v1.59.1
-          args: '--out-format=colored-line-number,sarif:golangci-lint-results.sarif'
-        continue-on-error: true
-
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@23acc5c183826b7a8a97bce3cecc52db901f8251 # v3.25.10
-        with:
-          sarif_file: ./golangci-lint-results.sarif
-          wait-for-processing: true
+# fixme: disable for now, wait for golangci-lint supports go 1.23
+#      - name: Run golangci-lint
+#        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
+#        with:
+#          version: v1.59.1
+#          args: '--out-format=colored-line-number,sarif:golangci-lint-results.sarif'
+#        continue-on-error: true
+#
+#      - name: Upload analysis results to GitHub
+#        uses: github/codeql-action/upload-sarif@23acc5c183826b7a8a97bce3cecc52db901f8251 # v3.25.10
+#        with:
+#          sarif_file: ./golangci-lint-results.sarif
+#          wait-for-processing: true
 
   typos:
     name: Spell Check with Typos
