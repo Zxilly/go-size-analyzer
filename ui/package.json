@@ -37,7 +37,7 @@
     "@types/d3-scale": "^4.0.8",
     "@types/golang-wasm-exec": "^1.15.2",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
