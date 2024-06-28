@@ -51,7 +51,7 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "jsdom": "^24.1.0",
     "junit": "^1.4.9",
-    "sass": "^1.77.5",
+    "sass": "^1.77.6",
     "terser": "^5.31.1",
     "typescript": "^5.5.2",
     "typia": "^6.3.1",
