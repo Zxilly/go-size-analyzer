@@ -13149,7 +13149,7 @@ ResultImpl {
 exports[`Treemap 2`] = `
 <div>
   <div
-    class="tooltip tooltip-hidden"
+    class="tooltip "
   >
     <div />
     <pre />
