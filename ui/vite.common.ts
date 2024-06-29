@@ -1,8 +1,9 @@
 import * as path from "node:path";
 import {execSync} from "node:child_process";
-import {BuildOptions, HtmlTagDescriptor, PluginOption} from "vite";
+import {BuildOptions, HtmlTagDescriptor, Plugin, PluginOption} from "vite";
 import {codecovVitePlugin} from "@codecov/vite-plugin";
 import react from "@vitejs/plugin-react-swc";
+import MillionLint from '@million/lint';
 
 export function getSha(): string | undefined {
     const envs = process.env;
@@ -41,7 +42,7 @@ export function getVersionTag(): HtmlTagDescriptor | null {
     }
 }
 
-export function codecov(name: string): PluginOption {
+export function codecov(name: string): Plugin[] | undefined {
     if (process.env.CODECOV_TOKEN === undefined) {
         console.info("CODECOV_TOKEN is not set, codecov plugin will be disabled");
         return undefined;
@@ -58,9 +59,12 @@ export function codecov(name: string): PluginOption {
     })
 }
 
-export function commonPlugin(): PluginOption[][] {
+export function commonPlugin(): (PluginOption[] | Plugin | Plugin[])[] {
     return [
         react(),
+        MillionLint.vite({
+            optimizeDOM: true,
+        })
     ]
 }
 

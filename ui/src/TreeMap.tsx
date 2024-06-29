@@ -47,10 +47,10 @@ function TreeMap({entry}: TreeMapProps) {
     const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null)
     const selectedNodeLeaveSet = useMemo(() => {
         if (selectedNode === null) {
-            return new Set<Entry>()
+            return new Set<number>()
         }
 
-        return new Set(selectedNode.leaves().map((d) => d.data))
+        return new Set(selectedNode.leaves().map((d) => d.data.getID()))
     }, [selectedNode])
 
     const getZoomMultiplier = useCallback((node: Entry) => {
@@ -58,7 +58,7 @@ function TreeMap({entry}: TreeMapProps) {
             return 1
         }
 
-        return selectedNodeLeaveSet.has(node) ? 1 : 0
+        return selectedNodeLeaveSet.has(node.getID()) ? 1 : 0
     }, [selectedNode, selectedNodeLeaveSet])
 
 
@@ -240,9 +240,9 @@ const Nodes: React.FC<NodesProps> =
          getModuleColor,
          setSelectedNode
      }) => {
-        return (
-            <>
-                {nestedData.map(({key, values}) => {
+        const nodes = useMemo(() => {
+            return (
+                nestedData.map(({key, values}) => {
                     return (
                         <g className="layer" key={key}>
                             {values.map((node) => {
@@ -260,7 +260,13 @@ const Nodes: React.FC<NodesProps> =
                             })}
                         </g>
                     );
-                })}
+                })
+            )
+        }, [getModuleColor, nestedData, selectedNode?.data, setSelectedNode])
+
+        return (
+            <>
+                {nodes}
             </>
         )
     }
