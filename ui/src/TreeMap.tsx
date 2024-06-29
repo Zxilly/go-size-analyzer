@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {group} from "d3-array";
 import {HierarchyNode, HierarchyRectangularNode, hierarchy, treemap, treemapSquarify} from "d3-hierarchy";
 import {useTitle, useWindowSize} from "react-use";
@@ -144,7 +144,7 @@ function TreeMap({entry}: TreeMapProps) {
         setSelectedNode(cur)
     }, [hash, root, entry])
 
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(true);
     const [tooltipNode, setTooltipNode] =
         useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
 
@@ -207,14 +207,27 @@ function TreeMap({entry}: TreeMapProps) {
 
     const nodes = useMemo(() => {
         return (
-            <Nodes
-                nestedData={nestedData}
-                selectedNode={selectedNode}
-                getModuleColor={getModuleColor}
-                setSelectedNode={setSelectedNodeWithHash}
-            />
+            nestedData.map(({key, values}) => {
+                return (
+                    <g className="layer" key={key}>
+                        {values.map((node) => {
+                            return (
+                                <Node
+                                    key={node.data.getID()}
+                                    node={node}
+                                    selected={selectedNode?.data?.getID() === node.data.getID()}
+                                    onClick={(node) => {
+                                        setSelectedNodeWithHash(selectedNode?.data?.getID() === node.data.getID() ? null : node);
+                                    }}
+                                    getModuleColor={getModuleColor}
+                                />
+                            );
+                        })}
+                    </g>
+                );
+            })
         )
-    }, [getModuleColor, nestedData, selectedNode, setSelectedNodeWithHash])
+    }, [getModuleColor, nestedData, selectedNode?.data, setSelectedNodeWithHash])
 
     return (
         <>
@@ -225,50 +238,5 @@ function TreeMap({entry}: TreeMapProps) {
         </>
     )
 }
-
-interface NodesProps {
-    nestedData: { key: number, values: HierarchyRectangularNode<Entry>[] }[]
-    selectedNode: HierarchyRectangularNode<Entry> | null
-    getModuleColor: (node: HierarchyNode<Entry>) => { backgroundColor: string, fontColor: string }
-    setSelectedNode: (node: HierarchyRectangularNode<Entry> | null) => void
-}
-
-const Nodes: React.FC<NodesProps> =
-    ({
-         nestedData,
-         selectedNode,
-         getModuleColor,
-         setSelectedNode
-     }) => {
-        const nodes = useMemo(() => {
-            return (
-                nestedData.map(({key, values}) => {
-                    return (
-                        <g className="layer" key={key}>
-                            {values.map((node) => {
-                                return (
-                                    <Node
-                                        key={node.data.getID()}
-                                        node={node}
-                                        selected={selectedNode?.data?.getID() === node.data.getID()}
-                                        onClick={(node) => {
-                                            setSelectedNode(selectedNode?.data?.getID() === node.data.getID() ? null : node);
-                                        }}
-                                        getModuleColor={getModuleColor}
-                                    />
-                                );
-                            })}
-                        </g>
-                    );
-                })
-            )
-        }, [getModuleColor, nestedData, selectedNode?.data, setSelectedNode])
-
-        return (
-            <>
-                {nodes}
-            </>
-        )
-    }
 
 export default TreeMap
