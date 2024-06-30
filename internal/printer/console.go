@@ -95,12 +95,11 @@ func Text(r *result.Result, options *CommonOption) error {
 	t.AppendFooter(table.Row{percentString(float64(allKnownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(allKnownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
 
-	data := []byte(t.Render())
+	data := []byte(t.Render() + "\n")
 
 	slog.Info("Report rendered")
 
 	_, err := options.Writer.Write(data)
-	_,_ = options.Writer.Write([]byte{'\n'})
 
 	slog.Info("Report written")
 
