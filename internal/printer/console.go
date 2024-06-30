@@ -100,7 +100,7 @@ func Text(r *result.Result, options *CommonOption) error {
 	slog.Info("Report rendered")
 
 	_, err := options.Writer.Write(data)
-	_,_ := options.Write.Write([]byte{'\n'})
+	_,_ = options.Writer.Write([]byte{'\n'})
 
 	slog.Info("Report written")
 
