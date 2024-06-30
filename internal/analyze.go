@@ -3,7 +3,6 @@ package internal
 import (
 	"cmp"
 	"errors"
-
 	"io"
 	"log/slog"
 	"maps"
@@ -77,7 +76,6 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 			if err != nil {
 				if !errors.Is(err, wrapper.ErrNoSymbolTable) {
 					return nil, err
-
 				}
 				slog.Warn("No symbol table found, this can lead to inaccurate results")
 			}

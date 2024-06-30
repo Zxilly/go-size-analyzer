@@ -128,7 +128,6 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	}
 
 	filesAddr, filesLen, err := readSlice(filesType, ptr, readMemory, "*embed.file")
-
 	if err != nil {
 		return nil, err
 	}

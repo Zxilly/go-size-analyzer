@@ -27,7 +27,7 @@ func TestResultUpdateTestData(t *testing.T) {
 
 	r := test.GetTestResult(t)
 
-	testdataJSON, err := os.OpenFile(filepath.Join("testdata", "result.json"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	testdataJSON, err := os.OpenFile(filepath.Join("testdata", "result.json"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, testdataJSON.Close())
@@ -41,7 +41,7 @@ func TestResultUpdateTestData(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	testdataGob, err := os.OpenFile(filepath.Join("testdata", "result.gob.gz"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	testdataGob, err := os.OpenFile(filepath.Join("testdata", "result.gob.gz"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, testdataGob.Close())

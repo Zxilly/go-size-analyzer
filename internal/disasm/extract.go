@@ -13,7 +13,7 @@ var extractFuncs = map[string]extractorFunc{
 func extractAmd64(code []byte, pc uint64) []PossibleStr {
 	resultSet := utils.NewSet[PossibleStr]()
 
-	var insts = make([]x86PosInst, 0)
+	insts := make([]x86PosInst, 0)
 
 	for len(code) > 0 {
 		inst, err := x86asm.Decode(code, 64)

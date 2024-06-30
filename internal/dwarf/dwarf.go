@@ -99,7 +99,7 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		}
 	}
 
-	var boolIgnores = []dwarf.Attr{
+	boolIgnores := []dwarf.Attr{
 		dwarf.AttrCallAllCalls,
 		dwarf.AttrCallAllTailCalls,
 	}
@@ -118,7 +118,7 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		}
 	}
 
-	var ignores = []dwarf.Attr{
+	ignores := []dwarf.Attr{
 		dwarf.AttrAbstractOrigin,
 		dwarf.AttrSpecification,
 	}

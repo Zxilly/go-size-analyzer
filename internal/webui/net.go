@@ -77,7 +77,7 @@ func getCacheFilePath() (string, error) {
 
 	cacheDir := filepath.Join(dir, "go-size-analyzer")
 
-	err = os.MkdirAll(cacheDir, 0755)
+	err = os.MkdirAll(cacheDir, 0o755)
 	if err != nil {
 		return "", err
 	}
@@ -121,7 +121,7 @@ func updateCache(cacheFilePath string) (string, error) {
 		return "", err
 	}
 
-	err = os.WriteFile(cacheFilePath, []byte(tmpl), 0600)
+	err = os.WriteFile(cacheFilePath, []byte(tmpl), 0o600)
 	if err != nil {
 		return "", err
 	}

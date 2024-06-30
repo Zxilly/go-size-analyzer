@@ -6,48 +6,20 @@ run:
 
 linters:
   enable:
-    # check when errors are compared without errors.Is
     - errorlint
-
-    # check imports order and makes it always deterministic.
     - gci
-
-    # linter to detect errors invalid key values count
     - loggercheck
-
-    # simple security check
     - gosec
-
-    # Fast, configurable, extensible, flexible, and beautiful linter for Go.
-    # Drop-in replacement of golint.
     - revive
-
-    # make sure to use t.Helper() when needed
     - thelper
-
-    # make sure that error are checked after a rows.Next()
-    - rowserrcheck
-
-    #  Checks that sql.Rows, sql.Stmt, sqlx.NamedStmt, pgx.Query are closed.
     - sqlclosecheck
-
-    # ensure that lint exceptions have explanations. Consider the case below:
     - nolintlint
-
-    # detect duplicated words in code
     - dupword
-
-    # detect the possibility to use variables/constants from the Go standard library.
     - usestdlibvars
-
-    # mirror suggests rewrites to avoid unnecessary []byte/string conversion
     - mirror
-
-    # testify checks good usage of github.com/stretchr/testify.
     - testifylint
-
-    # Check whether the function uses a non-inherited context.
     - contextcheck
+    - gofumpt
 
 linters-settings:
   loggercheck:

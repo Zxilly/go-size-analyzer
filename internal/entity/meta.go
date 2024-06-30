@@ -17,5 +17,4 @@ type DisasmMeta struct {
 	Value string
 }
 
-type DwarfMeta struct {
-}
+type DwarfMeta struct{}

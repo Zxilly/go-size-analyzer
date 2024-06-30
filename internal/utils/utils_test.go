@@ -66,7 +66,7 @@ func TestUglyGuess(t *testing.T) {
 }
 
 func TestPrefixToPath(t *testing.T) {
-	var escapeTests = []struct {
+	escapeTests := []struct {
 		Path    string
 		Escaped string
 	}{
