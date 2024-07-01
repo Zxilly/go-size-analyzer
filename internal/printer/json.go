@@ -36,7 +36,7 @@ func JSON(r *result.Result, options *JSONOption) error {
 
 	err := json.MarshalWrite(options.Writer, r, jsonOptions...)
 
-	slog.Info("JSON encode done")
+	slog.Info("JSON encoded")
 
 	return err
 }

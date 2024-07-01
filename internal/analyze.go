@@ -32,7 +32,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return nil, err
 	}
 
-	slog.Info("Parsing binary done")
+	slog.Info("Parsed binary done")
 	slog.Info("Finding build info...")
 
 	k := &knowninfo.KnownInfo{
@@ -45,7 +45,11 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	k.KnownAddr = entity.NewKnownAddr()
 	k.VersionFlag = k.UpdateVersionFlag()
 
-	slog.Info("Build info found")
+	analyzers := []entity.Analyzer{
+		entity.AnalyzerPclntab,
+	}
+
+	slog.Info("Found build info")
 
 	err = k.LoadSectionMap()
 	if err != nil {
@@ -59,6 +63,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	dwarfOk := false
 	if !options.SkipDwarf {
+		slog.Info("Parsing DWARF...")
 		dwarfOk = k.TryLoadDwarf()
 	}
 
@@ -66,7 +71,12 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
 	}
 
-	// DWARF can still add new package
+	if dwarfOk {
+		analyzers = append(analyzers, entity.AnalyzerDwarf)
+		slog.Info("Parsed DWARF")
+	}
+
+	// DWARF can still add new package, so we defer this
 	k.Deps.FinishLoad()
 
 	if !dwarfOk {
@@ -79,6 +89,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 				}
 				slog.Warn("No symbol table found, this can lead to inaccurate results")
 			}
+			analyzers = append(analyzers, entity.AnalyzerSymbol)
 		}
 
 		if !options.SkipDisasm {
@@ -86,6 +97,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 			if err != nil {
 				return nil, err
 			}
+			analyzers = append(analyzers, entity.AnalyzerDisasm)
 		}
 	}
 
@@ -110,11 +122,13 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	slices.SortFunc(sections, func(a, b *entity.Section) int {
 		return cmp.Compare(a.Name, b.Name)
 	})
+	slices.Sort(analyzers)
 
 	return &result.Result{
-		Name:     filepath.Base(name),
-		Size:     k.Size,
-		Packages: k.Deps.TopPkgs,
-		Sections: sections,
+		Name:      filepath.Base(name),
+		Size:      k.Size,
+		Packages:  k.Deps.TopPkgs,
+		Sections:  sections,
+		Analyzers: analyzers,
 	}, nil
 }

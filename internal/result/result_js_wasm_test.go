@@ -7,6 +7,7 @@ import (
 	"compress/gzip"
 	_ "embed"
 	"encoding/gob"
+	"os"
 	"syscall/js"
 	"testing"
 
@@ -17,13 +18,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//go:embed testdata/result.gob.gz
-var testdataGob []byte
-
-//go:embed testdata/result.json
-var testdataJSON string
-
 func TestResultMarshalJavaScript(t *testing.T) {
+	testdataGob, err := os.ReadFile("../../testdata/result.gob.gz")
+	require.NoError(t, err)
+
+	testdataJSON, err := os.ReadFile("../../testdata/result.json")
+	require.NoError(t, err)
+
 	decompressedReader, err := gzip.NewReader(bytes.NewReader(testdataGob))
 	require.NoError(t, err)
 
@@ -38,11 +39,11 @@ func TestResultMarshalJavaScript(t *testing.T) {
 	t.Run("Result", func(t *testing.T) {
 		jsVal := r.MarshalJavaScript()
 		jsStr := stringify.Invoke(jsVal).String()
-		assert.JSONEq(t, testdataJSON, jsStr)
+		assert.JSONEq(t, string(testdataJSON), jsStr)
 	})
 
 	var testdataJSONVal map[string]any
-	err = json.Unmarshal([]byte(testdataJSON), &testdataJSONVal)
+	err = json.Unmarshal(testdataJSON, &testdataJSONVal)
 	require.NoError(t, err)
 
 	t.Run("Section", func(t *testing.T) {

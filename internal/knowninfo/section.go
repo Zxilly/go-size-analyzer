@@ -11,7 +11,7 @@ func (k *KnownInfo) LoadSectionMap() error {
 
 	sections := k.Wrapper.LoadSections()
 
-	slog.Info("Loading sections done")
+	slog.Info("Loaded sections")
 
 	k.Sects = &section.Store{
 		Sections: sections,

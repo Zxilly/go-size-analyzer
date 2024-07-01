@@ -7,6 +7,7 @@ import (
 	"compress/gzip"
 	_ "embed"
 	"encoding/gob"
+	"os"
 	"testing"
 
 	"github.com/go-json-experiment/json"
@@ -17,11 +18,11 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
-//go:embed testdata/result.gob.gz
-var testdataGob2 []byte
-
 func TestResultMarshalJavaScriptCross(t *testing.T) {
-	decompressedReader, err := gzip.NewReader(bytes.NewBuffer(testdataGob2))
+	testdataGob, err := os.ReadFile("../../testdata/result.gob.gz")
+	require.NoError(t, err)
+
+	decompressedReader, err := gzip.NewReader(bytes.NewBuffer(testdataGob))
 	require.NoError(t, err)
 
 	r := new(result.Result)

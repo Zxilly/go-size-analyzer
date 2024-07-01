@@ -7,7 +7,6 @@ import (
 	"encoding/gob"
 	"flag"
 	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -18,16 +17,16 @@ import (
 
 var update = flag.Bool("update", false, "update testdata")
 
-func TestResultUpdateTestData(t *testing.T) {
+func TestUpdateResultTestData(t *testing.T) {
 	t.Helper()
 
 	if !*update {
-		t.Skip("update testdata is disabled")
+		t.Skip("not updating testdata")
 	}
 
 	r := test.GetTestResult(t)
 
-	testdataJSON, err := os.OpenFile(filepath.Join("testdata", "result.json"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+	testdataJSON, err := os.OpenFile(test.GetTestJSONPath(t), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, testdataJSON.Close())
@@ -41,7 +40,7 @@ func TestResultUpdateTestData(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	testdataGob, err := os.OpenFile(filepath.Join("testdata", "result.gob.gz"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+	testdataGob, err := os.OpenFile(test.GetTestGobPath(t), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, testdataGob.Close())

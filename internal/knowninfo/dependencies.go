@@ -159,7 +159,7 @@ func (k *KnownInfo) LoadPackages() error {
 		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
 	}
 
-	slog.Info("Loading packages done")
+	slog.Info("Loaded packages done")
 
 	return nil
 }
