@@ -1,9 +1,9 @@
 import base64
 import os
 
-import zstd
 import requests
-from markdown_strings import header, code_block, image
+import zstd
+from markdown_strings import header, code_block
 
 from tool.utils import get_project_root, write_github_summary, details
 
@@ -87,4 +87,7 @@ if __name__ == '__main__':
 
             if file.endswith(".graph.svg"):
                 image_url = generate_image_url(str(os.path.join(root, file)))
-                write_github_summary(image(file, image_url) + '\n')
+                write_github_summary(
+                    f'<img src="{image_url}" alt="{file}" width="500" />'
+                    + '\n'
+                )
