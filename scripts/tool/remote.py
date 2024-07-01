@@ -10,8 +10,8 @@ from urllib.parse import urlparse
 import requests
 from tqdm import tqdm
 
-from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_path
 from .process import run_process
+from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_path
 
 
 class TestType(Flag):
@@ -76,7 +76,13 @@ class IntegrationTest:
         draw = not self.name.startswith("bin-")
 
         def run(pargs: list[str], typ: TestType):
-            [output_data, graph_data] = run_process(pargs, self.name, profiler_dir=self.profiler_dir(typ), timeout=timeout, draw=draw)
+            [output_data, graph_data] = run_process(
+                pargs,
+                self.name,
+                profiler_dir=self.profiler_dir(typ),
+                timeout=timeout,
+                draw=draw,
+            )
             with open(self.output_filepath(typ), "w", encoding="utf-8") as f:
                 f.write(output_data)
 

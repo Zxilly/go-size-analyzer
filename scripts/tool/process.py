@@ -8,6 +8,8 @@ import psutil
 from .matplotlib import draw_usage
 from .utils import get_covdata_integration_dir, get_project_root
 
+DISABLE_DRAW = False
+
 
 def run_process(
         pargs: list[str],
@@ -15,6 +17,9 @@ def run_process(
         timeout=240,
         profiler_dir: str = None,
         draw: bool = False) -> [str, bytes | None]:
+    if DISABLE_DRAW:
+        draw = False
+
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()
     if profiler_dir is not None:

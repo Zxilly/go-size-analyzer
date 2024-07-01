@@ -3,6 +3,7 @@ import shutil
 import subprocess
 
 from tests import run_integration_tests
+from tool import process
 from tool.gsa import build_pgo_gsa
 from tool.utils import get_project_root
 
@@ -44,6 +45,7 @@ def merge_profiles():
 
 if __name__ == '__main__':
     shutil.rmtree(os.path.join(get_project_root(), "results"), ignore_errors=True)
+    process.DISABLE_DRAW = True
 
     with build_pgo_gsa() as gsa:
         run_integration_tests("real", gsa)
