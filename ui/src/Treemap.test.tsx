@@ -7,7 +7,7 @@ import {createEntry} from "./tool/entry.ts";
 import TreeMap from "./TreeMap.tsx";
 
 test("Treemap", () => {
-    const data = readFileSync(path.join(__dirname, '..', '..', 'testdata', 'testdata.json')).toString();
+    const data = readFileSync(path.join(__dirname, '..', '..', 'testdata', 'result.json')).toString();
 
     const r = parseResult(data)
     expect(r).toBeDefined()

@@ -4,6 +4,6 @@ extend-exclude = [
     "*.sum",
     "*.mod",
     "*.csv",
-    "testdata.json"
+    "result.json"
 ]
 

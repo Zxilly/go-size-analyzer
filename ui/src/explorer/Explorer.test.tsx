@@ -5,7 +5,11 @@ import {parseResult} from "../generated/schema.ts";
 import {readFileSync} from "node:fs";
 import path from "node:path";
 
-const result = parseResult(readFileSync(path.join(__dirname, '..', 'testdata', 'testdata.json')).toString())
+const result = parseResult(
+    readFileSync(
+        path.join(__dirname, '..', '..', '..', 'testdata', 'result.json')
+    ).toString()
+)
 
 vi.mock("../../gsa.wasm?init", () => {
     return {
@@ -20,6 +24,7 @@ describe('Explorer', () => {
         vi.stubGlobal("Go", class {
             importObject = {}
             run = vi.fn(() => Promise.resolve())
+
             constructor() {
             }
         })

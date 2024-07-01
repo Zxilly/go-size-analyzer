@@ -9,13 +9,15 @@ test('entry type should met children type', () => {
 })
 
 test('entry match', () => {
-    const data = readFileSync(path.join(__dirname, '..', 'testdata', 'testdata.json')).toString();
-    
+    const data = readFileSync(
+        path.join(__dirname, '..', '..', '..', 'testdata', 'result.json')
+    ).toString();
+
     const r = parseResult(data)
     assert.isNotNull(r)
-    
+
     const e = createEntry(r)
-    
+
     const matchEntry = <T extends EntryType>(e: EntryLike<T>) => {
         expect(e.getName()).toMatchSnapshot()
         expect(e.getSize()).toMatchSnapshot()
@@ -23,6 +25,6 @@ test('entry match', () => {
 
         e.getChildren().forEach(e => matchEntry(e))
     }
-    
+
     matchEntry(e)
 })
