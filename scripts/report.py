@@ -88,6 +88,6 @@ if __name__ == '__main__':
             if file.endswith(".graph.svg"):
                 image_url = generate_image_url(str(os.path.join(root, file)))
                 write_github_summary(
-                    f'<img src="{image_url}" alt="{file}" width="500" />'
+                    f'<img src="{image_url}" alt="{file}" width="900" />'
                     + '\n'
                 )
