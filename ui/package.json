@@ -17,7 +17,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@million/lint": "1.0.0-rc.76",
-    "@mui/material": "^5.15.20",
+    "@mui/material": "^5.15.21",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
