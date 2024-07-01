@@ -379,8 +379,10 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
     toString(): string {
         const align = new aligner();
         align.add("Result:", this.data.name)
-            .add("Analyzer", this.data.analyzers.join(", "))
             .add("Size:", formatBytes(this.data.size));
+        if (this.data.analyzers) {
+            align.add("Analyzer", this.data.analyzers.join(", "))
+        }
         return align.toString();
     }
 

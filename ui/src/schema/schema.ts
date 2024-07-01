@@ -40,7 +40,7 @@ export interface Result {
     size: number & tags.Type<'uint64'>;
     packages: { [key: string]: Package };
     sections: Section[];
-    analyzers: ("dwarf" | "disasm" | "symbol" | "pclntab")[];
+    analyzers: (("dwarf" | "disasm" | "symbol" | "pclntab")[]) | undefined;
 }
 
 export const parseResult = typia.json.createIsParse<Result>();

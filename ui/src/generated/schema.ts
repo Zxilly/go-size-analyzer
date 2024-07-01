@@ -39,10 +39,10 @@ export interface Result {
         [key: string]: Package;
     };
     sections: Section[];
-    analyzers: ("dwarf" | "disasm" | "symbol" | "pclntab")[];
+    analyzers: (("dwarf" | "disasm" | "symbol" | "pclntab")[]) | undefined;
 }
 export const parseResult = (input: any): import("typia").Primitive<Result> => { const is = (input: any): input is Result => {
-    const $io0 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("object" === typeof input.packages && null !== input.packages && false === Array.isArray(input.packages) && $io1(input.packages)) && (Array.isArray(input.sections) && input.sections.every((elem: any) => "object" === typeof elem && null !== elem && $io6(elem))) && (Array.isArray(input.analyzers) && input.analyzers.every((elem: any) => "symbol" === elem || "dwarf" === elem || "disasm" === elem || "pclntab" === elem));
+    const $io0 = (input: any): boolean => "string" === typeof input.name && ("number" === typeof input.size && (Math.floor(input.size) === input.size && 0 <= input.size && input.size <= 18446744073709552000)) && ("object" === typeof input.packages && null !== input.packages && false === Array.isArray(input.packages) && $io1(input.packages)) && (Array.isArray(input.sections) && input.sections.every((elem: any) => "object" === typeof elem && null !== elem && $io6(elem))) && (undefined === input.analyzers || Array.isArray(input.analyzers) && input.analyzers.every((elem: any) => "symbol" === elem || "dwarf" === elem || "disasm" === elem || "pclntab" === elem));
     const $io1 = (input: any): boolean => Object.keys(input).every((key: any) => {
         const value = input[key];
         if (undefined === value)
