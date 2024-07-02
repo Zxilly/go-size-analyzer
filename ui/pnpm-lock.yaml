@@ -127,8 +127,8 @@ importers:
         specifier: ^5.5.2
         version: 5.5.2
       typia:
-        specifier: ^6.3.1
-        version: 6.3.1(typescript@5.5.2)
+        specifier: ^6.3.2
+        version: 6.3.2(typescript@5.5.2)
       vite:
         specifier: ^5.3.2
         version: 5.3.2(@types/node@20.14.9)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1)
@@ -893,8 +893,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@samchon/openapi@0.2.1':
-    resolution: {integrity: sha512-SrvhAjqxu4Nt68KpOEmaKHeiwxoA4Bj+t93IbgJN4YpXmB/NmOvl28qnn4Hp/p4TGIIxzHf9pc27vpbzeDpmOQ==}
+  '@samchon/openapi@0.2.2':
+    resolution: {integrity: sha512-BBfBIIYuSNp1FKb7edPL5Lfw2hQ8crV7xwF71PEbO16MDBlKFmc6iuisAlaBaxO8ac5sm/e57Nnm/kfemS9Gew==}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -3215,8 +3215,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typia@6.3.1:
-    resolution: {integrity: sha512-LQTrKAkrdX0bggngcXiNsAReB/r0QBk9CvmwGTdWxi21jmXde2KxG+waLdRdOLq8uyzb/vw7HOiesSqtPlvH3g==}
+  typia@6.3.2:
+    resolution: {integrity: sha512-eIDibf9lXIxi8CqHad0H8760YltZivVfOE5JtokkGAFsH97NEMwehv9Sc7ixvRoR/0qVUeSTowkOWl41jtssVw==}
     hasBin: true
     peerDependencies:
       typescript: '>=4.8.0 <5.6.0'
@@ -4218,7 +4218,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
 
-  '@samchon/openapi@0.2.1': {}
+  '@samchon/openapi@0.2.2': {}
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -6823,9 +6823,9 @@ snapshots:
 
   typescript@5.5.2: {}
 
-  typia@6.3.1(typescript@5.5.2):
+  typia@6.3.2(typescript@5.5.2):
     dependencies:
-      '@samchon/openapi': 0.2.1
+      '@samchon/openapi': 0.2.2
       commander: 10.0.1
       comment-json: 4.2.3
       inquirer: 8.2.6

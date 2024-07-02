@@ -55,7 +55,7 @@
     "sass": "^1.77.6",
     "terser": "^5.31.1",
     "typescript": "^5.5.2",
-    "typia": "^6.3.1",
+    "typia": "^6.3.2",
     "vite": "^5.3.2",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
