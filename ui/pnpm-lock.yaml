@@ -127,8 +127,8 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
       typia:
-        specifier: ^6.3.2
-        version: 6.3.2(typescript@5.5.3)
+        specifier: ^6.3.3
+        version: 6.3.3(typescript@5.5.3)
       vite:
         specifier: ^5.3.2
         version: 5.3.2(@types/node@20.14.9)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1)
@@ -3215,8 +3215,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typia@6.3.2:
-    resolution: {integrity: sha512-eIDibf9lXIxi8CqHad0H8760YltZivVfOE5JtokkGAFsH97NEMwehv9Sc7ixvRoR/0qVUeSTowkOWl41jtssVw==}
+  typia@6.3.3:
+    resolution: {integrity: sha512-4rGJXbGUh9d6BpUMgEe08p3oujlhPHYsatTJh4D+t4zHh1UZzDbBH1q2PNBSd096+gqExB9Kv93IfmGiadIDYQ==}
     hasBin: true
     peerDependencies:
       typescript: '>=4.8.0 <5.6.0'
@@ -6823,7 +6823,7 @@ snapshots:
 
   typescript@5.5.3: {}
 
-  typia@6.3.2(typescript@5.5.3):
+  typia@6.3.3(typescript@5.5.3):
     dependencies:
       '@samchon/openapi': 0.2.2
       commander: 10.0.1
