@@ -38,7 +38,6 @@
     "@types/d3-hierarchy": "^3.1.7",
     "@types/d3-scale": "^4.0.8",
     "@types/golang-wasm-exec": "^1.15.2",
-    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -48,7 +47,7 @@
     "eslint-plugin-import-x": "^0.5.3",
     "eslint-plugin-react-hooks": "5.1.0-rc-100dfd7dab-20240701",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "jsdom": "^24.1.0",
+    "happy-dom": "^14.12.3",
     "junit": "^1.4.9",
     "sass": "^1.77.6",
     "terser": "^5.31.1",
@@ -58,5 +57,12 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
     "vitest": "^1.6.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "9"
+      }
+    }
   }
 }

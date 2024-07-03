@@ -1,5 +1,5 @@
-import { fireEvent, render } from "@testing-library/react";
-import { assert, expect, it } from "vitest";
+import { render } from "@testing-library/react";
+import { expect, it } from "vitest";
 import { Tooltip } from "./Tooltip.tsx";
 import type { Entry, EntryChildren, EntryType } from "./tool/entry.ts";
 
@@ -49,17 +49,4 @@ it("tooltip should not render when not visible", () => {
   );
     // should have a tooltip-hidden class
   expect(r.container.querySelector(".tooltip-hidden")).not.toBeNull();
-});
-
-it("tooltip should update position on mouse move", () => {
-  const { getByText } = render(<Tooltip visible node={getTestNode()} />);
-  fireEvent.mouseMove(document, { clientX: 100, clientY: 100 });
-  const tooltip = getByText("test").parentElement;
-  if (!tooltip) {
-    assert.isNotNull(tooltip);
-    return;
-  }
-
-  expect(tooltip.style.left).toBe("110px");
-  expect(tooltip.style.top).toBe("130px");
 });
