@@ -4,18 +4,39 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      gomod-normal-deps:
+        update-types:
+          - patch
+          - minor
+      gomod-breaking-deps:
+        update-types:
+          - major
 
   - package-ecosystem: "npm"
     directory: "/ui"
     schedule:
       interval: "daily"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
+    groups:
+      ui-prod-deps:
+        dependency-type: production
+      ui-dev-deps:
+        dependency-type: development
 
   - package-ecosystem: "pip"
     directory: "/scripts"
     schedule:
       interval: "daily"
+    groups:
+      pip-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
