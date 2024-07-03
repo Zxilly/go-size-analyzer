@@ -29,7 +29,7 @@
   "devDependencies": {
     "@codecov/vite-plugin": "0.0.1-beta.10",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
-    "@testing-library/dom": "^10.2.0",
+    "@testing-library/dom": "^10.3.0",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@types/d3-array": "^3.2.1",
