@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Treemap 1`] = `
+exports[`treemap 1`] = `
 ResultImpl {
   "children": [
     ContainerImpl {
@@ -13245,7 +13245,7 @@ ResultImpl {
 }
 `;
 
-exports[`Treemap 2`] = `
+exports[`treemap 2`] = `
 <div>
   <div
     class="tooltip "
