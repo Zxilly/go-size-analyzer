@@ -35,15 +35,15 @@ type Package struct {
 
 	Size uint64 `json:"size"` // late filled
 
-	filesCache map[string]*File
-	funcsCache map[string]*Function
-
-	loaded bool // mean it comes from gore
-
 	// should not be used to calculate size,
 	// since linker can create overlapped symbols.
 	// relies on coverage.
 	Symbols []*Symbol `json:"symbols"`
+
+	filesCache map[string]*File
+	funcsCache map[string]*Function
+
+	loaded bool // mean it comes from gore
 
 	symbolAddrSpace AddrSpace
 	coverage        *utils.ValueOnce[AddrCoverage]

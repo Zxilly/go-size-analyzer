@@ -5,6 +5,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/Zxilly/go-size-analyzer/internal/diff"
 	"io"
 	"log/slog"
 	"os"
@@ -23,6 +24,16 @@ import (
 func entry() error {
 	utils.ApplyMemoryLimit()
 
+	options := internal.Options{
+		SkipSymbol: Options.NoSymbol,
+		SkipDisasm: Options.NoDisasm,
+		SkipDwarf:  Options.NoDwarf,
+	}
+
+	if Options.DiffTarget != "" {
+		return diff.Diff(Options.DiffTarget, Options.Binary, options)
+	}
+
 	reader, err := mmap.Open(Options.Binary)
 	if err != nil {
 		return err
@@ -31,11 +42,7 @@ func entry() error {
 	result, err := internal.Analyze(Options.Binary,
 		reader,
 		uint64(reader.Len()),
-		internal.Options{
-			SkipSymbol: Options.NoSymbol,
-			SkipDisasm: Options.NoDisasm,
-			SkipDwarf:  Options.NoDwarf,
-		})
+		options)
 	if err != nil {
 		return err
 	}
