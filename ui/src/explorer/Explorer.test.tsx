@@ -1,77 +1,77 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
-import {cleanup, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {Explorer} from './Explorer'
-import {parseResult} from "../generated/schema.ts";
-import {readFileSync} from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { parseResult } from "../generated/schema.ts";
+import { Explorer } from "./Explorer";
 
 const result = parseResult(
-    readFileSync(
-        path.join(__dirname, '..', '..', '..', 'testdata', 'result.json')
-    ).toString()
-)
+  readFileSync(
+    path.join(__dirname, "..", "..", "..", "testdata", "result.json"),
+  ).toString(),
+);
 
 vi.mock("../../gsa.wasm?init", () => {
-    return {
-        default: async () => {
-            return Promise.resolve({})
-        }
-    }
-})
+  return {
+    default: async () => {
+      return Promise.resolve({});
+    },
+  };
+});
 
-describe('Explorer', () => {
+describe("explorer", () => {
+  beforeEach(() => {
+    vi.stubGlobal("Go", class {
+      importObject = {};
+      run = vi.fn(() => Promise.resolve());
+
+      constructor() {
+      }
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    cleanup();
+  });
+
+  describe("wasm success", () => {
     beforeEach(() => {
-        vi.stubGlobal("Go", class {
-            importObject = {}
-            run = vi.fn(() => Promise.resolve())
+      vi.stubGlobal("gsa_analyze", () => {
+        return result;
+      });
+    });
 
-            constructor() {
-            }
-        })
-    })
+    it("explorer should display loading state initially", () => {
+      render(<Explorer />);
+      expect(screen.getByText("Loading WebAssembly module...")).toBeInTheDocument();
+    });
 
-    afterEach(() => {
-        vi.clearAllMocks()
-        cleanup()
-    })
+    it("explorer should display file selector when no file is selected", async () => {
+      render(<Explorer />);
+      await waitFor(() => screen.getByText("Select a go binary"));
+    });
 
-    describe('wasm success', () => {
-        beforeEach(() => {
-            vi.stubGlobal("gsa_analyze", () => {
-                return result
-            })
-        })
+    it("explorer should display analyzing state when a file is selected", async () => {
+      render(<Explorer />);
 
-        it('Explorer should display loading state initially', () => {
-            render(<Explorer/>)
-            expect(screen.getByText('Loading WebAssembly module...')).toBeInTheDocument()
-        })
+      await waitFor(() => screen.getByText("Select a go binary"));
 
-        it('Explorer should display file selector when no file is selected', async () => {
-            render(<Explorer/>)
-            await waitFor(() => screen.getByText('Select a go binary'))
-        })
+      fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["it"], "test.bin")] } });
+      await waitFor(() => screen.getByText("Analyzing binary..."));
+    });
 
-        it('Explorer should display analyzing state when a file is selected', async () => {
-            render(<Explorer/>)
+    it("explorer should display error when analysis fails", async () => {
+      vi.stubGlobal("gsa_analyze", () => {
+        return null;
+      });
 
-            await waitFor(() => screen.getByText('Select a go binary'))
+      render(<Explorer />);
 
-            fireEvent.change(screen.getByTestId("file-selector"), {target: {files: [new File(['it'], 'test.bin')]}})
-            await waitFor(() => screen.getByText('Analyzing binary...'))
-        })
+      await waitFor(() => screen.getByText("Select a go binary"));
 
-        it('Explorer should display error when analysis fails', async () => {
-            vi.stubGlobal("gsa_analyze", () => {
-                return null
-            })
-
-            render(<Explorer/>)
-
-            await waitFor(() => screen.getByText('Select a go binary'))
-
-            fireEvent.change(screen.getByTestId("file-selector"), {target: {files: [new File(['test'], 'test.bin')]}})
-            await waitFor(() => screen.getByText('Failed to analyze test.bin, see browser dev console for more details.'))
-        })
-    })
-})
+      fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["test"], "test.bin")] } });
+      await waitFor(() => screen.getByText("Failed to analyze test.bin, see browser dev console for more details."));
+    });
+  });
+});

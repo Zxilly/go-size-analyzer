@@ -1,13 +1,13 @@
 import { scaleLinear, scaleSequential } from "d3-scale";
-import { RGBColor, hsl } from "d3-color";
-import { HierarchyNode } from "d3-hierarchy";
+import type { RGBColor } from "d3-color";
+import { hsl } from "d3-color";
+import type { HierarchyNode } from "d3-hierarchy";
 
-import {Entry} from "./entry.ts";
+import type { Entry } from "./entry.ts";
 
 type CssColor = string;
 
 export const COLOR_BASE: CssColor = "#cecece";
-
 
 // https://www.w3.org/TR/WCAG20/#relativeluminancedef
 const rc = 0.2126;
@@ -17,7 +17,7 @@ const bc = 0.0722;
 const lowc = 1 / 12.92;
 
 function adjustGamma(p: number) {
-  return Math.pow((p + 0.055) / 1.055, 2.4);
+  return ((p + 0.055) / 1.055) ** 2.4;
 }
 
 function relativeLuminance(o: RGBColor) {
@@ -39,12 +39,12 @@ export interface NodeColor {
 
 export type NodeColorGetter = (node: HierarchyNode<Entry>) => NodeColor;
 
-const createRainbowColor = (root: HierarchyNode<Entry>): NodeColorGetter => {
+function createRainbowColor(root: HierarchyNode<Entry>): NodeColorGetter {
   const colorParentMap = new Map<HierarchyNode<Entry>, CssColor>();
   colorParentMap.set(root, COLOR_BASE);
 
   if (root.children != null) {
-    const colorScale = scaleSequential([0, root.children.length], (n) => hsl(360 * n, 0.3, 0.85));
+    const colorScale = scaleSequential([0, root.children.length], n => hsl(360 * n, 0.3, 0.85));
     root.children.forEach((c, id) => {
       colorParentMap.set(c, colorScale(id).toString());
     });
@@ -56,8 +56,8 @@ const createRainbowColor = (root: HierarchyNode<Entry>): NodeColorGetter => {
 
   const getBackgroundColor = (node: HierarchyNode<Entry>) => {
     const parents = node.ancestors();
-    const colorStr =
-      parents.length === 1
+    const colorStr
+      = parents.length === 1
         ? colorParentMap.get(parents[0])
         : colorParentMap.get(parents[parents.length - 2]);
 
@@ -80,6 +80,6 @@ const createRainbowColor = (root: HierarchyNode<Entry>): NodeColorGetter => {
 
     return colorMap.get(node)!;
   };
-};
+}
 
 export default createRainbowColor;
