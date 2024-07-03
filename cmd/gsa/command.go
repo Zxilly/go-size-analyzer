@@ -44,7 +44,8 @@ var Options struct {
 
 	Version kong.VersionFlag `help:"Show version"`
 
-	Binary string `arg:"" name:"file" required:"" help:"Binary file to analyze" type:"existingfile"`
+	Binary     string `arg:"" name:"file" required:"" help:"Binary file to analyze or result json file for diff" type:"existingfile"`
+	DiffTarget string `arg:"" name:"diff file" help:"Binary file or result json file to compare with, optional" type:"existingfile"`
 }
 
 func init() {
