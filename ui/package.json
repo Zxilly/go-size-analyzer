@@ -1,16 +1,16 @@
 {
   "name": "go-size-analyzer-ui",
+  "type": "module",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "scripts": {
     "build:ui": "tsc && vite -c vite.config.ts build",
     "build:explorer": "tsc && vite -c vite.config-explorer.ts build",
     "dev:ui": "vite -c vite.config.ts",
     "dev:explorer": "vite -c vite.config-explorer.ts",
     "generate": "typia generate --input src/schema --output src/generated --project tsconfig.json",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest run"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "react-use": "^17.5.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.21.2",
     "@codecov/vite-plugin": "0.0.1-beta.10",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@testing-library/dom": "^10.3.0",
@@ -41,14 +42,11 @@
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "@vitest/coverage-istanbul": "^1.6.0",
     "eslint": "^9.6.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-react": "^7.34.3",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-import-x": "^0.5.3",
+    "eslint-plugin-react-hooks": "5.1.0-rc-100dfd7dab-20240701",
     "eslint-plugin-react-refresh": "^0.4.7",
     "jsdom": "^24.1.0",
     "junit": "^1.4.9",

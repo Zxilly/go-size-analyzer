@@ -1,74 +1,76 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {Entry} from "./tool/entry.ts";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Entry } from "./tool/entry.ts";
 
 const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
 
 export interface TooltipProps {
-    node?: Entry;
-    visible: boolean;
+  node?: Entry;
+  visible: boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> =
-    ({
-         node,
-         visible,
-     }) => {
-        const ref = useRef<HTMLDivElement>(null);
-        const [style, setStyle] = useState({});
+export const Tooltip: React.FC<TooltipProps>
+    = ({
+      node,
+      visible,
+    }) => {
+      const ref = useRef<HTMLDivElement>(null);
+      const [style, setStyle] = useState({});
 
-        const path = useMemo(() => {
-            if (!node) return "";
-            return node.getName();
-        }, [node])
+      const path = useMemo(() => {
+        if (!node)
+          return "";
+        return node.getName();
+      }, [node]);
 
-        const content = useMemo(() => {
-            return node?.toString() ?? "";
-        }, [node]);
+      const content = useMemo(() => {
+        return node?.toString() ?? "";
+      }, [node]);
 
-        const updatePosition = useCallback((mouseCoords: { x: number; y: number }) => {
-            if (!ref.current) return;
+      const updatePosition = useCallback((mouseCoords: { x: number; y: number }) => {
+        if (!ref.current)
+          return;
 
-            const pos = {
-                left: mouseCoords.x + Tooltip_marginX,
-                top: mouseCoords.y + Tooltip_marginY,
-            };
+        const pos = {
+          left: mouseCoords.x + Tooltip_marginX,
+          top: mouseCoords.y + Tooltip_marginY,
+        };
 
-            const boundingRect = ref.current.getBoundingClientRect();
+        const boundingRect = ref.current.getBoundingClientRect();
 
-            if (pos.left + boundingRect.width > window.innerWidth) {
-                // Shifting horizontally
-                pos.left = window.innerWidth - boundingRect.width;
-            }
+        if (pos.left + boundingRect.width > window.innerWidth) {
+          // Shifting horizontally
+          pos.left = window.innerWidth - boundingRect.width;
+        }
 
-            if (pos.top + boundingRect.height > window.innerHeight) {
-                // Flipping vertically
-                pos.top = mouseCoords.y - Tooltip_marginY - boundingRect.height;
-            }
+        if (pos.top + boundingRect.height > window.innerHeight) {
+          // Flipping vertically
+          pos.top = mouseCoords.y - Tooltip_marginY - boundingRect.height;
+        }
 
-            setStyle(pos);
-        }, []);
+        setStyle(pos);
+      }, []);
 
-        useEffect(() => {
-            const handleMouseMove = (event: MouseEvent) => {
-                updatePosition({
-                    x: event.pageX,
-                    y: event.pageY,
-                });
-            };
+      useEffect(() => {
+        const handleMouseMove = (event: MouseEvent) => {
+          updatePosition({
+            x: event.pageX,
+            y: event.pageY,
+          });
+        };
 
-            document.addEventListener("mousemove", handleMouseMove, true);
-            return () => {
-                document.removeEventListener("mousemove", handleMouseMove, true);
-            };
-        }, [updatePosition]);
+        document.addEventListener("mousemove", handleMouseMove, true);
+        return () => {
+          document.removeEventListener("mousemove", handleMouseMove, true);
+        };
+      }, [updatePosition]);
 
-        return (
-            <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>
-                <div>{path}</div>
-                <pre>
-                    {content}
-                </pre>
-            </div>
-        );
+      return (
+        <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>
+          <div>{path}</div>
+          <pre>
+            {content}
+          </pre>
+        </div>
+      );
     };
