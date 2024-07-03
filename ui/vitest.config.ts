@@ -6,7 +6,7 @@ export default defineConfig({
     react(),
   ],
   test: {
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: ["./vitest.setup.ts"],
     coverage: {
       provider: "istanbul",
