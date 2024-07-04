@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"maps"
 	"reflect"
+	"strings"
 	"testing"
 	"unsafe"
 
@@ -93,6 +94,59 @@ func TestPrefixToPath(t *testing.T) {
 		if got != tc.Path {
 			t.Errorf("expected PrefixToPath(%s) = %s, got %s", tc.Escaped, tc.Path, got)
 		}
+	}
+}
+
+func TestIsJson(t *testing.T) {
+	tests := []struct {
+		name    string
+		content string
+		want    bool
+	}{
+		{
+			name:    "Valid JSON object",
+			content: `{"key": "value"}`,
+			want:    true,
+		},
+		{
+			name:    "Empty JSON object",
+			content: `{}`,
+			want:    true,
+		},
+		{
+			name:    "Invalid JSON starts with array",
+			content: `["key", "value"]`,
+			want:    false,
+		},
+		{
+			name:    "Invalid JSON no object",
+			content: `"just a string"`,
+			want:    false,
+		},
+		{
+			name:    "Valid JSON object with whitespace",
+			content: `   { "key": "value" }`,
+			want:    true,
+		},
+		{
+			name:    "Empty content",
+			content: ``,
+			want:    false,
+		},
+		{
+			name:    "JSON object with nested object",
+			content: `{"key": {"nestedKey": "nestedValue"}}`,
+			want:    true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			reader := strings.NewReader(tt.content)
+			if got := IsJson(reader); got != tt.want {
+				t.Errorf("IsJson() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }
 
