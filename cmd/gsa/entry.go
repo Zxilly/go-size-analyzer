@@ -22,8 +22,6 @@ import (
 )
 
 func entry() error {
-	utils.ApplyMemoryLimit()
-
 	options := internal.Options{
 		SkipSymbol: Options.NoSymbol,
 		SkipDisasm: Options.NoDisasm,
