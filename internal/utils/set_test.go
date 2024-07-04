@@ -9,7 +9,7 @@ import (
 func TestNewSet(t *testing.T) {
 	set := NewSet[int]()
 	assert.NotNil(t, set)
-	assert.Equal(t, 0, len(set))
+	assert.Empty(t, set)
 }
 
 func TestAdd(t *testing.T) {
@@ -77,5 +77,5 @@ func TestToSlice(t *testing.T) {
 	slice := set.ToSlice()
 	assert.Contains(t, slice, 1)
 	assert.Contains(t, slice, 2)
-	assert.Equal(t, 2, len(slice))
+	assert.Len(slice, 2)
 }
