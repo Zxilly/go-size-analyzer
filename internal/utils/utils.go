@@ -120,7 +120,8 @@ func PrefixToPath(s string) (string, error) {
 	return string(p), nil
 }
 
-func IsJSON(s io.ReaderAt) bool {
+// DetectJSON weak detects if the given reader contains a JSON object
+func DetectJSON(s io.ReaderAt) bool {
 	b := ReaderAtAdapter{readerAt: s}
 
 	bi := bufio.NewReader(&b)

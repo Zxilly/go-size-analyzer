@@ -143,8 +143,8 @@ func TestIsJson(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			reader := strings.NewReader(tt.content)
-			if got := IsJSON(reader); got != tt.want {
-				t.Errorf("IsJSON() = %v, want %v", got, tt.want)
+			if got := DetectJSON(reader); got != tt.want {
+				t.Errorf("DetectJSON() = %v, want %v", got, tt.want)
 			}
 		})
 	}
