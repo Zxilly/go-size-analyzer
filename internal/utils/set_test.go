@@ -77,5 +77,5 @@ func TestToSlice(t *testing.T) {
 	slice := set.ToSlice()
 	assert.Contains(t, slice, 1)
 	assert.Contains(t, slice, 2)
-	assert.Len(slice, 2)
+	assert.Len(t, slice, 2)
 }
