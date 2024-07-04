@@ -2,12 +2,14 @@ package diff
 
 import (
 	"bytes"
-	"github.com/Zxilly/go-size-analyzer/internal/printer"
-	"github.com/Zxilly/go-size-analyzer/internal/test"
+	"testing"
+
 	"github.com/go-json-experiment/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
+
+	"github.com/Zxilly/go-size-analyzer/internal/printer"
+	"github.com/Zxilly/go-size-analyzer/internal/test"
 )
 
 func TestCommonResultFromFullResult(t *testing.T) {
