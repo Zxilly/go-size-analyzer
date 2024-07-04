@@ -15,7 +15,7 @@ func autoLoadFile(name string, options internal.Options) (*commonResult, error) 
 	}
 
 	r := new(commonResult)
-	if utils.IsJson(reader) {
+	if utils.IsJSON(reader) {
 		err = json.UnmarshalRead(utils.NewReaderAtAdapter(reader), r)
 		if err != nil {
 			return nil, err
