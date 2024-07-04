@@ -25,6 +25,10 @@ type commonSection struct {
 	KnownSize int64 `json:"known_size"`
 }
 
+func (c commonSection) UnknownSize() int64 {
+	return c.FileSize - c.KnownSize
+}
+
 func fromResult(r *result.Result) *commonResult {
 	c := commonResult{
 		Size:      int64(r.Size),
