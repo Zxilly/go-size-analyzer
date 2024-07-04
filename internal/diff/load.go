@@ -39,6 +39,11 @@ func Diff(oldTarget, newTarget string, options internal.Options) error {
 		return errors.New("analyze mode is different")
 	}
 
+	diff := newDiffResult(newResult, oldResult)
+
+	// todo: add json printer and text printer
+	_ = diff
+
 	return nil
 }
 
