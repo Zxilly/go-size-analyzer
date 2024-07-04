@@ -44,7 +44,7 @@ importers:
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^2.21.2
-        version: 2.21.2(@eslint-react/eslint-plugin@1.5.20(eslint@9.6.0)(typescript@5.5.3))(@vue/compiler-sfc@3.4.31)(eslint-plugin-react-hooks@5.1.0-rc-100dfd7dab-20240701(eslint@9.6.0))(eslint-plugin-react-refresh@0.4.7(eslint@9.6.0))(eslint@9.6.0)(typescript@5.5.3)(vitest@1.6.0(@types/node@20.14.9)(happy-dom@14.12.3)(jsdom@24.1.0)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1))
+        version: 2.21.2(@eslint-react/eslint-plugin@1.5.20(eslint@9.6.0)(typescript@5.5.3))(@vue/compiler-sfc@3.4.31)(eslint-plugin-react-hooks@5.1.0-rc.0(eslint@9.6.0))(eslint-plugin-react-refresh@0.4.7(eslint@9.6.0))(eslint@9.6.0)(typescript@5.5.3)(vitest@1.6.0(@types/node@20.14.9)(happy-dom@14.12.3)(jsdom@24.1.0)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1))
       '@codecov/vite-plugin':
         specifier: 0.0.1-beta.10
         version: 0.0.1-beta.10(vite@5.3.3(@types/node@20.14.9)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1))
@@ -97,8 +97,8 @@ importers:
         specifier: ^0.5.3
         version: 0.5.3(eslint@9.6.0)(typescript@5.5.3)
       eslint-plugin-react-hooks:
-        specifier: 5.1.0-rc-100dfd7dab-20240701
-        version: 5.1.0-rc-100dfd7dab-20240701(eslint@9.6.0)
+        specifier: 5.1.0-rc.0
+        version: 5.1.0-rc.0(eslint@9.6.0)
       eslint-plugin-react-refresh:
         specifier: ^0.4.7
         version: 0.4.7(eslint@9.6.0)
@@ -118,8 +118,8 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
       typia:
-        specifier: ^6.3.3
-        version: 6.3.3(typescript@5.5.3)
+        specifier: ^6.4.0
+        version: 6.4.0(typescript@5.5.3)
       vite:
         specifier: ^5.3.3
         version: 5.3.3(@types/node@20.14.9)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1)
@@ -999,8 +999,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@samchon/openapi@0.2.2':
-    resolution: {integrity: sha512-BBfBIIYuSNp1FKb7edPL5Lfw2hQ8crV7xwF71PEbO16MDBlKFmc6iuisAlaBaxO8ac5sm/e57Nnm/kfemS9Gew==}
+  '@samchon/openapi@0.3.0':
+    resolution: {integrity: sha512-rl+0XwM0DzSOiL664KB6oC5hgfMaXqxweGRVFdTt+U0bFJTIHLO+C+n9KCZUpMln8eQepXQ9RT8HjFAFe+Z6Hg==}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -1949,8 +1949,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-plugin-react-hooks@5.1.0-rc-100dfd7dab-20240701:
-    resolution: {integrity: sha512-9/u+PSTsBhWDaDE17Liz2F6Os6Dd9Rgk+8Iv6E9EPxmrYPSXEwUAo0EMHtO+VQQ2+tmghyL6soWp0XiR+Q9Ywg==}
+  eslint-plugin-react-hooks@5.1.0-rc.0:
+    resolution: {integrity: sha512-xBc+mRT2KSyzKm78GyaOFPyF4EnSRfTSmre88Ak8jG1HnpNGEiHETbCuXih8Xl796DryrJej/8IdW4oQ+m5kPg==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -2328,8 +2328,8 @@ packages:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
     engines: {node: '>= 14'}
 
-  https-proxy-agent@7.0.4:
-    resolution: {integrity: sha512-wlwpilI7YdjSkWaQ/7omYBMTliDcmCN8OLihO6I9B86g06lMyAoqgoDpV0XqoaPOKj+0DIdAvnsWfyAAhmimcg==}
+  https-proxy-agent@7.0.5:
+    resolution: {integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==}
     engines: {node: '>= 14'}
 
   human-signals@5.0.0:
@@ -3470,8 +3470,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typia@6.3.3:
-    resolution: {integrity: sha512-4rGJXbGUh9d6BpUMgEe08p3oujlhPHYsatTJh4D+t4zHh1UZzDbBH1q2PNBSd096+gqExB9Kv93IfmGiadIDYQ==}
+  typia@6.4.0:
+    resolution: {integrity: sha512-VJszDm+zGVrA3do9NApwfQYvd2J29vN3H9TpBW4FStVsQazX18GRXx8PmFWAxKb2dJTobUpIm2kQxQKVns6mkA==}
     hasBin: true
     peerDependencies:
       typescript: '>=4.8.0 <5.6.0'
@@ -3673,8 +3673,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  ws@8.17.0:
-    resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
+  ws@8.17.1:
+    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3685,8 +3685,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.17.1:
-    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3769,7 +3769,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@antfu/eslint-config@2.21.2(@eslint-react/eslint-plugin@1.5.20(eslint@9.6.0)(typescript@5.5.3))(@vue/compiler-sfc@3.4.31)(eslint-plugin-react-hooks@5.1.0-rc-100dfd7dab-20240701(eslint@9.6.0))(eslint-plugin-react-refresh@0.4.7(eslint@9.6.0))(eslint@9.6.0)(typescript@5.5.3)(vitest@1.6.0(@types/node@20.14.9)(happy-dom@14.12.3)(jsdom@24.1.0)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1))':
+  '@antfu/eslint-config@2.21.2(@eslint-react/eslint-plugin@1.5.20(eslint@9.6.0)(typescript@5.5.3))(@vue/compiler-sfc@3.4.31)(eslint-plugin-react-hooks@5.1.0-rc.0(eslint@9.6.0))(eslint-plugin-react-refresh@0.4.7(eslint@9.6.0))(eslint@9.6.0)(typescript@5.5.3)(vitest@1.6.0(@types/node@20.14.9)(happy-dom@14.12.3)(jsdom@24.1.0)(lightningcss@1.25.1)(sass@1.77.6)(terser@5.31.1))':
     dependencies:
       '@antfu/install-pkg': 0.3.3
       '@clack/prompts': 0.7.0
@@ -3809,7 +3809,7 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       '@eslint-react/eslint-plugin': 1.5.20(eslint@9.6.0)(typescript@5.5.3)
-      eslint-plugin-react-hooks: 5.1.0-rc-100dfd7dab-20240701(eslint@9.6.0)
+      eslint-plugin-react-hooks: 5.1.0-rc.0(eslint@9.6.0)
       eslint-plugin-react-refresh: 0.4.7(eslint@9.6.0)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
@@ -4703,7 +4703,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
 
-  '@samchon/openapi@0.2.2': {}
+  '@samchon/openapi@0.3.0': {}
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -5771,7 +5771,7 @@ snapshots:
       - supports-color
     optional: true
 
-  eslint-plugin-react-hooks@5.1.0-rc-100dfd7dab-20240701(eslint@9.6.0):
+  eslint-plugin-react-hooks@5.1.0-rc.0(eslint@9.6.0):
     dependencies:
       eslint: 9.6.0
 
@@ -6266,7 +6266,7 @@ snapshots:
       - supports-color
     optional: true
 
-  https-proxy-agent@7.0.4:
+  https-proxy-agent@7.0.5:
     dependencies:
       agent-base: 7.1.1
       debug: 4.3.5
@@ -6449,7 +6449,7 @@ snapshots:
       form-data: 4.0.0
       html-encoding-sniffer: 4.0.0
       http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.4
+      https-proxy-agent: 7.0.5
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.10
       parse5: 7.1.2
@@ -6462,7 +6462,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-      ws: 8.17.0
+      ws: 8.18.0
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -7413,9 +7413,9 @@ snapshots:
 
   typescript@5.5.3: {}
 
-  typia@6.3.3(typescript@5.5.3):
+  typia@6.4.0(typescript@5.5.3):
     dependencies:
-      '@samchon/openapi': 0.2.2
+      '@samchon/openapi': 0.3.0
       commander: 10.0.1
       comment-json: 4.2.3
       inquirer: 8.2.6
@@ -7638,10 +7638,10 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.17.0:
-    optional: true
-
   ws@8.17.1: {}
+
+  ws@8.18.0:
+    optional: true
 
   xml-name-validator@4.0.0: {}
 
