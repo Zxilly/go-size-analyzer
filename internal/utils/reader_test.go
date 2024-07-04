@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"io"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestReaderAtAdapter_Read(t *testing.T) {
@@ -14,23 +17,13 @@ func TestReaderAtAdapter_Read(t *testing.T) {
 	// Test reading the entire data
 	readData := make([]byte, len(data))
 	n, err := reader.Read(readData)
-	if err != nil {
-		t.Errorf("unexpected error: %v", err)
-	}
-	if n != len(data) {
-		t.Errorf("unexpected number of bytes read: got %d, want %d", n, len(data))
-	}
-	if !bytes.Equal(readData, data) {
-		t.Errorf("unexpected data read: got %s, want %s", readData, data)
-	}
+	require.NoError(t, err)
+	assert.Len(t, data, n)
+	assert.Equal(t, data, readData)
 
 	// Test reading beyond the data
 	readData = make([]byte, 10)
 	n, err = reader.Read(readData)
-	if err != io.EOF {
-		t.Errorf("unexpected error: got %v, want %v", err, io.EOF)
-	}
-	if n != 0 {
-		t.Errorf("unexpected number of bytes read: got %d, want %d", n, 0)
-	}
+	assert.ErrorIs(t, err, io.EOF)
+	assert.Equal(t, n, 0)
 }
