@@ -5,7 +5,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/Zxilly/go-size-analyzer/internal/diff"
 	"io"
 	"log/slog"
 	"os"
@@ -15,6 +14,7 @@ import (
 	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/diff"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/tui"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
