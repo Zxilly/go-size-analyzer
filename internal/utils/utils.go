@@ -120,7 +120,7 @@ func PrefixToPath(s string) (string, error) {
 	return string(p), nil
 }
 
-func IsJson(s io.ReaderAt) bool {
+func IsJSON(s io.ReaderAt) bool {
 	b := ReaderAtAdapter{readerAt: s}
 
 	bi := bufio.NewReader(&b)
