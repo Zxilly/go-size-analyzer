@@ -23,9 +23,17 @@ func Diff(oldTarget, newTarget string, options internal.Options) error {
 	}
 
 	if !requireAnalyzeModeSame(oldResult, newResult) {
+		formatAnalyzer := func(analyzers []string) string {
+			if len(analyzers) == 0 {
+				return "none"
+			}
+
+			return strings.Join(analyzers, ", ")
+		}
+
 		slog.Warn("The analyze mode of the two files is different")
-		slog.Warn(fmt.Sprintf("%s: %s", newTarget, strings.Join(oldResult.Analyzers, ", ")))
-		slog.Warn(fmt.Sprintf("%s: %s", oldTarget, strings.Join(newResult.Analyzers, ", ")))
+		slog.Warn(fmt.Sprintf("%s: %s", newTarget, formatAnalyzer(newResult.Analyzers)))
+		slog.Warn(fmt.Sprintf("%s: %s", oldTarget, formatAnalyzer(oldResult.Analyzers)))
 		return errors.New("analyze mode is different")
 	}
 
