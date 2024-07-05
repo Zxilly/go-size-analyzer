@@ -42,104 +42,84 @@ type diffSection struct {
 	newKnownSize int64
 }
 
-func newDiffResult(newResult, oldResult *commonResult) diffResult {
-	ret := diffResult{
-		Packages: make([]diffPackage, 0),
-		Sections: make([]diffSection, 0),
-	}
-
-	// diff packages
-	for k, v := range newResult.Packages {
-		if oldV, ok := oldResult.Packages[k]; ok {
-			if v.Size != oldV.Size {
-				ret.Packages = append(ret.Packages, diffPackage{
-					diffBase: diffBase{
-						Name:       k,
-						From:       oldV.Size,
-						To:         v.Size,
-						ChangeType: changeTypeChange,
-					},
-				})
+func processPackages(newPackages, oldPackages map[string]commonPackage) (ret []diffPackage) {
+	for k, v := range newPackages {
+		typ := changeTypeAdd
+		fromSize := int64(0)
+		if oldV, ok := oldPackages[k]; ok {
+			if v.Size == oldV.Size {
+				continue
 			}
-		} else {
-			ret.Packages = append(ret.Packages, diffPackage{
-				diffBase: diffBase{
-					Name:       k,
-					From:       0,
-					To:         v.Size,
-					ChangeType: changeTypeAdd,
-				},
+			typ = changeTypeChange
+			fromSize = oldV.Size
+		}
+		ret = append(ret, diffPackage{
+			diffBase: diffBase{Name: k, From: fromSize, To: v.Size, ChangeType: typ},
+		})
+	}
+
+	for k, v := range oldPackages {
+		if _, ok := newPackages[k]; !ok {
+			ret = append(ret, diffPackage{
+				diffBase: diffBase{Name: k, From: v.Size, To: 0, ChangeType: changeTypeRemove},
 			})
 		}
 	}
 
-	for k, v := range oldResult.Packages {
-		if _, ok := newResult.Packages[k]; !ok {
-			ret.Packages = append(ret.Packages, diffPackage{
-				diffBase: diffBase{
-					Name:       k,
-					From:       v.Size,
-					To:         0,
-					ChangeType: changeTypeRemove,
-				},
-			})
-		}
+	return
+}
+
+func processSections(newSections, oldSections []commonSection) (ret []diffSection) {
+	newSectionsMap := make(map[string]commonSection)
+	oldSectionsMap := make(map[string]commonSection)
+
+	for _, v := range newSections {
+		newSectionsMap[v.Name] = v
+	}
+	for _, v := range oldSections {
+		oldSectionsMap[v.Name] = v
 	}
 
-	// diff sections
-	newSections := make(map[string]commonSection)
-	oldSections := make(map[string]commonSection)
-
-	for _, v := range newResult.Sections {
-		newSections[v.Name] = v
-	}
-	for _, v := range oldResult.Sections {
-		oldSections[v.Name] = v
-	}
-
-	for k, v := range newSections {
-		if oldV, ok := oldSections[k]; ok {
-			if v.UnknownSize() != oldV.UnknownSize() {
-				ret.Sections = append(ret.Sections, diffSection{
-					diffBase: diffBase{
-						Name:       k,
-						From:       oldV.FileSize,
-						To:         v.FileSize,
-						ChangeType: changeTypeChange,
-					},
-					oldFileSize:  oldV.FileSize,
-					oldKnownSize: oldV.KnownSize,
-					newFileSize:  v.FileSize,
-					newKnownSize: v.KnownSize,
-				})
+	for k, v := range newSectionsMap {
+		typ := changeTypeAdd
+		fromSize := int64(0)
+		fromFileSize := int64(0)
+		fromKnownSize := int64(0)
+		if oldV, ok := oldSectionsMap[k]; ok {
+			if v.UnknownSize() == oldV.UnknownSize() {
+				continue
 			}
-		} else {
-			ret.Sections = append(ret.Sections, diffSection{
-				diffBase: diffBase{
-					Name:       k,
-					From:       0,
-					To:         v.FileSize,
-					ChangeType: changeTypeAdd,
-				},
-				newFileSize:  v.FileSize,
-				newKnownSize: v.KnownSize,
-			})
+			typ = changeTypeChange
+			fromSize = oldV.UnknownSize()
+			fromFileSize = oldV.FileSize
+			fromKnownSize = oldV.KnownSize
 		}
+		ret = append(ret, diffSection{
+			diffBase:     diffBase{Name: k, From: fromSize, To: v.UnknownSize(), ChangeType: typ},
+			oldFileSize:  fromFileSize,
+			oldKnownSize: fromKnownSize,
+			newFileSize:  v.FileSize,
+			newKnownSize: v.KnownSize,
+		})
 	}
 
-	for k, v := range oldSections {
-		if _, ok := newSections[k]; !ok {
-			ret.Sections = append(ret.Sections, diffSection{
-				diffBase: diffBase{
-					Name:       k,
-					From:       v.FileSize,
-					To:         0,
-					ChangeType: changeTypeRemove,
-				},
+	for k, v := range oldSectionsMap {
+		if _, ok := newSectionsMap[k]; !ok {
+			ret = append(ret, diffSection{
+				diffBase:     diffBase{Name: k, From: v.UnknownSize(), To: 0, ChangeType: changeTypeRemove},
 				oldFileSize:  v.FileSize,
 				oldKnownSize: v.KnownSize,
 			})
 		}
+	}
+
+	return
+}
+
+func newDiffResult(newResult, oldResult *commonResult) diffResult {
+	ret := diffResult{
+		Packages: processPackages(newResult.Packages, oldResult.Packages),
+		Sections: processSections(newResult.Sections, oldResult.Sections),
 	}
 
 	slices.SortFunc(ret.Packages, func(a, b diffPackage) int {
