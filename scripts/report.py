@@ -27,7 +27,7 @@ def check_line(line: str) -> bool:
 
 
 def need_report(f: str) -> bool:
-    with open(f, "r") as f:
+    with open(f, "r", encoding="utf-8") as f:
         for line in f.readlines():
             if check_line(line):
                 return True
@@ -36,7 +36,7 @@ def need_report(f: str) -> bool:
 
 def filter_output(f: str) -> str:
     ret = []
-    with open(f, "r") as f:
+    with open(f, "r", encoding="utf-8") as f:
         lines = f.readlines()
         for line in lines:
             if check_line(line):
@@ -81,8 +81,8 @@ if __name__ == '__main__':
             if file.endswith(".output.txt"):
                 output_file_path = str(os.path.join(root, file))
                 if need_report(output_file_path):
-                    write_github_summary(header(f"Found bad case in {output_file_path}", header_level=3)+'\n')
-                    write_github_summary(details(code_block(filter_output(output_file_path)))+'\n')
+                    write_github_summary(header(f"Found bad case in {output_file_path}", header_level=3) + '\n')
+                    write_github_summary(details(code_block(filter_output(output_file_path))) + '\n')
                     break
 
             if file.endswith(".graph.svg"):
