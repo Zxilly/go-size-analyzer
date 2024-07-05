@@ -41,3 +41,7 @@ func TestDiffJSONAndBinary(t *testing.T) {
 		})
 	}
 }
+
+func TestDifferentAnalyzer(t *testing.T) {
+
+}
