@@ -5,6 +5,7 @@ import tarfile
 import zipfile
 from enum import Flag, Enum, auto
 from threading import Thread
+from typing import Callable
 from urllib.parse import urlparse
 
 import requests
@@ -245,7 +246,7 @@ class RemoteBinary:
         return ret
 
 
-def load_remote_binaries(typ: str) -> list[IntegrationTest]:
+def load_remote_binaries(cond: Callable[[str], bool]) -> list[IntegrationTest]:
     log("Fetching remote binaries...")
 
     with open(get_binaries_path(), "r", encoding="utf-8") as f:
@@ -253,13 +254,7 @@ def load_remote_binaries(typ: str) -> list[IntegrationTest]:
         ret = [RemoteBinary.from_csv(line) for line in reader]
 
     def filter_binary(t: RemoteBinary):
-        if typ == "":
-            return True
-
-        is_example = t.name.startswith("bin-")
-        if typ == "example":
-            return is_example
-        return not is_example
+        return cond(t.name)
 
     filtered = list(filter(filter_binary, ret))
     tests = []
@@ -270,10 +265,15 @@ def load_remote_binaries(typ: str) -> list[IntegrationTest]:
     return tests
 
 
-def load_remote_for_tui_test():
+def load_remote_for_unit_test():
     (RemoteBinary("bin-linux-1.21-amd64",
                   "https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64",
                   TestType.TEXT_TEST, RemoteBinaryType.RAW, [Target("bin-linux-1.21-amd64", "bin-linux-1.21-amd64")])
+     .ensure_exist())
+    (RemoteBinary("bin-linux-1.22-amd64",
+                  "https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64-cgo",
+                  TestType.TEXT_TEST, RemoteBinaryType.RAW,
+                  [Target("bin-linux-1.22-amd64", "bin-linux-1.22-amd64")])
      .ensure_exist())
 
 

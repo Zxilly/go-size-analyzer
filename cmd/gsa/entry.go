@@ -28,8 +28,29 @@ func entry() error {
 		SkipDwarf:  Options.NoDwarf,
 	}
 
+	var writer io.Writer
+	var err error
+
+	if Options.Output != "" {
+		writer, err = os.OpenFile(Options.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
+		if err != nil {
+			return err
+		}
+	} else {
+		writer = utils.Stdout
+		if Options.Web {
+			writer = new(bytes.Buffer)
+		}
+	}
+
 	if Options.DiffTarget != "" {
-		return diff.Diff(Options.DiffTarget, Options.Binary, options)
+		return diff.Diff(writer, diff.DOptions{
+			Options:   options,
+			OldTarget: Options.Binary,
+			NewTarget: Options.DiffTarget,
+			Format:    Options.Format,
+			Indent:    Options.Indent,
+		})
 	}
 
 	reader, err := mmap.Open(Options.Binary)
@@ -58,40 +79,24 @@ func entry() error {
 		Options.Format = "html"
 	}
 
-	var writer io.Writer
-
-	if Options.Output != "" {
-		writer, err = os.OpenFile(Options.Output, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-		if err != nil {
-			return err
-		}
-	} else {
-		writer = utils.Stdout
-		if Options.Web {
-			writer = new(bytes.Buffer)
-		}
-	}
-
 	common := printer.CommonOption{
 		HideSections: Options.HideSections,
 		HideMain:     Options.HideMain,
 		HideStd:      Options.HideStd,
-		Writer:       writer,
 	}
 
 	switch Options.Format {
 	case "text":
-		err = printer.Text(result, &common)
+		err = printer.Text(result, writer, &common)
 	case "json":
-		err = printer.JSON(result, &printer.JSONOption{
+		err = printer.JSON(result, writer, &printer.JSONOption{
 			Indent:     Options.Indent,
 			HideDetail: Options.Compact,
-			Writer:     writer,
 		})
 	case "html":
 		err = printer.HTML(result, writer)
 	case "svg":
-		err = printer.Svg(result, &printer.SvgOption{
+		err = printer.Svg(result, writer, &printer.SvgOption{
 			CommonOption: common,
 			Width:        Options.Width,
 			Height:       Options.Height,

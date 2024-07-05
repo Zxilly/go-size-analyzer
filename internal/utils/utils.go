@@ -144,6 +144,13 @@ func Must(err error) {
 	}
 }
 
+func Must2[T any](v T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
 func Collect[K comparable](seq iter.Seq[K]) []K {
 	m := make([]K, 0)
 
@@ -152,4 +159,8 @@ func Collect[K comparable](seq iter.Seq[K]) []K {
 	}
 
 	return m
+}
+
+func PercentString(f float64) string {
+	return fmt.Sprintf("%.2f%%", f*100)
 }

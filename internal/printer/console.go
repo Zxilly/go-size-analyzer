@@ -4,11 +4,9 @@ package printer
 
 import (
 	"cmp"
-	"fmt"
 	"io"
 	"log/slog"
 	"maps"
-	"path/filepath"
 	"slices"
 
 	"github.com/dustin/go-humanize"
@@ -20,25 +18,21 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func percentString(f float64) string {
-	return fmt.Sprintf("%.2f%%", f)
-}
-
 type CommonOption struct {
-	Writer       io.Writer
 	HideSections bool
 	HideMain     bool
 	HideStd      bool
 }
 
-func Text(r *result.Result, options *CommonOption) error {
+func Text(r *result.Result, writer io.Writer, options *CommonOption) error {
 	slog.Info("Printing text report")
 
 	t := table.NewWriter()
+	t.SetStyle(utils.GetTableStyle())
 
 	allKnownSize := uint64(0)
 
-	t.SetTitle("%s", filepath.Base(r.Name))
+	t.SetTitle("%s", r.Name)
 	t.AppendHeader(table.Row{"Percent", "Name", "Size", "Type"})
 
 	type sizeEntry struct {
@@ -64,7 +58,7 @@ func Text(r *result.Result, options *CommonOption) error {
 			name:    p.Name,
 			size:    p.Size,
 			typ:     p.Type,
-			percent: percentString(float64(p.Size) / float64(r.Size) * 100),
+			percent: utils.PercentString(float64(p.Size) / float64(r.Size)),
 		})
 	}
 
@@ -79,10 +73,12 @@ func Text(r *result.Result, options *CommonOption) error {
 				name:    s.Name,
 				size:    unknownSize,
 				typ:     "section",
-				percent: percentString(float64(unknownSize) / float64(r.Size) * 100),
+				percent: utils.PercentString(float64(unknownSize) / float64(r.Size)),
 			})
 		}
 	}
+
+	allKnownSize = min(allKnownSize, r.Size) // since we can have overlap
 
 	slices.SortFunc(entries, func(a, b sizeEntry) int {
 		return -cmp.Compare(a.size, b.size)
@@ -92,14 +88,14 @@ func Text(r *result.Result, options *CommonOption) error {
 		t.AppendRow(table.Row{e.percent, e.name, humanize.Bytes(e.size), e.typ})
 	}
 
-	t.AppendFooter(table.Row{percentString(float64(allKnownSize) / float64(r.Size) * 100), "Known", humanize.Bytes(allKnownSize)})
+	t.AppendFooter(table.Row{utils.PercentString(float64(allKnownSize) / float64(r.Size)), "Known", humanize.Bytes(allKnownSize)})
 	t.AppendFooter(table.Row{"100%", "Total", humanize.Bytes(r.Size)})
 
 	data := []byte(t.Render() + "\n")
 
 	slog.Info("Report rendered")
 
-	_, err := options.Writer.Write(data)
+	_, err := writer.Write(data)
 
 	slog.Info("Report written")
 

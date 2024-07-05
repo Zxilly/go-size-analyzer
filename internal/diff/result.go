@@ -5,8 +5,10 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
+// commonResult keeps these json fields are strict subset of result.Result
 type commonResult struct {
-	Size int64 `json:"size"`
+	Name string `json:"name"`
+	Size int64  `json:"size"`
 
 	Analyzers []entity.Analyzer        `json:"analyzers"`
 	Packages  map[string]commonPackage `json:"packages"`
@@ -31,6 +33,7 @@ func (c commonSection) UnknownSize() int64 {
 
 func fromResult(r *result.Result) *commonResult {
 	c := commonResult{
+		Name:      r.Name,
 		Size:      int64(r.Size),
 		Analyzers: r.Analyzers,
 		Packages:  make(map[string]commonPackage),

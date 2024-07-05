@@ -74,48 +74,47 @@ $ gsa --tui golang-compiled-binary
 
 ```bash
 $ gsa docker-compose-linux-x86_64
-+------------------------------------------------------------------------------+
-| docker-compose-linux-x86_64                                                  |
-+---------+-----------------------------------------------+--------+-----------+
-| PERCENT | NAME                                          | SIZE   | TYPE      |
-+---------+-----------------------------------------------+--------+-----------+
-| 27.76%  | .gopclntab                                    | 17 MB  | section   |
-| 15.17%  | .rodata                                       | 9.5 MB | section   |
-| 11.63%  | k8s.io/api                                    | 7.3 MB | vendor    |
-| 6.69%   | .strtab                                       | 4.2 MB | section   |
-| 3.47%   | k8s.io/client-go                              | 2.2 MB | vendor    |
-| 3.37%   | .symtab                                       | 2.1 MB | section   |
-| 2.28%   | github.com/moby/buildkit                      | 1.4 MB | vendor    |
-| 1.54%   | github.com/gogo/protobuf                      | 968 kB | vendor    |
-| 1.53%   | github.com/google/gnostic-models              | 958 kB | vendor    |
-| 1.33%   | github.com/aws/aws-sdk-go-v2                  | 836 kB | vendor    |
-| 1.26%   | crypto                                        | 790 kB | std       |
-| 1.25%   | google.golang.org/protobuf                    | 782 kB | vendor    |
-| 1.24%   | k8s.io/apimachinery                           | 779 kB | vendor    |
-| 1.24%   | net                                           | 777 kB | std       |
-| 1.20%   | github.com/docker/compose/v2                  | 752 kB | main      |
-| 0.95%   | .noptrdata                                    | 596 kB | section   |
-| 0.93%   | go.opentelemetry.io/otel                      | 582 kB | vendor    |
-| 0.85%   | google.golang.org/grpc                        | 533 kB | vendor    |
-| 0.71%   | runtime                                       | 442 kB | std       |
-| 0.59%   | github.com/docker/buildx                      | 371 kB | vendor    |
-| 0.55%   | github.com/docker/docker                      | 347 kB | vendor    |
-| 0.53%   |                                               | 331 kB | generated |
-| 0.52%   | golang.org/x/net                              | 326 kB | vendor    |
-| 0.47%   | github.com/theupdateframework/notary          | 294 kB | vendor    |
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ docker-compose-linux-x86_64                                                     │
+├─────────┬──────────────────────────────────────────────────┬────────┬───────────┤
+│ PERCENT │ NAME                                             │ SIZE   │ TYPE      │
+├─────────┼──────────────────────────────────────────────────┼────────┼───────────┤
+│ 17.37%  │ k8s.io/api                                       │ 11 MB  │ vendor    │
+│ 15.52%  │ .rodata                                          │ 9.8 MB │ section   │
+│ 8.92%   │ .gopclntab                                       │ 5.6 MB │ section   │
+│ 7.51%   │ .strtab                                          │ 4.7 MB │ section   │
+│ 5.13%   │ k8s.io/client-go                                 │ 3.2 MB │ vendor    │
+│ 3.36%   │ .symtab                                          │ 2.1 MB │ section   │
+│ 3.29%   │ github.com/moby/buildkit                         │ 2.1 MB │ vendor    │
+│ 2.02%   │ google.golang.org/protobuf                       │ 1.3 MB │ vendor    │
+│ 1.96%   │ github.com/google/gnostic-models                 │ 1.2 MB │ vendor    │
+│ 1.82%   │ k8s.io/apimachinery                              │ 1.1 MB │ vendor    │
+│ 1.73%   │ net                                              │ 1.1 MB │ std       │
+│ 1.72%   │ github.com/aws/aws-sdk-go-v2                     │ 1.1 MB │ vendor    │
+│ 1.57%   │ crypto                                           │ 991 kB │ std       │
+│ 1.53%   │ github.com/docker/compose/v2                     │ 964 kB │ vendor    │
+│ 1.48%   │ github.com/gogo/protobuf                         │ 931 kB │ vendor    │
+│ 1.40%   │ runtime                                          │ 884 kB │ std       │
+│ 1.32%   │ go.opentelemetry.io/otel                         │ 833 kB │ vendor    │
+│ 1.28%   │ .text                                            │ 809 kB │ section   │
+│ 1.18%   │ google.golang.org/grpc                           │ 742 kB │ vendor    │
 
 ...[Collapsed]...
 
-| 0.00%   | database/sql/driver                           | 128 B  | std       |
-| 0.00%   | .note.go.buildid                              | 100 B  | section   |
-| 0.00%   | hash/fnv                                      | 96 B   | std       |
-| 0.00%   | maps                                          | 96 B   | std       |
-| 0.00%   | github.com/moby/sys/sequential                | 64 B   | vendor    |
-| 0.00%   | .text                                         | 1 B    | section   |
-+---------+-----------------------------------------------+--------+-----------+
-| 97.65%  | KNOWN                                         | 61 MB  |           |
-| 100%    | TOTAL                                         | 63 MB  |           |
-+---------+-----------------------------------------------+--------+-----------+
+│ 0.00%   │ github.com/google/shlex                          │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/pmezard/go-difflib                    │ 0 B    │ vendor    │
+│ 0.00%   │ go.uber.org/mock                                 │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/kballard/go-shellquote                │ 0 B    │ vendor    │
+│ 0.00%   │ tags.cncf.io/container-device-interface          │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/josharian/intern                      │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/shibumi/go-pathspec                   │ 0 B    │ vendor    │
+│ 0.00%   │ dario.cat/mergo                                  │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/mattn/go-colorable                    │ 0 B    │ vendor    │
+│ 0.00%   │ github.com/secure-systems-lab/go-securesystemslib│ 0 B    │ vendor    │
+├─────────┼──────────────────────────────────────────────────┼────────┼───────────┤
+│ 100%    │ KNOWN                                            │ 63 MB  │           │
+│ 100%    │ TOTAL                                            │ 63 MB  │           │
+└─────────┴──────────────────────────────────────────────────┴────────┴───────────┘
 
 ```
 
@@ -130,13 +129,16 @@ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ### Full options
 
 ```bash
-Usage: gsa <file> [flags]
+Usage: 
+	gsa <file> [flags]
+	gsa <old file> <new file> [flags]
 
-A tool for analyzing the size of dependencies in compiled Golang binaries,
-providing insight into their impact on the final build.
+A tool for determining the extent to which dependencies contribute to the
+bloated size of compiled Go binaries.
 
 Arguments:
-  <file>    Binary file to analyze
+  <file>           Binary file to analyze or result json file for diff
+  [<diff file>]    New binary file or result json file to compare, optional
 
 Flags:
   -h, --help             Show context-sensitive help.
@@ -171,6 +173,7 @@ Web interface options
 
 Terminal interface options
   --tui    use terminal interface to explore the details
+
 ```
 
 > [!CAUTION]

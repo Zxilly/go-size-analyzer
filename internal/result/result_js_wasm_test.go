@@ -12,10 +12,10 @@ import (
 	"testing"
 
 	"github.com/go-json-experiment/json"
-
-	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 func TestResultMarshalJavaScript(t *testing.T) {
