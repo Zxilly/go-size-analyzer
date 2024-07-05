@@ -97,7 +97,7 @@ func TestPrefixToPath(t *testing.T) {
 	}
 }
 
-func TestIsJson(t *testing.T) {
+func TestDetectJson(t *testing.T) {
 	tests := []struct {
 		name    string
 		content string

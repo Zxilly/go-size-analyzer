@@ -25,5 +25,5 @@ func TestReaderAtAdapter_Read(t *testing.T) {
 	readData = make([]byte, 10)
 	n, err = reader.Read(readData)
 	assert.ErrorIs(t, err, io.EOF)
-	assert.Equal(t, n, 0)
+	assert.Zero(t, n)
 }
