@@ -1,7 +1,7 @@
 import os
 from argparse import ArgumentParser
 
-from tool.remote import load_remote_binaries
+from tool.remote import load_remote_binaries_as_test
 
 if __name__ == "__main__":
     ap = ArgumentParser()
@@ -20,4 +20,4 @@ if __name__ == "__main__":
             return not name.startswith("bin-")
         return True
 
-    load_remote_binaries(cond)
+    load_remote_binaries_as_test(cond)

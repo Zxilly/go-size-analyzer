@@ -12,7 +12,8 @@ from tool.gsa import build_gsa
 from tool.html import assert_html_valid
 from tool.junit import generate_junit
 from tool.merge import merge_covdata
-from tool.remote import load_remote_binaries, load_remote_for_unit_test, TestType, get_flag_str
+from tool.process import run_process
+from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
     find_unused_port, init_dirs, write_github_summary
 
@@ -173,12 +174,12 @@ def run_integration_tests(typ: str, gsa_path: str):
 
     targets = []
     match typ:
-        case "web":
+        case "web" | "flag":
             pass  # analyze itself, nothing to do
         case "example":
-            targets = load_remote_binaries(lambda x: x.startswith("bin-"))
+            targets = load_remote_binaries_as_test(lambda x: x.startswith("bin-"))
         case "real":
-            targets = load_remote_binaries(lambda x: not x.startswith("bin-"))
+            targets = load_remote_binaries_as_test(lambda x: not x.startswith("bin-"))
         case _:
             raise Exception(f"Unknown integration test type: {typ}")
 
@@ -190,6 +191,9 @@ def run_integration_tests(typ: str, gsa_path: str):
     if typ == "web":
         run_web_test(gsa_path)
         return
+
+    if typ == "flag":
+        run_version_and_help_test(gsa_path)
 
     all_tests = len(targets)
     completed_tests = 0
@@ -222,11 +226,43 @@ def run_integration_tests(typ: str, gsa_path: str):
         completed_tests += 1
 
     if scope_failed_count == 0:
-        log("Integration tests passed.")
+        log(f"Integration tests {typ} passed.")
     else:
-        log(f"{scope_failed_count} integration tests failed.")
+        log(f"{scope_failed_count} {typ} integration tests failed.")
         global global_failed
         global_failed += scope_failed_count
+
+
+def run_version_and_help_test(entry: str):
+    log("Running flag test...")
+
+    def get_file(n: str):
+        d = os.path.join(get_project_root(), "results", n)
+        ensure_dir(d)
+        return os.path.join(d, f"{n}.output.txt")
+
+    try:
+        [out, _] = run_process([entry, "--version"],
+                               "version",
+                               profiler_dir=os.path.join(get_project_root(), "results", "version", "profiler"),
+                               timeout=2,
+                               draw=False)
+
+        with open(get_file("version"), "w", encoding="utf-8") as f:
+            f.write(out)
+
+        [out, _] = run_process([entry, "--help"],
+                               "help",
+                               profiler_dir=os.path.join(get_project_root(), "results", "help", "profiler"),
+                               timeout=2,
+                               draw=False)
+
+        with open(get_file("help"), "w", encoding="utf-8") as f:
+            f.write(out)
+
+    except Exception as e:
+        log(f"flag test failed: {e}")
+        exit(1)
 
 
 def run_web_test(entry: str):
@@ -345,6 +381,7 @@ if __name__ == "__main__":
         with build_gsa() as gsa:
             if args.integration_example:
                 run_integration_tests("web", gsa)
+                run_integration_tests("flag", gsa)
                 run_integration_tests("example", gsa)
             if args.integration_real:
                 run_integration_tests("real", gsa)

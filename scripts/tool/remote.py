@@ -246,7 +246,7 @@ class RemoteBinary:
         return ret
 
 
-def load_remote_binaries(cond: Callable[[str], bool]) -> list[IntegrationTest]:
+def load_remote_binaries_as_test(cond: Callable[[str], bool]) -> list[IntegrationTest]:
     log("Fetching remote binaries...")
 
     with open(get_binaries_path(), "r", encoding="utf-8") as f:
