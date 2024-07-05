@@ -82,9 +82,8 @@ func processSections(newSections, oldSections []commonSection) (ret []diffSectio
 
 	for k, v := range newSectionsMap {
 		typ := changeTypeAdd
-		fromSize := int64(0)
-		fromFileSize := int64(0)
-		fromKnownSize := int64(0)
+		var fromSize, fromFileSize, fromKnownSize int64
+
 		if oldV, ok := oldSectionsMap[k]; ok {
 			if v.UnknownSize() == oldV.UnknownSize() {
 				continue
