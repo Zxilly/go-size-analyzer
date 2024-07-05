@@ -11,16 +11,14 @@ import (
 	"github.com/go-json-experiment/json/jsontext"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
-	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
 type JSONOption struct {
-	Writer     io.Writer
 	Indent     *int
 	HideDetail bool
 }
 
-func JSON(r *result.Result, options *JSONOption) error {
+func JSON(r any, writer io.Writer, options *JSONOption) error {
 	slog.Info("JSON encoding...")
 
 	jsonOptions := []json.Options{
@@ -34,7 +32,7 @@ func JSON(r *result.Result, options *JSONOption) error {
 		jsonOptions = append(jsonOptions, json.WithMarshalers(marshaler.GetFileCompactMarshaler()))
 	}
 
-	err := json.MarshalWrite(options.Writer, r, jsonOptions...)
+	err := json.MarshalWrite(writer, r, jsonOptions...)
 
 	slog.Info("JSON encoded")
 

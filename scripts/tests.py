@@ -9,12 +9,12 @@ import requests
 from markdown_strings import code_block
 
 from tool.gsa import build_gsa
+from tool.html import assert_html_valid
 from tool.junit import generate_junit
 from tool.merge import merge_covdata
-from tool.remote import load_remote_binaries, load_remote_for_tui_test, TestType, get_flag_str
+from tool.remote import load_remote_binaries, load_remote_for_unit_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
     find_unused_port, init_dirs, write_github_summary
-from tool.html import assert_html_valid
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
@@ -22,7 +22,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
         return
 
     log("Running unit tests...")
-    load_remote_for_tui_test()
+    load_remote_for_unit_test()
 
     unit_path = os.path.join(get_project_root(), "covdata", "unit")
 
@@ -171,7 +171,16 @@ def run_integration_tests(typ: str, gsa_path: str):
 
     log(f"Running integration tests {typ}...")
 
-    targets = load_remote_binaries(typ)
+    targets = []
+    match typ:
+        case "web":
+            pass  # analyze itself, nothing to do
+        case "example":
+            targets = load_remote_binaries(lambda x: x.startswith("bin-"))
+        case "real":
+            targets = load_remote_binaries(lambda x: not x.startswith("bin-"))
+        case _:
+            raise Exception(f"Unknown integration test type: {typ}")
 
     if typ == "example":
         timeout = 10

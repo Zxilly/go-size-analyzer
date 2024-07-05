@@ -19,8 +19,7 @@ func TestCommonResultFromFullResult(t *testing.T) {
 
 	jsonData := new(bytes.Buffer)
 
-	err := printer.JSON(fullResult, &printer.JSONOption{
-		Writer:     jsonData,
+	err := printer.JSON(fullResult, jsonData, &printer.JSONOption{
 		Indent:     nil,
 		HideDetail: false,
 	})
@@ -37,16 +36,14 @@ func TestCommonResultFromFullAndCompactJSON(t *testing.T) {
 	fullResult := test.GetTestResult(t)
 
 	compactJSONData := new(bytes.Buffer)
-	err := printer.JSON(fullResult, &printer.JSONOption{
-		Writer:     compactJSONData,
+	err := printer.JSON(fullResult, compactJSONData, &printer.JSONOption{
 		Indent:     nil,
 		HideDetail: true,
 	})
 	require.NoError(t, err)
 
 	fullJSONData := new(bytes.Buffer)
-	err = printer.JSON(fullResult, &printer.JSONOption{
-		Writer:     fullJSONData,
+	err = printer.JSON(fullResult, fullJSONData, &printer.JSONOption{
 		Indent:     nil,
 		HideDetail: false,
 	})

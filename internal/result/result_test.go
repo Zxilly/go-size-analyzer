@@ -33,10 +33,9 @@ func TestUpdateResultTestData(t *testing.T) {
 	}()
 
 	indent := 2
-	err = printer.JSON(r, &printer.JSONOption{
+	err = printer.JSON(r, testdataJSON, &printer.JSONOption{
 		HideDetail: true,
 		Indent:     &indent,
-		Writer:     testdataJSON,
 	})
 	require.NoError(t, err)
 

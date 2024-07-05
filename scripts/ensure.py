@@ -12,10 +12,12 @@ if __name__ == "__main__":
 
     os.environ["FORCE_REFRESH"] = "true"
 
-    cond = ""
-    if args.example:
-        cond = "example"
-    elif args.real:
-        cond = "real"
+
+    def cond(name: str) -> bool:
+        if args.example:
+            return name.startswith("bin-")
+        elif args.real:
+            return not name.startswith("bin-")
+        return True
 
     load_remote_binaries(cond)

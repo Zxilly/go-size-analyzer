@@ -3,6 +3,7 @@ package diff
 import (
 	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"strings"
 
@@ -10,16 +11,28 @@ import (
 	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
+	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func Diff(oldTarget, newTarget string, options internal.Options) error {
-	oldResult, err := autoLoadFile(oldTarget, options)
+type DOptions struct {
+	internal.Options
+
+	OldTarget string
+	NewTarget string
+
+	Format string
+
+	Indent *int
+}
+
+func Diff(writer io.Writer, options DOptions) error {
+	oldResult, err := autoLoadFile(options.OldTarget, options.Options)
 	if err != nil {
 		return err
 	}
 
-	newResult, err := autoLoadFile(newTarget, options)
+	newResult, err := autoLoadFile(options.NewTarget, options.Options)
 	if err != nil {
 		return err
 	}
@@ -34,17 +47,23 @@ func Diff(oldTarget, newTarget string, options internal.Options) error {
 		}
 
 		slog.Warn("The analyze mode of the two files is different")
-		slog.Warn(fmt.Sprintf("%s: %s", newTarget, formatAnalyzer(newResult.Analyzers)))
-		slog.Warn(fmt.Sprintf("%s: %s", oldTarget, formatAnalyzer(oldResult.Analyzers)))
+		slog.Warn(fmt.Sprintf("%s: %s", options.NewTarget, formatAnalyzer(newResult.Analyzers)))
+		slog.Warn(fmt.Sprintf("%s: %s", options.OldTarget, formatAnalyzer(oldResult.Analyzers)))
 		return errors.New("analyze mode is different")
 	}
 
 	diff := newDiffResult(newResult, oldResult)
 
-	// todo: add json printer and text printer
-	_ = diff
-
-	return nil
+	switch options.Format {
+	case "json":
+		return printer.JSON(&diff, writer, &printer.JSONOption{
+			Indent: nil,
+		})
+	case "text":
+		return text(&diff, writer)
+	default:
+		return fmt.Errorf("format %s is not supported in diff mode", options.Format)
+	}
 }
 
 func autoLoadFile(name string, options internal.Options) (*commonResult, error) {

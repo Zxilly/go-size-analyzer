@@ -52,6 +52,19 @@ func GetTestBinPath(t *testing.T) string {
 	return RewritePathOnDemand(t, p)
 }
 
+func GetTestDiffBinPath(t *testing.T) string {
+	t.Helper()
+
+	p := filepath.Join(GetProjectRoot(t), "scripts", "bins", "bin-linux-1.22-amd64")
+	p, err := filepath.Abs(p)
+	require.NoError(t, err)
+
+	_, err = os.Stat(p)
+	require.NoError(t, err)
+
+	return RewritePathOnDemand(t, p)
+}
+
 func GetTestJSONPath(t *testing.T) string {
 	t.Helper()
 

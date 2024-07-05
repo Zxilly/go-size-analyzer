@@ -45,17 +45,23 @@ var Options struct {
 	Version kong.VersionFlag `help:"Show version"`
 
 	Binary     string `arg:"" name:"file" required:"" help:"Binary file to analyze or result json file for diff" type:"existingfile"`
-	DiffTarget string `arg:"" name:"diff file" optional:"" help:"Binary file or result json file to compare with, optional" type:"existingfile"`
+	DiffTarget string `arg:"" name:"diff file" optional:"" help:"New binary file or result json file to compare, optional" type:"existingfile"`
 }
 
 func init() {
 	kong.Parse(&Options,
 		kong.Name("gsa"),
-		kong.Description("A tool for analyzing the size of dependencies in compiled Golang binaries, "+
-			"providing insight into their impact on the final build."),
+		kong.Description("A tool for determining the extent to "+
+			"which dependencies contribute to the bloated size of compiled Go binaries."),
 		kong.UsageOnError(),
 		kong.ConfigureHelp(kong.HelpOptions{
-			Summary: true,
+			Summary:      true,
+			NoAppSummary: true,
+		}),
+		kong.Help(func(options kong.HelpOptions, ctx *kong.Context) error {
+			utils.Must2(ctx.Stdout.Write([]byte("Usage: \n\tgsa <file> [flags]\n")))
+			utils.Must2(ctx.Stdout.Write([]byte("\tgsa <old file> <new file> [flags]\n")))
+			return kong.DefaultHelpPrinter(options, ctx)
 		}),
 		kong.ExplicitGroups([]kong.Group{
 			{

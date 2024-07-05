@@ -4,7 +4,7 @@ package printer
 
 import (
 	"image/color"
-	"path/filepath"
+	"io"
 
 	"github.com/nikolaydubina/treemap"
 	"github.com/nikolaydubina/treemap/render"
@@ -22,8 +22,8 @@ type SvgOption struct {
 	PaddingRoot int
 }
 
-func Svg(r *result.Result, options *SvgOption) error {
-	baseName := filepath.Base(r.Name)
+func Svg(r *result.Result, writer io.Writer, options *SvgOption) error {
+	baseName := r.Name
 
 	tree := &treemap.Tree{
 		Nodes: make(map[string]treemap.Node),
@@ -99,6 +99,6 @@ func Svg(r *result.Result, options *SvgOption) error {
 	renderer := render.SVGRenderer{}
 
 	data := renderer.Render(spec, float64(options.Width), float64(options.Height))
-	_, err := options.Writer.Write(data)
+	_, err := writer.Write(data)
 	return err
 }
