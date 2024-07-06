@@ -139,13 +139,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	added := pkg.AddFuncIfNotExists(filename, fn)
 
 	if added {
-		k.KnownAddr.TextAddrSpace.Insert(&entity.Addr{
-			AddrPos:    &entity.AddrPos{Addr: addr, Size: size, Type: entity.AddrTypeText},
-			Pkg:        pkg,
-			Function:   fn,
-			SourceType: entity.AddrSourceDwarf,
-			Meta:       entity.DwarfMeta{},
-		})
+		k.KnownAddr.InsertTextFromDWARF(addr, size, fn, entity.DwarfMeta{})
 	}
 }
 
