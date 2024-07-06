@@ -45,19 +45,10 @@ runs:
         key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ inputs.cache }}-v2
         enableCrossOsArchive: true
 
-    - name: Cache matplotlib
-      if: ${{ inputs.cache != '' && inputs.report == 'true' }}
-      uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-      with:
-        path: ./scripts/.cache/matplotlib
-        key: matplotlib-${{ hashFiles('scripts/requirements.txt') }}-${{ runner.os }}
-
     - name: Run script
       shell: bash
       working-directory: ./scripts
       run: poetry run python ${{ inputs.script }}
-      env:
-        MPLCONFIGDIR: ./scripts/.cache/matplotlib
 
     - name: Report results
       if: ${{ inputs.report == 'true' }}
