@@ -13,6 +13,12 @@ A simple tool to analyze the size of a Go compiled binary.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/go-size-analyzer.svg)](https://repology.org/project/go-size-analyzer/versions)
 
+- [x] Cross-platform support for analyzing `ELF`, `Mach-O`, and `PE` binary formats
+- [x] Detailed size breakdown by packages and sections
+- [x] Support multiple output formats: `text`, `json`, `html`, `svg`
+- [x] Interactive exploration via web interface and terminal UI
+- [x] Binary comparison with diff mode (supports `json` and `text` output)
+
 ## Installation
 
 ### [Download the latest binary](https://github.com/Zxilly/go-size-analyzer/releases)

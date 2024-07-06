@@ -11,6 +11,12 @@
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/go-size-analyzer.svg)](https://repology.org/project/go-size-analyzer/versions)
 
+- [x] 支持跨平台分析 `ELF`、`Mach-O` 和 `PE` 二进制格式
+- [x] 按包和区段提供详细的大小分析
+- [x] 支持多种输出格式: `text`、`json`、`html`、`svg`
+- [x] 通过网页界面和终端 UI 进行交互式探索
+- [x] 比较二进制的 diff 模式 (支持 `json` 和 `text` 输出)
+
 ## 安装
 
 ### [下载最新二进制文件](https://github.com/Zxilly/go-size-analyzer/releases)
