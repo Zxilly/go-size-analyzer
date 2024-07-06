@@ -71,6 +71,12 @@ func autoLoadFile(name string, options internal.Options) (*commonResult, error) 
 	if err != nil {
 		return nil, err
 	}
+	defer func(reader *mmap.ReaderAt) {
+		err = reader.Close()
+		if err != nil {
+			slog.Warn("failed to close file", "error", err)
+		}
+	}(reader)
 
 	r := new(commonResult)
 	if utils.DetectJSON(reader) {

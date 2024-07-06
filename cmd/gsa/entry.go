@@ -66,6 +66,11 @@ func entry() error {
 		return err
 	}
 
+	err = reader.Close()
+	if err != nil {
+		return err
+	}
+
 	if Options.Tui {
 		w, h, err := term.GetSize(os.Stdout.Fd())
 		if err != nil {

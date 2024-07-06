@@ -92,6 +92,9 @@ func GetTestResult(t *testing.T) *result.Result {
 
 	f, err := mmap.Open(path)
 	require.NoError(t, err)
+	defer func(f *mmap.ReaderAt) {
+		require.NoError(t, f.Close())
+	}(f)
 
 	r, err := internal.Analyze(path, f, uint64(f.Len()), internal.Options{
 		SkipDwarf:  false,
