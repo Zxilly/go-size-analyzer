@@ -32,6 +32,8 @@ function getTestNode(): Entry {
 it("tooltip should render correctly when visible", () => {
   const { getByText } = render(
     <Tooltip
+      x={0}
+      y={0}
       visible
       node={getTestNode()}
     />,
@@ -43,10 +45,27 @@ it("tooltip should render correctly when visible", () => {
 it("tooltip should not render when not visible", () => {
   const r = render(
     <Tooltip
+      x={0}
+      y={0}
       visible={false}
       node={getTestNode()}
     />,
   );
     // should have a tooltip-hidden class
   expect(r.container.querySelector(".tooltip-hidden")).not.toBeNull();
+});
+
+it("tooltip should respond to position", () => {
+  const r = render(
+    <Tooltip
+      x={0}
+      y={0}
+      visible
+      node={getTestNode()}
+    />,
+  );
+  const tooltip = r.container.querySelector<HTMLElement>(".tooltip");
+  expect(tooltip).not.toBeNull();
+  expect(tooltip!.style.left).toBe("10px");
+  expect(tooltip!.style.top).toBe("30px");
 });
