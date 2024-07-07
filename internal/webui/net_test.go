@@ -40,26 +40,26 @@ type CacheSuite struct {
 }
 
 func (s *CacheSuite) TestGetTemplate() {
-	s.T().Run("cache exist", func(t *testing.T) {
+	s.Run("cache exist", func() {
 		cacheFile, err := getCacheFilePath()
-		require.NoError(t, err)
+		s.Require().NoError(err)
 
 		_, err = updateCache(cacheFile)
-		require.NoError(t, err)
+		s.Require().NoError(err)
 
 		got := GetTemplate()
-		assert.Contains(t, got, constant.ReplacedStr)
+		s.Contains(got, constant.ReplacedStr)
 	})
 
-	s.T().Run("cache not exist", func(t *testing.T) {
+	s.Run("cache not exist", func() {
 		cacheFile, err := getCacheFilePath()
-		require.NoError(t, err)
+		s.Require().NoError(err)
 
 		err = os.Remove(cacheFile)
-		require.NoError(t, err)
+		s.Require().NoError(err)
 
 		got := GetTemplate()
-		assert.Contains(t, got, constant.ReplacedStr)
+		s.Contains(got, constant.ReplacedStr)
 	})
 }
 

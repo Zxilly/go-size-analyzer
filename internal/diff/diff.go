@@ -24,23 +24,23 @@ const (
 	changeTypeChange changeType = "change"
 )
 
-type DiffBase struct {
+type Base struct {
 	Name       string     `json:"name"`
 	From       int64      `json:"from"`
 	To         int64      `json:"to"`
 	ChangeType changeType `json:"change_type"`
 }
 
-func diffBaseCmp(a, b DiffBase) int {
+func diffBaseCmp(a, b Base) int {
 	return -cmp.Compare(a.To-a.From, b.To-b.From)
 }
 
 type diffPackage struct {
-	DiffBase
+	Base
 }
 
 type diffSection struct {
-	DiffBase
+	Base
 	OldFileSize  int64 `json:"old_file_size"`
 	OldKnownSize int64 `json:"old_known_size"`
 	NewFileSize  int64 `json:"new_file_size"`
@@ -59,19 +59,19 @@ func processPackages(newPackages, oldPackages map[string]commonPackage) (ret []d
 			fromSize = oldV.Size
 		}
 		ret = append(ret, diffPackage{
-			DiffBase: DiffBase{Name: k, From: fromSize, To: v.Size, ChangeType: typ},
+			Base: Base{Name: k, From: fromSize, To: v.Size, ChangeType: typ},
 		})
 	}
 
 	for k, v := range oldPackages {
 		if _, ok := newPackages[k]; !ok {
 			ret = append(ret, diffPackage{
-				DiffBase: DiffBase{Name: k, From: v.Size, To: 0, ChangeType: changeTypeRemove},
+				Base: Base{Name: k, From: v.Size, To: 0, ChangeType: changeTypeRemove},
 			})
 		}
 	}
 
-	return
+	return ret
 }
 
 func processSections(newSections, oldSections []commonSection) (ret []diffSection) {
@@ -100,7 +100,7 @@ func processSections(newSections, oldSections []commonSection) (ret []diffSectio
 		}
 
 		ret = append(ret, diffSection{
-			DiffBase:     DiffBase{Name: k, From: fromSize, To: v.UnknownSize(), ChangeType: typ},
+			Base:         Base{Name: k, From: fromSize, To: v.UnknownSize(), ChangeType: typ},
 			OldFileSize:  fromFileSize,
 			OldKnownSize: fromKnownSize,
 			NewFileSize:  v.FileSize,
@@ -111,14 +111,14 @@ func processSections(newSections, oldSections []commonSection) (ret []diffSectio
 	for k, v := range oldSectionsMap {
 		if _, ok := newSectionsMap[k]; !ok {
 			ret = append(ret, diffSection{
-				DiffBase:     DiffBase{Name: k, From: v.UnknownSize(), To: 0, ChangeType: changeTypeRemove},
+				Base:         Base{Name: k, From: v.UnknownSize(), To: 0, ChangeType: changeTypeRemove},
 				OldFileSize:  v.FileSize,
 				OldKnownSize: v.KnownSize,
 			})
 		}
 	}
 
-	return
+	return ret
 }
 
 func newDiffResult(newResult, oldResult *commonResult) diffResult {
@@ -133,10 +133,10 @@ func newDiffResult(newResult, oldResult *commonResult) diffResult {
 	}
 
 	slices.SortFunc(ret.Packages, func(a, b diffPackage) int {
-		return diffBaseCmp(a.DiffBase, b.DiffBase)
+		return diffBaseCmp(a.Base, b.Base)
 	})
 	slices.SortFunc(ret.Sections, func(a, b diffSection) int {
-		return diffBaseCmp(a.DiffBase, b.DiffBase)
+		return diffBaseCmp(a.Base, b.Base)
 	})
 
 	return ret

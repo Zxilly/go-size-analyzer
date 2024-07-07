@@ -24,6 +24,6 @@ func TestReaderAtAdapter_Read(t *testing.T) {
 	// Test reading beyond the data
 	readData = make([]byte, 10)
 	n, err = reader.Read(readData)
-	assert.ErrorIs(t, err, io.EOF)
+	require.ErrorIs(t, err, io.EOF)
 	assert.Zero(t, n)
 }
