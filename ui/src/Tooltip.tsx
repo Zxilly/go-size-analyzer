@@ -6,7 +6,6 @@ const Tooltip_marginY = 30;
 
 export interface TooltipProps {
   node?: Entry;
-  visible: boolean;
   x: number;
   y: number;
 }
@@ -16,7 +15,6 @@ export const Tooltip: React.FC<TooltipProps>
       x,
       y,
       node,
-      visible,
     }) => {
       const ref = useRef<HTMLDivElement>(null);
       const [style, setStyle] = useState({});
@@ -56,7 +54,7 @@ export const Tooltip: React.FC<TooltipProps>
       }, [x, y]);
 
       return (
-        <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>
+        <div className="tooltip" ref={ref} style={style}>
           <div>{path}</div>
           <pre>
             {content}

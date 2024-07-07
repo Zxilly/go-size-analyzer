@@ -13247,12 +13247,6 @@ ResultImpl {
 
 exports[`treemap 2`] = `
 <div>
-  <div
-    class="tooltip "
-  >
-    <div />
-    <pre />
-  </div>
   <svg
     viewBox="0 0 1024 768"
     xmlns="http://www.w3.org/2000/svg"

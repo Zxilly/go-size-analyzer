@@ -29,12 +29,11 @@ function getTestNode(): Entry {
   };
 }
 
-it("tooltip should render correctly when visible", () => {
+it("tooltip should render", () => {
   const { getByText } = render(
     <Tooltip
       x={0}
       y={0}
-      visible
       node={getTestNode()}
     />,
   );
@@ -42,25 +41,11 @@ it("tooltip should render correctly when visible", () => {
   expect(getByText("test content")).toBeInTheDocument();
 });
 
-it("tooltip should not render when not visible", () => {
-  const r = render(
-    <Tooltip
-      x={0}
-      y={0}
-      visible={false}
-      node={getTestNode()}
-    />,
-  );
-    // should have a tooltip-hidden class
-  expect(r.container.querySelector(".tooltip-hidden")).not.toBeNull();
-});
-
 it("tooltip should respond to position", () => {
   const r = render(
     <Tooltip
       x={0}
       y={0}
-      visible
       node={getTestNode()}
     />,
   );
