@@ -20,5 +20,5 @@ func (r *ReaderAtAdapter) Read(p []byte) (n int, err error) {
 	if errors.Is(err, io.EOF) && n > 0 {
 		return n, nil
 	}
-	return
+	return n, err
 }

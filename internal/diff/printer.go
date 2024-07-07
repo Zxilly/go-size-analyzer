@@ -11,7 +11,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func diffString(b DiffBase) string {
+func diffString(b Base) string {
 	switch b.ChangeType {
 	case changeTypeChange:
 		sign := "+"
@@ -61,7 +61,7 @@ func text(r *diffResult, writer io.Writer) error {
 		}
 
 		t.AppendRow(table.Row{
-			diffString(pkg.DiffBase),
+			diffString(pkg.Base),
 			name,
 			bytesWithIgnore(pkg.From),
 			bytesWithIgnore(pkg.To),
@@ -73,7 +73,7 @@ func text(r *diffResult, writer io.Writer) error {
 
 	for _, section := range r.Sections {
 		t.AppendRow(table.Row{
-			diffString(section.DiffBase),
+			diffString(section.Base),
 			section.Name,
 			bytesWithIgnore(section.From),
 			bytesWithIgnore(section.To),
@@ -82,7 +82,7 @@ func text(r *diffResult, writer io.Writer) error {
 	}
 
 	t.AppendFooter(table.Row{
-		diffString(DiffBase{
+		diffString(Base{
 			From:       r.OldSize,
 			To:         r.NewSize,
 			ChangeType: changeTypeChange,

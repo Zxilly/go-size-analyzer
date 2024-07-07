@@ -17,9 +17,9 @@ func TestProcessPackages(t *testing.T) {
 	}
 
 	expected := []diffPackage{
-		{DiffBase{Name: "pkg1", From: 100, To: 150, ChangeType: changeTypeChange}},
-		{DiffBase{Name: "pkg3", From: 0, To: 300, ChangeType: changeTypeAdd}},
-		{DiffBase{Name: "pkg2", From: 200, To: 0, ChangeType: changeTypeRemove}},
+		{Base{Name: "pkg1", From: 100, To: 150, ChangeType: changeTypeChange}},
+		{Base{Name: "pkg3", From: 0, To: 300, ChangeType: changeTypeAdd}},
+		{Base{Name: "pkg2", From: 200, To: 0, ChangeType: changeTypeRemove}},
 	}
 
 	result := processPackages(newPackages, oldPackages)
@@ -37,9 +37,9 @@ func TestProcessSections(t *testing.T) {
 	}
 
 	expected := []diffSection{
-		{DiffBase: DiffBase{Name: "sec1", From: 50, To: 75, ChangeType: changeTypeChange}, OldFileSize: 100, OldKnownSize: 50, NewFileSize: 150, NewKnownSize: 75},
-		{DiffBase: DiffBase{Name: "sec3", From: 0, To: 150, ChangeType: changeTypeAdd}, OldFileSize: 0, OldKnownSize: 0, NewFileSize: 300, NewKnownSize: 150},
-		{DiffBase: DiffBase{Name: "sec2", From: 100, To: 0, ChangeType: changeTypeRemove}, OldFileSize: 200, OldKnownSize: 100, NewFileSize: 0, NewKnownSize: 0},
+		{Base: Base{Name: "sec1", From: 50, To: 75, ChangeType: changeTypeChange}, OldFileSize: 100, OldKnownSize: 50, NewFileSize: 150, NewKnownSize: 75},
+		{Base: Base{Name: "sec3", From: 0, To: 150, ChangeType: changeTypeAdd}, OldFileSize: 0, OldKnownSize: 0, NewFileSize: 300, NewKnownSize: 150},
+		{Base: Base{Name: "sec2", From: 100, To: 0, ChangeType: changeTypeRemove}, OldFileSize: 200, OldKnownSize: 100, NewFileSize: 0, NewKnownSize: 0},
 	}
 
 	result := processSections(newSections, oldSections)
@@ -70,14 +70,14 @@ func TestNewDiffResult(t *testing.T) {
 
 	expected := diffResult{
 		Packages: []diffPackage{
-			{DiffBase{Name: "pkg3", From: 0, To: 300, ChangeType: changeTypeAdd}},
-			{DiffBase{Name: "pkg1", From: 100, To: 150, ChangeType: changeTypeChange}},
-			{DiffBase{Name: "pkg2", From: 200, To: 0, ChangeType: changeTypeRemove}},
+			{Base{Name: "pkg3", From: 0, To: 300, ChangeType: changeTypeAdd}},
+			{Base{Name: "pkg1", From: 100, To: 150, ChangeType: changeTypeChange}},
+			{Base{Name: "pkg2", From: 200, To: 0, ChangeType: changeTypeRemove}},
 		},
 		Sections: []diffSection{
-			{DiffBase: DiffBase{Name: "sec3", From: 0, To: 150, ChangeType: changeTypeAdd}, OldFileSize: 0, OldKnownSize: 0, NewFileSize: 300, NewKnownSize: 150},
-			{DiffBase: DiffBase{Name: "sec1", From: 50, To: 75, ChangeType: changeTypeChange}, OldFileSize: 100, OldKnownSize: 50, NewFileSize: 150, NewKnownSize: 75},
-			{DiffBase: DiffBase{Name: "sec2", From: 100, To: 0, ChangeType: changeTypeRemove}, OldFileSize: 200, OldKnownSize: 100, NewFileSize: 0, NewKnownSize: 0},
+			{Base: Base{Name: "sec3", From: 0, To: 150, ChangeType: changeTypeAdd}, OldFileSize: 0, OldKnownSize: 0, NewFileSize: 300, NewKnownSize: 150},
+			{Base: Base{Name: "sec1", From: 50, To: 75, ChangeType: changeTypeChange}, OldFileSize: 100, OldKnownSize: 50, NewFileSize: 150, NewKnownSize: 75},
+			{Base: Base{Name: "sec2", From: 100, To: 0, ChangeType: changeTypeRemove}, OldFileSize: 200, OldKnownSize: 100, NewFileSize: 0, NewKnownSize: 0},
 		},
 	}
 

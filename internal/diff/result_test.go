@@ -25,11 +25,11 @@ func TestCommonResultFromFullResult(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	crFromJson := new(commonResult)
-	err = json.UnmarshalRead(jsonData, crFromJson)
+	crFromJSON := new(commonResult)
+	err = json.UnmarshalRead(jsonData, crFromJSON)
 	require.NoError(t, err)
 
-	assert.Equal(t, cr, crFromJson)
+	assert.Equal(t, cr, crFromJSON)
 }
 
 func TestCommonResultFromFullAndCompactJSON(t *testing.T) {
