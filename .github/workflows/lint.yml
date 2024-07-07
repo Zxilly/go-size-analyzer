@@ -99,4 +99,4 @@ jobs:
       - name: typos-action
         uses: crate-ci/typos@c16dc8f5b4a7ad6211464ecf136c69c851e8e83c # v1.22.9
         with:
-          config: .github/typos.toml
+          config: typos.toml
