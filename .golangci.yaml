@@ -12,7 +12,6 @@ linters:
     - gosec
     - revive
     - thelper
-    - sqlclosecheck
     - nolintlint
     - dupword
     - usestdlibvars
@@ -45,7 +44,7 @@ linters-settings:
     sections:
       - standard
       - default
-      - prefix(syscall/js) # fixme: workaround, wait for https://github.com/daixiang0/gci/pull/208 merged
+      - prefix(syscall/js,unique,iter) # fixme: workaround, wait for https://github.com/daixiang0/gci/pull/208 merged
       - localmodule
     custom-order: true
 
