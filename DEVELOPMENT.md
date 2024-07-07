@@ -13,7 +13,7 @@ The project has some build tags that can be used to build the project with diffe
 #### `embed`
 
 This tag is used to embed the static files in the binary. Without this tag, the static files will be downloaded
-from the `v1` tag of the release.
+from the `ui-v1` tag of the release.
 
 #### `js` and `wasm`
 
