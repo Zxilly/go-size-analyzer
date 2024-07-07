@@ -4,64 +4,64 @@ An overview of the tools and scripts used in the project.
 
 ## Golang
 
-The project currently runs with `Go Toolchain`. Use any Go version that supports it.
+The project currently runs with the `Go Toolchain`. Use any Go version that supports it.
 
 The project has some build tags that can be used to build the project with different configurations.
 
-### Build tags
+### Build Tags
 
 #### `embed`
 
-This tag is used to embed the static files into the binary. Without this tag, the static files are download from 
-the `v1` tag of the release.
+This tag is used to embed the static files in the binary. Without this tag, the static files will be downloaded
+from the `v1` tag of the release.
 
 #### `js` and `wasm`
 
-This tag is used to build the project to WebAssembly. With this tag enabled, some printer will be disabled and the
+These tags are used to build the project to WebAssembly. With this tag enabled, some printers are disabled and the
 json marshaler will be changed to the `wasm` marshaler.
 
-#### profiler tags
+#### Profiler tags
 
 ##### `pgo`
 
-Enables `cpu` profiler to collect info for Profile-Guided Optimization.
+Enables the `cpu` profiler to collect information for profile-guided optimization.
 
 ##### `profiler`
 
-Enables all profilers while running integration tests.
+Activate all profilers while running integration tests.
 
 ### Tests
 
-#### Unit tests
+#### Unit Tests
 
-Unit tests are split into different parts.
+Unit tests are divided into several parts.
 
 - `embed` build tag
 - `GOOS=js GOARCH=wasm` build constraints
 
-For wasm tests, you will need a runner for wasm files. 
+For wasm tests, you need a runner for wasm files.
 
-You can give [Zxilly/go_js_wasm_exec](https://github.com/Zxilly/go_js_wasm_exec) a try. 
+You can try [Zxilly/go_js_wasm_exec](https://github.com/Zxilly/go_js_wasm_exec).
 
-> This runner needs `Node.js` installed on your machine. It's a wrapper of the official `misc/wasm/go_js_wasm_exec` runner.
+> This runner requires `node.js` to be installed on your machine. It's a wrapper for the official `misc/wasm/go_js_wasm_exec` runner.
 
-Or you can use [agnivade/wasmbrowsertest](https://github.com/agnivade/wasmbrowsertest), 
-but it has bugs under Go Toolchain environment. see [issue](https://github.com/agnivade/wasmbrowsertest/issues/61).
+Or you can use [agnivade/wasmbrowsertest](https://github.com/agnivade/wasmbrowsertest),
+but it has bugs in the Go toolchain environment, see [issue](https://github.com/agnivade/wasmbrowsertest/issues/61).
 
 #### Integration tests
 
-Integrations tests should run by helper scripts described following.
-It executes on the binaries from [Zxilly/go-testdata](https://github.com/Zxilly/go-testdata)
+Integration tests should be executed by the helper scripts described below.
+It runs on the binaries from [Zxilly/go-testdata](https://github.com/Zxilly/go-testdata)
 
 ### Helper scripts
 
-Helper scripts are managed by `poetry` and `python`. Make sure you have them installed.
+Helper scripts are managed by `poetry`. Make sure you have it installed.
 
-All the scripts are in the `scripts` directory.
+All scripts are in the `scripts' directory.
 
-#### Download binary
+#### Download the binary
 
-Download binary from the [Zxilly/go-testdata](https://github.com/Zxilly/go-testdata).
+Download the binary from [Zxilly/go-testdata](https://github.com/Zxilly/go-testdata).
 
 ```bash
 python scripts/ensure.py --help
@@ -93,7 +93,7 @@ options:
 
 ##### Integration binary source generator
 
-Generate `scripts/binaries.csv` as the source to tests.
+GeGenerate `scripts/binaries.csv` as source for tests.
 
 ```bash
 python scripts/generate.py
@@ -103,13 +103,13 @@ python scripts/generate.py
 
 Collect the test results and generate a report in GitHub Actions format.
 
-Requires `svgo` installed to optimize the SVG files.
+Requires `svgo` to be installed to optimize the SVG files.
 
 It uses service [Zxilly/data2image](https://github.com/Zxilly/data2image) to bypass
 GitHub data-uri limit. This project was written in `Rust`.
 
-The svg data was optimized by `svgo` then compressed by `zstd` and encoded by `base64`
-to be included safely in the url.
+The svg data was optimized with `svgo` then compressed with `zstd` and encoded with `base64`
+for safe inclusion in the url.
 
 ```bash
 python scripts/report.py
@@ -142,7 +142,7 @@ python scripts/pgo.py
 
 The project uses `golangci-lint` to lint the code.
 
-> Golangci-lint doesn't official supports `Go 1.23` right now. Use preview version from PR.
+> Golangci-lint doesn't officially support `Go 1.23` at the moment. Use the preview version.
 
 ```bash
 golangci-lint run
@@ -151,7 +151,7 @@ golangci-lint run
 ## TypeScript and React
 
 The project uses `TypeScript` and `React` to build the web interface.
-Most of the files are in the `ui` directory.
+Most of the files are located in the `ui` directory.
 
 ### Build
 
@@ -163,9 +163,9 @@ pnpm install
 
 #### Explorer
 
-The explorer needs built `wasm` file from go part.
+The explorer needs a `wasm` file built from the go part.
 
-Just run `scripts/wasm.py` should place it at the right place.
+Just running `scripts/wasm.py` should put it in the right place.
 
 ```bash
 pnpm run dev:explorer # Development
@@ -175,7 +175,7 @@ pnpm run build:explorer # Production
 #### Webui
 
 The built file `./ui/dist/index.html` should be placed in `internal/webui` to be embedded in the binary.
-Don't forget attach the `embed` build tag.
+Don't forget to set the `embed` build tag.
 
 ```bash
 pnpm run dev:ui # Development
