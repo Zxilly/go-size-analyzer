@@ -7,7 +7,7 @@ run:
 linters:
   enable:
     - errorlint
-    - gci
+#    - gci # fixme: disable for now, see https://github.com/daixiang0/gci/issues/209
     - loggercheck
     - gosec
     - revive
@@ -43,8 +43,8 @@ linters-settings:
   gci:
     sections:
       - standard
-      - default
       - prefix(syscall/js,unique,iter) # fixme: workaround, wait for https://github.com/daixiang0/gci/pull/208 merged
+      - default
       - localmodule
     custom-order: true
 
