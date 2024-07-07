@@ -243,6 +243,8 @@ Terminal interface options
 
 欢迎任何形式的贡献，随时提出问题或拉取请求。
 
+关于开发，请查看 [开发指南](./DEVELOPMENT.md) 以获取更多详细信息。
+
 ## LICENSE
 
 根据 [AGPL-3.0](./LICENSE) 发布。

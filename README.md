@@ -7,7 +7,7 @@
 [![go-recipes](https://raw.githubusercontent.com/nikolaydubina/go-recipes/main/badge.svg?raw=true)](https://github.com/nikolaydubina/go-recipes?tab=readme-ov-file#-visualise-dependencies-size-in-compiled-binaries-with-go-size-analyzer)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Zxilly/go-size-analyzer/badge)](https://scorecard.dev/viewer/?uri=github.com/Zxilly/go-size-analyzer)
 
-English | [简体中文](./README_zh-CN.md)
+English | [简体中文](./README_zh_CN)
 
 A simple tool to analyze the size of a Go compiled binary.
 
@@ -244,6 +244,8 @@ Terminal interface options
 ## Contribution
 
 Any contribution is welcome, feel free to open an issue or a pull request.
+
+For development, see the [Development Guide](./DEVELOPMENT.md) for more details.
 
 ## LICENSE
 
