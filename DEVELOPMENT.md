@@ -57,7 +57,7 @@ It runs on the binaries from [Zxilly/go-testdata](https://github.com/Zxilly/go-t
 
 Helper scripts are managed by `poetry`. Make sure you have it installed.
 
-All scripts are in the `scripts' directory.
+All scripts are in the `scripts` directory.
 
 #### Download the binary
 
