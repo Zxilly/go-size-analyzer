@@ -18,7 +18,7 @@ func main() {
 		panic("OUTPUT_DIR environment variable is not set")
 	}
 
-	targets := []int{profiler.Cpu, profiler.Mem, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate}
+	targets := []int{profiler.Cpu, profiler.Mem, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate, profiler.Trace}
 
 	p := profiler.New(
 		profiler.Conf{
