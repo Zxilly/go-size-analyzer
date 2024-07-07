@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Entry } from "./tool/entry.ts";
 
 const Tooltip_marginX = 10;
@@ -7,10 +7,14 @@ const Tooltip_marginY = 30;
 export interface TooltipProps {
   node?: Entry;
   visible: boolean;
+  x: number;
+  y: number;
 }
 
 export const Tooltip: React.FC<TooltipProps>
     = ({
+      x,
+      y,
       node,
       visible,
     }) => {
@@ -27,13 +31,13 @@ export const Tooltip: React.FC<TooltipProps>
         return node?.toString() ?? "";
       }, [node]);
 
-      const updatePosition = useCallback((mouseCoords: { x: number; y: number }) => {
+      useEffect(() => {
         if (!ref.current)
           return;
 
         const pos = {
-          left: mouseCoords.x + Tooltip_marginX,
-          top: mouseCoords.y + Tooltip_marginY,
+          left: x + Tooltip_marginX,
+          top: y + Tooltip_marginY,
         };
 
         const boundingRect = ref.current.getBoundingClientRect();
@@ -45,25 +49,11 @@ export const Tooltip: React.FC<TooltipProps>
 
         if (pos.top + boundingRect.height > window.innerHeight) {
           // Flipping vertically
-          pos.top = mouseCoords.y - Tooltip_marginY - boundingRect.height;
+          pos.top = y - Tooltip_marginY - boundingRect.height;
         }
 
         setStyle(pos);
-      }, []);
-
-      useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-          updatePosition({
-            x: event.pageX,
-            y: event.pageY,
-          });
-        };
-
-        document.addEventListener("mousemove", handleMouseMove, true);
-        return () => {
-          document.removeEventListener("mousemove", handleMouseMove, true);
-        };
-      }, [updatePosition]);
+      }, [x, y]);
 
       return (
         <div className={`tooltip ${visible ? "" : "tooltip-hidden"}`} ref={ref} style={style}>

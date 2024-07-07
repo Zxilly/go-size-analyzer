@@ -55,7 +55,7 @@ export function FileSelector({ handler }: {
             {pendingFile?.name}
             {" "}
             has a size of
-            {formatBytes(pendingFile?.size || 0)}
+            {` ${formatBytes(pendingFile?.size || 0)}`}
             .
             It is not recommended to use the wasm version for binary files larger than 30 MB.
           </DialogContentText>

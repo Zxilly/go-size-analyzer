@@ -4,7 +4,7 @@ import process from "node:process";
 import type { BuildOptions, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 import react from "@vitejs/plugin-react-swc";
-import MillionLint from "@million/lint";
+// import MillionLint from "@million/lint";
 
 export function getSha(): string | undefined {
   const envs = process.env;
@@ -64,9 +64,9 @@ export function codecov(name: string): Plugin[] | undefined {
 export function commonPlugin(): (PluginOption[] | Plugin | Plugin[])[] {
   return [
     react(),
-    MillionLint.vite({
-      optimizeDOM: true,
-    }),
+    // MillionLint.vite({
+    //   optimizeDOM: true,
+    // }),
   ];
 }
 

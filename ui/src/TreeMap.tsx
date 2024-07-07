@@ -144,7 +144,8 @@ function TreeMap({ entry }: TreeMapProps) {
     setSelectedNode(cur);
   }, [hash, root, entry]);
 
-  const [showTooltip, setShowTooltip] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState<[number, number]>([0, 0]);
   const [tooltipNode, setTooltipNode]
         = useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
 
@@ -197,13 +198,22 @@ function TreeMap({ entry }: TreeMapProps) {
       }
 
       setTooltipNode(node);
+      setTooltipPosition([e.clientX, e.clientY]);
+
+      if (!showTooltip) {
+        setShowTooltip(true);
+      }
     };
 
     document.addEventListener("mousemove", moveListener);
     return () => {
       document.removeEventListener("mousemove", moveListener);
     };
-  }, [allNodes]);
+  }, [allNodes, showTooltip]);
+
+  const nodeOnClick = useCallback((node: HierarchyRectangularNode<Entry>) => {
+    setSelectedNodeWithHash(selectedNode?.data?.getID() === node.data.getID() ? null : node);
+  }, [selectedNode, setSelectedNodeWithHash]);
 
   const nodes = useMemo(() => {
     return (
@@ -216,9 +226,7 @@ function TreeMap({ entry }: TreeMapProps) {
                   key={node.data.getID()}
                   node={node}
                   selected={selectedNode?.data?.getID() === node.data.getID()}
-                  onClick={(node) => {
-                    setSelectedNodeWithHash(selectedNode?.data?.getID() === node.data.getID() ? null : node);
-                  }}
+                  onClick={nodeOnClick}
                   getModuleColor={getModuleColor}
                 />
               );
@@ -227,11 +235,11 @@ function TreeMap({ entry }: TreeMapProps) {
         );
       })
     );
-  }, [getModuleColor, nestedData, selectedNode?.data, setSelectedNodeWithHash]);
+  }, [getModuleColor, nestedData, nodeOnClick, selectedNode]);
 
   return (
     <>
-      <Tooltip visible={showTooltip} node={tooltipNode?.data} />
+      <Tooltip visible={showTooltip} node={tooltipNode?.data} x={tooltipPosition[0]} y={tooltipPosition[1]} />
       <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} ref={svgRef}>
         {nodes}
       </svg>

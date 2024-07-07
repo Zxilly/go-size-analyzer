@@ -13,7 +13,7 @@ export interface NodeProps {
   getModuleColor: NodeColorGetter;
 }
 
-export const Node: React.FC<NodeProps> = (
+export const Node: React.FC<NodeProps> = React.memo((
   {
     node,
     onClick,
@@ -117,4 +117,4 @@ export const Node: React.FC<NodeProps> = (
       </text>
     </g>
   );
-};
+});
