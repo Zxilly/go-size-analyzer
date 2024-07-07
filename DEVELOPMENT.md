@@ -151,7 +151,7 @@ golangci-lint run
 ## TypeScript and React
 
 The project uses `TypeScript` and `React` to build the web interface.
-Most of the file is in the `ui` directory.
+Most of the files are in the `ui` directory.
 
 ### Build
 
