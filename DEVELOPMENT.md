@@ -53,6 +53,18 @@ but it has bugs in the Go toolchain environment, see [issue](https://github.com/
 Integration tests should be executed by the helper scripts described below.
 It runs on the binaries from [Zxilly/go-testdata](https://github.com/Zxilly/go-testdata)
 
+### Linter
+
+The project uses `golangci-lint` to lint the code.
+
+> Golangci-lint doesn't officially support `Go 1.23` at the moment. Use the preview version.
+
+```bash
+golangci-lint run
+```
+
+## Python
+
 ### Helper scripts
 
 Helper scripts are managed by `poetry`. Make sure you have it installed.
@@ -93,7 +105,7 @@ options:
 
 ##### Integration binary source generator
 
-GeGenerate `scripts/binaries.csv` as source for tests.
+GeGenerate `scripts/binaries.csv` as a source for tests.
 
 ```bash
 python scripts/generate.py
@@ -136,16 +148,6 @@ Collect the profile data, then build `./cmd/gsa` with the profile data.
 
 ```bash
 python scripts/pgo.py
-```
-
-### Linter
-
-The project uses `golangci-lint` to lint the code.
-
-> Golangci-lint doesn't officially support `Go 1.23` at the moment. Use the preview version.
-
-```bash
-golangci-lint run
 ```
 
 ## TypeScript and React
