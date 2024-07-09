@@ -1,8 +1,6 @@
-import base64
 import os
 
 import requests
-import zstd
 from markdown_strings import header, code_block
 
 from tool.utils import get_project_root, write_github_summary, details
@@ -51,21 +49,13 @@ def filter_output(f: str) -> str:
 
 
 def generate_image_url(p: str) -> str:
-    with open(p, "rb") as f:
+    with open(p, "r", encoding="utf-8") as f:
         data = f.read()
 
-    # compress the image
-    data = zstd.compress(data, 22)
+    resp = requests.post("https://bin2image.zxilly.dev", data=data)
+    resp.raise_for_status()
 
-    # encode base64
-    data = base64.b64encode(data).decode("utf-8")
-
-    req = requests.Request("GET", "https://bin2image.zxilly.dev", params={
-        "type": "zstd",
-        "data": data
-    })
-
-    return req.prepare().url
+    return resp.text
 
 
 is_ci = os.getenv("CI", False)

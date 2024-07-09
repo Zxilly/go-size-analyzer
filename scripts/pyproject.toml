@@ -13,7 +13,6 @@ tqdm = "^4.66.4"
 matplotlib = "^3.9.1"
 psutil = "^6.0.0"
 markdown-strings = "^3.4.0"
-zstd = "^1.5.5.1"
 
 [build-system]
 requires = ["poetry-core"]
