@@ -26,6 +26,8 @@ github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e h1:RHVi
 github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240625134410-de32bb7b5d4e h1:ai+YxFNZzfs8+195zZZMw95dRFCor965XGw8OT/A/7I=
 github.com/charmbracelet/x/exp/teatest v0.0.0-20240625134410-de32bb7b5d4e/go.mod h1:YKm1t6wYRVj9+r8XSQoYJc0KdmeDYXbTwfmEsPMEi8w=
+github.com/charmbracelet/x/exp/teatest v0.0.0-20240709134850-9d428570ae29 h1:zNgODgdYMruzwH63GN4LCw619wpixrglljI5p0ExG9Q=
+github.com/charmbracelet/x/exp/teatest v0.0.0-20240709134850-9d428570ae29/go.mod h1:YKm1t6wYRVj9+r8XSQoYJc0KdmeDYXbTwfmEsPMEi8w=
 github.com/charmbracelet/x/input v0.1.2 h1:QJAZr33eOhDowkkEQ24rsJy4Llxlm+fRDf/cQrmqJa0=
 github.com/charmbracelet/x/input v0.1.2/go.mod h1:LGBim0maUY4Pitjn/4fHnuXb4KirU3DODsyuHuXdOyA=
 github.com/charmbracelet/x/term v0.1.1 h1:3cosVAiPOig+EV4X9U+3LDgtwwAoEzJjNdwbXDjF6yI=

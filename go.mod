@@ -12,7 +12,7 @@ require (
 	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
 	github.com/charmbracelet/bubbletea v0.26.6
 	github.com/charmbracelet/lipgloss v0.11.0
-	github.com/charmbracelet/x/exp/teatest v0.0.0-20240625134410-de32bb7b5d4e
+	github.com/charmbracelet/x/exp/teatest v0.0.0-20240709134850-9d428570ae29
 	github.com/charmbracelet/x/term v0.1.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.22.1
