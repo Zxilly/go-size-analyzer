@@ -42,7 +42,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "@vitest/coverage-istanbul": "^1.6.0",
+    "@vitest/coverage-istanbul": "^2.0.1",
     "eslint": "^9.6.0",
     "eslint-plugin-import-x": "^0.5.3",
     "eslint-plugin-react-hooks": "5.1.0-rc.0",
@@ -52,11 +52,11 @@
     "sass": "^1.77.6",
     "terser": "^5.31.1",
     "typescript": "^5.5.3",
-    "typia": "^6.4.1",
+    "typia": "^6.4.3",
     "vite": "^5.3.3",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.1"
   },
   "pnpm": {
     "peerDependencyRules": {
