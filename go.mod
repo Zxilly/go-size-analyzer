@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23rc1
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20240622181243-e08af164b21c
+	github.com/ZxillyFork/gore v0.0.0-20240709175049-78f2566cdd48
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v0.9.0
@@ -27,7 +27,7 @@ require (
 	github.com/samber/lo v1.44.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/arch v0.8.0
-	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
+	golang.org/x/exp v0.0.0-20240707233637-46b078467d37
 	golang.org/x/net v0.27.0
 	golang.org/x/sync v0.7.0
 )
