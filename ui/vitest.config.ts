@@ -15,6 +15,7 @@ export default defineConfig({
       exclude: [
         "src/tool/wasm_exec.js",
         "src/schema/schema.ts",
+        "src/generated/schema.ts",
         "vite.*.ts",
         ...coverageConfigDefaults.exclude,
       ],

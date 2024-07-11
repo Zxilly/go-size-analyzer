@@ -10130,6 +10130,14 @@ Address: 0xb0
 Type:    data"
 `;
 
+exports[`entry > unknownImpl > toString includes size and unknown part description 1`] = `
+"Size: 1 KB
+
+The unknown part in the binary.
+Can be ELF Header, Program Header, align offset...
+We just don't know."
+`;
+
 exports[`entry match 1`] = `"bin-linux-1.21-amd64"`;
 
 exports[`entry match 2`] = `"result"`;

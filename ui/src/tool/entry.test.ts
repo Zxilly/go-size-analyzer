@@ -3,7 +3,7 @@ import path from "node:path";
 import { assert, describe, expect, expectTypeOf, it } from "vitest";
 import { parseResult } from "../generated/schema.ts";
 import type { EntryChildren, EntryLike, EntryType } from "./entry.ts";
-import { BaseImpl, DisasmImpl, createEntry } from "./entry.ts";
+import { BaseImpl, DisasmImpl, UnknownImpl, createEntry } from "./entry.ts";
 
 describe("entry", () => {
   it("type should met children type", () => {
@@ -73,6 +73,34 @@ describe("entry", () => {
     it("getType returns 'disasm'", () => {
       const disasm = new DisasmImpl("TestDisasm", 1024);
       expect(disasm.getType()).toBe("disasm");
+    });
+  });
+
+  describe("unknownImpl", () => {
+    it("getName returns 'Unknown'", () => {
+      const unknown = new UnknownImpl(1024);
+      expect(unknown.getName()).toBe("Unknown");
+    });
+
+    it("getSize returns correct size", () => {
+      const unknown = new UnknownImpl(2048);
+      expect(unknown.getSize()).toBe(2048);
+    });
+
+    it("getChildren returns empty array", () => {
+      const unknown = new UnknownImpl(1024);
+      expect(unknown.getChildren()).toEqual([]);
+    });
+
+    it("toString includes size and unknown part description", () => {
+      const unknown = new UnknownImpl(1024);
+      const str = unknown.toString();
+      expect(str).toMatchSnapshot();
+    });
+
+    it("getType returns 'unknown'", () => {
+      const unknown = new UnknownImpl(1024);
+      expect(unknown.getType()).toBe("unknown");
     });
   });
 });

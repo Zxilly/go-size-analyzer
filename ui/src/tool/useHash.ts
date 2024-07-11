@@ -24,10 +24,8 @@ export function useHash() {
   const _setHash = useCallback(
     (newHash: string) => {
       if (newHash !== hash) {
-        if (newHash !== "") {
-          window.location.hash = newHash;
-        }
-        else {
+        window.location.hash = newHash;
+        if (newHash === "") {
           history.pushState(null, "", " ");
         }
       }
