@@ -54,6 +54,8 @@ def merge_covdata():
 
         if not os.path.exists(output):
             raise Exception("Failed to merge coverage data.")
+        else:
+            log(f"Saved enhanced coverage data to {output}.")
 
     def abs_path(s: str):
         return os.path.abspath(s)
