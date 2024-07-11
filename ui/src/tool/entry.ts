@@ -32,7 +32,7 @@ export interface EntryLike<T extends EntryType> {
   getType: () => T;
 }
 
-class BaseImpl {
+export class BaseImpl {
   private readonly id = orderedID();
 
   getID(): number {

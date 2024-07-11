@@ -42,17 +42,17 @@ describe("explorer", () => {
       });
     });
 
-    it("explorer should display loading state initially", () => {
+    it("should display loading state initially", () => {
       render(<Explorer />);
       expect(screen.getByText("Loading WebAssembly module...")).toBeInTheDocument();
     });
 
-    it("explorer should display file selector when no file is selected", async () => {
+    it("should display file selector when no file is selected", async () => {
       render(<Explorer />);
       await waitFor(() => screen.getByText("Select a go binary"));
     });
 
-    it("explorer should display analyzing state when a file is selected", async () => {
+    it("should display analyzing state when a file is selected", async () => {
       render(<Explorer />);
 
       await waitFor(() => screen.getByText("Select a go binary"));
@@ -61,7 +61,7 @@ describe("explorer", () => {
       await waitFor(() => screen.getByText("Analyzing binary..."));
     });
 
-    it("explorer should display error when analysis fails", async () => {
+    it("should display error when analysis fails", async () => {
       vi.stubGlobal("gsa_analyze", () => {
         return null;
       });
