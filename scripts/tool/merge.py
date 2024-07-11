@@ -32,8 +32,11 @@ def merge_covdata():
         if os.path.exists(output):
             os.remove(output)
 
-        tmp_out = tempfile.NamedTemporaryFile(delete=False)
-        if not dir_is_empty(d):
+        if dir_is_empty(d):
+            log(f"Coverage data directory is empty. Skipping merge {output}")
+            return
+
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
             subprocess.check_call(
                 [
                     require_go(),
@@ -41,22 +44,14 @@ def merge_covdata():
                     "covdata",
                     "textfmt",
                     "-i=" + d,
-                    "-o=" + tmp_out.name,
+                    "-o=" + tmp.name,
                 ],
                 cwd=get_project_root(),
             )
-
             log(f"Merged coverage data from {d}.")
-
-            enhance_coverage(tmp_out.name, output)
-
+            enhance_coverage(tmp.name, output)
             log(f"Enhanced coverage data from {d}.")
 
-            os.remove(tmp_out.name)
-
-            log(f"Merge cleaned up for {d}.")
-        else:
-            log(f"Coverage data directory is empty. Skipping merge {output}")
 
     merge_covdata_dir(get_covdata_unit_dir(), "unit.profile")
     merge_covdata_dir(get_covdata_integration_dir(), "integration.profile")
