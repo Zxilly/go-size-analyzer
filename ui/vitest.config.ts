@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
+import { coverageConfigDefaults } from "vitest/config";
 
 export default defineConfig({
   plugins: [
@@ -12,15 +13,10 @@ export default defineConfig({
       provider: "istanbul",
       enabled: true,
       exclude: [
-        "node_modules",
-        "dist",
-        "coverage",
-        ".eslintrc.cjs",
-        "vite.config.ts",
-        "vite.config-explorer.ts",
-        "vite.common.ts",
         "src/tool/wasm_exec.js",
         "src/schema/schema.ts",
+        "vite.*.ts",
+        ...coverageConfigDefaults.exclude,
       ],
     },
     reporters: ["junit", "default", "github-actions"],

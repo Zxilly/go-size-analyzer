@@ -26,7 +26,9 @@ it("fileSelector should not call handler when no file is selected", () => {
 it("fileSelector should not call handler when file size exceeds limit", () => {
   const mockHandler = vi.fn();
   const { getByLabelText } = render(<FileSelector handler={mockHandler} />);
-  const file = new File(["0".repeat(1024 * 1024 * 31)], "dummy.txt", { type: "text/plain" });
+  const file = {
+    size: 1024 * 1024 * 31,
+  };
 
   fireEvent.change(getByLabelText("Select file"), { target: { files: [file] } });
   expect(mockHandler).not.toHaveBeenCalled();
@@ -35,7 +37,10 @@ it("fileSelector should not call handler when file size exceeds limit", () => {
 it("fileSelector should call handler when file size exceeds limit and user chooses to continue", () => {
   const mockHandler = vi.fn();
   const { getByLabelText, getByText } = render(<FileSelector handler={mockHandler} />);
-  const file = new File(["0".repeat(1024 * 1024 * 31)], "dummy.txt", { type: "text/plain" });
+
+  const file = {
+    size: 1024 * 1024 * 31,
+  };
 
   fireEvent.change(getByLabelText("Select file"), { target: { files: [file] } });
   fireEvent.click(getByText("Continue"));
