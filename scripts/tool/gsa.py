@@ -20,7 +20,7 @@ def build_gsa():
             "build",
             "-buildmode=exe",  # since windows use pie by default
             "-cover",
-            "-covermode=set",
+            "-covermode=atomic",
             "-tags",
             "embed,profiler",
             "-o",
