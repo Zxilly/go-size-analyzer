@@ -21,7 +21,8 @@ def enhance_coverage(f: str, out: str):
             f,
             "-o",
             out,
-        ]
+        ],
+        cwd=get_project_root(),
     )
 
 
@@ -58,7 +59,7 @@ def merge_covdata():
             log(f"Saved enhanced coverage data to {output}.")
 
     def abs_path(s: str):
-        return os.path.abspath(s)
+        return os.path.abspath(os.path.join(get_project_root(), s))
 
     merge_covdata_dir(get_covdata_unit_dir(), abs_path("unit.profile"))
     merge_covdata_dir(get_covdata_integration_dir(), abs_path("integration.profile"))
