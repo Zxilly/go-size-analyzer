@@ -5,7 +5,7 @@ import subprocess
 from tests import run_integration_tests
 from tool import process
 from tool.gsa import build_pgo_gsa
-from tool.utils import get_project_root
+from tool.utils import get_project_root, require_go
 
 
 def merge_profiles():
@@ -30,7 +30,7 @@ def merge_profiles():
 
     profile = subprocess.check_output(
         args=[
-            "go",
+            require_go(),
             "tool",
             "pprof",
             "-proto",

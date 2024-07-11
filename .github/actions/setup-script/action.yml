@@ -11,6 +11,10 @@ inputs:
   script:
     required: true
     description: 'Script to run'
+  coverage:
+    default: "false"
+    required: false
+    description: "Collect coverage"
 runs:
   using: 'composite'
   steps:
@@ -36,6 +40,12 @@ runs:
       if: ${{ inputs.report == 'true' }}
       shell: bash
       run: npm install -g svgo
+
+    - name: Install Go tools
+      shell: bash
+      if: ${{ inputs.coverage == 'true' }}
+      run: |
+        go install github.com/ZxillyFork/courtney@9f98af51b9fb040946fa7c035cd5a641c5e524f2
 
     - name: Cache test binaries
       if: ${{ inputs.cache != '' }}

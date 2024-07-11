@@ -50,6 +50,7 @@ jobs:
         with:
           cache: 'integration-real'
           script: 'pgo.py'
+          coverage: 'true'
 
       - name: Download deps
         run: go mod download

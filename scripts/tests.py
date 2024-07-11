@@ -15,7 +15,7 @@ from tool.merge import merge_covdata
 from tool.process import run_process
 from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
-    find_unused_port, init_dirs, write_github_summary
+    find_unused_port, init_dirs, write_github_summary, require_go
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
@@ -30,12 +30,14 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
     unit_output_dir = os.path.join(get_project_root(), "results", "unit")
     ensure_dir(unit_output_dir)
 
+    go = require_go()
+
     if full:
         try:
             log("Running full unit tests...")
             embed_result = subprocess.run(
                 [
-                    "go",
+                    go,
                     "test",
                     "-v",
                     "-covermode=atomic",
@@ -69,7 +71,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
             log("Running normal unit tests for webui...")
             normal_result = subprocess.run(
                 [
-                    "go",
+                    go,
                     "test",
                     "-v",
                     "-covermode=atomic",
@@ -135,7 +137,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
 
             wasm_result = subprocess.run(
                 [
-                    "go",
+                    go,
                     "test",
                     "-v",
                     "-covermode=atomic",

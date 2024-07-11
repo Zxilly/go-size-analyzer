@@ -44,7 +44,7 @@ jobs:
       - name: Download deps
         run: go mod download
 
-      - name: Collect profiles
+      - name: Build wasm
         uses: ./.github/actions/setup-script
         with:
           script: 'wasm.py'
@@ -108,6 +108,7 @@ jobs:
           cache: ${{ matrix.test }}
           script: 'tests.py --${{ matrix.test }}'
           report: 'true'
+          coverage: 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
