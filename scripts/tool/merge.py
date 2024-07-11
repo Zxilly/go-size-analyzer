@@ -52,8 +52,13 @@ def merge_covdata():
             enhance_coverage(tmp.name, output)
             log(f"Enhanced coverage data from {d}.")
 
+        if not os.path.exists(output):
+            raise Exception("Failed to merge coverage data.")
 
-    merge_covdata_dir(get_covdata_unit_dir(), "unit.profile")
-    merge_covdata_dir(get_covdata_integration_dir(), "integration.profile")
+    def abs_path(s: str):
+        return os.path.abspath(s)
+
+    merge_covdata_dir(get_covdata_unit_dir(), abs_path("unit.profile"))
+    merge_covdata_dir(get_covdata_integration_dir(), abs_path("integration.profile"))
 
     log("Merged coverage data.")
