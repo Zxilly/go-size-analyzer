@@ -27,7 +27,7 @@
     "react-use": "^17.5.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.21.3",
+    "@antfu/eslint-config": "^2.22.0",
     "@codecov/vite-plugin": "0.0.1-beta.10",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@testing-library/dom": "^10.3.1",
@@ -42,7 +42,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "@vitest/coverage-istanbul": "^2.0.1",
+    "@vitest/coverage-istanbul": "^2.0.2",
     "eslint": "^9.6.0",
     "eslint-plugin-import-x": "^0.5.3",
     "eslint-plugin-react-hooks": "5.1.0-rc.0",
@@ -50,13 +50,13 @@
     "happy-dom": "^14.12.3",
     "junit": "^1.4.9",
     "sass": "^1.77.7",
-    "terser": "^5.31.1",
+    "terser": "^5.31.2",
     "typescript": "^5.5.3",
     "typia": "^6.4.3",
     "vite": "^5.3.3",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
-    "vitest": "^2.0.1"
+    "vitest": "^2.0.2"
   },
   "pnpm": {
     "peerDependencyRules": {
