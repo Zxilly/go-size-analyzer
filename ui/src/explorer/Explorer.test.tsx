@@ -58,7 +58,7 @@ describe("explorer", () => {
       await waitFor(() => screen.getByText("Select a go binary"));
 
       fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["it"], "test.bin")] } });
-      await waitFor(() => screen.getByText("Analyzing binary..."));
+      await waitFor(() => screen.getByText("Analyzing test.bin"));
     });
 
     it("should display error when analysis fails", async () => {
@@ -71,7 +71,7 @@ describe("explorer", () => {
       await waitFor(() => screen.getByText("Select a go binary"));
 
       fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["test"], "test.bin")] } });
-      await waitFor(() => screen.getByText("Failed to analyze test.bin, see browser dev console for more details."));
+      await waitFor(() => screen.getByText("Failed to analyze test.bin"));
     });
   });
 });
