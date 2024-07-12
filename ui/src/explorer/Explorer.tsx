@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
 import React, { useEffect, useMemo } from "react";
 import { useAsync } from "react-use";
-import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Box, Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import gsa from "../../gsa.wasm?init";
 import { createEntry } from "../tool/entry.ts";
 import TreeMap from "../TreeMap.tsx";
 import { FileSelector } from "./FileSelector.tsx";
+
+import { resetCallback, setCallback } from "./fs.js";
+
+import "../tool/wasm_exec.js";
 
 type ModalState = {
   isOpen: false;
@@ -47,6 +51,23 @@ export const Explorer: React.FC = () => {
     return gsa_analyze(file.name, uint8);
   }, [file]);
 
+  const [log, setLog] = React.useState<string>("");
+
+  const friendlyLog = useMemo(() => {
+    if (log === "") {
+      return "Waiting for log";
+    }
+    return log;
+  }, [log]);
+
+  useEffect(() => {
+    setCallback((line) => {
+      setLog(log => `${log + line}\n`);
+    });
+
+    return resetCallback;
+  }, []);
+
   const entry = useMemo(() => {
     if (!result) {
       return null;
@@ -69,7 +90,7 @@ export const Explorer: React.FC = () => {
         isOpen: true,
         title: "Loading",
         content:
-                    <DialogContentText>Loading WebAssembly module...</DialogContentText>,
+          <DialogContentText>Loading WebAssembly module...</DialogContentText>,
       });
     }
     else if (!inst) {
@@ -98,28 +119,29 @@ export const Explorer: React.FC = () => {
     else if (analyzing) {
       setModalState({
         isOpen: true,
-        title: "Analyzing",
-        content: <DialogContentText>Analyzing binary...</DialogContentText>,
+        title: `Analyzing ${file.name}`,
+        content: (
+          <Box fontFamily="monospace" component="pre">
+            {friendlyLog}
+          </Box>
+        ),
       });
     }
     else if (!analyzing && !result && !entry) {
       setModalState({
         isOpen: true,
-        title: "Error",
+        title: `Failed to analyze ${file.name}`,
         content: (
-          <DialogContentText>
-            Failed to analyze
-            {" "}
-            {file.name}
-            , see browser dev console for more details.
-          </DialogContentText>
+          <Box fontFamily="monospace" component="pre">
+            {friendlyLog}
+          </Box>
         ),
       });
     }
     else {
       setModalState({ isOpen: false });
     }
-  }, [loadError, loading, file, result, analyzing, inst, entry]);
+  }, [loadError, loading, file, result, analyzing, inst, entry, friendlyLog]);
 
   return (
     <>
@@ -127,7 +149,7 @@ export const Explorer: React.FC = () => {
         open={modalState.isOpen}
       >
         <DialogTitle>{modalState.isOpen && modalState.title}</DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           {modalState.isOpen && modalState.content}
         </DialogContent>
       </Dialog>

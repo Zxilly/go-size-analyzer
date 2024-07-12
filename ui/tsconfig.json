@@ -25,7 +25,9 @@
     "noUnusedParameters": true,
     "noEmit": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true,
+    "esModuleInterop": true
   },
   "references": [
     {

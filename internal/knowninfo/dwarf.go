@@ -119,6 +119,13 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	typ := entity.FuncTypeFunction
 	receiverName := ""
 	if isGo {
+		//defer func(name string) {
+		//	if r := recover(); r != nil {
+		//		slog.Warn(fmt.Sprintf("Failed to load DWARF function receiver: %s: %v", name, r))
+		//		panic(r)
+		//	}
+		//}(subEntryName)
+
 		receiverName = (&gosym.Sym{Name: subEntryName}).ReceiverName()
 		if receiverName != "" {
 			typ = entity.FuncTypeMethod

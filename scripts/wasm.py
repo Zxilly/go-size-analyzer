@@ -71,7 +71,7 @@ if __name__ == '__main__':
                 [
                     opt,
                     tmp_file.name,
-                    "-O4",
+                    "-O3",
                     "--enable-bulk-memory",
                     "-o", wasm_location()
                 ],
