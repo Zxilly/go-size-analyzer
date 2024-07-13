@@ -15,6 +15,6 @@ export default antfu({
     "dist",
     "coverage",
     "src/generated/schema.ts",
-    "src/tool/wasm_exec.js",
+    "src/runtime/*",
   ],
 });

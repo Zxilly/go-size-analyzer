@@ -19,6 +19,7 @@
       "vite/client"
     ],
     "allowImportingTsExtensions": true,
+    "allowJs": true,
     /* Linting */
     "strict": true,
     "strictNullChecks": true,
@@ -26,10 +27,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noEmit": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "esModuleInterop": true
+    "skipLibCheck": true
   },
   "references": [
     {
