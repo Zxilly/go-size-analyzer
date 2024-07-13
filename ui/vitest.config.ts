@@ -17,6 +17,8 @@ export default defineConfig({
         "src/schema/schema.ts",
         "src/generated/schema.ts",
         "src/testhelper.ts",
+        "**/__mocks__/**",
+        "**/*.js",
         "vite.*.ts",
         ...coverageConfigDefaults.exclude,
       ],
