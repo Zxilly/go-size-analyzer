@@ -55,4 +55,21 @@ describe("tooltip", () => {
     expect(tooltip!.style.left).toBe("10px");
     expect(tooltip!.style.top).toBe("30px");
   });
+
+  it("should auto shift", () => {
+    const r = render(
+      <Tooltip
+        x={window.innerWidth - 1}
+        y={window.innerHeight - 1}
+        node={getTestNode()}
+      />,
+    );
+
+    const tooltip = r.container.querySelector<HTMLElement>(".tooltip");
+    expect(tooltip).not.toBeNull();
+
+    const boundingRect = tooltip!.getBoundingClientRect();
+    expect(boundingRect.right).toBeLessThanOrEqual(window.innerWidth);
+    expect(boundingRect.bottom).toBeLessThanOrEqual(window.innerHeight);
+  });
 });

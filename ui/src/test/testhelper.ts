@@ -1,11 +1,11 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { assert } from "vitest";
-import { parseResult } from "./generated/schema.ts";
+import { parseResult } from "../generated/schema.ts";
 
 export function getTestResult() {
   const data = readFileSync(
-    path.join(__dirname, "..", "..", "testdata", "result.json"),
+    path.join(__dirname, "..", "..", "..", "testdata", "result.json"),
   ).toString();
 
   const r = parseResult(data);

@@ -4,4 +4,9 @@ import { afterEach } from "vitest";
 
 afterEach(() => {
   cleanup();
+
+  // cleanup jsdom
+  window.location.hash = "";
+  document.body.innerHTML = "";
+  document.head.innerHTML = "";
 });

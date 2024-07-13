@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { getTestResult } from "../testhelper.ts";
+import { getTestResult } from "../test/testhelper.ts";
 import type { EntryChildren, EntryLike, EntryType } from "./entry.ts";
 import { BaseImpl, DisasmImpl, UnknownImpl, createEntry } from "./entry.ts";
 
