@@ -34,6 +34,20 @@ jobs:
           cache: true
           check-latest: true
 
+      - name: Get GOROOT
+        id: go-root
+        shell: bash
+        run: |
+          GOROOT=$(go env GOROOT)
+          echo "GOROOT=$GOROOT" >> $GITHUB_OUTPUT
+
+      - name: Patch stdlib # fixme: remove after Go release if https://github.com/Zxilly/go-size-analyzer/issues/141 is resolved
+        shell: bash
+        working-directory: ${{ steps.go-root.outputs.GOROOT }}
+        run: |
+          wget -q https://gist.githubusercontent.com/Zxilly/f4ab8080af496b1ca392e5d6618fb419/raw/9115331b6a42c93c17ab49d0a91aae7bfe455656/go.patch
+          patch -p1 --verbose < go.patch
+
       - name: Setup Binaryen
         # fixme: use acifani/setup-tinygo after pr acceptance
         uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
