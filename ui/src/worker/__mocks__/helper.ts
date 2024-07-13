@@ -2,7 +2,10 @@ import type { Result } from "../../generated/schema.ts";
 import { getTestResult } from "../../test/testhelper.ts";
 
 export class GsaInstance {
-  private constructor(_worker: any, _log: any) {
+  log: any;
+
+  private constructor(_worker: any, log: any) {
+    this.log = log;
   }
 
   static async create(_log: (line: string) => void): Promise<GsaInstance> {
@@ -12,6 +15,10 @@ export class GsaInstance {
   async analyze(filename: string, _data: Uint8Array): Promise<Result | null> {
     if (filename === "fail") {
       return null;
+    }
+
+    for (let i = 0; i < 10; i++) {
+      this.log(`Processing ${i}`);
     }
 
     await new Promise(resolve => setTimeout(resolve, 100));
