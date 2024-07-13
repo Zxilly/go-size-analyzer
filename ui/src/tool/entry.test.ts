@@ -1,7 +1,5 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { assert, describe, expect, expectTypeOf, it } from "vitest";
-import { parseResult } from "../generated/schema.ts";
+import { describe, expect, expectTypeOf, it } from "vitest";
+import { getTestResult } from "../testhelper.ts";
 import type { EntryChildren, EntryLike, EntryType } from "./entry.ts";
 import { BaseImpl, DisasmImpl, UnknownImpl, createEntry } from "./entry.ts";
 
@@ -11,12 +9,7 @@ describe("entry", () => {
   });
 
   it("match", () => {
-    const data = readFileSync(
-      path.join(__dirname, "..", "..", "..", "testdata", "result.json"),
-    ).toString();
-
-    const r = parseResult(data);
-    assert.isNotNull(r);
+    const r = getTestResult();
 
     const e = createEntry(r);
 

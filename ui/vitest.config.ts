@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
   ],
   test: {
-    environment: "happy-dom",
+    environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     coverage: {
       provider: "istanbul",
@@ -16,6 +16,7 @@ export default defineConfig({
         "src/tool/wasm_exec.js",
         "src/schema/schema.ts",
         "src/generated/schema.ts",
+        "src/testhelper.ts",
         "vite.*.ts",
         ...coverageConfigDefaults.exclude,
       ],

@@ -5,7 +5,8 @@
     "lib": [
       "ES2020",
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "WebWorker"
     ],
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -14,7 +15,8 @@
     "resolveJsonModule": true,
     "types": [
       "@testing-library/jest-dom",
-      "@types/golang-wasm-exec"
+      "@types/golang-wasm-exec",
+      "vite/client"
     ],
     "allowImportingTsExtensions": true,
     /* Linting */
