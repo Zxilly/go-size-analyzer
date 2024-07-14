@@ -199,10 +199,6 @@ function TreeMap({ entry }: TreeMapProps) {
 
       setTooltipNode(node);
       setTooltipPosition([e.clientX, e.clientY]);
-
-      if (!showTooltip) {
-        setShowTooltip(true);
-      }
     };
 
     document.addEventListener("mousemove", moveListener);

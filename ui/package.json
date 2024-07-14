@@ -16,7 +16,6 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@million/lint": "1.0.0-rc.76",
     "@mui/material": "^5.16.1",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
@@ -30,6 +29,7 @@
     "@antfu/eslint-config": "^2.22.0",
     "@codecov/vite-plugin": "0.0.1-beta.10",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
+    "@million/lint": "1.0.0-rc.80",
     "@testing-library/dom": "^10.3.1",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
