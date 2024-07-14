@@ -5,8 +5,10 @@ import { afterEach } from "vitest";
 afterEach(() => {
   cleanup();
 
-  // cleanup jsdom
-  window.location.hash = "";
-  document.body.innerHTML = "";
-  document.head.innerHTML = "";
+  if (typeof window !== "undefined") {
+    // cleanup jsdom
+    window.location.hash = "";
+    document.body.innerHTML = "";
+    document.head.innerHTML = "";
+  }
 });

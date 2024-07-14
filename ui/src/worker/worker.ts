@@ -1,6 +1,6 @@
 import "../runtime/wasm_exec.js";
 import { setCallback } from "../runtime/fs";
-import gsa from "../../gsa.wasm?url";
+import gsa from "../../gsa.wasm?init";
 import type { AnalyzeEvent, LoadEvent, LogEvent } from "./event.ts";
 
 declare const self: DedicatedWorkerGlobalScope;
@@ -9,10 +9,7 @@ declare function gsa_analyze(name: string, data: Uint8Array): import("../generat
 async function init() {
   const go = new Go();
 
-  const inst = (await WebAssembly.instantiateStreaming(
-    fetch(gsa),
-    go.importObject,
-  )).instance;
+  const inst = await gsa(go.importObject);
 
   go.run(inst).then(() => {
     console.error("Go exited");
@@ -41,6 +38,7 @@ init().then(() => {
 
 self.onmessage = (e: MessageEvent<[string, Uint8Array]>) => {
   const [filename, data] = e.data;
+
   const result = gsa_analyze(filename, data);
 
   self.postMessage({
