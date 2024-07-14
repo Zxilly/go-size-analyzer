@@ -59,12 +59,16 @@ describe("treeMap", () => {
   });
 
   it("should handle move event", () => {
-    const { getByText } = render(
+    const { getByText, container } = render(
       <TreeMap entry={getTestEntry()} />,
     );
 
+    const svg = container.querySelector("svg");
+    expect(svg).not.toBeNull();
+
     const rect = getByText("symtab.go");
 
+    fireEvent.mouseEnter(svg!);
     fireEvent.mouseMove(rect);
 
     const tooltip = document.querySelector(".tooltip");
