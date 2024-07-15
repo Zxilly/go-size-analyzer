@@ -175,15 +175,15 @@ def run_integration_tests(typ: str, gsa_path: str):
     log(f"Running integration tests {typ}...")
 
     targets = []
-    match typ:
-        case "web" | "flag":
-            pass  # analyze itself, nothing to do
-        case "example":
-            targets = load_remote_binaries_as_test(lambda x: x.startswith("bin-"))
-        case "real":
-            targets = load_remote_binaries_as_test(lambda x: not x.startswith("bin-"))
-        case _:
-            raise Exception(f"Unknown integration test type: {typ}")
+
+    if typ == "web" or typ == "flag":
+        pass  # analyze itself, nothing to do
+    elif typ == "example":
+        targets = load_remote_binaries_as_test(lambda x: x.startswith("bin-"))
+    elif typ == "real":
+        targets = load_remote_binaries_as_test(lambda x: not x.startswith("bin-"))
+    else:
+        raise Exception(f"Unknown integration test type: {typ}")
 
     if typ == "example":
         timeout = 10
