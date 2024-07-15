@@ -5,7 +5,7 @@ const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
 
 export interface TooltipProps {
-  node?: Entry;
+  node: Entry;
   x: number;
   y: number;
 }
@@ -17,21 +17,22 @@ export const Tooltip: React.FC<TooltipProps>
       node,
     }) => {
       const ref = useRef<HTMLDivElement>(null);
-      const [style, setStyle] = useState({});
+      const [style, setStyle] = useState<React.CSSProperties>({
+        visibility: "hidden",
+      });
 
       const path = useMemo(() => {
-        if (!node)
-          return "";
         return node.getName();
       }, [node]);
 
       const content = useMemo(() => {
-        return node?.toString() ?? "";
+        return node.toString();
       }, [node]);
 
       useEffect(() => {
-        if (!ref.current)
+        if (!ref.current) {
           return;
+        }
 
         const pos = {
           left: x + Tooltip_marginX,

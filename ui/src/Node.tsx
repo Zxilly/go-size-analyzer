@@ -1,29 +1,37 @@
-import type { HierarchyRectangularNode } from "d3-hierarchy";
 import React, { useLayoutEffect, useMemo, useRef } from "react";
-import type { Entry } from "./tool/entry.ts";
-import type { NodeColorGetter } from "./tool/color.ts";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
-type NodeEventHandler = (event: HierarchyRectangularNode<Entry>) => void;
-
 export interface NodeProps {
-  node: HierarchyRectangularNode<Entry>;
+  id: number;
+  title: string;
   selected: boolean;
-  onClick: NodeEventHandler;
-  getModuleColor: NodeColorGetter;
+
+  x0: number;
+  x1: number;
+  y0: number;
+  y1: number;
+  hasChildren: boolean;
+
+  backgroundColor: string;
+  fontColor: string;
 }
 
 export const Node: React.FC<NodeProps> = React.memo((
   {
-    node,
-    onClick,
+    id,
+    title,
     selected,
-    getModuleColor,
+
+    x0,
+    x1,
+    y0,
+    y1,
+    hasChildren,
+
+    backgroundColor,
+    fontColor,
   },
 ) => {
-  const { backgroundColor, fontColor } = getModuleColor(node);
-  const { x0, x1, y1, y0, children = null } = node;
-
   const textRef = useRef<SVGTextElement>(null);
   const textRectRef = useRef<DOMRect | null>(null);
 
@@ -36,13 +44,9 @@ export const Node: React.FC<NodeProps> = React.memo((
       dominantBaseline: "middle",
       textAnchor: "middle",
       x: width / 2,
-      y: children != null ? (TOP_PADDING + PADDING) / 2 : height / 2,
+      y: hasChildren ? (TOP_PADDING + PADDING) / 2 : height / 2,
     };
-  }, [children, height, width]);
-
-  const title = useMemo(() => {
-    return node.data.getName();
-  }, [node.data]);
+  }, [hasChildren, height, width]);
 
   useLayoutEffect(() => {
     if (width === 0 || height === 0 || !textRef.current) {
@@ -54,7 +58,7 @@ export const Node: React.FC<NodeProps> = React.memo((
     }
 
     let scale: number;
-    if (children != null) {
+    if (hasChildren) {
       scale = Math.min(
         (width * 0.9) / textRectRef.current.width,
         Math.min(height, TOP_PADDING + PADDING) / textRectRef.current.height,
@@ -77,7 +81,7 @@ export const Node: React.FC<NodeProps> = React.memo((
     }
 
     textRef.current.setAttribute("transform", `scale(${scale.toFixed(2)})`);
-  }, [children, height, width]);
+  }, [hasChildren, height, width]);
 
   if (width === 0 || height === 0) {
     return null;
@@ -87,11 +91,7 @@ export const Node: React.FC<NodeProps> = React.memo((
     <g
       className="node"
       transform={`translate(${x0},${y0})`}
-      onClick={(event) => {
-        event.stopPropagation();
-        onClick(node);
-      }}
-      data-id={node.data.getID()}
+      data-id={id}
     >
       <rect
         fill={backgroundColor}

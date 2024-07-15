@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { group } from "d3-array";
 import type { HierarchyNode, HierarchyRectangularNode } from "d3-hierarchy";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
@@ -11,7 +11,6 @@ import { Node } from "./Node.tsx";
 
 import "./style.scss";
 import { trimPrefix } from "./tool/utils.ts";
-import { useHash } from "./tool/useHash.ts";
 
 interface TreeMapProps {
   entry: Entry;
@@ -22,8 +21,6 @@ function TreeMap({ entry }: TreeMapProps) {
   useTitle(entry.getName(), {
     restoreOnUnmount: true,
   });
-
-  const [hash, setHash] = useHash();
 
   // Get the window size
   const { width, height } = useWindowSize();
@@ -45,8 +42,33 @@ function TreeMap({ entry }: TreeMapProps) {
       .tile(treemapSquarify);
   }, [height, width]);
 
-  const [selectedNode, setSelectedNode] = useState<HierarchyRectangularNode<Entry> | null>(null);
-  const selectedNodeLeaveSet = useMemo(() => {
+  const loadNodeFromHash = useCallback(() => {
+    const parts = trimPrefix(location.hash, "#").split("#");
+    if (parts.length >= 1) {
+      const base = parts[0];
+      if (base !== entry.getURLSafeName()) {
+        return null;
+      }
+    }
+    let cur = rawHierarchy;
+    for (let i = 1; i < parts.length; i++) {
+      const part = parts[i];
+      if (!cur.children) {
+        return null;
+      }
+
+      const found = cur.children.find(d => d.data.getURLSafeName() === part);
+      if (!found) {
+        return null;
+      }
+      cur = found;
+    }
+
+    return cur;
+  }, [entry, rawHierarchy]);
+
+  const [selectedNode, setSelectedNode] = useState<HierarchyNode<Entry> | null>(loadNodeFromHash);
+  const selectedNodeLeaveIDSet = useMemo(() => {
     if (selectedNode === null) {
       return new Set<number>();
     }
@@ -54,42 +76,36 @@ function TreeMap({ entry }: TreeMapProps) {
     return new Set(selectedNode.leaves().map(d => d.data.getID()));
   }, [selectedNode]);
 
-  const getZoomMultiplier = useCallback((node: Entry) => {
-    if (selectedNode === null) {
-      return 1;
-    }
-
-    return selectedNodeLeaveSet.has(node.getID()) ? 1 : 0;
-  }, [selectedNode, selectedNodeLeaveSet]);
-
   const root = useMemo(() => {
     const rootWithSizesAndSorted = rawHierarchy
       .sum((node) => {
-        const zoom = getZoomMultiplier(node);
-        if (zoom === 0) {
-          return 0;
-        }
-
         if (node.getChildren().length === 0) {
+          if (selectedNode) {
+            if (!selectedNodeLeaveIDSet.has(node.getID())) {
+              return 0;
+            }
+          }
+
           return node.getSize();
         }
         return 0;
       })
       .sort((a, b) => a.data.getSize() - b.data.getSize());
+
     return layout(rootWithSizesAndSorted);
-  }, [getZoomMultiplier, layout, rawHierarchy]);
+  }, [layout, rawHierarchy, selectedNode, selectedNodeLeaveIDSet]);
 
   const nestedData = useMemo(() => {
     const nestedDataMap = group(
       root.descendants(),
       (d: HierarchyNode<Entry>) => d.height,
     );
-    const nestedData = Array.from(nestedDataMap, ([key, values]) => ({
+    const nested = Array.from(nestedDataMap, ([key, values]) => ({
       key,
       values,
     }));
-    nestedData.sort((a, b) => b.key - a.key);
-    return nestedData;
+    nested.sort((a, b) => b.key - a.key);
+    return nested;
   }, [root]);
 
   const allNodes = useMemo(() => {
@@ -100,143 +116,138 @@ function TreeMap({ entry }: TreeMapProps) {
     return cache;
   }, [root]);
 
-  const setSelectedNodeWithHash = useCallback((node: HierarchyRectangularNode<Entry> | null) => {
-    setSelectedNode(node);
-
-    if (node === null) {
-      setHash("");
+  useEffect(() => {
+    if (selectedNode === null) {
+      if (location.hash !== "") {
+        history.replaceState(null, "", " ");
+      }
       return;
     }
 
-    setHash(
-      node
-        .ancestors()
-        .map((d) => {
-          return d.data.getURLSafeName();
-        })
-        .reverse()
-        .join("#"),
-    );
-  }, [setHash]);
+    const path = `#${selectedNode
+      .ancestors()
+      .map((d) => {
+        return d.data.getURLSafeName();
+      })
+      .reverse()
+      .join("#")}`;
 
-  useEffect(() => {
-    const parts = trimPrefix(hash, "#").split("#");
-    if (parts.length >= 1) {
-      const base = parts[0];
-      if (base !== entry.getURLSafeName()) {
-        return;
-      }
+    if (location.hash !== path) {
+      history.replaceState(null, "", path);
     }
-    let cur = root;
-    for (let i = 1; i < parts.length; i++) {
-      const part = parts[i];
-      if (!cur.children) {
-        return;
-      }
-
-      const found = cur.children.find(d => d.data.getURLSafeName() === part);
-      if (!found) {
-        return;
-      }
-      cur = found;
-    }
-
-    setSelectedNode(cur);
-  }, [hash, root, entry]);
+  }, [selectedNode]);
 
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState<[number, number]>([0, 0]);
   const [tooltipNode, setTooltipNode]
         = useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
 
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  useEffect(() => {
-    if (!svgRef.current) {
-      return;
-    }
-    const svg = svgRef.current;
-
-    const visibleListener = (value: boolean) => {
-      return () => {
-        setShowTooltip(value);
-      };
-    };
-    const enter = visibleListener(true);
-    const leave = visibleListener(false);
-
-    svg.addEventListener("mouseenter", enter);
-    svg.addEventListener("mouseleave", leave);
-
-    return () => {
-      svg.removeEventListener("mouseenter", enter);
-      svg.removeEventListener("mouseleave", leave);
-    };
+  const onMouseEnter = useCallback(() => {
+    setShowTooltip(true);
   }, []);
 
-  useEffect(() => {
-    const moveListener = (e: MouseEvent) => {
-      if (!e.target) {
-        return;
-      }
+  const onMouseLeave = useCallback(() => {
+    setShowTooltip(false);
+  }, []);
 
-      const target = (e.target as SVGElement).parentNode;
-      if (!target) {
-        return;
-      }
+  const getTargetNode = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
+    if (!e.target) {
+      return null;
+    }
 
-      const dataIdStr = (target as Element).getAttribute("data-id");
-      if (!dataIdStr) {
-        return;
-      }
+    const target = (e.target as SVGElement).parentNode;
+    if (!target) {
+      return null;
+    }
 
-      const dataId = Number.parseInt(dataIdStr);
+    const dataIdStr = (target as Element).getAttribute("data-id");
+    if (!dataIdStr) {
+      return null;
+    }
 
-      const node = allNodes.get(dataId);
-      if (!node) {
-        return;
-      }
+    const dataId = Number.parseInt(dataIdStr);
 
-      setTooltipNode(node);
-      setTooltipPosition([e.clientX, e.clientY]);
-    };
+    return allNodes.get(dataId) ?? null;
+  }, [allNodes]);
 
-    document.addEventListener("mousemove", moveListener);
-    return () => {
-      document.removeEventListener("mousemove", moveListener);
-    };
-  }, [allNodes, showTooltip]);
+  const onMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
+    setTooltipPosition([e.clientX, e.clientY]);
 
-  const nodeOnClick = useCallback((node: HierarchyRectangularNode<Entry>) => {
-    setSelectedNodeWithHash(selectedNode?.data?.getID() === node.data.getID() ? null : node);
-  }, [selectedNode, setSelectedNodeWithHash]);
+    const node = getTargetNode(e);
+    if (node === null) {
+      setTooltipNode(undefined);
+      return;
+    }
+
+    setTooltipNode(node);
+  }, [getTargetNode]);
+
+  const onClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
+    const node = getTargetNode(e);
+    if (node === null) {
+      return;
+    }
+
+    if (selectedNode?.data.getID() === node.data.getID()) {
+      setSelectedNode(null);
+    }
+    else {
+      setSelectedNode(node);
+    }
+  }, [getTargetNode, selectedNode]);
 
   const nodes = useMemo(() => {
+    const selectedID = selectedNode?.data.getID();
+
     return (
       nestedData.map(({ key, values }) => {
         return (
           <g className="layer" key={key}>
             {values.map((node) => {
+              const { backgroundColor, fontColor } = getModuleColor(node);
+
+              if (node.x0 === node.x1 || node.y0 === node.y1) {
+                return null;
+              }
+
               return (
                 <Node
                   key={node.data.getID()}
-                  node={node}
-                  selected={selectedNode?.data?.getID() === node.data.getID()}
-                  onClick={nodeOnClick}
-                  getModuleColor={getModuleColor}
+                  id={node.data.getID()}
+                  title={node.data.getName()}
+                  selected={selectedID === node.data.getID()}
+                  x0={node.x0}
+                  y0={node.y0}
+                  x1={node.x1}
+                  y1={node.y1}
+
+                  backgroundColor={backgroundColor}
+                  fontColor={fontColor}
+                  hasChildren={node.children !== undefined}
                 />
               );
-            })}
+            }).filter(Boolean)}
           </g>
         );
       })
     );
-  }, [getModuleColor, nestedData, nodeOnClick, selectedNode]);
+  }, [getModuleColor, nestedData, selectedNode]);
+
+  const tooltipVisible = useMemo(() => {
+    return showTooltip && tooltipNode && tooltipPosition.every(v => v > 0);
+  }, [showTooltip, tooltipNode, tooltipPosition]);
 
   return (
     <>
-      {showTooltip && <Tooltip node={tooltipNode?.data} x={tooltipPosition[0]} y={tooltipPosition[1]} />}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`} ref={svgRef}>
+      {(tooltipVisible) && <Tooltip node={tooltipNode!.data} x={tooltipPosition[0]} y={tooltipPosition[1]} />}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 ${width} ${height}`}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseMoveCapture={onMouseMove}
+        onClick={onClick}
+      >
         {nodes}
       </svg>
     </>
