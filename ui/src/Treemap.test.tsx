@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createEntry } from "./tool/entry.ts";
 import TreeMap from "./TreeMap.tsx";
 import { getTestResult } from "./test/testhelper.ts";
@@ -58,7 +59,7 @@ describe("treeMap", () => {
     expect(getByText("Std Packages Size")).not.toBeNull();
   });
 
-  it("should handle move event", () => {
+  it("should handle move event", async () => {
     const { getByText, container } = render(
       <TreeMap entry={getTestEntry()} />,
     );
@@ -68,8 +69,15 @@ describe("treeMap", () => {
 
     const rect = getByText("symtab.go");
 
-    fireEvent.mouseEnter(svg!);
-    fireEvent.mouseMove(rect);
+    const user = userEvent.setup();
+
+    await user.pointer({
+      coords: {
+        x: 1,
+        y: 1,
+      },
+    });
+    await user.hover(rect);
 
     const tooltip = document.querySelector(".tooltip");
     expect(tooltip).not.toBeNull();
