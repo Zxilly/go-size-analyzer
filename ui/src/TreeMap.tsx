@@ -172,7 +172,6 @@ function TreeMap({ entry }: TreeMapProps) {
 
   const onMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     setTooltipPosition([e.clientX, e.clientY]);
-    console.log(e.clientX, e.clientY);
 
     const node = getTargetNode(e);
     if (node === null) {
