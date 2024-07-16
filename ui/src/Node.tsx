@@ -99,18 +99,22 @@ export const Node: React.FC<NodeProps> = React.memo((
         strokeWidth={selected ? 2 : undefined}
       >
       </rect>
-      <text
-        ref={textRef}
-        fill={fontColor}
-        onClick={(event) => {
-          if (window.getSelection()?.toString() !== "") {
-            event.stopPropagation();
-          }
-        }}
-        {...textProps}
-      >
-        {title}
-      </text>
+      {
+        width > 12 && height > 12 && (
+          <text
+            ref={textRef}
+            fill={fontColor}
+            onClick={(event) => {
+              if (window.getSelection()?.toString() !== "") {
+                event.stopPropagation();
+              }
+            }}
+            {...textProps}
+          >
+            {title}
+          </text>
+        )
+      }
     </g>
   );
 });

@@ -12,7 +12,6 @@ import { Node } from "./Node.tsx";
 import "./style.scss";
 import { trimPrefix } from "./tool/utils.ts";
 import { shallowCopy } from "./tool/copy.ts";
-import { useMouse } from "./tool/useMouse.ts";
 
 interface TreeMapProps {
   entry: Entry;
@@ -158,16 +157,7 @@ function TreeMap({ entry }: TreeMapProps) {
     }
   }, [rawHierarchyID, selectedNodeID]);
 
-  const [tooltipNode, setTooltipNode]
-        = useState<Entry | undefined>(undefined);
   const svgRef = useRef<SVGSVGElement>(null);
-
-  const {
-    clientX,
-    clientY,
-    isOver,
-    eventTarget: mouseEventTarget,
-  } = useMouse(svgRef);
 
   const getTargetNode = useCallback((e: EventTarget) => {
     const target = (e as SVGElement).parentNode;
@@ -204,20 +194,6 @@ function TreeMap({ entry }: TreeMapProps) {
     }
   }, [getTargetNode, selectedNodeID]);
 
-  const tooltipVisible = useMemo(() => {
-    return isOver && tooltipNode;
-  }, [isOver, tooltipNode]);
-
-  useEffect(() => {
-    if (!mouseEventTarget) {
-      return;
-    }
-    const node = getTargetNode(mouseEventTarget);
-    if (node) {
-      setTooltipNode(node);
-    }
-  }, [getTargetNode, mouseEventTarget]);
-
   const nodes = useMemo(() => {
     return layers.map(({ key, values }) => {
       return (
@@ -225,7 +201,7 @@ function TreeMap({ entry }: TreeMapProps) {
           {values.map((node) => {
             const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
 
-            if (node.x1 - node.x0 < 6 || node.y1 - node.y0 < 6) {
+            if (node.x1 - node.x0 < 2 || node.y1 - node.y0 < 2) {
               return null;
             }
 
@@ -253,7 +229,10 @@ function TreeMap({ entry }: TreeMapProps) {
 
   return (
     <>
-      {(tooltipVisible) && <Tooltip node={tooltipNode!} x={clientX!} y={clientY!} />}
+      <Tooltip
+        moveRef={svgRef}
+        getTargetNode={getTargetNode}
+      />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox={`0 0 ${width} ${height}`}
