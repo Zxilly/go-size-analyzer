@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
 export interface NodeProps {
@@ -14,6 +14,23 @@ export interface NodeProps {
 
   backgroundColor: string;
   fontColor: string;
+}
+
+const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+svg.style.position = "absolute";
+svg.style.visibility = "hidden";
+document.body.appendChild(svg);
+const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+textElement.setAttribute("font-size", "0.8em");
+textElement.setAttribute("dominant-baseline", "middle");
+textElement.setAttribute("text-anchor", "middle");
+svg.appendChild(textElement);
+
+function measureText(text: string): [number, number] {
+  textElement.textContent = text;
+  const rect = textElement.getBBox();
+
+  return [rect.width, rect.height];
 }
 
 export const Node: React.FC<NodeProps> = React.memo((
@@ -33,54 +50,40 @@ export const Node: React.FC<NodeProps> = React.memo((
   },
 ) => {
   const textRef = useRef<SVGTextElement>(null);
-  const textRectRef = useRef<DOMRect | null>(null);
 
   const width = x1 - x0;
   const height = y1 - y0;
 
-  const textProps = useMemo(() => {
-    return {
+  const textProps = useMemo<Record<string, string | number>>(() => {
+    const initial: Record<string, string | number> = {
       fontSize: "0.8em",
       dominantBaseline: "middle",
       textAnchor: "middle",
-      x: width / 2,
-      y: hasChildren ? (TOP_PADDING + PADDING) / 2 : height / 2,
     };
-  }, [hasChildren, height, width]);
-
-  useLayoutEffect(() => {
-    if (width === 0 || height === 0 || !textRef.current) {
-      return;
-    }
-
-    if (textRectRef.current == null) {
-      textRectRef.current = textRef.current.getBoundingClientRect();
-    }
-
+    const [textWidth, textHeight] = measureText(title);
     let scale: number;
     if (hasChildren) {
       scale = Math.min(
-        (width * 0.9) / textRectRef.current.width,
-        Math.min(height, TOP_PADDING + PADDING) / textRectRef.current.height,
+        (width * 0.9) / textWidth,
+        Math.min(height, TOP_PADDING + PADDING) / textHeight,
       );
       scale = Math.min(1, scale);
-      textRef.current.setAttribute(
-        "y",
-        String(Math.min(TOP_PADDING + PADDING, height) / 2 / scale),
-      );
-      textRef.current.setAttribute("x", String(width / 2 / scale));
+      initial.y = Math.min(TOP_PADDING + PADDING, height) / 2 / scale;
+      initial.x = width / 2 / scale;
     }
     else {
       scale = Math.min(
-        (width * 0.9) / textRectRef.current.width,
-        (height * 0.9) / textRectRef.current.height,
+        (width * 0.9) / textWidth,
+        (height * 0.9) / textHeight,
       );
       scale = Math.min(1, scale);
-      textRef.current.setAttribute("y", String(height / 2 / scale));
-      textRef.current.setAttribute("x", String(width / 2 / scale));
+      initial.y = height / 2 / scale;
+      initial.x = width / 2 / scale;
     }
 
-    textRef.current.setAttribute("transform", `scale(${scale.toFixed(2)})`);
+    initial.transform = `scale(${scale.toFixed(2)})`;
+
+    return initial;
   }, [hasChildren, height, width]);
 
   return (
