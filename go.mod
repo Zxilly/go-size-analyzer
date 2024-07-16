@@ -24,7 +24,7 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/samber/lo v1.45.0
+	github.com/samber/lo v1.46.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/arch v0.8.0
 	golang.org/x/exp v0.0.0-20240707233637-46b078467d37
