@@ -67,7 +67,7 @@ export const Tooltip: React.FC<TooltipProps>
         }
 
         setStyle(pos);
-      }, [x, y]);
+      }, [isOver, x, y]);
 
       return (
         (isOver && node) && (

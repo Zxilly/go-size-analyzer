@@ -1,5 +1,7 @@
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import React from "react";
+import userEvent from "@testing-library/user-event";
 import { Tooltip } from "./Tooltip.tsx";
 import type { Entry, EntryChildren, EntryType } from "./tool/entry.ts";
 
@@ -29,41 +31,67 @@ function getTestNode(): Entry {
   };
 }
 
+function getFakeRef(): React.RefObject<SVGTextElement> {
+  const base = document.createElement("div");
+  document.body.appendChild(base);
+
+  return {
+    current: base as any,
+  };
+}
+
 describe("tooltip", () => {
-  it("should render", () => {
+  it("should render", async () => {
+    const ref = getFakeRef();
+
     const { getByText } = render(
       <Tooltip
-        x={0}
-        y={0}
-        node={getTestNode()}
+        moveRef={ref}
+        getTargetNode={() => getTestNode()}
       />,
     );
+
+    await userEvent.hover(ref.current!);
+    fireEvent.mouseOver(ref.current!);
+    fireEvent.mouseMove(ref.current!);
+
     expect(getByText("test")).toBeInTheDocument();
     expect(getByText("test content")).toBeInTheDocument();
   });
 
-  it("should respond to position", () => {
+  it("should respond to position", async () => {
+    const ref = getFakeRef();
+
     const r = render(
       <Tooltip
-        x={0}
-        y={0}
-        node={getTestNode()}
+        moveRef={ref}
+        getTargetNode={() => getTestNode()}
       />,
     );
+
+    await userEvent.hover(ref.current!);
+    fireEvent.mouseOver(ref.current!);
+    fireEvent.mouseMove(ref.current!, { clientX: 10, clientY: 30 });
+
     const tooltip = r.container.querySelector<HTMLElement>(".tooltip");
     expect(tooltip).not.toBeNull();
-    expect(tooltip!.style.left).toBe("10px");
-    expect(tooltip!.style.top).toBe("30px");
+    expect(tooltip!.style.left).toBe("20px");
+    expect(tooltip!.style.top).toBe("60px");
   });
 
-  it("should auto shift", () => {
+  it("should auto shift", async () => {
+    const ref = getFakeRef();
+
     const r = render(
       <Tooltip
-        x={window.innerWidth - 1}
-        y={window.innerHeight - 1}
-        node={getTestNode()}
+        moveRef={ref}
+        getTargetNode={() => getTestNode()}
       />,
     );
+
+    await userEvent.hover(ref.current!);
+    fireEvent.mouseOver(ref.current!);
+    fireEvent.mouseMove(ref.current!, { clientX: window.innerWidth - 1, clientY: window.innerHeight - 1 });
 
     const tooltip = r.container.querySelector<HTMLElement>(".tooltip");
     expect(tooltip).not.toBeNull();

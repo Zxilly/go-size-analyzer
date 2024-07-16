@@ -33,7 +33,7 @@ let textElement: SVGTextElement;
 
 function measureText(text: string): [number, number] {
   textElement.textContent = text;
-  const rect = textElement.getBBox();
+  const rect = textElement.getBoundingClientRect();
 
   return [rect.width, rect.height];
 }
@@ -91,7 +91,7 @@ export const Node: React.FC<NodeProps> = React.memo((
     initial.transform = `scale(${scale.toFixed(2)})`;
 
     return initial;
-  }, [hasChildren, height, width]);
+  }, [hasChildren, height, title, width]);
 
   return (
     <g
