@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { group } from "d3-array";
-import type { HierarchyNode, HierarchyRectangularNode } from "d3-hierarchy";
+import type { HierarchyNode } from "d3-hierarchy";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
 import { useTitle, useWindowSize } from "react-use";
 
@@ -11,6 +11,8 @@ import { Node } from "./Node.tsx";
 
 import "./style.scss";
 import { trimPrefix } from "./tool/utils.ts";
+import { shallowCopy } from "./tool/copy.ts";
+import { useMouse } from "./tool/useMouse.ts";
 
 interface TreeMapProps {
   entry: Entry;
@@ -26,17 +28,36 @@ function TreeMap({ entry }: TreeMapProps) {
   const { width, height } = useWindowSize();
 
   const rawHierarchy = useMemo(() => {
-    return hierarchy(entry, e => e.getChildren());
+    return hierarchy(entry, e => e.getChildren())
+      .sum((e) => {
+        if (e.getChildren().length === 0) {
+          return e.getSize();
+        }
+        return 0;
+      })
+      .sort((a, b) => a.data.getSize() - b.data.getSize());
   }, [entry]);
 
-  const getModuleColor = useMemo(() => {
+  const rawHierarchyID = useMemo(() => {
+    const cache = new Map<number, HierarchyNode<Entry>>();
+    rawHierarchy.descendants().forEach((node) => {
+      cache.set(node.data.getID(), node);
+    });
+    return cache;
+  }, [rawHierarchy]);
+
+  const getModuleColorRaw = useMemo(() => {
     return createRainbowColor(rawHierarchy);
   }, [rawHierarchy]);
+
+  const getModuleColor = useCallback((id: number) => {
+    return getModuleColorRaw(rawHierarchyID.get(id)!);
+  }, [getModuleColorRaw, rawHierarchyID]);
 
   const layout = useMemo(() => {
     return treemap<Entry>()
       .size([width, height])
-      .paddingInner(2)
+      .paddingInner(1)
       .paddingTop(20)
       .round(true)
       .tile(treemapSquarify);
@@ -64,66 +85,66 @@ function TreeMap({ entry }: TreeMapProps) {
       cur = found;
     }
 
-    return cur;
+    return cur.data.getID();
   }, [entry, rawHierarchy]);
 
-  const [selectedNode, setSelectedNode] = useState<HierarchyNode<Entry> | null>(loadNodeFromHash);
-  const selectedNodeLeaveIDSet = useMemo(() => {
-    if (selectedNode === null) {
-      return new Set<number>();
+  const [selectedNodeID, setSelectedNodeID] = useState<number | null>(loadNodeFromHash);
+
+  const layoutRoot = useMemo(() => {
+    let root: HierarchyNode<Entry> | null;
+    if (!selectedNodeID || selectedNodeID === rawHierarchy.data.getID()) {
+      root = rawHierarchy;
+    }
+    else {
+      const selectedNode = rawHierarchyID.get(selectedNodeID)!;
+      const ancestors = selectedNode.ancestors().reverse();
+
+      function writeValue(n: HierarchyNode<Entry>, value?: number) {
+        // @ts-expect-error write to readonly
+        // noinspection JSConstantReassignment
+        n.value = value;
+      }
+
+      root = shallowCopy(rawHierarchy);
+      writeValue(root, selectedNode.value);
+
+      let cur = root;
+      for (let i = 1; i < ancestors.length; i++) {
+        // use shallowCopy
+        const node = shallowCopy(ancestors[i]);
+        writeValue(node, selectedNode.value);
+        cur.children = [node];
+        cur = node;
+      }
     }
 
-    return new Set(selectedNode.leaves().map(d => d.data.getID()));
-  }, [selectedNode]);
+    return layout(root!);
+  }, [layout, rawHierarchy, rawHierarchyID, selectedNodeID]);
 
-  const root = useMemo(() => {
-    const rootWithSizesAndSorted = rawHierarchy
-      .sum((node) => {
-        if (node.getChildren().length === 0) {
-          if (selectedNode) {
-            if (!selectedNodeLeaveIDSet.has(node.getID())) {
-              return 0;
-            }
-          }
-
-          return node.getSize();
-        }
-        return 0;
-      })
-      .sort((a, b) => a.data.getSize() - b.data.getSize());
-
-    return layout(rootWithSizesAndSorted);
-  }, [layout, rawHierarchy, selectedNode, selectedNodeLeaveIDSet]);
-
-  const nestedData = useMemo(() => {
-    const nestedDataMap = group(
-      root.descendants(),
+  const layers = useMemo(() => {
+    const layerMap = group(
+      layoutRoot.descendants(),
       (d: HierarchyNode<Entry>) => d.height,
     );
-    const nested = Array.from(nestedDataMap, ([key, values]) => ({
+    const layerArray = Array.from(layerMap, ([key, values]) => ({
       key,
       values,
     }));
-    nested.sort((a, b) => b.key - a.key);
-    return nested;
-  }, [root]);
-
-  const allNodes = useMemo(() => {
-    const cache = new Map<number, HierarchyRectangularNode<Entry>>();
-    root.descendants().forEach((node) => {
-      cache.set(node.data.getID(), node);
-    });
-    return cache;
-  }, [root]);
+    layerArray.sort((a, b) => b.key - a.key);
+    return layerArray;
+  }, [layoutRoot]);
 
   useEffect(() => {
-    if (selectedNode === null) {
+    if (selectedNodeID === null) {
       if (location.hash !== "") {
         history.replaceState(null, "", " ");
       }
       return;
     }
-
+    const selectedNode = rawHierarchyID.get(selectedNodeID);
+    if (!selectedNode) {
+      return;
+    }
     const path = `#${selectedNode
       .ancestors()
       .map((d) => {
@@ -135,27 +156,21 @@ function TreeMap({ entry }: TreeMapProps) {
     if (location.hash !== path) {
       history.replaceState(null, "", path);
     }
-  }, [selectedNode]);
+  }, [rawHierarchyID, selectedNodeID]);
 
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState<[number, number]>([0, 0]);
   const [tooltipNode, setTooltipNode]
-        = useState<HierarchyRectangularNode<Entry> | undefined>(undefined);
+        = useState<Entry | undefined>(undefined);
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  const onMouseEnter = useCallback(() => {
-    setShowTooltip(true);
-  }, []);
+  const {
+    clientX,
+    clientY,
+    isOver,
+    eventTarget: mouseEventTarget,
+  } = useMouse(svgRef);
 
-  const onMouseLeave = useCallback(() => {
-    setShowTooltip(false);
-  }, []);
-
-  const getTargetNode = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    if (!e.target) {
-      return null;
-    }
-
-    const target = (e.target as SVGElement).parentNode;
+  const getTargetNode = useCallback((e: EventTarget) => {
+    const target = (e as SVGElement).parentNode;
     if (!target) {
       return null;
     }
@@ -167,85 +182,83 @@ function TreeMap({ entry }: TreeMapProps) {
 
     const dataId = Number.parseInt(dataIdStr);
 
-    return allNodes.get(dataId) ?? null;
-  }, [allNodes]);
-
-  const onMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    setTooltipPosition([e.clientX, e.clientY]);
-
-    const node = getTargetNode(e);
-    if (node === null) {
-      setTooltipNode(undefined);
-      return;
-    }
-    setTooltipNode(node);
-  }, [getTargetNode]);
+    return rawHierarchyID.get(dataId)?.data ?? null;
+  }, [rawHierarchyID]);
 
   const onClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    const node = getTargetNode(e);
+    const node = getTargetNode(e.target);
     if (node === null) {
       return;
     }
 
-    if (selectedNode?.data.getID() === node.data.getID()) {
-      setSelectedNode(null);
+    if (e.ctrlKey) {
+      console.log(node);
+      return;
+    }
+
+    if (selectedNodeID === node.getID()) {
+      setSelectedNodeID(null);
     }
     else {
-      setSelectedNode(node);
+      setSelectedNodeID(node.getID());
     }
-  }, [getTargetNode, selectedNode]);
-
-  const nodes = useMemo(() => {
-    const selectedID = selectedNode?.data.getID();
-
-    return (
-      nestedData.map(({ key, values }) => {
-        return (
-          <g className="layer" key={key}>
-            {values.map((node) => {
-              const { backgroundColor, fontColor } = getModuleColor(node);
-
-              if (node.x0 === node.x1 || node.y0 === node.y1) {
-                return null;
-              }
-
-              return (
-                <Node
-                  key={node.data.getID()}
-                  id={node.data.getID()}
-                  title={node.data.getName()}
-                  selected={selectedID === node.data.getID()}
-                  x0={node.x0}
-                  y0={node.y0}
-                  x1={node.x1}
-                  y1={node.y1}
-
-                  backgroundColor={backgroundColor}
-                  fontColor={fontColor}
-                  hasChildren={node.children !== undefined}
-                />
-              );
-            }).filter(Boolean)}
-          </g>
-        );
-      })
-    );
-  }, [getModuleColor, nestedData, selectedNode]);
+  }, [getTargetNode, selectedNodeID]);
 
   const tooltipVisible = useMemo(() => {
-    return showTooltip && tooltipNode && tooltipPosition.every(v => v > 0);
-  }, [showTooltip, tooltipNode, tooltipPosition]);
+    return isOver && tooltipNode;
+  }, [isOver, tooltipNode]);
+
+  useEffect(() => {
+    if (!mouseEventTarget) {
+      return;
+    }
+    const node = getTargetNode(mouseEventTarget);
+    if (node) {
+      setTooltipNode(node);
+    }
+  }, [getTargetNode, mouseEventTarget]);
+
+  const nodes = useMemo(() => {
+    return layers.map(({ key, values }) => {
+      return (
+        <g className="layer" key={key}>
+          {values.map((node) => {
+            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
+
+            if (node.x1 - node.x0 < 6 || node.y1 - node.y0 < 6) {
+              return null;
+            }
+
+            return (
+              <Node
+                key={node.data.getID()}
+                id={node.data.getID()}
+                title={node.data.getName()}
+                selected={selectedNodeID === node.data.getID()}
+                x0={node.x0}
+                y0={node.y0}
+                x1={node.x1}
+                y1={node.y1}
+
+                backgroundColor={backgroundColor}
+                fontColor={fontColor}
+                hasChildren={node.children !== undefined}
+              />
+            );
+          }).filter(Boolean)}
+        </g>
+      );
+    });
+  }, [getModuleColor, layers, selectedNodeID]);
 
   return (
     <>
-      {(tooltipVisible) && <Tooltip node={tooltipNode!.data} x={tooltipPosition[0]} y={tooltipPosition[1]} />}
+      {(tooltipVisible) && <Tooltip node={tooltipNode!} x={clientX!} y={clientY!} />}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox={`0 0 ${width} ${height}`}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onMouseMove={onMouseMove}
         onClick={onClick}
+        ref={svgRef}
       >
         {nodes}
       </svg>

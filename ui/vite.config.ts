@@ -14,8 +14,17 @@ function getPlaceHolder(): string {
   }
 
   try {
+    let target: URL;
+
+    if (fs.existsSync("../data.json")) {
+      target = new URL("../data.json", import.meta.url);
+    }
+    else {
+      target = new URL("../testdata/result.json", import.meta.url);
+    }
+
     return fs.readFileSync(
-      new URL("../testdata/result.json", import.meta.url),
+      target,
       "utf-8",
     );
   }

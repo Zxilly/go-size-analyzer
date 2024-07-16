@@ -40,14 +40,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="588"
-        transform="translate(475,20)"
+        transform="translate(474,20)"
       >
         <rect
-          fill="rgb(172, 210, 210)"
+          fill="rgb(192, 172, 210)"
           height="748"
           rx="2"
           ry="2"
-          width="549"
+          width="550"
         />
         <text
           dominant-baseline="middle"
@@ -55,7 +55,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="274.5"
+          x="275"
           y="11"
         >
           Std Packages Size
@@ -71,8 +71,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(0,20)"
       >
         <rect
-          fill="rgb(192, 210, 172)"
-          height="14"
+          fill="rgb(210, 172, 172)"
+          height="15"
           rx="2"
           ry="2"
           width="473"
@@ -84,7 +84,7 @@ exports[`treeMap > render snapshot 1`] = `
           text-anchor="middle"
           transform="scale(1.00)"
           x="236.5"
-          y="7"
+          y="7.5"
         >
           Generated Packages Size
         </text>
@@ -95,8 +95,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(0,36)"
       >
         <rect
-          fill="rgb(192, 172, 210)"
-          height="16"
+          fill="rgb(192, 210, 172)"
+          height="17"
           rx="2"
           ry="2"
           width="473"
@@ -108,46 +108,22 @@ exports[`treeMap > render snapshot 1`] = `
           text-anchor="middle"
           transform="scale(1.00)"
           x="236.5"
-          y="8"
+          y="8.5"
         >
           Main Packages Size
         </text>
       </g>
       <g
         class="node"
-        data-id="96"
-        transform="translate(484,40)"
-      >
-        <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
-          rx="2"
-          ry="2"
-          width="3"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1.5"
-          y="11"
-        >
-          math
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="571"
-        transform="translate(550,40)"
+        transform="translate(549,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
-          width="39"
+          width="41"
         />
         <text
           dominant-baseline="middle"
@@ -155,7 +131,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="19.5"
+          x="20.5"
           y="11"
         >
           unicode
@@ -164,14 +140,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="74"
-        transform="translate(900,40)"
+        transform="translate(899,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
-          width="124"
+          width="125"
         />
         <text
           dominant-baseline="middle"
@@ -179,7 +155,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="62"
+          x="62.5"
           y="11"
         >
           io
@@ -191,11 +167,11 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(508,65)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="107"
+          fill="rgb(154, 123, 183)"
+          height="108"
           rx="2"
           ry="2"
-          width="34"
+          width="35"
         />
         <text
           dominant-baseline="middle"
@@ -203,7 +179,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="17"
+          x="17.5"
           y="11"
         >
           sync
@@ -212,14 +188,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="117"
-        transform="translate(475,174)"
+        transform="translate(474,174)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
+          fill="rgb(154, 123, 183)"
           height="594"
           rx="2"
           ry="2"
-          width="549"
+          width="550"
         />
         <text
           dominant-baseline="middle"
@@ -227,7 +203,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="274.5"
+          x="275"
           y="11"
         >
           runtime
@@ -243,7 +219,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(0,54)"
       >
         <rect
-          fill="rgb(210, 172, 172)"
+          fill="rgb(172, 210, 210)"
           height="714"
           rx="2"
           ry="2"
@@ -263,60 +239,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="101"
-        transform="translate(477,40)"
-      >
-        <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="11"
-        >
-          os/signal
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="103"
-        transform="translate(480,40)"
-      >
-        <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="11"
-        >
-          path
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="61"
         transform="translate(489,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
           width="8"
@@ -336,35 +264,11 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="59"
-        transform="translate(499,40)"
+        transform="translate(498,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
-          rx="2"
-          ry="2"
-          width="10"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="5"
-          y="11"
-        >
-          internal/itoa
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="35"
-        transform="translate(511,40)"
-      >
-        <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
           width="12"
@@ -378,6 +282,30 @@ exports[`treeMap > render snapshot 1`] = `
           x="6"
           y="11"
         >
+          internal/itoa
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="35"
+        transform="translate(511,40)"
+      >
+        <rect
+          fill="rgb(154, 123, 183)"
+          height="24"
+          rx="2"
+          ry="2"
+          width="13"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          transform="scale(1.00)"
+          x="6.5"
+          y="11"
+        >
           errors
         </text>
       </g>
@@ -387,8 +315,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(525,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
           width="23"
@@ -411,8 +339,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(591,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
           width="63"
@@ -432,14 +360,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="494"
-        transform="translate(656,40)"
+        transform="translate(655,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
-          width="63"
+          width="65"
         />
         <text
           dominant-baseline="middle"
@@ -447,7 +375,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="31.5"
+          x="32.5"
           y="11"
         >
           strconv
@@ -459,8 +387,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(721,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
           width="77"
@@ -480,14 +408,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="39"
-        transform="translate(800,40)"
+        transform="translate(799,40)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="23"
+          fill="rgb(154, 123, 183)"
+          height="24"
           rx="2"
           ry="2"
-          width="98"
+          width="99"
         />
         <text
           dominant-baseline="middle"
@@ -495,7 +423,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="49"
+          x="49.5"
           y="11"
         >
           internal/abi
@@ -504,14 +432,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="32"
-        transform="translate(475,65)"
+        transform="translate(474,65)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="107"
+          fill="rgb(154, 123, 183)"
+          height="108"
           rx="2"
           ry="2"
-          width="31"
+          width="33"
         />
         <text
           dominant-baseline="middle"
@@ -519,7 +447,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="15.5"
+          x="16.5"
           y="11"
         >
           embed
@@ -531,11 +459,11 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(544,65)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="107"
+          fill="rgb(154, 123, 183)"
+          height="108"
           rx="2"
           ry="2"
-          width="47"
+          width="48"
         />
         <text
           dominant-baseline="middle"
@@ -543,7 +471,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="23.5"
+          x="24"
           y="11"
         >
           syscall
@@ -555,8 +483,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(593,65)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="107"
+          fill="rgb(154, 123, 183)"
+          height="108"
           rx="2"
           ry="2"
           width="96"
@@ -576,14 +504,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="543"
-        transform="translate(691,65)"
+        transform="translate(690,65)"
       >
         <rect
-          fill="rgb(123, 183, 183)"
-          height="107"
+          fill="rgb(154, 123, 183)"
+          height="108"
           rx="2"
           ry="2"
-          width="333"
+          width="334"
         />
         <text
           dominant-baseline="middle"
@@ -591,82 +519,10 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="166.5"
+          x="167"
           y="11"
         >
           time
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="98"
-        transform="translate(486,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="1.5"
-        >
-          bits
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="573"
-        transform="translate(567,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="22"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="11"
-          y="1.5"
-        >
-          utf8
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="76"
-        transform="translate(914,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="110"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="55"
-          y="1.5"
-        >
-          fs
         </text>
       </g>
       <g
@@ -675,20 +531,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(508,156)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="16"
+          fill="rgb(116, 80, 149)"
+          height="17"
           rx="2"
           ry="2"
-          width="34"
+          width="35"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="17"
-          y="8"
+          x="17.5"
+          y="8.5"
         >
           atomic
         </text>
@@ -696,23 +552,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="241"
-        transform="translate(489,202)"
+        transform="translate(489,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
           width="6"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="3"
-          y="9"
+          y="10"
         >
           internal/sys
         </text>
@@ -720,23 +576,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="236"
-        transform="translate(505,202)"
+        transform="translate(504,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="5"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="2.5"
-          y="9"
+          x="3.5"
+          y="10"
         >
           debug
         </text>
@@ -744,23 +600,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="243"
-        transform="translate(758,202)"
+        transform="translate(757,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="16"
+          width="17"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="8"
-          y="9"
+          x="8.5"
+          y="10"
         >
           internal/syscall
         </text>
@@ -768,18 +624,18 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="238"
-        transform="translate(509,599)"
+        transform="translate(509,598)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="37"
+          fill="rgb(116, 80, 149)"
+          height="39"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -795,207 +651,15 @@ exports[`treeMap > render snapshot 1`] = `
     >
       <g
         class="node"
-        data-id="6"
-        transform="translate(0,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="4"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="2"
-          y="1"
-        >
-          .debug_gdb_scripts
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="13"
-        transform="translate(6,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="7"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3.5"
-          y="1"
-        >
-          .itablink
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="16"
-        transform="translate(15,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="8"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="4"
-          y="1"
-        >
-          .note.go.buildid
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="18"
-        transform="translate(25,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="19"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="9.5"
-          y="1"
-        >
-          .shstrtab
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="11"
-        transform="translate(46,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="26"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="13"
-          y="1"
-        >
-          .go.buildinfo
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="4"
-        transform="translate(74,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="28"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14"
-          y="1"
-        >
-          .debug_abbrev
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="22"
-        transform="translate(104,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="121"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="60.5"
-          y="1"
-        >
-          .typelink
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="15"
-        transform="translate(227,74)"
-      >
-        <rect
-          fill="rgb(183, 123, 123)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="246"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="123"
-          y="1"
-        >
-          .noptrdata
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="3"
         transform="translate(0,78)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="92"
+          fill="rgb(123, 183, 183)"
+          height="93"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
         <text
           dominant-baseline="middle"
@@ -1003,8 +667,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="46"
+          x="10.5"
+          y="46.5"
         >
           .data
         </text>
@@ -1015,11 +679,11 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(22,78)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="92"
+          fill="rgb(123, 183, 183)"
+          height="93"
           rx="2"
           ry="2"
-          width="55"
+          width="56"
         />
         <text
           dominant-baseline="middle"
@@ -1027,8 +691,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="27.5"
-          y="46"
+          x="28"
+          y="46.5"
         >
           .debug_ranges
         </text>
@@ -1039,11 +703,11 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(79,78)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="92"
+          fill="rgb(123, 183, 183)"
+          height="93"
           rx="2"
           ry="2"
-          width="128"
+          width="129"
         />
         <text
           dominant-baseline="middle"
@@ -1051,8 +715,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="64"
-          y="46"
+          x="64.5"
+          y="46.5"
         >
           .debug_frame
         </text>
@@ -1063,8 +727,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(209,78)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="92"
+          fill="rgb(123, 183, 183)"
+          height="93"
           rx="2"
           ry="2"
           width="264"
@@ -1076,7 +740,7 @@ exports[`treeMap > render snapshot 1`] = `
           text-anchor="middle"
           transform="scale(1.00)"
           x="132"
-          y="46"
+          y="46.5"
         >
           .symtab
         </text>
@@ -1087,11 +751,11 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(0,172)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="194"
+          fill="rgb(123, 183, 183)"
+          height="195"
           rx="2"
           ry="2"
-          width="128"
+          width="129"
         />
         <text
           dominant-baseline="middle"
@@ -1099,8 +763,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="64"
-          y="97"
+          x="64.5"
+          y="97.5"
         >
           .strtab
         </text>
@@ -1111,8 +775,8 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(130,172)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="194"
+          fill="rgb(123, 183, 183)"
+          height="195"
           rx="2"
           ry="2"
           width="169"
@@ -1124,7 +788,7 @@ exports[`treeMap > render snapshot 1`] = `
           text-anchor="middle"
           transform="scale(1.00)"
           x="84.5"
-          y="97"
+          y="97.5"
         >
           .debug_line
         </text>
@@ -1132,14 +796,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="9"
-        transform="translate(301,172)"
+        transform="translate(300,172)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="194"
+          fill="rgb(123, 183, 183)"
+          height="195"
           rx="2"
           ry="2"
-          width="172"
+          width="173"
         />
         <text
           dominant-baseline="middle"
@@ -1147,8 +811,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="86"
-          y="97"
+          x="86.5"
+          y="97.5"
         >
           .debug_loc
         </text>
@@ -1159,7 +823,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(0,368)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
+          fill="rgb(123, 183, 183)"
           height="198"
           rx="2"
           ry="2"
@@ -1180,11 +844,11 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="12"
-        transform="translate(0,568)"
+        transform="translate(0,567)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="200"
+          fill="rgb(123, 183, 183)"
+          height="201"
           rx="2"
           ry="2"
           width="298"
@@ -1196,7 +860,7 @@ exports[`treeMap > render snapshot 1`] = `
           text-anchor="middle"
           transform="scale(1.00)"
           x="149"
-          y="100"
+          y="100.5"
         >
           .gopclntab
         </text>
@@ -1204,14 +868,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="7"
-        transform="translate(300,368)"
+        transform="translate(299,368)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
+          fill="rgb(123, 183, 183)"
           height="400"
           rx="2"
           ry="2"
-          width="173"
+          width="174"
         />
         <text
           dominant-baseline="middle"
@@ -1219,7 +883,7 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="86.5"
+          x="87"
           y="200"
         >
           .debug_info
@@ -1227,672 +891,48 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="102"
-        transform="translate(477,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="1.5"
-        >
-          sigqueue.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="104"
-        transform="translate(480,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="1.5"
-        >
-          match.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="62"
-        transform="translate(491,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="6"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3"
-          y="1.5"
-        >
-          errors.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="60"
-        transform="translate(499,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="10"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="5"
-          y="1.5"
-        >
-          itoa.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="36"
-        transform="translate(512,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="11"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="5.5"
-          y="1.5"
-        >
-          errors.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="46"
-        transform="translate(525,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="1.5"
-        >
-          index_amd64.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="48"
-        transform="translate(528,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="4"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="2"
-          y="1.5"
-        >
-          equal_amd64.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="45"
-        transform="translate(534,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="5"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="2.5"
-          y="1.5"
-        >
-          indexbyte_amd64.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="47"
-        transform="translate(541,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="7"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3.5"
-          y="1.5"
-        >
-          compare_amd64.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="572"
-        transform="translate(551,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="14"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="7"
-          y="1.5"
-        >
-          casetables.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="71"
-        transform="translate(591,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="1.5"
-        >
-          runtime1.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="73"
-        transform="translate(594,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="19"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="9.5"
-          y="1.5"
-        >
-          &lt;autogenerated&gt;
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="72"
-        transform="translate(615,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="39"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="19.5"
-          y="1.5"
-        >
-          type.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="496"
-        transform="translate(656,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="3"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1.5"
-          y="1.5"
-        >
-          atof.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="495"
-        transform="translate(661,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="58"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="29"
-          y="1.5"
-        >
-          itoa.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="53"
-        transform="translate(724,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="5"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="2.5"
-          y="1.5"
-        >
-          cpu_x86.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="51"
-        transform="translate(731,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="28"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14"
-          y="1.5"
-        >
-          cpu.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="52"
-        transform="translate(761,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="37"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="18.5"
-          y="1.5"
-        >
-          cpu_x86.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="41"
-        transform="translate(800,61)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="1"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="0.5"
-          y="1"
-        >
-          unsafestring_go120.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="42"
-        transform="translate(803,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="3"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1.5"
-          y="1.5"
-        >
-          &lt;autogenerated&gt;
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="40"
-        transform="translate(808,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="90"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="45"
-          y="1.5"
-        >
-          type.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="75"
-        transform="translate(902,60)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="3"
-          rx="2"
-          ry="2"
-          width="10"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="5"
-          y="1.5"
-        >
-          io.go
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="33"
-        transform="translate(475,85)"
+        transform="translate(474,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="87"
+          fill="rgb(116, 80, 149)"
+          height="88"
           rx="2"
           ry="2"
-          width="31"
+          width="33"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="15.5"
-          y="43.5"
+          x="16.5"
+          y="44"
         >
           embed.go
         </text>
       </g>
       <g
         class="node"
-        data-id="511"
-        transform="translate(512,85)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="4"
-          rx="2"
-          ry="2"
-          width="6"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3"
-          y="2"
-        >
-          &lt;autogenerated&gt;
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="509"
-        transform="translate(520,85)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="4"
-          rx="2"
-          ry="2"
-          width="9"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="4.5"
-          y="2"
-        >
-          runtime.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="500"
-        transform="translate(531,85)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="4"
-          rx="2"
-          ry="2"
-          width="11"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="5.5"
-          y="2"
-        >
-          mgc.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="506"
-        transform="translate(508,91)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="10"
-          rx="2"
-          ry="2"
-          width="4"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="2"
-          y="5"
-        >
-          map.go
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="501"
-        transform="translate(514,91)"
+        transform="translate(513,91)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="10"
+          fill="rgb(116, 80, 149)"
+          height="11"
           rx="2"
           ry="2"
-          width="6"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3"
-          y="5"
+          x="3.5"
+          y="5.5"
         >
           mprof.go
         </text>
@@ -1900,23 +940,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="502"
-        transform="translate(522,91)"
+        transform="translate(521,91)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="10"
+          fill="rgb(116, 80, 149)"
+          height="11"
           rx="2"
           ry="2"
-          width="8"
+          width="9"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4"
-          y="5"
+          x="4.5"
+          y="5.5"
         >
           panic.go
         </text>
@@ -1924,23 +964,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="503"
-        transform="translate(532,91)"
+        transform="translate(531,91)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="10"
+          fill="rgb(116, 80, 149)"
+          height="11"
           rx="2"
           ry="2"
-          width="10"
+          width="12"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="5"
-          y="5"
+          x="6"
+          y="5.5"
         >
           proc.go
         </text>
@@ -1951,19 +991,19 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(508,103)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="23"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
+          x="5"
           y="11.5"
         >
           rwmutex.go
@@ -1975,7 +1015,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(519,103)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="23"
           rx="2"
           ry="2"
@@ -1983,7 +1023,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -1996,22 +1036,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="504"
-        transform="translate(531,103)"
+        transform="translate(530,103)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="23"
           rx="2"
           ry="2"
-          width="11"
+          width="13"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="5.5"
+          x="6.5"
           y="11.5"
         >
           sema.go
@@ -2020,23 +1060,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="508"
-        transform="translate(508,128)"
+        transform="translate(508,127)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="26"
+          fill="rgb(116, 80, 149)"
+          height="28"
           rx="2"
           ry="2"
           width="12"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="6"
-          y="13"
+          y="14"
         >
           once.go
         </text>
@@ -2044,73 +1084,25 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="507"
-        transform="translate(522,128)"
+        transform="translate(521,127)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="26"
+          fill="rgb(116, 80, 149)"
+          height="28"
           rx="2"
           ry="2"
-          width="20"
+          width="22"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="13"
+          x="11"
+          y="14"
         >
           mutex.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="523"
-        transform="translate(544,86)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="8"
-          rx="2"
-          ry="2"
-          width="3"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1.5"
-          y="4"
-        >
-          syscall_linux.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="526"
-        transform="translate(549,86)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="8"
-          rx="2"
-          ry="2"
-          width="3"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1.5"
-          y="4"
-        >
-          rlimit_stub.go
         </text>
       </g>
       <g
@@ -2119,20 +1111,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(554,86)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="8"
+          fill="rgb(116, 80, 149)"
+          height="9"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="4"
+          x="5"
+          y="4.5"
         >
           runtime.go
         </text>
@@ -2143,20 +1135,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(565,86)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="8"
+          fill="rgb(116, 80, 149)"
+          height="9"
           rx="2"
           ry="2"
           width="9"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="4.5"
-          y="4"
+          y="4.5"
         >
           rlimit.go
         </text>
@@ -2164,23 +1156,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="532"
-        transform="translate(576,86)"
+        transform="translate(575,86)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="8"
+          fill="rgb(116, 80, 149)"
+          height="9"
           rx="2"
           ry="2"
-          width="15"
+          width="17"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="7.5"
-          y="4"
+          x="8.5"
+          y="4.5"
         >
           &lt;autogenerated&gt;
         </text>
@@ -2191,20 +1183,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(544,96)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="23"
+          fill="rgb(116, 80, 149)"
+          height="24"
           rx="2"
           ry="2"
-          width="13"
+          width="14"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="6.5"
-          y="11.5"
+          x="7"
+          y="12"
         >
           syscall_unix.go
         </text>
@@ -2215,20 +1207,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(559,96)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="23"
+          fill="rgb(116, 80, 149)"
+          height="24"
           rx="2"
           ry="2"
-          width="14"
+          width="15"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="7"
-          y="11.5"
+          x="7.5"
+          y="12"
         >
           syscall.go
         </text>
@@ -2239,20 +1231,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(575,96)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="23"
+          fill="rgb(116, 80, 149)"
+          height="24"
           rx="2"
           ry="2"
-          width="16"
+          width="17"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="8"
-          y="11.5"
+          x="8.5"
+          y="12"
         >
           syscall_linux.go
         </text>
@@ -2263,7 +1255,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(544,121)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="29"
           rx="2"
           ry="2"
@@ -2271,7 +1263,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -2284,22 +1276,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="525"
-        transform="translate(568,121)"
+        transform="translate(567,121)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="29"
           rx="2"
           ry="2"
-          width="23"
+          width="25"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="11.5"
+          x="12.5"
           y="14.5"
         >
           env_unix.go
@@ -2308,119 +1300,47 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="530"
-        transform="translate(544,152)"
+        transform="translate(544,151)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="20"
+          fill="rgb(116, 80, 149)"
+          height="22"
           rx="2"
           ry="2"
-          width="47"
+          width="48"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="23.5"
-          y="10"
+          x="24"
+          y="11"
         >
           zsyscall_linux_amd64.go
         </text>
       </g>
       <g
         class="node"
-        data-id="107"
-        transform="translate(593,90)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="16"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="8"
-        >
-          mbitmap.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="111"
-        transform="translate(593,108)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="30"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="15"
-        >
-          abi.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="108"
-        transform="translate(593,140)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="32"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="16"
-        >
-          runtime1.go
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="112"
-        transform="translate(597,85)"
+        transform="translate(596,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="9"
+          fill="rgb(116, 80, 149)"
+          height="10"
           rx="2"
           ry="2"
-          width="39"
+          width="40"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="19.5"
-          y="4.5"
+          x="20"
+          y="5"
         >
           &lt;autogenerated&gt;
         </text>
@@ -2428,23 +1348,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="109"
-        transform="translate(597,96)"
+        transform="translate(596,96)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="76"
+          fill="rgb(116, 80, 149)"
+          height="77"
           rx="2"
           ry="2"
-          width="39"
+          width="40"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="19.5"
-          y="38"
+          x="20"
+          y="38.5"
         >
           type.go
         </text>
@@ -2452,95 +1372,47 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="110"
-        transform="translate(638,85)"
+        transform="translate(637,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="87"
+          fill="rgb(116, 80, 149)"
+          height="88"
           rx="2"
           ry="2"
-          width="51"
+          width="52"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="25.5"
-          y="43.5"
+          x="26"
+          y="44"
         >
           value.go
         </text>
       </g>
       <g
         class="node"
-        data-id="563"
-        transform="translate(691,92)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="7"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3.5"
-          y="1"
-        >
-          utcLoc
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="564"
-        transform="translate(691,96)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="7"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="3.5"
-          y="1"
-        >
-          localLoc
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="550"
-        transform="translate(691,100)"
+        transform="translate(690,100)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="9"
+          fill="rgb(116, 80, 149)"
+          height="10"
           rx="2"
           ry="2"
-          width="7"
+          width="8"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3.5"
-          y="4.5"
+          x="4"
+          y="5"
         >
           zoneinfo_goroot.go
         </text>
@@ -2548,23 +1420,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="545"
-        transform="translate(691,111)"
+        transform="translate(690,111)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="11"
+          fill="rgb(116, 80, 149)"
+          height="12"
           rx="2"
           ry="2"
-          width="7"
+          width="8"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3.5"
-          y="5.5"
+          x="4"
+          y="6"
         >
           time_linux_amd64.s
         </text>
@@ -2572,23 +1444,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="544"
-        transform="translate(691,124)"
+        transform="translate(690,124)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="11"
+          fill="rgb(116, 80, 149)"
+          height="12"
           rx="2"
           ry="2"
-          width="7"
+          width="8"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3.5"
-          y="5.5"
+          x="4"
+          y="6"
         >
           time.go
         </text>
@@ -2596,23 +1468,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="554"
-        transform="translate(691,137)"
+        transform="translate(690,137)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="35"
+          fill="rgb(116, 80, 149)"
+          height="36"
           rx="2"
           ry="2"
-          width="7"
+          width="8"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3.5"
-          y="17.5"
+          x="4"
+          y="18"
         >
           &lt;autogenerated&gt;
         </text>
@@ -2620,23 +1492,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="547"
-        transform="translate(700,85)"
+        transform="translate(699,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="11"
+          fill="rgb(116, 80, 149)"
+          height="12"
           rx="2"
           ry="2"
-          width="44"
+          width="46"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="22"
-          y="5.5"
+          x="23"
+          y="6"
         >
           sys_unix.go
         </text>
@@ -2644,23 +1516,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="553"
-        transform="translate(700,98)"
+        transform="translate(699,98)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="13"
+          fill="rgb(116, 80, 149)"
+          height="14"
           rx="2"
           ry="2"
-          width="44"
+          width="46"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="22"
-          y="6.5"
+          x="23"
+          y="7"
         >
           format_rfc3339.go
         </text>
@@ -2668,23 +1540,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="552"
-        transform="translate(700,113)"
+        transform="translate(699,113)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="19"
           rx="2"
           ry="2"
-          width="44"
+          width="46"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="22"
-          y="9"
+          x="23"
+          y="9.5"
         >
           zoneinfo_unix.go
         </text>
@@ -2692,23 +1564,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="548"
-        transform="translate(700,133)"
+        transform="translate(699,133)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="39"
+          fill="rgb(116, 80, 149)"
+          height="40"
           rx="2"
           ry="2"
-          width="44"
+          width="46"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="22"
-          y="19.5"
+          x="23"
+          y="20"
         >
           time.go
         </text>
@@ -2719,20 +1591,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(746,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="87"
+          fill="rgb(116, 80, 149)"
+          height="88"
           rx="2"
           ry="2"
           width="61"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="30.5"
-          y="43.5"
+          y="44"
         >
           zoneinfo.go
         </text>
@@ -2740,23 +1612,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="551"
-        transform="translate(809,85)"
+        transform="translate(808,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="87"
+          fill="rgb(116, 80, 149)"
+          height="88"
           rx="2"
           ry="2"
-          width="86"
+          width="87"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="43.5"
+          x="43.5"
+          y="44"
         >
           zoneinfo_read.go
         </text>
@@ -2764,503 +1636,47 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="546"
-        transform="translate(897,85)"
+        transform="translate(896,85)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="87"
+          fill="rgb(116, 80, 149)"
+          height="88"
           rx="2"
           ry="2"
-          width="127"
+          width="128"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="63.5"
-          y="43.5"
+          x="64"
+          y="44"
         >
           format.go
         </text>
       </g>
       <g
         class="node"
-        data-id="168"
-        transform="translate(475,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="21"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="10.5"
-          y="1"
-        >
-          nbpipe_pipe2.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="214"
-        transform="translate(498,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="22"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="11"
-          y="1"
-        >
-          write_err.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="223"
-        transform="translate(522,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="22"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="11"
-          y="1"
-        >
-          cpuflags_amd64.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="227"
-        transform="translate(546,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="21"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="10.5"
-          y="1"
-        >
-          lockrank.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="381"
-        transform="translate(569,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="25"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="12.5"
-          y="1"
-        >
-          modinfo.string
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="184"
-        transform="translate(596,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="25"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="12.5"
-          y="1"
-        >
-          retry.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="202"
-        transform="translate(623,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="26"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="13"
-          y="1"
-        >
-          sys_x86.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="462"
-        transform="translate(651,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="26"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="13"
-          y="1"
-        >
-          size_to_class128
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="450"
-        transform="translate(679,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="28"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14"
-          y="1"
-        >
-          sigprofCallers
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="464"
-        transform="translate(709,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="27"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="13.5"
-          y="1"
-        >
-          stackpool
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="448"
-        transform="translate(738,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="28"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14"
-          y="1"
-        >
-          handlingSig
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="270"
-        transform="translate(768,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="29"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14.5"
-          y="1"
-        >
-          fastlog2Table
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="133"
-        transform="translate(799,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="29"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14.5"
-          y="1"
-        >
-          fastlog2.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="460"
-        transform="translate(830,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="29"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="14.5"
-          y="1"
-        >
-          class_to_divmagic
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="119"
-        transform="translate(861,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="31"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="15.5"
-          y="1"
-        >
-          equal_amd64.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="176"
-        transform="translate(894,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="30"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="15"
-          y="1"
-        >
-          os_nonopenbsd.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="180"
-        transform="translate(926,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="31"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="15.5"
-          y="1"
-        >
-          preempt_nonwindows.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="188"
-        transform="translate(959,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="30"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="15"
-          y="1"
-        >
-          security_linux.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="226"
-        transform="translate(991,198)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="2"
-          rx="2"
-          ry="2"
-          width="33"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="16.5"
-          y="1"
-        >
-          histogram.go
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="165"
-        transform="translate(475,202)"
+        transform="translate(474,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="5"
+          width="6"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="2.5"
-          y="9"
+          x="3"
+          y="10"
         >
           msize.go
         </text>
@@ -3268,23 +1684,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="122"
-        transform="translate(482,202)"
+        transform="translate(481,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="5"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="2.5"
-          y="9"
+          x="3.5"
+          y="10"
         >
           atomic_pointer.go
         </text>
@@ -3292,23 +1708,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="314"
-        transform="translate(497,202)"
+        transform="translate(496,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="6"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3"
-          y="9"
+          x="3.5"
+          y="10"
         >
           gcController
         </text>
@@ -3316,23 +1732,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="383"
-        transform="translate(512,202)"
+        transform="translate(512,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="6"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3"
-          y="9"
+          x="3.5"
+          y="10"
         >
           g0
         </text>
@@ -3340,23 +1756,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="132"
-        transform="translate(520,202)"
+        transform="translate(520,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
           width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="3.5"
-          y="9"
+          y="10"
         >
           extern.go
         </text>
@@ -3364,23 +1780,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="205"
-        transform="translate(529,202)"
+        transform="translate(528,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="6"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3"
-          y="9"
+          x="3.5"
+          y="10"
         >
           time_nofake.go
         </text>
@@ -3388,23 +1804,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="203"
-        transform="translate(537,202)"
+        transform="translate(536,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="6"
+          width="7"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="3"
-          y="9"
+          x="3.5"
+          y="10"
         >
           tagptr_64bit.go
         </text>
@@ -3412,23 +1828,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="376"
-        transform="translate(545,202)"
+        transform="translate(544,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="8"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4"
-          y="9"
+          x="5"
+          y="10"
         >
           printBacklog
         </text>
@@ -3436,23 +1852,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="427"
-        transform="translate(555,202)"
+        transform="translate(555,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="8"
+          width="9"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4"
-          y="9"
+          x="4.5"
+          y="10"
         >
           waitReasonStrings
         </text>
@@ -3460,23 +1876,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="447"
-        transform="translate(565,202)"
+        transform="translate(565,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="8"
+          width="9"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4"
-          y="9"
+          x="4.5"
+          y="10"
         >
           fwdSig
         </text>
@@ -3484,23 +1900,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="173"
-        transform="translate(575,202)"
+        transform="translate(575,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="9"
+          x="5"
+          y="10"
         >
           os_linux_generic.go
         </text>
@@ -3508,23 +1924,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="220"
-        transform="translate(586,202)"
+        transform="translate(586,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="9"
+          x="5"
+          y="10"
         >
           preempt_amd64.s
         </text>
@@ -3532,23 +1948,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="465"
-        transform="translate(597,202)"
+        transform="translate(597,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="9"
+          x="5"
+          y="10"
         >
           stackLarge
         </text>
@@ -3556,23 +1972,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="185"
-        transform="translate(608,202)"
+        transform="translate(608,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
           width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="5"
-          y="9"
+          y="10"
         >
           runtime.go
         </text>
@@ -3580,23 +1996,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="308"
-        transform="translate(620,202)"
+        transform="translate(619,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="9"
+          width="10"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="9"
+          x="5"
+          y="10"
         >
           work
         </text>
@@ -3604,23 +2020,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="212"
-        transform="translate(631,202)"
+        transform="translate(630,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="10"
+          width="11"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="5"
-          y="9"
+          x="5.5"
+          y="10"
         >
           utf8.go
         </text>
@@ -3628,23 +2044,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="471"
-        transform="translate(643,202)"
+        transform="translate(642,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="9"
+          width="11"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="4.5"
-          y="9"
+          x="5.5"
+          y="10"
         >
           firstmoduledata
         </text>
@@ -3652,23 +2068,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="124"
-        transform="translate(654,202)"
+        transform="translate(654,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
           width="12"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="6"
-          y="9"
+          y="10"
         >
           cgo_sigaction.go
         </text>
@@ -3676,23 +2092,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="129"
-        transform="translate(668,202)"
+        transform="translate(667,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="11"
+          width="12"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="5.5"
-          y="9"
+          x="6"
+          y="10"
         >
           env_posix.go
         </text>
@@ -3700,23 +2116,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="193"
-        transform="translate(681,202)"
+        transform="translate(680,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="11"
+          width="12"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="5.5"
-          y="9"
+          x="6"
+          y="10"
         >
           sigqueue.go
         </text>
@@ -3724,23 +2140,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="177"
-        transform="translate(694,202)"
+        transform="translate(693,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="12"
+          width="13"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="6"
-          y="9"
+          x="6.5"
+          y="10"
         >
           pagetrace_off.go
         </text>
@@ -3748,23 +2164,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="134"
-        transform="translate(708,202)"
+        transform="translate(707,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="14"
+          width="15"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="7"
-          y="9"
+          x="7.5"
+          y="10"
         >
           float.go
         </text>
@@ -3772,23 +2188,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="131"
-        transform="translate(724,202)"
+        transform="translate(723,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="15"
+          width="16"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="7.5"
-          y="9"
+          x="8"
+          y="10"
         >
           exithook.go
         </text>
@@ -3796,23 +2212,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="218"
-        transform="translate(741,202)"
+        transform="translate(740,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="15"
+          width="16"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="7.5"
-          y="9"
+          x="8"
+          y="10"
         >
           memclr_amd64.s
         </text>
@@ -3820,23 +2236,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="229"
-        transform="translate(776,202)"
+        transform="translate(775,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="16"
+          width="17"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="8"
-          y="9"
+          x="8.5"
+          y="10"
         >
           mfixalloc.go
         </text>
@@ -3844,23 +2260,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="125"
-        transform="translate(794,202)"
+        transform="translate(793,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="18"
+          width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="9"
-          y="9"
+          x="9.5"
+          y="10"
         >
           cgocall.go
         </text>
@@ -3868,23 +2284,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="382"
-        transform="translate(814,202)"
+        transform="translate(813,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="17"
+          width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="8.5"
-          y="9"
+          x="9.5"
+          y="10"
         >
           m0
         </text>
@@ -3892,23 +2308,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="123"
-        transform="translate(833,202)"
+        transform="translate(833,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="18"
+          width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="9"
-          y="9"
+          x="9.5"
+          y="10"
         >
           cgo_mmap.go
         </text>
@@ -3916,23 +2332,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="293"
-        transform="translate(853,202)"
+        transform="translate(853,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
           width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="9.5"
-          y="9"
+          y="10"
         >
           zeroVal
         </text>
@@ -3940,23 +2356,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="355"
-        transform="translate(874,202)"
+        transform="translate(873,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="18"
+          width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="9"
-          y="9"
+          x="9.5"
+          y="10"
         >
           auxvreadbuf
         </text>
@@ -3964,23 +2380,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="233"
-        transform="translate(894,202)"
+        transform="translate(893,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="18"
+          width="19"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="9"
-          y="9"
+          x="9.5"
+          y="10"
         >
           pinner.go
         </text>
@@ -3988,23 +2404,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="211"
-        transform="translate(914,202)"
+        transform="translate(913,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="9"
+          x="10.5"
+          y="10"
         >
           unsafe.go
         </text>
@@ -4012,23 +2428,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="121"
-        transform="translate(936,202)"
+        transform="translate(935,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="9"
+          x="10.5"
+          y="10"
         >
           arena.go
         </text>
@@ -4036,23 +2452,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="151"
-        transform="translate(958,202)"
+        transform="translate(957,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="9"
+          x="10.5"
+          y="10"
         >
           mfinal.go
         </text>
@@ -4060,23 +2476,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="234"
-        transform="translate(980,202)"
+        transform="translate(979,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="10"
-          y="9"
+          x="10.5"
+          y="10"
         >
           rwmutex.go
         </text>
@@ -4084,23 +2500,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="145"
-        transform="translate(1002,202)"
+        transform="translate(1001,201)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="22"
+          width="23"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="11"
-          y="9"
+          x="11.5"
+          y="10"
         >
           mbarrier.go
         </text>
@@ -4108,23 +2524,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="148"
-        transform="translate(475,222)"
+        transform="translate(474,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="13"
+          fill="rgb(116, 80, 149)"
+          height="14"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="6.5"
+          x="17"
+          y="7"
         >
           mcheckmark.go
         </text>
@@ -4132,23 +2548,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="189"
-        transform="translate(475,237)"
+        transform="translate(474,237)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="13"
+          fill="rgb(116, 80, 149)"
+          height="14"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="6.5"
+          x="17"
+          y="7"
         >
           security_unix.go
         </text>
@@ -4156,23 +2572,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="169"
-        transform="translate(475,252)"
+        transform="translate(474,252)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="15"
+          fill="rgb(116, 80, 149)"
+          height="16"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="7.5"
+          x="17"
+          y="8"
         >
           netpoll.go
         </text>
@@ -4180,22 +2596,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="198"
-        transform="translate(475,269)"
+        transform="translate(474,269)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="15"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="7.5"
         >
           stubs.go
@@ -4204,23 +2620,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="224"
-        transform="translate(475,286)"
+        transform="translate(474,285)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="15"
+          fill="rgb(116, 80, 149)"
+          height="16"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="7.5"
+          x="17"
+          y="8"
         >
           cpuprof.go
         </text>
@@ -4228,23 +2644,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="137"
-        transform="translate(475,303)"
+        transform="translate(474,302)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="15"
+          fill="rgb(116, 80, 149)"
+          height="17"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="7.5"
+          x="17"
+          y="8.5"
         >
           lfstack.go
         </text>
@@ -4252,23 +2668,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="217"
-        transform="translate(475,320)"
+        transform="translate(474,320)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="16"
+          fill="rgb(116, 80, 149)"
+          height="17"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="8"
+          x="17"
+          y="8.5"
         >
           duff_amd64.s
         </text>
@@ -4276,22 +2692,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="457"
-        transform="translate(475,338)"
+        transform="translate(474,338)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="17"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="8.5"
         >
           sigtable
@@ -4300,23 +2716,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="201"
-        transform="translate(475,357)"
+        transform="translate(474,356)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="17"
+          fill="rgb(116, 80, 149)"
+          height="18"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="8.5"
+          x="17"
+          y="9"
         >
           symtabinl.go
         </text>
@@ -4324,23 +2740,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="432"
-        transform="translate(475,376)"
+        transform="translate(474,375)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="17"
+          fill="rgb(116, 80, 149)"
+          height="19"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="8.5"
+          x="17"
+          y="9.5"
         >
           sched
         </text>
@@ -4348,22 +2764,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="232"
-        transform="translate(475,395)"
+        transform="translate(474,395)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="19"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="9.5"
         >
           mstats.go
@@ -4372,23 +2788,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="149"
-        transform="translate(475,416)"
+        transform="translate(474,415)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="18"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="9"
+          x="17"
+          y="10"
         >
           mem.go
         </text>
@@ -4396,22 +2812,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="139"
-        transform="translate(475,436)"
+        transform="translate(474,436)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="19"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="9.5"
         >
           lockrank_off.go
@@ -4420,23 +2836,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="167"
-        transform="translate(475,457)"
+        transform="translate(474,456)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="19"
+          fill="rgb(116, 80, 149)"
+          height="20"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="9.5"
+          x="17"
+          y="10"
         >
           mwbbuf.go
         </text>
@@ -4444,23 +2860,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="170"
-        transform="translate(475,478)"
+        transform="translate(474,477)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="19"
+          fill="rgb(116, 80, 149)"
+          height="21"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="9.5"
+          x="17"
+          y="10.5"
         >
           netpoll_epoll.go
         </text>
@@ -4468,22 +2884,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="219"
-        transform="translate(475,499)"
+        transform="translate(474,499)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="20"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="10"
         >
           memmove_amd64.s
@@ -4492,23 +2908,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="285"
-        transform="translate(475,521)"
+        transform="translate(474,520)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="22"
+          fill="rgb(116, 80, 149)"
+          height="23"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="11"
+          x="17"
+          y="11.5"
         >
           staticuint64s
         </text>
@@ -4516,23 +2932,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="135"
-        transform="translate(475,545)"
+        transform="translate(474,544)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="23"
+          fill="rgb(116, 80, 149)"
+          height="24"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="11.5"
+          x="17"
+          y="12"
         >
           hash64.go
         </text>
@@ -4540,23 +2956,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="187"
-        transform="translate(475,570)"
+        transform="translate(474,569)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="24"
+          fill="rgb(116, 80, 149)"
+          height="25"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="12"
+          x="17"
+          y="12.5"
         >
           runtime2.go
         </text>
@@ -4564,23 +2980,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="157"
-        transform="translate(475,596)"
+        transform="translate(474,595)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="25"
+          fill="rgb(116, 80, 149)"
+          height="26"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="12.5"
+          x="17"
+          y="13"
         >
           mgcstack.go
         </text>
@@ -4588,23 +3004,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="231"
-        transform="translate(475,623)"
+        transform="translate(474,622)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="25"
+          fill="rgb(116, 80, 149)"
+          height="26"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="12.5"
+          x="17"
+          y="13"
         >
           mpagecache.go
         </text>
@@ -4612,23 +3028,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="194"
-        transform="translate(475,650)"
+        transform="translate(474,649)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="26"
+          fill="rgb(116, 80, 149)"
+          height="27"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="13"
+          x="17"
+          y="13.5"
         >
           slice.go
         </text>
@@ -4636,23 +3052,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="228"
-        transform="translate(475,678)"
+        transform="translate(474,677)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="27"
+          fill="rgb(116, 80, 149)"
+          height="28"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="13.5"
+          x="17"
+          y="14"
         >
           mcentral.go
         </text>
@@ -4660,23 +3076,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="191"
-        transform="translate(475,707)"
+        transform="translate(474,706)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="29"
+          fill="rgb(116, 80, 149)"
+          height="31"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
-          y="14.5"
+          x="17"
+          y="15.5"
         >
           signal_amd64.go
         </text>
@@ -4684,22 +3100,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="150"
-        transform="translate(475,738)"
+        transform="translate(474,738)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="30"
           rx="2"
           ry="2"
-          width="32"
+          width="34"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="17"
           y="15"
         >
           mem_linux.go
@@ -4711,19 +3127,19 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(509,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="23"
+          width="24"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="11.5"
+          x="12"
           y="24.5"
         >
           stkframe.go
@@ -4735,7 +3151,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(534,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
@@ -4743,7 +3159,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -4756,22 +3172,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="143"
-        transform="translate(561,222)"
+        transform="translate(560,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="26"
+          width="27"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="13"
+          x="13.5"
           y="24.5"
         >
           map_fast64.go
@@ -4780,22 +3196,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="127"
-        transform="translate(589,222)"
+        transform="translate(588,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="26"
+          width="27"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="13"
+          x="13.5"
           y="24.5"
         >
           debugcall.go
@@ -4804,22 +3220,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="138"
-        transform="translate(617,222)"
+        transform="translate(616,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="26"
+          width="28"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="13"
+          x="14"
           y="24.5"
         >
           lock_futex.go
@@ -4831,7 +3247,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(645,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
@@ -4839,7 +3255,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -4852,22 +3268,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="230"
-        transform="translate(674,222)"
+        transform="translate(673,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="28"
+          width="29"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="14"
+          x="14.5"
           y="24.5"
         >
           mpagealloc_64bit.go
@@ -4876,22 +3292,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="142"
-        transform="translate(704,222)"
+        transform="translate(703,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="30"
+          width="31"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="15"
+          x="15.5"
           y="24.5"
         >
           map_fast32.go
@@ -4900,22 +3316,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="213"
-        transform="translate(736,222)"
+        transform="translate(735,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="30"
+          width="31"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="15"
+          x="15.5"
           y="24.5"
         >
           vdso_linux.go
@@ -4924,22 +3340,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="274"
-        transform="translate(768,222)"
+        transform="translate(767,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="31"
+          width="32"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="15.5"
+          x="16"
           y="24.5"
         >
           itabTableInit
@@ -4948,22 +3364,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="183"
-        transform="translate(801,222)"
+        transform="translate(800,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="32"
+          width="33"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="16"
+          x="16.5"
           y="24.5"
         >
           profbuf.go
@@ -4972,22 +3388,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="235"
-        transform="translate(835,222)"
+        transform="translate(834,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="34"
+          width="35"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="17"
+          x="17.5"
           y="24.5"
         >
           signal_linux_amd64.go
@@ -4996,22 +3412,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="120"
-        transform="translate(871,222)"
+        transform="translate(870,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="34"
+          width="36"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="17"
+          x="18"
           y="24.5"
         >
           alg.go
@@ -5023,19 +3439,19 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(907,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="35"
+          width="36"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="17.5"
+          x="18"
           y="24.5"
         >
           mspanset.go
@@ -5047,7 +3463,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(944,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
@@ -5055,7 +3471,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -5068,22 +3484,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="190"
-        transform="translate(985,222)"
+        transform="translate(984,222)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="49"
           rx="2"
           ry="2"
-          width="39"
+          width="40"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="19.5"
+          x="20"
           y="24.5"
         >
           sema.go
@@ -5092,23 +3508,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="186"
-        transform="translate(509,273)"
+        transform="translate(509,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="30"
+          fill="rgb(116, 80, 149)"
+          height="32"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="15"
+          y="16"
         >
           runtime1.go
         </text>
@@ -5119,20 +3535,20 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(509,305)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="31"
+          fill="rgb(116, 80, 149)"
+          height="32"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="15.5"
+          y="16"
         >
           print.go
         </text>
@@ -5143,7 +3559,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(509,338)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="34"
           rx="2"
           ry="2"
@@ -5151,7 +3567,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -5164,23 +3580,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="136"
-        transform="translate(509,374)"
+        transform="translate(509,373)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="33"
+          fill="rgb(116, 80, 149)"
+          height="34"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="16.5"
+          y="17"
         >
           iface.go
         </text>
@@ -5188,58 +3604,10 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="197"
-        transform="translate(509,409)"
+        transform="translate(509,408)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="35"
-          rx="2"
-          ry="2"
-          width="65"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="32.5"
-          y="17.5"
-        >
-          string.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="164"
-        transform="translate(509,446)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
-          height="35"
-          rx="2"
-          ry="2"
-          width="65"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="32.5"
-          y="17.5"
-        >
-          mranges.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="144"
-        transform="translate(509,483)"
-      >
-        <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="36"
           rx="2"
           ry="2"
@@ -5247,12 +3615,60 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
           y="18"
+        >
+          string.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="164"
+        transform="translate(509,445)"
+      >
+        <rect
+          fill="rgb(116, 80, 149)"
+          height="36"
+          rx="2"
+          ry="2"
+          width="65"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          transform="scale(1.00)"
+          x="32.5"
+          y="18"
+        >
+          mranges.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="144"
+        transform="translate(509,482)"
+      >
+        <rect
+          fill="rgb(116, 80, 149)"
+          height="37"
+          rx="2"
+          ry="2"
+          width="65"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          transform="scale(1.00)"
+          x="32.5"
+          y="18.5"
         >
           map_faststr.go
         </text>
@@ -5260,23 +3676,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="162"
-        transform="translate(509,521)"
+        transform="translate(509,520)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="37"
+          fill="rgb(116, 80, 149)"
+          height="38"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="18.5"
+          y="19"
         >
           mpallocbits.go
         </text>
@@ -5284,23 +3700,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="221"
-        transform="translate(509,560)"
+        transform="translate(509,559)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="37"
+          fill="rgb(116, 80, 149)"
+          height="38"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="18.5"
+          y="19"
         >
           sys_linux_amd64.s
         </text>
@@ -5311,7 +3727,7 @@ exports[`treeMap > render snapshot 1`] = `
         transform="translate(509,638)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="38"
           rx="2"
           ry="2"
@@ -5319,7 +3735,7 @@ exports[`treeMap > render snapshot 1`] = `
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
@@ -5332,23 +3748,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="130"
-        transform="translate(509,678)"
+        transform="translate(509,677)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="44"
+          fill="rgb(116, 80, 149)"
+          height="45"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="22"
+          y="22.5"
         >
           error.go
         </text>
@@ -5356,23 +3772,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="126"
-        transform="translate(509,724)"
+        transform="translate(509,723)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="44"
+          fill="rgb(116, 80, 149)"
+          height="45"
           rx="2"
           ry="2"
           width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="32.5"
-          y="22"
+          y="22.5"
         >
           chan.go
         </text>
@@ -5380,23 +3796,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="260"
-        transform="translate(576,273)"
+        transform="translate(575,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="40"
+          width="42"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="20"
-          y="37.5"
+          x="21"
+          y="38"
         >
           cpuprof
         </text>
@@ -5404,23 +3820,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="209"
-        transform="translate(618,273)"
+        transform="translate(618,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="43"
+          width="44"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="21.5"
-          y="37.5"
+          x="22"
+          y="38"
         >
           type.go
         </text>
@@ -5428,23 +3844,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="342"
-        transform="translate(663,273)"
+        transform="translate(663,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
           width="46"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="23"
-          y="37.5"
+          y="38"
         >
           memstats
         </text>
@@ -5452,23 +3868,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="216"
-        transform="translate(711,273)"
+        transform="translate(710,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="48"
+          width="49"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="24"
-          y="37.5"
+          x="24.5"
+          y="38"
         >
           asm_amd64.s
         </text>
@@ -5476,23 +3892,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="172"
-        transform="translate(761,273)"
+        transform="translate(760,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="49"
+          width="50"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="24.5"
-          y="37.5"
+          x="25"
+          y="38"
         >
           os_linux.go
         </text>
@@ -5500,23 +3916,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="163"
-        transform="translate(812,273)"
+        transform="translate(811,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="50"
+          width="52"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="25"
-          y="37.5"
+          x="26"
+          y="38"
         >
           mprof.go
         </text>
@@ -5524,23 +3940,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="140"
-        transform="translate(864,273)"
+        transform="translate(864,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
           width="52"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="26"
-          y="37.5"
+          y="38"
         >
           malloc.go
         </text>
@@ -5548,23 +3964,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="204"
-        transform="translate(918,273)"
+        transform="translate(917,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="51"
+          width="52"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="25.5"
-          y="37.5"
+          x="26"
+          y="38"
         >
           time.go
         </text>
@@ -5572,23 +3988,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="141"
-        transform="translate(971,273)"
+        transform="translate(970,272)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="75"
+          fill="rgb(116, 80, 149)"
+          height="76"
           rx="2"
           ry="2"
-          width="53"
+          width="54"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="26.5"
-          y="37.5"
+          x="27"
+          y="38"
         >
           map.go
         </text>
@@ -5596,23 +4012,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="158"
-        transform="translate(576,350)"
+        transform="translate(575,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="48"
+          fill="rgb(116, 80, 149)"
+          height="49"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="24"
+          x="44"
+          y="24.5"
         >
           mgcsweep.go
         </text>
@@ -5620,23 +4036,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="155"
-        transform="translate(576,400)"
+        transform="translate(575,399)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="49"
+          fill="rgb(116, 80, 149)"
+          height="50"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="24.5"
+          x="44"
+          y="25"
         >
           mgcpacer.go
         </text>
@@ -5644,23 +4060,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="192"
-        transform="translate(576,451)"
+        transform="translate(575,450)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="52"
+          fill="rgb(116, 80, 149)"
+          height="53"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="26"
+          x="44"
+          y="26.5"
         >
           signal_unix.go
         </text>
@@ -5668,23 +4084,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="161"
-        transform="translate(576,505)"
+        transform="translate(575,504)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="58"
+          fill="rgb(116, 80, 149)"
+          height="60"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="29"
+          x="44"
+          y="30"
         >
           mpagealloc.go
         </text>
@@ -5692,22 +4108,22 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="146"
-        transform="translate(576,565)"
+        transform="translate(575,565)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
+          fill="rgb(116, 80, 149)"
           height="66"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
+          x="44"
           y="33"
         >
           mbitmap.go
@@ -5716,23 +4132,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="156"
-        transform="translate(576,633)"
+        transform="translate(575,632)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="66"
+          fill="rgb(116, 80, 149)"
+          height="67"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="33"
+          x="44"
+          y="33.5"
         >
           mgcscavenge.go
         </text>
@@ -5740,23 +4156,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="195"
-        transform="translate(576,701)"
+        transform="translate(575,700)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="67"
+          fill="rgb(116, 80, 149)"
+          height="68"
           rx="2"
           ry="2"
-          width="86"
+          width="88"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="43"
-          y="33.5"
+          x="44"
+          y="34"
         >
           stack.go
         </text>
@@ -5764,23 +4180,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="200"
-        transform="translate(664,350)"
+        transform="translate(664,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
           width="55"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="27.5"
-          y="53.5"
+          y="54"
         >
           symtab.go
         </text>
@@ -5788,23 +4204,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="207"
-        transform="translate(721,350)"
+        transform="translate(720,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
-          width="55"
+          width="57"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="27.5"
-          y="53.5"
+          x="28.5"
+          y="54"
         >
           trace.go
         </text>
@@ -5812,23 +4228,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="152"
-        transform="translate(778,350)"
+        transform="translate(778,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
-          width="57"
+          width="58"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="28.5"
-          y="53.5"
+          x="29"
+          y="54"
         >
           mgc.go
         </text>
@@ -5836,23 +4252,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="446"
-        transform="translate(837,350)"
+        transform="translate(837,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
           width="58"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="29"
-          y="53.5"
+          y="54"
         >
           semtable
         </text>
@@ -5860,23 +4276,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="154"
-        transform="translate(897,350)"
+        transform="translate(896,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
-          width="61"
+          width="62"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="30.5"
-          y="53.5"
+          x="31"
+          y="54"
         >
           mgcmark.go
         </text>
@@ -5884,23 +4300,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="178"
-        transform="translate(960,350)"
+        transform="translate(959,349)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="107"
+          fill="rgb(116, 80, 149)"
+          height="108"
           rx="2"
           ry="2"
-          width="64"
+          width="65"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="32"
-          y="53.5"
+          x="32.5"
+          y="54"
         >
           panic.go
         </text>
@@ -5908,23 +4324,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="160"
-        transform="translate(664,459)"
+        transform="translate(664,458)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="56"
+          fill="rgb(116, 80, 149)"
+          height="57"
           rx="2"
           ry="2"
           width="137"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="68.5"
-          y="28"
+          y="28.5"
         >
           mheap.go
         </text>
@@ -5932,23 +4348,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="208"
-        transform="translate(664,517)"
+        transform="translate(664,516)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="59"
+          fill="rgb(116, 80, 149)"
+          height="60"
           rx="2"
           ry="2"
           width="137"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="68.5"
-          y="29.5"
+          y="30"
         >
           traceback.go
         </text>
@@ -5956,23 +4372,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="475"
-        transform="translate(664,578)"
+        transform="translate(664,577)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="190"
+          fill="rgb(116, 80, 149)"
+          height="191"
           rx="2"
           ry="2"
           width="137"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
           x="68.5"
-          y="95"
+          y="95.5"
         >
           trace
         </text>
@@ -5980,23 +4396,23 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="182"
-        transform="translate(803,459)"
+        transform="translate(802,458)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="309"
+          fill="rgb(116, 80, 149)"
+          height="310"
           rx="2"
           ry="2"
-          width="100"
+          width="101"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="50"
-          y="154.5"
+          x="50.5"
+          y="155"
         >
           proc.go
         </text>
@@ -6004,62 +4420,38 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="318"
-        transform="translate(905,459)"
+        transform="translate(904,458)"
       >
         <rect
-          fill="rgb(80, 149, 149)"
-          height="309"
+          fill="rgb(116, 80, 149)"
+          height="310"
           rx="2"
           ry="2"
-          width="119"
+          width="120"
         />
         <text
           dominant-baseline="middle"
-          fill="#000"
+          fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="59.5"
-          y="154.5"
+          x="60"
+          y="155"
         >
           mheap_
         </text>
       </g>
       <g
         class="node"
-        data-id="239"
-        transform="translate(509,619)"
-      >
-        <rect
-          fill="rgb(54, 99, 99)"
-          height="17"
-          rx="2"
-          ry="2"
-          width="2"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          transform="scale(1.00)"
-          x="1"
-          y="8.5"
-        >
-          atomic_pointer.go
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="240"
-        transform="translate(513,619)"
+        transform="translate(512,618)"
       >
         <rect
-          fill="rgb(54, 99, 99)"
-          height="17"
+          fill="rgb(77, 54, 99)"
+          height="19"
           rx="2"
           ry="2"
-          width="61"
+          width="62"
         />
         <text
           dominant-baseline="middle"
@@ -6067,8 +4459,8 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           transform="scale(1.00)"
-          x="30.5"
-          y="8.5"
+          x="31"
+          y="9.5"
         >
           types.go
         </text>

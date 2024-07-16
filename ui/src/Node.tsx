@@ -83,10 +83,6 @@ export const Node: React.FC<NodeProps> = React.memo((
     textRef.current.setAttribute("transform", `scale(${scale.toFixed(2)})`);
   }, [hasChildren, height, width]);
 
-  if (width === 0 || height === 0) {
-    return null;
-  }
-
   return (
     <g
       className="node"
