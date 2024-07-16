@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from "react";
+import memoize from "lodash.memoize";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
 export interface NodeProps {
@@ -16,15 +17,19 @@ export interface NodeProps {
   fontColor: string;
 }
 
-const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-svg.style.position = "absolute";
-svg.style.visibility = "hidden";
-document.body.appendChild(svg);
-const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
-textElement.setAttribute("font-size", "0.8em");
-textElement.setAttribute("dominant-baseline", "middle");
-textElement.setAttribute("text-anchor", "middle");
-svg.appendChild(textElement);
+let textElement: SVGTextElement;
+
+(function init() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.style.position = "absolute";
+  svg.style.visibility = "hidden";
+  document.body.appendChild(svg);
+  textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  textElement.setAttribute("font-size", "0.8em");
+  textElement.setAttribute("dominant-baseline", "middle");
+  textElement.setAttribute("text-anchor", "middle");
+  svg.appendChild(textElement);
+})();
 
 function measureText(text: string): [number, number] {
   textElement.textContent = text;
@@ -32,6 +37,8 @@ function measureText(text: string): [number, number] {
 
   return [rect.width, rect.height];
 }
+
+const memoizedMeasureText = memoize(measureText);
 
 export const Node: React.FC<NodeProps> = React.memo((
   {
@@ -60,7 +67,7 @@ export const Node: React.FC<NodeProps> = React.memo((
       dominantBaseline: "middle",
       textAnchor: "middle",
     };
-    const [textWidth, textHeight] = measureText(title);
+    const [textWidth, textHeight] = memoizedMeasureText(title);
     let scale: number;
     if (hasChildren) {
       scale = Math.min(
