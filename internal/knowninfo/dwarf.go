@@ -186,28 +186,29 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 	return pkg
 }
 
-func (k *KnownInfo) LoadDwarfCompileUnit(d *dwarf.Data, cuEntry *dwarf.Entry, pendingEntry []*dwarf.Entry, ptrSize int) {
+type EntryFeeder func(e *dwarf.Entry)
+
+func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entry, ptrSize int) (EntryFeeder, error) {
 	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
-		return
+		return nil, fmt.Errorf("failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry))
 	}
 
 	pkg := k.GetPackageFromDwarfCompileUnit(cuEntry)
 	if pkg == nil {
-		return
+		return nil, fmt.Errorf("failed to load DWARF compile unit package: %s", dwarfutil.EntryPrettyPrint(cuEntry))
 	}
 
 	readFileName := dwarfutil.EntryFileReader(cuEntry, d)
 
-	for _, subEntry := range pendingEntry {
-		switch subEntry.Tag {
+	return func(e *dwarf.Entry) {
+		switch e.Tag {
 		case dwarf.TagSubprogram:
-			k.AddDwarfSubProgram(cuLang == dwarfutil.DwLangGo, d, subEntry, pkg, readFileName)
+			k.AddDwarfSubProgram(cuLang == dwarfutil.DwLangGo, d, e, pkg, readFileName)
 		case dwarf.TagVariable:
-			k.AddDwarfVariable(subEntry, d, pkg, ptrSize)
+			k.AddDwarfVariable(e, d, pkg, ptrSize)
 		}
-	}
+	}, nil
 }
 
 func (k *KnownInfo) TryLoadDwarf() bool {
@@ -230,44 +231,31 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 
 	r := d.Reader()
 
-	var cuEntry *dwarf.Entry
-	var pendingEntry []*dwarf.Entry
-	depth := 1
+	var feeder EntryFeeder
+	var entry *dwarf.Entry
 
-	for entry, err := r.Next(); entry != nil; entry, err = r.Next() {
+	for entry, err = r.Next(); entry != nil; entry, err = r.Next() {
 		if err != nil {
 			slog.Warn(fmt.Sprintf("Failed to load DWARF: %v", err))
 			return false
 		}
 
-		if entry.Tag == 0 {
-			depth--
-			if depth <= 0 {
-				panic("broken DWARF")
-			}
-			if depth == 1 && cuEntry != nil {
-				k.LoadDwarfCompileUnit(d, cuEntry, pendingEntry, ptrSize)
-
-				cuEntry = nil
-				pendingEntry = nil
-			}
-		}
-
 		switch entry.Tag {
 		case dwarf.TagCompileUnit:
-			cuEntry = entry
+			feeder, err = k.GetDwarfCompileUnitFeeder(d, entry, ptrSize)
+			if err != nil {
+				slog.Debug(fmt.Sprintf("Failed to load DWARF compile unit: %v", err))
+				r.SkipChildren()
+			}
 		case dwarf.TagSubprogram:
 			if !dwarfutil.EntryShouldIgnore(entry) {
-				pendingEntry = append(pendingEntry, entry)
+				feeder(entry)
 			}
+			r.SkipChildren()
 		case dwarf.TagVariable:
-			if !dwarfutil.EntryShouldIgnore(entry) && depth == 2 {
-				pendingEntry = append(pendingEntry, entry)
+			if !dwarfutil.EntryShouldIgnore(entry) {
+				feeder(entry)
 			}
-		}
-
-		if entry.Children {
-			depth++
 		}
 	}
 
