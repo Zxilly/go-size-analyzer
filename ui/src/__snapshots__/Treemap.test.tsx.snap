@@ -732,13 +732,13 @@ exports[`treeMap > render snapshot 1`] = `
           height="3"
           rx="2"
           ry="2"
-          width="20"
+          width="21"
         />
       </g>
       <g
         class="node"
         data-id="11"
-        transform="translate(46,74)"
+        transform="translate(47,74)"
       >
         <rect
           fill="rgb(123, 183, 183)"
@@ -751,7 +751,7 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="4"
-        transform="translate(74,74)"
+        transform="translate(75,74)"
       >
         <rect
           fill="rgb(123, 183, 183)"
@@ -764,7 +764,7 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="22"
-        transform="translate(104,74)"
+        transform="translate(105,74)"
       >
         <rect
           fill="rgb(123, 183, 183)"
@@ -777,14 +777,14 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="15"
-        transform="translate(227,74)"
+        transform="translate(228,74)"
       >
         <rect
           fill="rgb(123, 183, 183)"
           height="3"
           rx="2"
           ry="2"
-          width="246"
+          width="245"
         />
       </g>
       <g

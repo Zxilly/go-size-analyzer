@@ -16,7 +16,7 @@ function getPlaceHolder(): string {
   try {
     let target: URL;
 
-    if (fs.existsSync("../data.json")) {
+    if (fs.existsSync("../data.json") && !import.meta.vitest) {
       target = new URL("../data.json", import.meta.url);
     }
     else {

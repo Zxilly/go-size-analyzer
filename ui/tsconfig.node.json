@@ -5,7 +5,10 @@
     "moduleResolution": "bundler",
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "vitest/importMeta"
+    ]
   },
   "include": [
     "vite.config.ts",
