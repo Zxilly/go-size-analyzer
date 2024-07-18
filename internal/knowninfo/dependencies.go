@@ -49,13 +49,11 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 	for _, mod := range mods {
 		old := m.Trie.Get(mod.Path)
 		if old != nil {
-			old.SetDebugMod(mod)
 			continue
 		}
 		p := entity.NewPackage()
 		p.Name = utils.Deduplicate(mod.Path)
 		p.Type = typ
-		p.SetDebugMod(mod)
 		m.Trie.Put(mod.Path, p)
 	}
 }
@@ -88,6 +86,12 @@ func (m *Dependencies) FinishLoad() {
 		pending = pending[1:]
 		load(p.m, p.tc)
 	}
+
+	// clear caches
+	_ = m.Trie.Walk(func(_ string, value *entity.Package) error {
+		value.ClearCache()
+		return nil
+	})
 }
 
 func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table) {
@@ -97,13 +101,7 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 
 	// update addrs
 	for _, f := range p.GetFunctions() {
-		m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f, entity.GoPclntabMeta{
-			FuncName:    utils.Deduplicate(f.Name),
-			PackageName: utils.Deduplicate(p.Name),
-			Type:        utils.Deduplicate(f.Type),
-			Receiver:    utils.Deduplicate(f.Receiver),
-			Filepath:    utils.Deduplicate(f.GetFilepath()),
-		})
+		m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f)
 	}
 
 	// we need merge since the gore relies on the broken std PackageName() function
@@ -115,18 +113,18 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 	m.Trie.Put(name, p)
 }
 
-func (k *KnownInfo) LoadPackages() error {
+func (k *KnownInfo) LoadPackages(f *gore.GoFile) error {
 	slog.Info("Loading packages...")
 
 	pkgs := NewDependencies(k)
 	k.Deps = pkgs
 
-	pclntab, err := k.Gore.PCLNTab()
+	pclntab, err := f.PCLNTab()
 	if err != nil {
 		return err
 	}
 
-	self, err := k.Gore.GetPackages()
+	self, err := f.GetPackages()
 	if err != nil {
 		return err
 	}
@@ -134,22 +132,22 @@ func (k *KnownInfo) LoadPackages() error {
 		pkgs.AddFromPclntab(p, entity.PackageTypeMain, pclntab)
 	}
 
-	grStd, _ := k.Gore.GetSTDLib()
+	grStd, _ := f.GetSTDLib()
 	for _, p := range grStd {
 		pkgs.AddFromPclntab(p, entity.PackageTypeStd, pclntab)
 	}
 
-	grVendor, _ := k.Gore.GetVendors()
+	grVendor, _ := f.GetVendors()
 	for _, p := range grVendor {
 		pkgs.AddFromPclntab(p, entity.PackageTypeVendor, pclntab)
 	}
 
-	grGenerated, _ := k.Gore.GetGeneratedPackages()
+	grGenerated, _ := f.GetGeneratedPackages()
 	for _, p := range grGenerated {
 		pkgs.AddFromPclntab(p, entity.PackageTypeGenerated, pclntab)
 	}
 
-	grUnknown, _ := k.Gore.GetUnknown()
+	grUnknown, _ := f.GetUnknown()
 	for _, p := range grUnknown {
 		pkgs.AddFromPclntab(p, entity.PackageTypeUnknown, pclntab)
 	}

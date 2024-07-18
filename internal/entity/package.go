@@ -1,10 +1,8 @@
 package entity
 
 import (
-	"debug/dwarf"
 	"fmt"
 	"maps"
-	"runtime/debug"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
@@ -47,11 +45,6 @@ type Package struct {
 
 	symbolAddrSpace AddrSpace
 	coverage        *utils.ValueOnce[AddrCoverage]
-
-	// should have at least one of them, for cgo pseudo package all nil
-	gorePkg    *gore.Package
-	debugMod   *debug.Module
-	dwarfEntry *dwarf.Entry
 }
 
 func NewPackage() *Package {
@@ -71,7 +64,6 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	p.Name = utils.Deduplicate(name)
 	p.Type = typ
 	p.loaded = true
-	p.gorePkg = gp
 
 	getFunction := func(f *gore.Function) *Function {
 		return &Function{
@@ -100,14 +92,6 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	}
 
 	return p
-}
-
-func (p *Package) SetDebugMod(mod *debug.Module) {
-	p.debugMod = mod
-}
-
-func (p *Package) SetDwarfEntry(entry *dwarf.Entry) {
-	p.dwarfEntry = entry
 }
 
 func (p *Package) fileEnsureUnique() {
@@ -256,4 +240,9 @@ func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 
 	// then, add to the symbol list
 	p.Symbols = append(p.Symbols, symbol)
+}
+
+func (p *Package) ClearCache() {
+	p.filesCache = nil
+	p.funcsCache = nil
 }

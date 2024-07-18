@@ -15,7 +15,6 @@ import (
 
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func (k *KnownInfo) Disasm() error {
@@ -45,12 +44,12 @@ func (k *KnownInfo) Disasm() error {
 	go func() {
 		defer resultDone()
 		for r := range resultChan {
-			s, ok := e.LoadAddrString(r.addr, int64(r.size))
+			ok := e.CheckAddrString(r.addr, int64(r.size))
 			if !ok {
 				continue
 			}
 
-			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn, entity.DisasmMeta{Value: utils.Deduplicate(s)})
+			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn)
 		}
 	}()
 

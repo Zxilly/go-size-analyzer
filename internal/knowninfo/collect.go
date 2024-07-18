@@ -49,17 +49,16 @@ func (k *KnownInfo) CalculateSectionSize() error {
 	})
 
 	// minus pclntab size
-	pclntabAddr := k.Gore.GetPCLNTableAddr()
 	var pclntabSection *entity.Section
 	for _, s := range k.Sects.Sections {
-		if s.Addr <= pclntabAddr && pclntabAddr < s.AddrEnd {
+		if s.Addr <= k.PClnTabAddr && k.PClnTabAddr < s.AddrEnd {
 			pclntabSection = s
 			sectCache[s] += pclntabSize
 			break
 		}
 	}
 	if pclntabSection == nil {
-		slog.Warn(fmt.Sprintf("pclntab addr %d not in any section", pclntabAddr))
+		slog.Warn(fmt.Sprintf("pclntab addr %d not in any section", k.PClnTabAddr))
 	}
 
 	// linear map virtual size to file size

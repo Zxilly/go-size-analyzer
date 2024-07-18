@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"maps"
 	"path/filepath"
+	"runtime/debug"
 	"slices"
 
 	"github.com/ZxillyFork/gore"
@@ -43,7 +44,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
 	}
 	k.KnownAddr = entity.NewKnownAddr()
-	k.VersionFlag = k.UpdateVersionFlag()
+	k.VersionFlag = k.UpdateVersionFlag(file)
 
 	analyzers := []entity.Analyzer{
 		entity.AnalyzerPclntab,
@@ -56,7 +57,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return nil, err
 	}
 
-	err = k.LoadPackages()
+	err = k.LoadGoreInfo(file)
 	if err != nil {
 		return nil, err
 	}
@@ -78,6 +79,9 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	// DWARF can still add new package, so we defer this
 	k.Deps.FinishLoad()
+
+	// we force a gc here, since the gore file is no longer needed
+	debug.FreeOSMemory()
 
 	if !dwarfOk {
 		// fallback to symbol and disasm

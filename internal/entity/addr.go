@@ -24,8 +24,6 @@ type Addr struct {
 	Symbol   *Symbol   // for function source it will be a nil
 
 	SourceType AddrSourceType
-
-	Meta any
 }
 
 func (a *Addr) String() string {

@@ -20,7 +20,7 @@ func NewKnownAddr() *KnownAddr {
 	}
 }
 
-func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Function, meta GoPclntabMeta) {
+func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Function) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -30,13 +30,11 @@ func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Functio
 		Pkg:        fn.pkg,
 		Function:   fn,
 		SourceType: AddrSourceGoPclntab,
-
-		Meta: meta,
 	}
 	f.TextAddrSpace.Insert(&cur)
 }
 
-func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function, meta DwarfMeta) {
+func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -46,13 +44,11 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function,
 		Pkg:        fn.pkg,
 		Function:   fn,
 		SourceType: AddrSourceDwarf,
-
-		Meta: meta,
 	}
 	f.TextAddrSpace.Insert(&cur)
 }
 
-func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, meta SymbolMeta) *Addr {
+func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{
 			Addr: symbol.Addr,
@@ -63,14 +59,12 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, meta SymbolMeta) *A
 		Function:   nil,
 		Symbol:     symbol,
 		SourceType: AddrSourceSymbol,
-
-		Meta: meta,
 	}
 	f.SymbolAddrSpace.Insert(cur)
 	return cur
 }
 
-func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package, meta SymbolMeta) *Addr {
+func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{
 			Addr: symbol.Addr,
@@ -81,8 +75,6 @@ func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package, meta Symbo
 		Function:   nil,
 		Symbol:     symbol,
 		SourceType: AddrSourceDwarf,
-
-		Meta: meta,
 	}
 	f.SymbolAddrSpace.Insert(cur)
 	return cur
@@ -113,7 +105,7 @@ func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
 	return f.SymbolCoverage[c].Pos.Type, ok
 }
 
-func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, meta DisasmMeta) {
+func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -123,7 +115,6 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, meta D
 		Pkg:        fn.pkg,
 		Function:   fn,
 		SourceType: AddrSourceDisasm,
-		Meta:       meta,
 	}
 
 	// symbol coverage check

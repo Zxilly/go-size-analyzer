@@ -24,16 +24,30 @@ type KnownInfo struct {
 
 	Coverage entity.AddrCoverage
 
-	Gore    *gore.GoFile
-	Wrapper wrapper.RawFileWrapper
+	Gore        *gore.GoFile
+	PClnTabAddr uint64
+	Wrapper     wrapper.RawFileWrapper
 
 	VersionFlag VersionFlag
 
 	HasDWARF bool
 }
 
-func (k *KnownInfo) UpdateVersionFlag() VersionFlag {
-	ver, err := k.Gore.GetCompilerVersion()
+func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile) error {
+	err := k.LoadPackages(f)
+	if err != nil {
+		return err
+	}
+
+	k.VersionFlag = k.UpdateVersionFlag(f)
+
+	k.PClnTabAddr = f.GetPCLNTableAddr()
+
+	return nil
+}
+
+func (k *KnownInfo) UpdateVersionFlag(f *gore.GoFile) VersionFlag {
+	ver, err := f.GetCompilerVersion()
 	if err != nil {
 		// if we can't get build info, we assume it's go1.20 plus
 		return VersionFlag{

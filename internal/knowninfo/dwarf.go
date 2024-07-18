@@ -54,10 +54,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 	symbol := entity.NewSymbol(entryName, uint64(addr), typSize, entity.AddrTypeData)
 
-	ap := k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg, entity.SymbolMeta{
-		SymbolName:  entryName,
-		PackageName: utils.Deduplicate(pkg.Name),
-	})
+	ap := k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 
 	pkg.AddSymbol(symbol, ap)
 
@@ -77,10 +74,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 			symbol := entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
 
-			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg, entity.SymbolMeta{
-				SymbolName:  valueName,
-				PackageName: utils.Deduplicate(pkg.Name),
-			})
+			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 
 			pkg.AddSymbol(symbol, ap)
 		}
@@ -139,7 +133,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	added := pkg.AddFuncIfNotExists(filename, fn)
 
 	if added {
-		k.KnownAddr.InsertTextFromDWARF(addr, size, fn, entity.DwarfMeta{})
+		k.KnownAddr.InsertTextFromDWARF(addr, size, fn)
 	}
 }
 
@@ -164,7 +158,6 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 			pkg = entity.NewPackage()
 			pkg.Name = cuName
 		}
-		pkg.SetDwarfEntry(cuEntry)
 		typ := entity.PackageTypeVendor
 		if cuName == "main" {
 			typ = entity.PackageTypeMain
