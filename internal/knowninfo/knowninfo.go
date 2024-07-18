@@ -39,14 +39,14 @@ func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile) error {
 		return err
 	}
 
-	k.VersionFlag = k.UpdateVersionFlag(f)
+	k.VersionFlag = UpdateVersionFlag(f)
 
 	k.PClnTabAddr = f.GetPCLNTableAddr()
 
 	return nil
 }
 
-func (k *KnownInfo) UpdateVersionFlag(f *gore.GoFile) VersionFlag {
+func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 	ver, err := f.GetCompilerVersion()
 	if err != nil {
 		// if we can't get build info, we assume it's go1.20 plus

@@ -16,7 +16,7 @@
     "types": [
       "@testing-library/jest-dom",
       "@types/golang-wasm-exec",
-      "vite/client",
+      "vite/client"
     ],
     "allowImportingTsExtensions": true,
     "allowJs": true,
