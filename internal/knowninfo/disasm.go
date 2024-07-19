@@ -62,7 +62,7 @@ func (k *KnownInfo) Disasm() error {
 			break
 		}
 
-		go func() {
+		go func(fn *entity.Function) {
 			defer sem.Release(1)
 			candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
 
@@ -73,7 +73,7 @@ func (k *KnownInfo) Disasm() error {
 					fn:   fn,
 				}
 			})
-		}()
+		}(fn)
 	}
 
 	if err = sem.Acquire(resultProcess, int64(maxWorkers)); err != nil {
