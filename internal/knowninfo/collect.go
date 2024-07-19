@@ -42,7 +42,7 @@ func (k *KnownInfo) CalculateSectionSize() error {
 
 	pclntabSize := uint64(0)
 	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
-		for _, fn := range p.GetFunctions() {
+		for fn := range p.Functions {
 			pclntabSize += fn.PclnSize.Size()
 		}
 		return nil

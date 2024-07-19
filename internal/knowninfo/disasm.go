@@ -21,8 +21,6 @@ func (k *KnownInfo) Disasm() error {
 	startTime := time.Now()
 	slog.Info("Disassemble functions...")
 
-	fns := k.Deps.GetFunctions()
-
 	e, err := disasm.NewExtractor(k.Wrapper, k.Size)
 	if err != nil {
 		if errors.Is(err, disasm.ErrArchNotSupported) {
@@ -58,10 +56,10 @@ func (k *KnownInfo) Disasm() error {
 		sem        = semaphore.NewWeighted(int64(maxWorkers))
 	)
 
-	lo.ForEach(fns, func(fn *entity.Function, _ int) {
+	for fn := range k.Deps.Functions {
 		if err := sem.Acquire(resultProcess, 1); err != nil {
 			slog.Error(fmt.Sprintf("Failed to acquire semaphore: %v", err))
-			return
+			break
 		}
 
 		go func() {
@@ -76,7 +74,7 @@ func (k *KnownInfo) Disasm() error {
 				}
 			})
 		}()
-	})
+	}
 
 	if err = sem.Acquire(resultProcess, int64(maxWorkers)); err != nil {
 		slog.Error(fmt.Sprintf("Failed to acquire semaphore for all workers: %v", err))

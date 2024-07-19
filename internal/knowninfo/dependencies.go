@@ -1,6 +1,7 @@
 package knowninfo
 
 import (
+	"errors"
 	"log/slog"
 	"runtime/debug"
 
@@ -36,13 +37,15 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 	return p, true
 }
 
-func (m *Dependencies) GetFunctions() []*entity.Function {
-	funcs := make([]*entity.Function, 0)
+func (m *Dependencies) Functions(yield func(*entity.Function) bool) {
 	_ = m.Trie.Walk(func(_ string, p *entity.Package) error {
-		funcs = append(funcs, p.GetFunctions()...)
+		for f := range p.Functions {
+			if !yield(f) {
+				return errors.New("stop walk")
+			}
+		}
 		return nil
 	})
-	return funcs
 }
 
 func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) {
@@ -100,7 +103,7 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 	p := entity.NewPackageWithGorePackage(gp, name, typ, pclntab)
 
 	// update addrs
-	for _, f := range p.GetFunctions() {
+	for f := range p.Functions {
 		m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f)
 	}
 

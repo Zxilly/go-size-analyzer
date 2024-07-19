@@ -6,7 +6,6 @@ import (
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
-	"github.com/samber/lo"
 
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
@@ -177,18 +176,19 @@ func (p *Package) Merge(rp *Package) {
 	}
 }
 
-func (p *Package) GetFunctions() []*Function {
-	funcs := lo.Reduce(p.Files,
-		func(agg []*Function, item *File, _ int) []*Function {
-			return append(agg, item.Functions...)
-		}, make([]*Function, 0))
-
-	return funcs
+func (p *Package) Functions(yield func(*Function) bool) {
+	for _, f := range p.Files {
+		for _, fn := range f.Functions {
+			if !yield(fn) {
+				return
+			}
+		}
+	}
 }
 
 func (p *Package) GetDisasmAddrSpace() AddrSpace {
 	spaces := make([]AddrSpace, 0)
-	for _, f := range p.GetFunctions() {
+	for f := range p.Functions {
 		spaces = append(spaces, f.disasm)
 	}
 	return MergeAddrSpace(spaces...)
@@ -196,7 +196,7 @@ func (p *Package) GetDisasmAddrSpace() AddrSpace {
 
 func (p *Package) GetFunctionSizeRecursive() uint64 {
 	size := uint64(0)
-	for _, f := range p.GetFunctions() {
+	for f := range p.Functions {
 		size += f.Size()
 	}
 	for _, sp := range p.SubPackages {
