@@ -42,9 +42,9 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 		Gore:    file,
 		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
+
+		KnownAddr: entity.NewKnownAddr(),
 	}
-	k.KnownAddr = entity.NewKnownAddr()
-	k.VersionFlag = k.UpdateVersionFlag(file)
 
 	analyzers := []entity.Analyzer{
 		entity.AnalyzerPclntab,
