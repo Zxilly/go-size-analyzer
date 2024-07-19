@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"sync"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
@@ -224,6 +225,23 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 
 	r := d.Reader()
 
+	type item struct {
+		feeder EntryFeeder
+		entry  *dwarf.Entry
+	}
+
+	entryChan := make(chan item, 256)
+	processing := sync.WaitGroup{}
+	processing.Add(1)
+	go func() {
+		defer processing.Done()
+		for i := range entryChan {
+			if !dwarfutil.EntryShouldIgnore(i.entry) {
+				i.feeder(i.entry)
+			}
+		}
+	}()
+
 	var feeder EntryFeeder
 	var entry *dwarf.Entry
 
@@ -241,16 +259,21 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 				r.SkipChildren()
 			}
 		case dwarf.TagSubprogram:
-			if !dwarfutil.EntryShouldIgnore(entry) {
-				feeder(entry)
+			entryChan <- item{
+				feeder: feeder,
+				entry:  entry,
 			}
 			r.SkipChildren()
 		case dwarf.TagVariable:
-			if !dwarfutil.EntryShouldIgnore(entry) {
-				feeder(entry)
+			entryChan <- item{
+				feeder: feeder,
+				entry:  entry,
 			}
 		}
 	}
+
+	close(entryChan)
+	processing.Wait()
 
 	return true
 }

@@ -101,6 +101,7 @@ class IntegrationTest:
                 Thread(target=run,
                        args=([gsa,
                               "-f", "json",
+                              "--verbose",
                               "--indent", "2",
                               self.path,
                               "-o", self.generated_filepath(TestType.JSON_TEST)],

@@ -2,6 +2,7 @@ package knowninfo
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/ZxillyFork/gore"
 
@@ -39,9 +40,11 @@ func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile) error {
 		return err
 	}
 
+	slog.Info("Loading version flag and meta info...")
 	k.VersionFlag = UpdateVersionFlag(f)
-
+	slog.Info("Loaded version flag")
 	k.PClnTabAddr = f.GetPCLNTableAddr()
+	slog.Info("Loaded meta info")
 
 	return nil
 }

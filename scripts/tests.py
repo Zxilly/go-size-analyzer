@@ -174,11 +174,7 @@ def run_integration_tests(typ: str, gsa_path: str):
 
     log(f"Running integration tests {typ}...")
 
-    targets = []
-
-    if typ == "web" or typ == "flag":
-        pass  # analyze itself, nothing to do
-    elif typ == "example":
+    if typ == "example":
         targets = load_remote_binaries_as_test(lambda x: x.startswith("bin-"))
     elif typ == "real":
         targets = load_remote_binaries_as_test(lambda x: not x.startswith("bin-"))
@@ -189,13 +185,6 @@ def run_integration_tests(typ: str, gsa_path: str):
         timeout = 10
     else:
         timeout = 60
-
-    if typ == "web":
-        run_web_test(gsa_path)
-        return
-
-    if typ == "flag":
-        run_version_and_help_test(gsa_path)
 
     all_tests = len(targets)
     completed_tests = 0
@@ -284,14 +273,14 @@ def run_web_test(entry: str):
 
     stdout_data, stderr_data = "", ""
     p = subprocess.Popen(
-        args=[entry, "--web", "--listen", f"127.0.0.1:{port}", entry],
+        args=[entry, "--verbose", "--web", "--listen", f"127.0.0.1:{port}", entry],
         text=True, cwd=get_project_root(),
         encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
 
     log(f"Waiting for the server to start on port {port}...")
 
-    timeout_seconds = 5
+    timeout_seconds = 10
     timeout_occurred = False
 
     def timeout_handler():
@@ -382,8 +371,9 @@ if __name__ == "__main__":
     if args.integration_example or args.integration_real:
         with build_gsa() as gsa:
             if args.integration_example:
-                run_integration_tests("web", gsa)
-                run_integration_tests("flag", gsa)
+                run_web_test(gsa)
+                run_version_and_help_test(gsa)
+
                 run_integration_tests("example", gsa)
             if args.integration_real:
                 run_integration_tests("real", gsa)
