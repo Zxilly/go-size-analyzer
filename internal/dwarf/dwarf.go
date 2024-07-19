@@ -84,6 +84,16 @@ func SizeForDWARFVar(
 	return nil, uint64(typ.Size()), nil
 }
 
+var boolIgnores = [...]dwarf.Attr{
+	dwarf.AttrCallAllCalls,
+	dwarf.AttrCallAllTailCalls,
+}
+
+var ignores = [...]dwarf.Attr{
+	dwarf.AttrAbstractOrigin,
+	dwarf.AttrSpecification,
+}
+
 func EntryShouldIgnore(entry *dwarf.Entry) bool {
 	declaration := entry.Val(dwarf.AttrDeclaration)
 	if declaration != nil {
@@ -99,11 +109,6 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		}
 	}
 
-	boolIgnores := []dwarf.Attr{
-		dwarf.AttrCallAllCalls,
-		dwarf.AttrCallAllTailCalls,
-	}
-
 	for _, ignore := range boolIgnores {
 		valAny := entry.Val(ignore)
 		if valAny != nil {
@@ -116,11 +121,6 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 				return true
 			}
 		}
-	}
-
-	ignores := []dwarf.Attr{
-		dwarf.AttrAbstractOrigin,
-		dwarf.AttrSpecification,
 	}
 
 	for _, ignore := range ignores {

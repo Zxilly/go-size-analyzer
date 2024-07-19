@@ -57,7 +57,7 @@ func (k *KnownInfo) Disasm() error {
 	)
 
 	for fn := range k.Deps.Functions {
-		if err := sem.Acquire(resultProcess, 1); err != nil {
+		if err = sem.Acquire(resultProcess, 1); err != nil {
 			slog.Error(fmt.Sprintf("Failed to acquire semaphore: %v", err))
 			break
 		}
