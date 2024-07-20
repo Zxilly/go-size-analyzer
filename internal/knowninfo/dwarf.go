@@ -17,15 +17,18 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
-	instsAny := entry.Val(dwarf.AttrLocation)
-	if instsAny == nil {
-		// todo: support const on this case, for others we can't do anything
-		return
-	}
-	insts, ok := instsAny.([]byte)
+func safeGetEntryVal[T any](entry *dwarf.Entry, attr dwarf.Attr, name string) (T, bool) {
+	v, ok := entry.Val(attr).(T)
 	if !ok {
-		slog.Warn(fmt.Sprintf("location attribute is not []byte for %s", dwarfutil.EntryPrettyPrint(entry)))
+		slog.Warn(fmt.Sprintf("Failed to load DWARF %s: %s", name, dwarfutil.EntryPrettyPrint(entry)))
+		return *new(T), false
+	}
+	return v, true
+}
+
+func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
+	insts, ok := safeGetEntryVal[[]byte](entry, dwarf.AttrLocation, "location attribute")
+	if !ok {
 		return
 	}
 
@@ -73,7 +76,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 			valueName := utils.Deduplicate(fmt.Sprintf("%s.%s", entryName, content.Name))
 
-			symbol := entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
+			symbol = entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
 
 			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 
@@ -89,9 +92,8 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	pkg *entity.Package,
 	readFileName func(entry *dwarf.Entry) string,
 ) {
-	subEntryName, ok := subEntry.Val(dwarf.AttrName).(string)
+	subEntryName, ok := safeGetEntryVal[string](subEntry, dwarf.AttrName, "function name")
 	if !ok {
-		slog.Debug(fmt.Sprintf("Failed to load DWARF function name: %s", dwarfutil.EntryPrettyPrint(subEntry)))
 		return
 	}
 
@@ -139,14 +141,13 @@ func (k *KnownInfo) AddDwarfSubProgram(
 }
 
 func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity.Package {
-	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
+	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language")
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
 		return nil
 	}
-	cuName, ok := cuEntry.Val(dwarf.AttrName).(string)
+
+	cuName, ok := safeGetEntryVal[string](cuEntry, dwarf.AttrName, "compile unit name")
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF compile unit name: %s", dwarfutil.EntryPrettyPrint(cuEntry)))
 		return nil
 	}
 
@@ -182,15 +183,15 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 
 type EntryFeeder func(e *dwarf.Entry)
 
-func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entry, ptrSize int) (EntryFeeder, error) {
-	cuLang, ok := cuEntry.Val(dwarf.AttrLanguage).(int64)
+func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entry, ptrSize int) (EntryFeeder, bool) {
+	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language")
 	if !ok {
-		return nil, fmt.Errorf("failed to load DWARF compile unit language: %s", dwarfutil.EntryPrettyPrint(cuEntry))
+		return nil, false
 	}
 
 	pkg := k.GetPackageFromDwarfCompileUnit(cuEntry)
 	if pkg == nil {
-		return nil, fmt.Errorf("failed to load DWARF compile unit package: %s", dwarfutil.EntryPrettyPrint(cuEntry))
+		return nil, false
 	}
 
 	readFileName := dwarfutil.EntryFileReader(cuEntry, d)
@@ -202,7 +203,7 @@ func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entr
 		case dwarf.TagVariable:
 			k.AddDwarfVariable(e, d, pkg, ptrSize)
 		}
-	}, nil
+	}, true
 }
 
 func (k *KnownInfo) TryLoadDwarf() bool {
@@ -253,9 +254,9 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 
 		switch entry.Tag {
 		case dwarf.TagCompileUnit:
-			feeder, err = k.GetDwarfCompileUnitFeeder(d, entry, ptrSize)
-			if err != nil {
-				slog.Debug(fmt.Sprintf("Failed to load DWARF compile unit: %v", err))
+			var ok bool
+			feeder, ok = k.GetDwarfCompileUnitFeeder(d, entry, ptrSize)
+			if !ok {
 				r.SkipChildren()
 			}
 		case dwarf.TagSubprogram:
