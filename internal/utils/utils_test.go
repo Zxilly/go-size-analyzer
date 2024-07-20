@@ -2,6 +2,7 @@ package utils
 
 import (
 	"debug/gosym"
+	"debug/pe"
 	"fmt"
 	"maps"
 	"reflect"
@@ -172,4 +173,10 @@ func TestCollect(t *testing.T) {
 	for k := range args {
 		assert.Contains(t, result, k)
 	}
+}
+
+func TestGetImageBase(t *testing.T) {
+	mockFile := new(pe.File)
+	mockFile.OptionalHeader = 42
+	assert.Panics(t, func() { GetImageBase(mockFile) })
 }
