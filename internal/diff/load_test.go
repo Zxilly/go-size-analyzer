@@ -72,3 +72,34 @@ func TestDifferentAnalyzer(t *testing.T) {
 		NewTarget: second,
 	}))
 }
+
+func TestFormatAnalyzer(t *testing.T) {
+	cases := []struct {
+		name      string
+		analyzers []string
+		expected  string
+	}{
+		{
+			name:      "Empty slice returns 'none'",
+			analyzers: []string{},
+			expected:  "none",
+		},
+		{
+			name:      "Single element returns the element itself",
+			analyzers: []string{"Analyzer1"},
+			expected:  "Analyzer1",
+		},
+		{
+			name:      "Multiple elements returns comma-separated string",
+			analyzers: []string{"Analyzer1", "Analyzer2", "Analyzer3"},
+			expected:  "Analyzer1, Analyzer2, Analyzer3",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := formatAnalyzer(tc.analyzers)
+			require.Equal(t, tc.expected, result)
+		})
+	}
+}

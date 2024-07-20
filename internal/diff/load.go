@@ -26,6 +26,14 @@ type DOptions struct {
 	Indent *int
 }
 
+func formatAnalyzer(analyzers []string) string {
+	if len(analyzers) == 0 {
+		return "none"
+	}
+
+	return strings.Join(analyzers, ", ")
+}
+
 func Diff(writer io.Writer, options DOptions) error {
 	oldResult, err := autoLoadFile(options.OldTarget, options.Options)
 	if err != nil {
@@ -38,14 +46,6 @@ func Diff(writer io.Writer, options DOptions) error {
 	}
 
 	if !requireAnalyzeModeSame(oldResult, newResult) {
-		formatAnalyzer := func(analyzers []string) string {
-			if len(analyzers) == 0 {
-				return "none"
-			}
-
-			return strings.Join(analyzers, ", ")
-		}
-
 		slog.Warn("The analyze mode of the two files is different")
 		slog.Warn(fmt.Sprintf("%s: %s", options.NewTarget, formatAnalyzer(newResult.Analyzers)))
 		slog.Warn(fmt.Sprintf("%s: %s", options.OldTarget, formatAnalyzer(oldResult.Analyzers)))

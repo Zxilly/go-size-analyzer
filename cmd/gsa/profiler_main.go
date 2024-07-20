@@ -49,7 +49,6 @@ func main() {
 var heapProfileStop context.CancelFunc
 
 func startWriteHeapProfile(outputDir string) {
-
 	var ctx context.Context
 	ctx, heapProfileStop = context.WithCancel(context.Background())
 

@@ -3,7 +3,11 @@ import { parseResult } from "../generated/schema.ts";
 
 export function loadDataFromEmbed(): Result {
   const doc = document.querySelector("#data")!;
-  const ret = parseResult(doc.textContent!);
+  if (doc === null) {
+    throw new Error("Failed to find data element");
+  }
+
+  const ret = parseResult(doc.textContent);
   if (ret === null) {
     throw new Error("Failed to parse data");
   }
