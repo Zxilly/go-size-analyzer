@@ -20,7 +20,7 @@ import (
 func safeGetEntryVal[T any](entry *dwarf.Entry, attr dwarf.Attr, name string) (T, bool) {
 	v, ok := entry.Val(attr).(T)
 	if !ok {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF %s: %s", name, dwarfutil.EntryPrettyPrint(entry)))
+		slog.Debug(fmt.Sprintf("Failed to load DWARF %s: %s", name, dwarfutil.EntryPrettyPrint(entry)))
 		return *new(T), false
 	}
 	return v, true
