@@ -37,6 +37,7 @@ export const Explorer: React.FC = () => {
   const { value: analyzer, loading, error: loadError } = useAsync(async () => {
     return GsaInstance.create((line) => {
       setLog(prev => `${prev + line}\n`);
+      console.info(line);
     });
   });
 
