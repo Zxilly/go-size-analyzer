@@ -8,5 +8,5 @@ import (
 
 func TestNewWrapper(t *testing.T) {
 	ret := NewWrapper(nil)
-	assert.Equal(t, nil, ret)
+	assert.Nil(t, ret)
 }
