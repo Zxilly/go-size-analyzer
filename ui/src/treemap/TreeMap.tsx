@@ -1,23 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { group } from "d3-array";
 import type { HierarchyNode } from "d3-hierarchy";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
 import { useTitle, useWindowSize } from "react-use";
-
-import type { Entry } from "./tool/entry.ts";
-import createRainbowColor from "./tool/color.ts";
-import { Tooltip } from "./Tooltip.tsx";
-import { Node } from "./Node.tsx";
-
+import { Group, Layer, Stage } from "react-konva";
+import type Konva from "konva";
+import type { Entry } from "../tool/entry.ts";
+import createRainbowColor from "../tool/color.ts";
+import { Tooltip } from "../Tooltip.tsx";
+import { Node } from "../Node.tsx";
 import "./style.scss";
-import { trimPrefix } from "./tool/utils.ts";
-import { shallowCopy } from "./tool/copy.ts";
+import { trimPrefix } from "../tool/utils.ts";
+import { shallowCopy } from "../tool/copy.ts";
+import type { TreeMapProps } from "./props.ts";
 
-interface TreeMapProps {
-  entry: Entry;
-}
-
-function TreeMap({ entry }: TreeMapProps) {
+export default function TreeMap({ entry }: TreeMapProps) {
   // Set the document title to the name of the entry
   useTitle(entry.getName(), {
     restoreOnUnmount: true,
@@ -157,31 +154,24 @@ function TreeMap({ entry }: TreeMapProps) {
     }
   }, [rawHierarchyID, selectedNodeID]);
 
-  const svgRef = useRef<SVGSVGElement>(null);
+  const stageRef = useRef<Konva.Stage>(null);
 
-  const getTargetNode = useCallback((e: EventTarget) => {
-    const target = (e as SVGElement).parentNode;
-    if (!target) {
-      return null;
-    }
+  const getTargetNode = useCallback((e: Konva.KonvaEventObject<MouseEvent>) => {
+    console.log(e);
 
-    const dataIdStr = (target as Element).getAttribute("data-id");
-    if (!dataIdStr) {
-      return null;
-    }
-
-    const dataId = Number.parseInt(dataIdStr);
+    const dataId = e.target._id;
 
     return rawHierarchyID.get(dataId)?.data ?? null;
   }, [rawHierarchyID]);
 
-  const onClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    const node = getTargetNode(e.target);
+  const onClick = useCallback((e: Konva.KonvaEventObject<MouseEvent>) => {
+    const node = getTargetNode(e);
     if (node === null) {
+      console.log("no node");
       return;
     }
 
-    if (e.ctrlKey) {
+    if (e.evt.ctrlKey) {
       console.log(node);
       return;
     }
@@ -197,13 +187,13 @@ function TreeMap({ entry }: TreeMapProps) {
   const nodes = useMemo(() => {
     return layers.map(({ key, values }) => {
       return (
-        <g className="layer" key={key}>
+        <Group key={key}>
           {values.map((node) => {
-            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
-
             if (node.x1 - node.x0 < 2 || node.y1 - node.y0 < 2) {
               return null;
             }
+
+            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
 
             return (
               <Node
@@ -222,7 +212,7 @@ function TreeMap({ entry }: TreeMapProps) {
               />
             );
           }).filter(Boolean)}
-        </g>
+        </Group>
       );
     });
   }, [getModuleColor, layers, selectedNodeID]);
@@ -230,19 +220,19 @@ function TreeMap({ entry }: TreeMapProps) {
   return (
     <>
       <Tooltip
-        moveRef={svgRef}
+        moveRef={stageRef}
         getTargetNode={getTargetNode}
       />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox={`0 0 ${width} ${height}`}
+      <Stage
+        width={width}
+        height={height}
         onClick={onClick}
-        ref={svgRef}
+        ref={stageRef}
       >
-        {nodes}
-      </svg>
+        <Layer>
+          {nodes}
+        </Layer>
+      </Stage>
     </>
   );
 }
-
-export default TreeMap;

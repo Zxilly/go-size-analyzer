@@ -1,29 +1,37 @@
 import type { RefObject } from "react";
 import { useCallback, useState } from "react";
 import { useLifecycles } from "react-use";
+import type Konva from "konva";
+import type { KonvaEventListener, KonvaEventObject } from "konva/lib/Node";
+import type { Stage } from "konva/lib/Stage";
 
 export interface useMouseResult {
   clientX: number | null;
   clientY: number | null;
   isOver: boolean;
-  eventTarget: EventTarget | null;
+  eventTarget: KonvaEventObject<MouseEvent> | null;
 }
 
-export function useMouse(ref: RefObject<SVGElement>): useMouseResult {
+export function useMouse(ref: RefObject<Konva.Stage>): useMouseResult {
   const [clientX, setClientX] = useState<number | null>(null);
   const [clientY, setClientY] = useState<number | null>(null);
-  const [eventTarget, setEventTarget] = useState<EventTarget | null>(null);
+  const [eventObject, setEventObject] = useState<KonvaEventObject<MouseEvent> | null>(null);
 
   const [isOver, setIsOver] = useState(false);
 
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    setClientX(e.clientX);
-    setClientY(e.clientY);
-
-    if (e.target !== eventTarget) {
-      setEventTarget(e.target);
+  const onMouseMove: KonvaEventListener<Stage, MouseEvent> = useCallback((e) => {
+    if (!ref.current) {
+      return;
     }
-  }, [eventTarget]);
+
+    setClientX(e.evt.clientX);
+    setClientY(e.evt.clientY);
+
+    if (eventObject?.currentTarget._id !== e.currentTarget._id) {
+      console.log("new event object");
+      setEventObject(e);
+    }
+  }, [eventObject, ref]);
 
   const onMouseOver = useCallback(() => {
     setIsOver(true);
@@ -34,18 +42,18 @@ export function useMouse(ref: RefObject<SVGElement>): useMouseResult {
   }, []);
 
   const mount = useCallback(() => {
-    if (ref.current) {
-      ref.current.addEventListener("mousemove", onMouseMove);
-      ref.current.addEventListener("mouseover", onMouseOver);
-      ref.current.addEventListener("mouseout", onMouseOut);
+    if (ref && ref.current) {
+      ref.current.on("mousemove", onMouseMove);
+      ref.current.on("mouseover", onMouseOver);
+      ref.current.on("mouseout", onMouseOut);
     }
   }, [onMouseMove, onMouseOut, onMouseOver, ref]);
 
   const unmount = useCallback(() => {
-    if (ref.current) {
-      ref.current.removeEventListener("mousemove", onMouseMove);
-      ref.current.removeEventListener("mouseover", onMouseOver);
-      ref.current.removeEventListener("mouseout", onMouseOut);
+    if (ref && ref.current) {
+      ref.current.off("mousemove", onMouseMove);
+      ref.current.off("mouseover", onMouseOver);
+      ref.current.off("mouseout", onMouseOut);
     }
   }, [onMouseMove, onMouseOut, onMouseOver, ref]);
 
@@ -55,6 +63,6 @@ export function useMouse(ref: RefObject<SVGElement>): useMouseResult {
     clientX,
     clientY,
     isOver,
-    eventTarget,
+    eventTarget: eventObject,
   };
 }

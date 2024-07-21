@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createEntry } from "./tool/entry.ts";
+import { createEntry } from "../tool/entry.ts";
+import { getTestResult } from "../test/testhelper.ts";
 import TreeMap from "./TreeMap.tsx";
-import { getTestResult } from "./test/testhelper.ts";
 
 function getTestEntry() {
   return createEntry(getTestResult());

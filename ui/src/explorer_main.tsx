@@ -3,6 +3,8 @@ import React from "react";
 
 import { Explorer } from "./explorer/Explorer.tsx";
 
+import "./base.scss";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Explorer />

@@ -22,9 +22,11 @@
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
+    "konva": "^9.3.14",
     "lodash.memoize": "^4.1.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-konva": "^18.2.10",
     "react-use": "^17.5.0"
   },
   "devDependencies": {

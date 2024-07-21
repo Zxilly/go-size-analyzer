@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import type Konva from "konva";
 import type { Entry } from "./tool/entry.ts";
 import { useMouse } from "./tool/useMouse.ts";
 
@@ -7,8 +8,8 @@ const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
 
 export interface TooltipProps {
-  moveRef: RefObject<SVGElement>;
-  getTargetNode: (e: EventTarget) => Entry | null;
+  moveRef: RefObject<Konva.Stage>;
+  getTargetNode: (e: Konva.KonvaEventObject<MouseEvent>) => Entry | null;
 }
 
 export const Tooltip: React.FC<TooltipProps>

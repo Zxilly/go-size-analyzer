@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { useAsync } from "react-use";
 import { Box, Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { createEntry } from "../tool/entry.ts";
-import TreeMap from "../TreeMap.tsx";
+import TreeMap from "../treemap/TreeMap.tsx";
 import { GsaInstance } from "../worker/helper.ts";
 import { FileSelector } from "./FileSelector.tsx";
 

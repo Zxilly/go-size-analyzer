@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import memoize from "lodash.memoize";
+import { Group, Rect, Text } from "react-konva";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
 export interface NodeProps {
@@ -17,25 +18,19 @@ export interface NodeProps {
   fontColor: string;
 }
 
-let textElement: SVGTextElement;
+let canvas: OffscreenCanvasRenderingContext2D;
 
 (function init() {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.style.position = "absolute";
-  svg.style.visibility = "hidden";
-  document.body.appendChild(svg);
-  textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  textElement.setAttribute("font-size", "0.8em");
-  textElement.setAttribute("dominant-baseline", "middle");
-  textElement.setAttribute("text-anchor", "middle");
-  svg.appendChild(textElement);
+  const offscreen = new OffscreenCanvas(256, 256);
+  canvas = offscreen.getContext("2d")!;
 })();
 
 function measureText(text: string): [number, number] {
-  textElement.textContent = text;
-  const rect = textElement.getBoundingClientRect();
+  const metrics = canvas.measureText(text);
+  const width = metrics.width;
+  const height = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 
-  return [rect.width, rect.height];
+  return [width, height];
 }
 
 const memoizedMeasureText = memoize(measureText);
@@ -61,12 +56,9 @@ export const Node: React.FC<NodeProps> = React.memo((
   const width = x1 - x0;
   const height = y1 - y0;
 
+  const [textPos, setTextPos] = useState({ x: 0, y: 0 });
+
   const textProps = useMemo<Record<string, string | number>>(() => {
-    const initial: Record<string, string | number> = {
-      fontSize: "0.8em",
-      dominantBaseline: "middle",
-      textAnchor: "middle",
-    };
     const [textWidth, textHeight] = memoizedMeasureText(title);
     let scale: number;
     if (hasChildren) {
@@ -94,37 +86,52 @@ export const Node: React.FC<NodeProps> = React.memo((
   }, [hasChildren, height, title, width]);
 
   return (
-    <g
-      className="node"
-      transform={`translate(${x0},${y0})`}
-      data-id={id}
+    // <g
+    //   className="node"
+    //   transform={`translate(${x0},${y0})`}
+    //   data-id={id}
+    // >
+    //   <rect
+    //     fill={backgroundColor}
+    //     rx={2}
+    //     ry={2}
+    //     width={x1 - x0}
+    //     height={y1 - y0}
+    //     stroke={selected ? "#fff" : undefined}
+    //     strokeWidth={selected ? 2 : undefined}
+    //   >
+    //   </rect>
+    //   {
+    //     width > 12 && height > 12 && (
+    //       <text
+    //         ref={textRef}
+    //         fill={fontColor}
+    //         {...textProps}
+    //       >
+    //         {title}
+    //       </text>
+    //     )
+    //   }
+    // </g>
+    <Group
+      id={String(id)}
+      x={x0}
+      y={y0}
     >
-      <rect
+      <Rect
         fill={backgroundColor}
-        rx={2}
-        ry={2}
-        width={x1 - x0}
-        height={y1 - y0}
+        height={height}
+        width={width}
         stroke={selected ? "#fff" : undefined}
         strokeWidth={selected ? 2 : undefined}
-      >
-      </rect>
-      {
-        width > 12 && height > 12 && (
-          <text
-            ref={textRef}
-            fill={fontColor}
-            onClick={(event) => {
-              if (window.getSelection()?.toString() !== "") {
-                event.stopPropagation();
-              }
-            }}
-            {...textProps}
-          >
-            {title}
-          </text>
-        )
-      }
-    </g>
+      />
+      <Text
+        fill={fontColor}
+        text={title}
+        fontSize={13}
+        align="center"
+        verticalAlign="middle"
+      />
+    </Group>
   );
 });
