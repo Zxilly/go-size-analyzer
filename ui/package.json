@@ -28,7 +28,7 @@
     "react-use": "^17.5.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.23.0",
+    "@antfu/eslint-config": "^2.23.1",
     "@codecov/vite-plugin": "0.0.1-beta.10",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@million/lint": "1.0.0-rc.81",
@@ -50,12 +50,12 @@
     "eslint": "^9.7.0",
     "eslint-plugin-import-x": "^3.0.1",
     "eslint-plugin-react-hooks": "5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.8",
+    "eslint-plugin-react-refresh": "^0.4.9",
     "junit": "^1.4.9",
     "sass": "^1.77.8",
     "terser": "^5.31.3",
     "typescript": "^5.5.3",
-    "typia": "^6.5.2",
+    "typia": "^6.5.4",
     "vite": "^5.3.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
