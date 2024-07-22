@@ -40,6 +40,16 @@ function measureText(text: string): [number, number] {
 
 const memoizedMeasureText = memoize(measureText);
 
+interface RenderAttributes {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+function getTransform(scale: number): string {
+  return `scale(${scale.toFixed(2)})`;
+}
+
 export const Node: React.FC<NodeProps> = React.memo((
   {
     id,
@@ -61,12 +71,7 @@ export const Node: React.FC<NodeProps> = React.memo((
   const width = x1 - x0;
   const height = y1 - y0;
 
-  const textProps = useMemo<Record<string, string | number>>(() => {
-    const initial: Record<string, string | number> = {
-      fontSize: "0.8em",
-      dominantBaseline: "middle",
-      textAnchor: "middle",
-    };
+  const renderAttr = useMemo<RenderAttributes>(() => {
     const [textWidth, textHeight] = memoizedMeasureText(title);
     let scale: number;
     if (hasChildren) {
@@ -75,8 +80,11 @@ export const Node: React.FC<NodeProps> = React.memo((
         Math.min(height, TOP_PADDING + PADDING) / textHeight,
       );
       scale = Math.min(1, scale);
-      initial.y = Math.min(TOP_PADDING + PADDING, height) / 2 / scale;
-      initial.x = width / 2 / scale;
+      return {
+        x: width / 2 / scale,
+        y: Math.min(TOP_PADDING + PADDING, height) / 2 / scale,
+        scale,
+      };
     }
     else {
       scale = Math.min(
@@ -84,14 +92,14 @@ export const Node: React.FC<NodeProps> = React.memo((
         (height * 0.9) / textHeight,
       );
       scale = Math.min(1, scale);
-      initial.y = height / 2 / scale;
-      initial.x = width / 2 / scale;
+
+      return {
+        x: width / 2 / scale,
+        y: height / 2 / scale,
+        scale,
+      };
     }
-
-    initial.transform = `scale(${scale.toFixed(2)})`;
-
-    return initial;
-  }, [hasChildren, height, title, width]);
+  }, [hasChildren, height, width, title]);
 
   return (
     <g
@@ -101,16 +109,14 @@ export const Node: React.FC<NodeProps> = React.memo((
     >
       <rect
         fill={backgroundColor}
-        rx={2}
-        ry={2}
-        width={x1 - x0}
-        height={y1 - y0}
+        width={width}
+        height={height}
         stroke={selected ? "#fff" : undefined}
         strokeWidth={selected ? 2 : undefined}
       >
       </rect>
       {
-        width > 12 && height > 12 && (
+        width > 12 && height > 12 && renderAttr.scale > 0.25 && (
           <text
             ref={textRef}
             fill={fontColor}
@@ -119,7 +125,12 @@ export const Node: React.FC<NodeProps> = React.memo((
                 event.stopPropagation();
               }
             }}
-            {...textProps}
+            fontSize="0.8em"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            x={renderAttr.x}
+            y={renderAttr.y}
+            transform={getTransform(renderAttr.scale)}
           >
             {title}
           </text>
