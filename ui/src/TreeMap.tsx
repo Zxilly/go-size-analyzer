@@ -3,15 +3,14 @@ import { group } from "d3-array";
 import type { HierarchyNode } from "d3-hierarchy";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
 import { useTitle, useWindowSize } from "react-use";
-
 import type { Entry } from "./tool/entry.ts";
 import createRainbowColor from "./tool/color.ts";
 import { Tooltip } from "./Tooltip.tsx";
 import { Node } from "./Node.tsx";
-
 import "./style.scss";
 import { trimPrefix } from "./tool/utils.ts";
 import { shallowCopy } from "./tool/copy.ts";
+import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
 interface TreeMapProps {
   entry: Entry;
@@ -56,8 +55,8 @@ function TreeMap({ entry }: TreeMapProps) {
   const layout = useMemo(() => {
     return treemap<Entry>()
       .size([width, height])
-      .paddingInner(1)
-      .paddingTop(20)
+      .paddingInner(PADDING)
+      .paddingTop(TOP_PADDING)
       .round(true)
       .tile(treemapSquarify);
   }, [height, width]);
