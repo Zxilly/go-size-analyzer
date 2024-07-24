@@ -18,7 +18,7 @@ require (
 	github.com/go-delve/delve v1.23.0
 	github.com/go-json-experiment/json v0.0.0-20240524174822-2d9f40f7385b
 	github.com/jedib0t/go-pretty/v6 v6.5.9
-	github.com/knadh/profiler v0.1.1
+	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.15.2
 	github.com/nikolaydubina/treemap v1.2.5
