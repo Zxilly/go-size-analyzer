@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/samber/lo"
-	"golang.org/x/sync/semaphore"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -53,17 +53,12 @@ func (k *KnownInfo) Disasm() error {
 
 	var (
 		maxWorkers = runtime.GOMAXPROCS(0)
-		sem        = semaphore.NewWeighted(int64(maxWorkers))
+		eg         = errgroup.Group{}
 	)
+	eg.SetLimit(maxWorkers)
 
 	for fn := range k.Deps.Functions {
-		if err = sem.Acquire(resultProcess, 1); err != nil {
-			slog.Error(fmt.Sprintf("Failed to acquire semaphore: %v", err))
-			break
-		}
-
-		go func(fn *entity.Function) {
-			defer sem.Release(1)
+		eg.Go(func() error {
 			candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
 
 			lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
@@ -73,15 +68,17 @@ func (k *KnownInfo) Disasm() error {
 					fn:   fn,
 				}
 			})
-		}(fn)
+
+			return nil
+		})
 	}
 
-	if err = sem.Acquire(resultProcess, int64(maxWorkers)); err != nil {
-		slog.Error(fmt.Sprintf("Failed to acquire semaphore for all workers: %v", err))
+	if err = eg.Wait(); err != nil {
+		slog.Error(fmt.Sprintf("Disassemble functions failed: %v", err))
+		return err
 	}
 
 	close(resultChan)
-
 	<-resultProcess.Done()
 
 	slog.Info(fmt.Sprintf("Disassemble functions done, took %s", time.Since(startTime)))
