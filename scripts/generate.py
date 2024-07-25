@@ -156,18 +156,36 @@ def generate_example() -> list[RemoteBinary]:
                                     get_example_download_url(name),
                                     TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
                                     RemoteBinaryType.RAW,
-                                    [
-                                        Target(name, name)
-                                    ]
                                 )
                             )
 
     return ret
 
 
+def generate_big_const() -> list[RemoteBinary]:
+    # https://github.com/Zxilly/go-testdata/releases/download/const/const-linux
+    # https://github.com/Zxilly/go-testdata/releases/download/const/const-macos
+    # https://github.com/Zxilly/go-testdata/releases/download/const/const-windows
+
+    ret = []
+    for o in ["windows", "linux", "darwin"]:
+        name = f"const-{o}"
+        url = f"https://github.com/Zxilly/go-testdata/releases/download/const/{name}"
+        ret.append(
+            RemoteBinary(
+                name,
+                url,
+                TestType.JSON_TEST,
+                RemoteBinaryType.RAW,
+            )
+        )
+    return ret
+
+
 if __name__ == '__main__':
     remotes = []
     remotes.extend(generate_example())
+    remotes.extend(generate_big_const())
     remotes.extend(generate_cockroachdb())
     remotes.extend(generate_kubernetes())
     remotes.extend(generate_prometheus())

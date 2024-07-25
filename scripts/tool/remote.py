@@ -152,21 +152,35 @@ class Target:
         self.data = None
 
     def __str__(self):
+        base = os.path.basename(self.path)
+
+        if self.name is None:
+            return base
+
         return f"{self.name}:{os.path.basename(self.path)}"
 
     @staticmethod
     def from_str(s: str):
-        name, path = s.split(":")
-        return Target(name, path)
+        parts = s.split(":")
+        if len(parts) == 1:
+            return Target(None, parts[0])
+        return Target(parts[0], parts[1])
 
 
 class RemoteBinary:
-    def __init__(self, name: str, url: str, test_typ: TestType, typ: RemoteBinaryType, targets: list[Target]):
+    def __init__(self, name: str, url: str, test_typ: TestType, typ: RemoteBinaryType, targets: list[Target] = None):
         self.name = name
         self.url = url
         self.type = typ
         self.test_type = test_typ
-        self.targets = targets
+
+        if typ == RemoteBinaryType.RAW:
+            self.targets = [Target(None, name)]
+        else:
+            if targets is None:
+                raise Exception("targets must be provided for TAR and ZIP")
+
+            self.targets = targets
 
     def to_csv(self) -> [str]:
         return [self.name, self.url, self.test_type.value, self.type.value, "@".join([str(t) for t in self.targets])]
