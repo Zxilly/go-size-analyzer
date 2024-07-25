@@ -168,7 +168,7 @@ def generate_big_const() -> list[RemoteBinary]:
     # https://github.com/Zxilly/go-testdata/releases/download/const/const-windows
 
     ret = []
-    for o in ["windows", "linux", "darwin"]:
+    for o in ["windows", "linux", "macos"]:
         name = f"const-{o}"
         url = f"https://github.com/Zxilly/go-testdata/releases/download/const/{name}"
         ret.append(

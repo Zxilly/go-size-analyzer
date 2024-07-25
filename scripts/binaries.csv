@@ -126,7 +126,7 @@ bin-darwin-1.22-arm64-stripdwarf,https://github.com/Zxilly/go-testdata/releases/
 bin-darwin-1.22-arm64,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-darwin-1.22-arm64,15,raw,bin-darwin-1.22-arm64
 const-windows,https://github.com/Zxilly/go-testdata/releases/download/const/const-windows,2,raw,const-windows
 const-linux,https://github.com/Zxilly/go-testdata/releases/download/const/const-linux,2,raw,const-linux
-const-darwin,https://github.com/Zxilly/go-testdata/releases/download/const/const-darwin,2,raw,const-darwin
+const-macos,https://github.com/Zxilly/go-testdata/releases/download/const/const-macos,2,raw,const-macos
 cockroach-linux-amd64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-amd64.tgz,2,tar,cockroach:cockroach-linux-amd64
 cockroach-linux-arm64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.linux-arm64.tgz,2,tar,cockroach:cockroach-linux-arm64
 cockroach-darwin-amd64,https://binaries.cockroachdb.com/cockroach-v24.1.0-beta.2.darwin-10.9-amd64.tgz,2,tar,cockroach:cockroach-darwin-amd64
