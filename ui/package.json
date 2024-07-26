@@ -56,7 +56,7 @@
     "terser": "^5.31.3",
     "typescript": "^5.5.4",
     "typia": "^6.5.4",
-    "vite": "^5.3.4",
+    "vite": "^5.3.5",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.0.2",
     "vitest": "^2.0.4"
