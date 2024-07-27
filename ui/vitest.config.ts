@@ -1,6 +1,12 @@
+import process from "node:process";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import { coverageConfigDefaults } from "vitest/config";
+
+const reporters = ["default", "junit"];
+if (process.env.CI) {
+  reporters.push("github-actions");
+}
 
 export default defineConfig({
   plugins: [
@@ -23,7 +29,7 @@ export default defineConfig({
         ...coverageConfigDefaults.exclude,
       ],
     },
-    reporters: ["junit", "default", "github-actions"],
+    reporters,
     outputFile: {
       junit: "test-results.xml",
     },

@@ -370,16 +370,16 @@ exports[`entry > match 86`] = `".rodata"`;
 
 exports[`entry > match 87`] = `"section"`;
 
-exports[`entry > match 88`] = `142617`;
+exports[`entry > match 88`] = `142553`;
 
 exports[`entry > match 89`] = `[]`;
 
 exports[`entry > match 90`] = `
 "Section:      .rodata
-Size:         139.27 KB
+Size:         139.21 KB
 File Size:    145.07 KB
-Known size:   5.8 KB
-Unknown size: 139.27 KB
+Known size:   5.86 KB
+Unknown size: 139.21 KB
 Offset:       0x85000 - 0xa9449
 Address:      0x485000 - 0x4a9449
 Memory:       false
@@ -390,16 +390,16 @@ exports[`entry > match 91`] = `".shstrtab"`;
 
 exports[`entry > match 92`] = `"section"`;
 
-exports[`entry > match 93`] = `231`;
+exports[`entry > match 93`] = `263`;
 
 exports[`entry > match 94`] = `[]`;
 
 exports[`entry > match 95`] = `
 "Section:      .shstrtab
-Size:         231 B
+Size:         263 B
 File Size:    263 B
-Known size:   32 B
-Unknown size: 231 B
+Known size:   0 B
+Unknown size: 263 B
 Offset:       0xa9460 - 0xa9567
 Address:      0x0 - 0x107
 Memory:       false
@@ -410,16 +410,16 @@ exports[`entry > match 96`] = `".strtab"`;
 
 exports[`entry > match 97`] = `"section"`;
 
-exports[`entry > match 98`] = `60905`;
+exports[`entry > match 98`] = `60921`;
 
 exports[`entry > match 99`] = `[]`;
 
 exports[`entry > match 100`] = `
 "Section:      .strtab
-Size:         59.48 KB
+Size:         59.49 KB
 File Size:    59.49 KB
-Known size:   16 B
-Unknown size: 59.48 KB
+Known size:   0 B
+Unknown size: 59.49 KB
 Offset:       0x173d90 - 0x182b89
 Address:      0x0 - 0xedf9
 Memory:       false
@@ -430,16 +430,16 @@ exports[`entry > match 101`] = `".symtab"`;
 
 exports[`entry > match 102`] = `"section"`;
 
-exports[`entry > match 103`] = `59048`;
+exports[`entry > match 103`] = `59064`;
 
 exports[`entry > match 104`] = `[]`;
 
 exports[`entry > match 105`] = `
 "Section:      .symtab
-Size:         57.66 KB
+Size:         57.68 KB
 File Size:    57.68 KB
-Known size:   16 B
-Unknown size: 57.66 KB
+Known size:   0 B
+Unknown size: 57.68 KB
 Offset:       0x1656d8 - 0x173d90
 Address:      0x0 - 0xe6b8
 Memory:       false
@@ -9991,7 +9991,7 @@ exports[`entry > match 3064`] = `[]`;
 exports[`entry > match 3065`] = `
 "Symbol:  main.goFiles.embed:cgo.go.hash
 Size:    16 B
-Address: 0x20
+Address: 0x4a8538
 Type:    data"
 `;
 
@@ -10036,7 +10036,7 @@ exports[`entry > match 3079`] = `[]`;
 exports[`entry > match 3080`] = `
 "Symbol:  main.goFiles.embed:embed.go.hash
 Size:    16 B
-Address: 0x50
+Address: 0x4a8568
 Type:    data"
 `;
 
@@ -10081,7 +10081,7 @@ exports[`entry > match 3094`] = `[]`;
 exports[`entry > match 3095`] = `
 "Symbol:  main.goFiles.embed:main.go.hash
 Size:    16 B
-Address: 0x80
+Address: 0x4a8598
 Type:    data"
 `;
 
@@ -10126,7 +10126,7 @@ exports[`entry > match 3109`] = `[]`;
 exports[`entry > match 3110`] = `
 "Symbol:  main.goFiles.embed:sqlite.go.hash
 Size:    16 B
-Address: 0xb0
+Address: 0x4a85c8
 Type:    data"
 `;
 
