@@ -24,15 +24,19 @@ func NewKnownAddr(sect *Store) *KnownAddr {
 	}
 }
 
+const typeDebug = false
+
 func (f *KnownAddr) cancelIfSectionTypeMismatch(cur *Addr, as AddrSpace) bool {
 	if !f.sect.IsType(cur.Addr, cur.Size, cur.Type) {
-		sect := f.sect.FindSection(cur.Addr, cur.Size)
-		name := "unknown"
-		if sect != nil {
-			name = sect.Name
-		}
+		if typeDebug {
+			sect := f.sect.FindSection(cur.Addr, cur.Size)
+			name := "unknown"
+			if sect != nil {
+				name = sect.Name
+			}
 
-		slog.Debug(fmt.Sprintf("section type mismatch addr: %s belongs to %s", cur, name))
+			slog.Debug(fmt.Sprintf("section type mismatch addr: %s belongs to %s", cur, name))
+		}
 		return false
 	}
 	as.Insert(cur)
