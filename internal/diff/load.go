@@ -1,7 +1,6 @@
 package diff
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -49,7 +48,6 @@ func Diff(writer io.Writer, options DOptions) error {
 		slog.Warn("The analyze mode of the two files is different")
 		slog.Warn(fmt.Sprintf("%s: %s", options.NewTarget, formatAnalyzer(newResult.Analyzers)))
 		slog.Warn(fmt.Sprintf("%s: %s", options.OldTarget, formatAnalyzer(oldResult.Analyzers)))
-		return errors.New("analyze mode is different")
 	}
 
 	diff := newDiffResult(newResult, oldResult)

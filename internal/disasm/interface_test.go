@@ -19,6 +19,10 @@ type TestFileWrapper struct {
 	textErr   error
 }
 
+func (TestFileWrapper) LoadSymbols(func(name string, addr uint64, size uint64, typ entity.AddrType), func(addr uint64, size uint64)) error {
+	panic("not reachable")
+}
+
 func (TestFileWrapper) DWARF() (*dwarf.Data, error) {
 	panic("not reachable")
 }
@@ -35,10 +39,6 @@ func (TestFileWrapper) ReadAddr(_, _ uint64) ([]byte, error) {
 	panic("not reachable")
 }
 
-func (TestFileWrapper) LoadSymbols(_ func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
-	panic("not reachable")
-}
-
 func (TestFileWrapper) LoadSections() *entity.Store {
 	panic("not reachable")
 }
@@ -47,19 +47,19 @@ var _ wrapper.RawFileWrapper = TestFileWrapper{}
 
 func TestNewExtractorNoText(t *testing.T) {
 	w := TestFileWrapper{textErr: errors.New("text error")}
-	_, err := NewExtractor(w, 0)
+	_, err := NewExtractor(w, 0, nil, nil)
 	assert.Error(t, err)
 }
 
 func TestNewExtractorNoGoArch(t *testing.T) {
 	w := TestFileWrapper{}
-	_, err := NewExtractor(w, 0)
+	_, err := NewExtractor(w, 0, nil, nil)
 	assert.ErrorIs(t, err, ErrArchNotSupported)
 }
 
 func TestNewExtractorNoExtractor(t *testing.T) {
 	w := TestFileWrapper{arch: "unsupported"}
-	_, err := NewExtractor(w, 0)
+	_, err := NewExtractor(w, 0, nil, nil)
 	assert.ErrorIs(t, err, ErrArchNotSupported)
 }
 
