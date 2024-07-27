@@ -65,7 +65,7 @@ def run_process(
         process.kill()
         raise e
     except psutil.NoSuchProcess:
-        raise Exception("Process not found.")
+        pass
 
     pic: None | str = None
 
