@@ -14,14 +14,17 @@ type PossibleStr struct {
 
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
 
+type validator func(addr uint64, size int64) bool
+
 type Extractor struct {
-	raw       wrapper.RawFileWrapper
-	size      uint64
-	text      []byte        // bytes of text segment (actual instructions)
-	textStart uint64        // start PC of text
-	textEnd   uint64        // end PC of text
-	goarch    string        // GOARCH string
-	extractor extractorFunc // disassembler function for goarch
+	raw        wrapper.RawFileWrapper
+	size       uint64
+	text       []byte        // bytes of text segment (actual instructions)
+	textStart  uint64        // start PC of text
+	textEnd    uint64        // end PC of text
+	goarch     string        // GOARCH string
+	validators []validator   // validators for possible strings
+	extractor  extractorFunc // disassembler function for goarch
 }
 
 var ErrArchNotSupported = fmt.Errorf("unsupported GOARCH")
@@ -54,10 +57,10 @@ func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, erro
 
 func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	if start < e.textStart {
-		panic(fmt.Sprintf("start address %#x is before text segment %#x", start, e.textStart))
+		panic(fmt.Errorf("start address %#x is before text segment %#x", start, e.textStart))
 	}
 	if end > e.textEnd {
-		panic(fmt.Sprintf("end address %#x is after text segment %#x", end, e.textEnd))
+		panic(fmt.Errorf("end address %#x is after text segment %#x", end, e.textEnd))
 	}
 
 	code := e.text[start-e.textStart : end-e.textStart]

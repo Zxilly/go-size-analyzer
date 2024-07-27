@@ -42,8 +42,6 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 		Gore:    file,
 		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
-
-		KnownAddr: entity.NewKnownAddr(),
 	}
 
 	analyzers := []entity.Analyzer{
@@ -56,6 +54,8 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	if err != nil {
 		return nil, err
 	}
+
+	k.KnownAddr = entity.NewKnownAddr(k.Sects)
 
 	err = k.LoadGoreInfo(file)
 	if err != nil {

@@ -17,7 +17,7 @@ func readUintTo64(data []byte) uint64 {
 	case 8:
 		return binary.LittleEndian.Uint64(data)
 	default:
-		panic(fmt.Sprintf("unexpected size: %d", len(data)))
+		panic(fmt.Errorf("unexpected size: %d", len(data)))
 	}
 }
 
@@ -28,7 +28,7 @@ func readIntTo64(data []byte) int64 {
 	case 8:
 		return int64(binary.LittleEndian.Uint64(data))
 	default:
-		panic(fmt.Sprintf("unexpected size: %d", len(data)))
+		panic(fmt.Errorf("unexpected size: %d", len(data)))
 	}
 }
 

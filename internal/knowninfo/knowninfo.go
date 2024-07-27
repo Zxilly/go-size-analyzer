@@ -7,7 +7,6 @@ import (
 	"github.com/ZxillyFork/gore"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
-	"github.com/Zxilly/go-size-analyzer/internal/section"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
@@ -19,7 +18,7 @@ type VersionFlag struct {
 type KnownInfo struct {
 	Size      uint64
 	BuildInfo *gore.BuildInfo
-	Sects     *section.Store
+	Sects     *entity.Store
 	Deps      *Dependencies
 	KnownAddr *entity.KnownAddr
 

@@ -2,19 +2,16 @@ package knowninfo
 
 import (
 	"log/slog"
-
-	"github.com/Zxilly/go-size-analyzer/internal/section"
 )
 
 func (k *KnownInfo) LoadSectionMap() error {
 	slog.Info("Loading sections...")
 
-	sections := k.Wrapper.LoadSections()
+	store := k.Wrapper.LoadSections()
+	store.BuildCache()
 
 	slog.Info("Loaded sections")
 
-	k.Sects = &section.Store{
-		Sections: sections,
-	}
+	k.Sects = store
 	return k.Sects.AssertSize(k.Size)
 }

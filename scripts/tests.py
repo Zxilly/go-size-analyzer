@@ -15,7 +15,7 @@ from tool.merge import merge_covdata
 from tool.process import run_process
 from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
-    find_unused_port, init_dirs, write_github_summary, require_go
+    init_dirs, write_github_summary, require_go
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
@@ -267,18 +267,14 @@ def run_web_test(entry: str):
     output_dir = os.path.join(get_project_root(), "results", "web")
     output_file = os.path.join(output_dir, "web.output.txt")
 
-    port = find_unused_port()
-    if port is None:
-        raise Exception("Failed to find an unused port.")
-
     stdout_data, stderr_data = "", ""
     p = subprocess.Popen(
-        args=[entry, "--verbose", "--web", "--listen", f"127.0.0.1:{port}", entry],
+        args=[entry, "--verbose", "--web", "--listen", f"127.0.0.1:59347", entry],
         text=True, cwd=get_project_root(),
         encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
 
-    log(f"Waiting for the server to start on port {port}...")
+    log(f"Waiting for the server to start on port 59347...")
 
     timeout_seconds = 10
     timeout_occurred = False
@@ -309,7 +305,7 @@ def run_web_test(entry: str):
 
         raise Exception("Failed to start the server.")
 
-    ret = requests.get(f"http://127.0.0.1:{port}").text
+    ret = requests.get(f"http://127.0.0.1:59347").text
 
     assert_html_valid(ret)
 

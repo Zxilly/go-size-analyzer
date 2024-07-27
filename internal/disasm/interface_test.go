@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
 type TestFileWrapper struct {
@@ -34,29 +35,31 @@ func (TestFileWrapper) ReadAddr(_, _ uint64) ([]byte, error) {
 	panic("not reachable")
 }
 
-func (TestFileWrapper) LoadSymbols(_ func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+func (TestFileWrapper) LoadSymbols(_ func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
 	panic("not reachable")
 }
 
-func (TestFileWrapper) LoadSections() map[string]*entity.Section {
+func (TestFileWrapper) LoadSections() *entity.Store {
 	panic("not reachable")
 }
+
+var _ wrapper.RawFileWrapper = TestFileWrapper{}
 
 func TestNewExtractorNoText(t *testing.T) {
-	wrapper := TestFileWrapper{textErr: errors.New("text error")}
-	_, err := NewExtractor(wrapper, 0)
+	w := TestFileWrapper{textErr: errors.New("text error")}
+	_, err := NewExtractor(w, 0)
 	assert.Error(t, err)
 }
 
 func TestNewExtractorNoGoArch(t *testing.T) {
-	wrapper := TestFileWrapper{}
-	_, err := NewExtractor(wrapper, 0)
+	w := TestFileWrapper{}
+	_, err := NewExtractor(w, 0)
 	assert.ErrorIs(t, err, ErrArchNotSupported)
 }
 
 func TestNewExtractorNoExtractor(t *testing.T) {
-	wrapper := TestFileWrapper{arch: "unsupported"}
-	_, err := NewExtractor(wrapper, 0)
+	w := TestFileWrapper{arch: "unsupported"}
+	_, err := NewExtractor(w, 0)
 	assert.ErrorIs(t, err, ErrArchNotSupported)
 }
 

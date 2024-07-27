@@ -17,8 +17,8 @@ type RawFileWrapper interface {
 	Text() (textStart uint64, text []byte, err error)
 	GoArch() string
 	ReadAddr(addr, size uint64) ([]byte, error)
-	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType) error) error
-	LoadSections() map[string]*entity.Section
+	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType)) error
+	LoadSections() *entity.Store
 	DWARF() (*dwarf.Data, error)
 }
 

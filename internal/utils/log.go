@@ -29,7 +29,7 @@ var exitFunc = os.Exit
 
 func UsePanicForExit() {
 	exitFunc = func(code int) {
-		panic(fmt.Sprintf("exit: %d", code))
+		panic(fmt.Errorf("exit: %d", code))
 	}
 }
 

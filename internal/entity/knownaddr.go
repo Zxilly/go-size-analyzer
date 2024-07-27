@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"log/slog"
 	"slices"
 )
 
@@ -10,14 +11,32 @@ type KnownAddr struct {
 
 	SymbolAddrSpace AddrSpace
 	SymbolCoverage  AddrCoverage
+
+	sect *Store
 }
 
-func NewKnownAddr() *KnownAddr {
+func NewKnownAddr(sect *Store) *KnownAddr {
 	return &KnownAddr{
 		TextAddrSpace:   make(map[uint64]*Addr),
 		SymbolAddrSpace: make(map[uint64]*Addr),
 		SymbolCoverage:  make(AddrCoverage, 0),
+		sect:            sect,
 	}
+}
+
+func (f *KnownAddr) cancelIfTypeMismatchSection(cur *Addr, as AddrSpace) bool {
+	if !f.sect.IsType(cur.Addr, cur.Size, cur.Type) {
+		sect := f.sect.FindSection(cur.Addr, cur.Size)
+		name := "unknown"
+		if sect != nil {
+			name = sect.Name
+		}
+
+		slog.Debug(fmt.Sprintf("section type mismatch addr: %s belongs to %s", cur, name))
+		return false
+	}
+	as.Insert(cur)
+	return true
 }
 
 func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Function) {
@@ -31,7 +50,7 @@ func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Functio
 		Function:   fn,
 		SourceType: AddrSourceGoPclntab,
 	}
-	f.TextAddrSpace.Insert(&cur)
+	f.cancelIfTypeMismatchSection(&cur, f.TextAddrSpace)
 }
 
 func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function) {
@@ -45,7 +64,7 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function)
 		Function:   fn,
 		SourceType: AddrSourceDwarf,
 	}
-	f.TextAddrSpace.Insert(&cur)
+	f.cancelIfTypeMismatchSection(&cur, f.TextAddrSpace)
 }
 
 func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
@@ -60,7 +79,12 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
 		Symbol:     symbol,
 		SourceType: AddrSourceSymbol,
 	}
-	f.SymbolAddrSpace.Insert(cur)
+
+	ok := f.cancelIfTypeMismatchSection(cur, f.SymbolAddrSpace)
+	if !ok {
+		return nil
+	}
+
 	return cur
 }
 

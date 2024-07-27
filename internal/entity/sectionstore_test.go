@@ -1,15 +1,13 @@
-package section
+package entity
 
 import (
 	"reflect"
 	"testing"
-
-	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
-func TestSectionMap_AssertSize(t *testing.T) {
+func TestSectionStore_AssertSize(t *testing.T) {
 	type fields struct {
-		Sections map[string]*entity.Section
+		Sections map[string]*Section
 	}
 	type args struct {
 		size uint64
@@ -23,7 +21,7 @@ func TestSectionMap_AssertSize(t *testing.T) {
 		{
 			name: "AssertSize works correctly",
 			fields: fields{
-				Sections: map[string]*entity.Section{
+				Sections: map[string]*Section{
 					"section1": {
 						FileSize: 10,
 					},
@@ -37,7 +35,7 @@ func TestSectionMap_AssertSize(t *testing.T) {
 		{
 			name: "AssertSize throws error",
 			fields: fields{
-				Sections: map[string]*entity.Section{
+				Sections: map[string]*Section{
 					"section1": {
 						FileSize: 10,
 					},
@@ -64,9 +62,9 @@ func TestSectionMap_AssertSize(t *testing.T) {
 	}
 }
 
-func TestSectionMap_FindSection(t *testing.T) {
+func TestSectionStore_FindSection(t *testing.T) {
 	type fields struct {
-		Sections map[string]*entity.Section
+		Sections map[string]*Section
 	}
 	type args struct {
 		addr uint64
@@ -76,12 +74,12 @@ func TestSectionMap_FindSection(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		want   *entity.Section
+		want   *Section
 	}{
 		{
 			name: "FindSection failed",
 			fields: fields{
-				Sections: map[string]*entity.Section{
+				Sections: map[string]*Section{
 					"section1": {
 						Debug:   true,
 						Addr:    100,

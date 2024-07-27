@@ -35,7 +35,7 @@ func TestUsePanicForExit(t *testing.T) {
 
 	UsePanicForExit()
 
-	assert.PanicsWithValue(t, "exit: 1", func() {
+	assert.PanicsWithError(t, "exit: 1", func() {
 		FatalError(assert.AnError)
 	})
 }

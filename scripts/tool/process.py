@@ -62,10 +62,10 @@ def run_process(
                 timestamps.append(elapsed_time)
 
     except TimeoutError as e:
-        print(f"TimeoutError occurred: {e}")
         process.kill()
+        raise e
     except psutil.NoSuchProcess:
-        pass
+        raise Exception("Process not found.")
 
     pic: None | str = None
 

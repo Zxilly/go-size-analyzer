@@ -103,17 +103,6 @@ def format_time(t: float) -> str:
     return "{:.2f}s".format(t)
 
 
-def find_unused_port(start_port=20000, end_port=60000):
-    for port in range(start_port, end_port + 1):
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind(("localhost", port))
-                return port
-        except OSError:
-            pass
-    return None
-
-
 def load_skip() -> list[str]:
     with open(os.path.join(get_project_root(), "scripts", "skip.csv"), "r", encoding="utf-8") as f:
         return [line.strip() for line in f.readlines()]

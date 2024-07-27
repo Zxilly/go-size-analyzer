@@ -29,11 +29,11 @@ func (k *KnownInfo) ExtractPackageFromSymbol(s string) string {
 	return utils.UglyGuess(packageName)
 }
 
-func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrType) error {
+func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrType) {
 	if typ != entity.AddrTypeData {
 		// todo: support text symbols, cross check with pclntab
 		// and further work on cgo symbols
-		return nil
+		return
 	}
 
 	var pkg *entity.Package
@@ -42,25 +42,24 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	switch {
 	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		// we assume it's a cgo symbol
-		return nil // todo: implement cgo analysis in the future
+		return // todo: implement cgo analysis in the future
 	case pkgName == "$f64" || pkgName == "$f32":
-		return nil
+		return
 	default:
 		var ok bool
 		pkg, ok = k.Deps.GetPackage(pkgName)
 		if !ok {
 			slog.Debug("package not found", "name", pkgName, "symbol", name, "type", typ)
-			return nil // no package found, skip
+			return // no package found, skip
 		}
 	}
 
 	symbol := entity.NewSymbol(name, addr, size, typ)
 
 	ap := k.KnownAddr.InsertSymbol(symbol, pkg)
-
-	pkg.AddSymbol(symbol, ap)
-
-	return nil
+	if ap != nil {
+		pkg.AddSymbol(symbol, ap)
+	}
 }
 
 func (k *KnownInfo) AnalyzeSymbol() error {

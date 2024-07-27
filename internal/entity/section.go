@@ -1,5 +1,13 @@
 package entity
 
+type SectionContentType int
+
+const (
+	SectionContentOther SectionContentType = iota
+	SectionContentText
+	SectionContentData
+)
+
 type Section struct {
 	Name string `json:"name"`
 
@@ -16,4 +24,6 @@ type Section struct {
 
 	OnlyInMemory bool `json:"only_in_memory"`
 	Debug        bool `json:"debug"`
+
+	ContentType SectionContentType `json:"-"`
 }

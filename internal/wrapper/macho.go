@@ -18,7 +18,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	return m.file.DWARF()
 }
 
-func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
 	if m.file.Symtab == nil || len(m.file.Symtab.Syms) == 0 {
 		return ErrNoSymbolTable
 	}
@@ -72,52 +72,63 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 			continue // bss section, skip
 		}
 
-		err := marker(s.Name, s.Value, size, typ)
-		if err != nil {
-			return err
-		}
+		marker(s.Name, s.Value, size, typ)
 	}
 
 	return nil
 }
 
-func (m *MachoWrapper) LoadSections() map[string]*entity.Section {
-	ret := make(map[string]*entity.Section)
-	for _, section := range m.file.Sections {
-		if section.Size == 0 {
+func machoSectionType(s *macho.Section) entity.SectionContentType {
+	switch {
+	case s.Name == "__text":
+		return entity.SectionContentText
+	case strings.HasSuffix(s.Name, "bss") || strings.HasSuffix(s.Name, "data"):
+		return entity.SectionContentData
+	default:
+		return entity.SectionContentOther
+	}
+}
+
+func (m *MachoWrapper) LoadSections() *entity.Store {
+	ret := entity.NewStore()
+
+	for _, s := range m.file.Sections {
+		if s.Size == 0 {
 			continue
 		}
 
-		d := strings.HasPrefix(section.Name, "__debug_") || strings.HasPrefix(section.Name, "__zdebug_")
+		d := strings.HasPrefix(s.Name, "__debug_") || strings.HasPrefix(s.Name, "__zdebug_")
 
-		if machoSectionShouldIgnore(section) {
+		if machoSectionShouldIgnore(s) {
 			// seems like .bss section
-			ret[section.Name] = &entity.Section{
-				Name:         section.Name,
-				Addr:         section.Addr,
-				AddrEnd:      section.Addr + section.Size,
+			ret.Sections[s.Name] = &entity.Section{
+				Name:         s.Name,
+				Addr:         s.Addr,
+				AddrEnd:      s.Addr + s.Size,
 				OnlyInMemory: true,
 				Debug:        d,
+				ContentType:  machoSectionType(s),
 			}
 			continue
 		}
 
-		name := section.Name + " " + section.Seg
+		name := s.Name + " " + s.Seg
 
-		if _, ok := ret[name]; ok {
-			panic(fmt.Sprintf("section %s already exists", name))
+		if _, ok := ret.Sections[name]; ok {
+			panic(fmt.Errorf("section %s already exists", name))
 		}
 
-		ret[name] = &entity.Section{
+		ret.Sections[name] = &entity.Section{
 			Name:         name,
-			Size:         section.Size,
-			FileSize:     section.Size,
-			Offset:       uint64(section.Offset),
-			End:          uint64(section.Offset) + section.Size,
-			Addr:         section.Addr,
-			AddrEnd:      section.Addr + section.Size,
+			Size:         s.Size,
+			FileSize:     s.Size,
+			Offset:       uint64(s.Offset),
+			End:          uint64(s.Offset) + s.Size,
+			Addr:         s.Addr,
+			AddrEnd:      s.Addr + s.Size,
 			OnlyInMemory: false,
 			Debug:        d,
+			ContentType:  machoSectionType(s),
 		}
 	}
 	return ret

@@ -15,7 +15,7 @@ func TestAddrPosString(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 1000 CodeSize: 100 Type: data"
+	expected := "Addr: 0x1000 CodeSize: 256 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -28,7 +28,7 @@ func TestAddrPosStringWithDifferentType(t *testing.T) {
 		Type: entity.AddrTypeText,
 	}
 
-	expected := "Addr: 1000 CodeSize: 100 Type: text"
+	expected := "Addr: 0x1000 CodeSize: 256 Type: text"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -41,7 +41,7 @@ func TestAddrPosStringWithZeroSize(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 1000 CodeSize: 0 Type: data"
+	expected := "Addr: 0x1000 CodeSize: 0 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -54,7 +54,7 @@ func TestAddrPosStringWithZeroAddr(t *testing.T) {
 		Type: entity.AddrTypeData,
 	}
 
-	expected := "Addr: 0 CodeSize: 100 Type: data"
+	expected := "Addr: 0x0 CodeSize: 256 Type: data"
 	result := addrPos.String()
 
 	assert.Equal(t, expected, result)
@@ -84,9 +84,9 @@ func TestCoveragePartStringWithMultipleAddrs(t *testing.T) {
 		Addrs: []*entity.Addr{addr1, addr2},
 	}
 
-	expected := "Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
-		"AddrPos: Addr: 1000 CodeSize: 100 Type: data SourceType: disasm\n" +
-		"AddrPos: Addr: 1000 CodeSize: 100 Type: data Pkg: main Function: main SourceType: symbol"
+	expected := "Pos: Addr: 0x1000 CodeSize: 256 Type: data\n" +
+		"AddrPos: Addr: 0x1000 CodeSize: 256 Type: data SourceType: disasm\n" +
+		"AddrPos: Addr: 0x1000 CodeSize: 256 Type: data Pkg: main Function: main SourceType: symbol"
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)
@@ -104,7 +104,7 @@ func TestCoveragePartStringWithNoAddrs(t *testing.T) {
 		Addrs: []*entity.Addr{},
 	}
 
-	expected := "Pos: Addr: 1000 CodeSize: 100 Type: data"
+	expected := "Pos: Addr: 0x1000 CodeSize: 256 Type: data"
 	result := coveragePart.String()
 
 	assert.Equal(t, expected, result)
@@ -127,8 +127,8 @@ func TestErrorReturnsExpectedErrorMessage(t *testing.T) {
 		Pos2: pos2,
 	}
 
-	expected := "addr 1000 pos Pos: Addr: 1000 CodeSize: 100 Type: data\n" +
-		"AddrPos: <nil> SourceType:  and Pos: Addr: 10ff CodeSize: 100 Type: data\n" +
+	expected := "addr 1000 pos Pos: Addr: 0x1000 CodeSize: 256 Type: data\n" +
+		"AddrPos: <nil> SourceType:  and Pos: Addr: 0x10ff CodeSize: 256 Type: data\n" +
 		"AddrPos: <nil> SourceType:  conflict"
 	assert.Equal(t, expected, err.Error())
 }

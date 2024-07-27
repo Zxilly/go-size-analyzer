@@ -19,7 +19,7 @@ func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
 	return p.file.DWARF()
 }
 
-func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType) error) error {
+func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
 	if len(p.file.Symbols) == 0 {
 		return ErrNoSymbolTable
 	}
@@ -97,34 +97,43 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 
 		s.Size = size
 
-		err := marker(s.Name, s.Addr, size, s.Typ)
-		if err != nil {
-			return err
-		}
+		marker(s.Name, s.Addr, size, s.Typ)
 	}
 
 	return nil
 }
 
-func (p *PeWrapper) LoadSections() map[string]*entity.Section {
-	ret := make(map[string]*entity.Section)
-	for _, section := range p.file.Sections {
-		d := strings.HasPrefix(section.Name, ".debug_") || strings.HasPrefix(section.Name, ".zdebug_")
+func peSectionType(s *pe.Section) entity.SectionContentType {
+	switch {
+	case s.Name == ".text":
+		return entity.SectionContentText
+	case s.Name == ".rdata" || s.Name == ".data":
+		return entity.SectionContentData
+	default:
+		return entity.SectionContentOther
+	}
+}
 
-		if _, ok := ret[section.Name]; ok {
-			panic(fmt.Sprintf("section %s already exists", section.Name))
+func (p *PeWrapper) LoadSections() *entity.Store {
+	ret := entity.NewStore()
+	for _, s := range p.file.Sections {
+		d := strings.HasPrefix(s.Name, ".debug_") || strings.HasPrefix(s.Name, ".zdebug_")
+
+		if _, ok := ret.Sections[s.Name]; ok {
+			panic(fmt.Errorf("section %s already exists", s.Name))
 		}
 
-		ret[section.Name] = &entity.Section{
-			Name:         section.Name,
-			Size:         uint64(section.VirtualSize),
-			FileSize:     uint64(section.Size),
-			Offset:       uint64(section.Offset),
-			End:          uint64(section.Offset + section.Size),
-			Addr:         p.imageBase + uint64(section.VirtualAddress),
-			AddrEnd:      p.imageBase + uint64(section.VirtualAddress+section.VirtualSize),
+		ret.Sections[s.Name] = &entity.Section{
+			Name:         s.Name,
+			Size:         uint64(s.VirtualSize),
+			FileSize:     uint64(s.Size),
+			Offset:       uint64(s.Offset),
+			End:          uint64(s.Offset + s.Size),
+			Addr:         p.imageBase + uint64(s.VirtualAddress),
+			AddrEnd:      p.imageBase + uint64(s.VirtualAddress+s.VirtualSize),
 			OnlyInMemory: false, // pe file didn't have an only-in-memory section
 			Debug:        d,
+			ContentType:  peSectionType(s),
 		}
 	}
 	return ret
