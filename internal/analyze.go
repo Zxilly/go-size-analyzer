@@ -97,7 +97,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	if !options.SkipDisasm {
 		if k.GoStringSymbol == nil {
-			slog.Warn("No go.string symbol found, false-positive rates may rise")
+			slog.Info("no go:string.* symbol found, false-positive rates may rise")
 		}
 
 		err = k.Disasm()
