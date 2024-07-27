@@ -57,20 +57,30 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	symbol := entity.NewSymbol(name, addr, size, typ)
 
 	ap := k.KnownAddr.InsertSymbol(symbol, pkg)
-	if ap != nil {
-		pkg.AddSymbol(symbol, ap)
+	if ap == nil {
+		return
 	}
+	pkg.AddSymbol(symbol, ap)
 }
 
-func (k *KnownInfo) AnalyzeSymbol() error {
+func (k *KnownInfo) AnalyzeSymbol(store bool) error {
 	slog.Info("Analyzing symbols...")
 
-	err := k.Wrapper.LoadSymbols(k.MarkSymbol)
+	marker := k.MarkSymbol
+	if !store {
+		marker = nil
+	}
+
+	err := k.Wrapper.LoadSymbols(marker, func(addr, size uint64) {
+		k.GoStringSymbol = &entity.AddrPos{
+			Addr: addr,
+			Size: size,
+			Type: entity.AddrTypeData,
+		}
+	})
 	if err != nil {
 		return err
 	}
-
-	k.KnownAddr.BuildSymbolCoverage()
 
 	slog.Info("Analyzing symbols done")
 

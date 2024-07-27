@@ -1,11 +1,13 @@
 package wrapper
 
 import (
+	"cmp"
 	"debug/dwarf"
 	"debug/elf"
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -19,7 +21,7 @@ func (e *ElfWrapper) DWARF() (*dwarf.Data, error) {
 	return e.file.DWARF()
 }
 
-func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
+func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType), goSCb func(addr, size uint64)) error {
 	symbols, err := e.file.Symbols()
 	if err != nil {
 		if errors.Is(err, elf.ErrNoSymbols) {
@@ -37,7 +39,29 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 	}
 	symbols = keep
 
+	slices.SortFunc(symbols, func(a, b elf.Symbol) int {
+		return cmp.Compare(a.Value, b.Value)
+	})
+
+	goStringBase := uint64(0)
+
 	for _, s := range symbols {
+		if s.Name == GoStringSymbol {
+			goStringBase = s.Value
+			continue
+		}
+		if goStringBase != 0 {
+			goSCb(goStringBase, s.Value-goStringBase)
+			if marker == nil {
+				return nil
+			}
+			continue
+		}
+
+		if marker == nil {
+			continue
+		}
+
 		switch s.Section {
 		case elf.SHN_UNDEF, elf.SHN_ABS, elf.SHN_COMMON:
 			continue // not addr, skip

@@ -21,7 +21,7 @@ func (k *KnownInfo) CollectCoverage() error {
 		return nil
 	})
 
-	covs = append(covs, pclntabCov, k.KnownAddr.SymbolCoverage)
+	covs = append(covs, pclntabCov)
 
 	var err error
 	k.Coverage, err = entity.MergeAndCleanCoverage(covs)

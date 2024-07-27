@@ -14,6 +14,12 @@ matplotlib = "^3.9.1"
 psutil = "^6.0.0"
 markdown-strings = "^3.4.0"
 
+[tool.poetry.group.research]
+optional = true
+
+[tool.poetry.group.research.dependencies]
+watchdog = "^4.0.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

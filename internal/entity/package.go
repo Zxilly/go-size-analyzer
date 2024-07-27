@@ -126,9 +126,6 @@ func (p *Package) fileEnsureUnique() {
 
 func (p *Package) addFunction(path string, fn *Function) {
 	file := p.getOrInitFile(path)
-
-	fn.SetFile(file)
-
 	file.Functions = append(file.Functions, fn)
 }
 
@@ -236,6 +233,7 @@ func (p *Package) AssignPackageSize() {
 
 func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 	// first, load as coverage
+	// no need to check section type as it has been checked before
 	p.symbolAddrSpace.Insert(ap)
 
 	// then, add to the symbol list

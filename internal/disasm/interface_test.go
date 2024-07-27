@@ -82,13 +82,13 @@ func TestExtractor_Extract(t *testing.T) {
 func TestExtractor_LoadAddrString(t *testing.T) {
 	t.Run("size <= 0", func(t *testing.T) {
 		extractor := Extractor{}
-		ok := extractor.CheckAddrString(0, 0)
+		ok := extractor.checkAddrString(0, 0)
 		assert.False(t, ok)
 	})
 
 	t.Run("size > file size", func(t *testing.T) {
 		extractor := Extractor{size: 10}
-		ok := extractor.CheckAddrString(0, 20)
+		ok := extractor.checkAddrString(0, 20)
 		assert.False(t, ok)
 	})
 }

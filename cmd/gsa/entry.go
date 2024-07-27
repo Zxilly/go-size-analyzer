@@ -119,9 +119,9 @@ func entry() error {
 		return err
 	}
 
-	slog.Info("Check if web option is set")
-
 	if Options.Web {
+		slog.Debug("Starting web server")
+
 		b, ok := writer.(*bytes.Buffer)
 		if !ok {
 			panic("writer is not bytes.Buffer")

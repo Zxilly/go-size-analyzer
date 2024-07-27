@@ -83,26 +83,28 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	// we force a gc here, since the gore file is no longer needed
 	debug.FreeOSMemory()
 
-	if !dwarfOk {
-		// fallback to symbol and disasm
-		if !options.SkipSymbol {
-			err = k.AnalyzeSymbol()
-			if err != nil {
-				if !errors.Is(err, wrapper.ErrNoSymbolTable) {
-					return nil, err
-				}
-				slog.Warn("No symbol table found, this can lead to inaccurate results")
-			}
-			analyzers = append(analyzers, entity.AnalyzerSymbol)
+	record := !dwarfOk && !options.SkipSymbol
+	err = k.AnalyzeSymbol(record)
+	if err != nil {
+		if !errors.Is(err, wrapper.ErrNoSymbolTable) {
+			return nil, err
+		}
+		slog.Warn("No symbol table found, this can lead to inaccurate results")
+	}
+	if record {
+		analyzers = append(analyzers, entity.AnalyzerSymbol)
+	}
+
+	if !options.SkipDisasm {
+		if k.GoStringSymbol == nil {
+			slog.Warn("No go.string symbol found, false-positive rates may rise")
 		}
 
-		if !options.SkipDisasm {
-			err = k.Disasm()
-			if err != nil {
-				return nil, err
-			}
-			analyzers = append(analyzers, entity.AnalyzerDisasm)
+		err = k.Disasm()
+		if err != nil {
+			return nil, err
 		}
+		analyzers = append(analyzers, entity.AnalyzerDisasm)
 	}
 
 	// we have collected everything, now we can calculate the size

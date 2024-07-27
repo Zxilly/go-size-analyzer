@@ -19,7 +19,7 @@ func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
 	return p.file.DWARF()
 }
 
-func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
+func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType), goSCb func(addr, size uint64)) error {
 	if len(p.file.Symbols) == 0 {
 		return ErrNoSymbolTable
 	}
@@ -33,7 +33,6 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 	type sym struct {
 		Name string
 		Addr uint64
-		Size uint64
 		Typ  entity.AddrType
 	}
 
@@ -79,7 +78,6 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 			Name: s.Name,
 			Addr: a,
 			Typ:  typ,
-			Size: 0, // will be filled later
 		})
 
 		addrs = append(addrs, a)
@@ -95,9 +93,16 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 		}
 		size := addrs[i] - s.Addr
 
-		s.Size = size
-
-		marker(s.Name, s.Addr, size, s.Typ)
+		if s.Name == GoStringSymbol {
+			goSCb(s.Addr, size)
+			if marker == nil {
+				return nil
+			}
+			continue
+		}
+		if marker != nil {
+			marker(s.Name, s.Addr, size, s.Typ)
+		}
 	}
 
 	return nil

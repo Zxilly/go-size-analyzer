@@ -37,7 +37,6 @@ func x86GetMovImm(inst x86asm.Inst) (uint64, bool) {
 	if !ok {
 		return 0, false
 	}
-	// this x86Pattern can also be like set function parameters
 	if secondImm <= 0 {
 		return 0, false
 	}

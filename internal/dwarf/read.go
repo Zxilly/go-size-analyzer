@@ -174,7 +174,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		dataAddr := readUintTo64(data[offset+ptrSize*2 : offset+ptrSize*3])
 		dataLen := readUintTo64(data[offset+ptrSize*3 : offset+ptrSize*4])
 
-		hashAddr := offset + ptrSize*4
+		hashAddr := filesAddr + uint64(offset+ptrSize*4)
 		hashLen := uint64(16)
 
 		fileContent := make([]Content, 0, 3)
@@ -194,7 +194,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		}
 		fileContent = append(fileContent, Content{
 			Name: utils.Deduplicate(fmt.Sprintf("%s.hash", name)),
-			Addr: uint64(hashAddr),
+			Addr: hashAddr,
 			Size: hashLen,
 		})
 

@@ -22,6 +22,8 @@ type KnownInfo struct {
 	Deps      *Dependencies
 	KnownAddr *entity.KnownAddr
 
+	GoStringSymbol *entity.AddrPos
+
 	Coverage entity.AddrCoverage
 
 	Gore        *gore.GoFile

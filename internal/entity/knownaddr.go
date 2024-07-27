@@ -24,7 +24,7 @@ func NewKnownAddr(sect *Store) *KnownAddr {
 	}
 }
 
-func (f *KnownAddr) cancelIfTypeMismatchSection(cur *Addr, as AddrSpace) bool {
+func (f *KnownAddr) cancelIfSectionTypeMismatch(cur *Addr, as AddrSpace) bool {
 	if !f.sect.IsType(cur.Addr, cur.Size, cur.Type) {
 		sect := f.sect.FindSection(cur.Addr, cur.Size)
 		name := "unknown"
@@ -50,7 +50,7 @@ func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Functio
 		Function:   fn,
 		SourceType: AddrSourceGoPclntab,
 	}
-	f.cancelIfTypeMismatchSection(&cur, f.TextAddrSpace)
+	f.cancelIfSectionTypeMismatch(&cur, f.TextAddrSpace)
 }
 
 func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function) {
@@ -64,7 +64,7 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function)
 		Function:   fn,
 		SourceType: AddrSourceDwarf,
 	}
-	f.cancelIfTypeMismatchSection(&cur, f.TextAddrSpace)
+	f.cancelIfSectionTypeMismatch(&cur, f.TextAddrSpace)
 }
 
 func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
@@ -80,7 +80,7 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
 		SourceType: AddrSourceSymbol,
 	}
 
-	ok := f.cancelIfTypeMismatchSection(cur, f.SymbolAddrSpace)
+	ok := f.cancelIfSectionTypeMismatch(cur, f.SymbolAddrSpace)
 	if !ok {
 		return nil
 	}
@@ -100,7 +100,10 @@ func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package) *Addr {
 		Symbol:     symbol,
 		SourceType: AddrSourceDwarf,
 	}
-	f.SymbolAddrSpace.Insert(cur)
+	ok := f.cancelIfSectionTypeMismatch(cur, f.SymbolAddrSpace)
+	if !ok {
+		return nil
+	}
 	return cur
 }
 
@@ -152,5 +155,5 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
 		return
 	}
 
-	fn.disasm.Insert(&cur)
+	f.cancelIfSectionTypeMismatch(&cur, fn.disasm)
 }

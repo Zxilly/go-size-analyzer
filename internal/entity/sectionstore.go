@@ -25,6 +25,10 @@ func (s *Store) FindSection(addr, size uint64) *Section {
 			continue
 		}
 
+		if section.ContentType == SectionContentOther {
+			continue
+		}
+
 		if section.Addr <= addr && addr+size <= section.AddrEnd {
 			return section
 		}

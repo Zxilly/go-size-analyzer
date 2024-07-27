@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"unicode/utf8"
 
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
@@ -14,7 +15,7 @@ type PossibleStr struct {
 
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
 
-type validator func(addr uint64, size int64) bool
+type validator func(addr, size uint64) bool
 
 type Extractor struct {
 	raw        wrapper.RawFileWrapper
@@ -29,7 +30,11 @@ type Extractor struct {
 
 var ErrArchNotSupported = fmt.Errorf("unsupported GOARCH")
 
-func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, error) {
+func NewExtractor(rawFile wrapper.RawFileWrapper,
+	size uint64,
+	sectCheck func(addr, size uint64) bool,
+	goStringSym *entity.AddrPos,
+) (*Extractor, error) {
 	textStart, text, err := rawFile.Text()
 	if err != nil {
 		return nil, err
@@ -44,7 +49,7 @@ func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, erro
 		return nil, fmt.Errorf("%w %s", ErrArchNotSupported, goarch)
 	}
 
-	return &Extractor{
+	extractor := &Extractor{
 		raw:       rawFile,
 		size:      size,
 		text:      text,
@@ -52,7 +57,28 @@ func NewExtractor(rawFile wrapper.RawFileWrapper, size uint64) (*Extractor, erro
 		textEnd:   textStart + uint64(len(text)),
 		goarch:    goarch,
 		extractor: extractFunc,
-	}, nil
+	}
+
+	var validators []validator
+	if goStringSym != nil {
+		validators = append(validators, func(addr, size uint64) bool {
+			return goStringSym.Addr <= addr && addr+size <= goStringSym.Addr+goStringSym.Size
+		})
+	} else {
+		validators = append(validators, sectCheck, extractor.checkAddrString)
+	}
+
+	extractor.validators = validators
+	return extractor, nil
+}
+
+func (e *Extractor) Validate(addr, size uint64) bool {
+	for _, v := range e.validators {
+		if !v(addr, size) {
+			return false
+		}
+	}
+	return true
 }
 
 func (e *Extractor) Extract(start, end uint64) []PossibleStr {
@@ -68,13 +94,13 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	return e.extractor(code, start)
 }
 
-func (e *Extractor) CheckAddrString(addr uint64, size int64) bool {
+func (e *Extractor) checkAddrString(addr, size uint64) bool {
 	if size <= 0 {
 		// wtf?
 		return false
 	}
 
-	if size > int64(e.size) {
+	if size > e.size {
 		// it's obviously a string cannot larger than file size
 		return false
 	}

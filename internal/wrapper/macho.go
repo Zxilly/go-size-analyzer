@@ -18,7 +18,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	return m.file.DWARF()
 }
 
-func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType)) error {
+func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType), goStrSymCb func(addr, size uint64)) error {
 	if m.file.Symtab == nil || len(m.file.Symtab.Syms) == 0 {
 		return ErrNoSymbolTable
 	}
@@ -72,7 +72,16 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 			continue // bss section, skip
 		}
 
-		marker(s.Name, s.Value, size, typ)
+		if s.Name == GoStringSymbol {
+			goStrSymCb(s.Value, size)
+			if marker == nil {
+				return nil
+			}
+			continue
+		}
+		if marker != nil {
+			marker(s.Name, s.Value, size, typ)
+		}
 	}
 
 	return nil

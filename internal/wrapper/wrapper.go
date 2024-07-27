@@ -11,13 +11,15 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
+const GoStringSymbol = "go:string.*"
+
 var ErrNoSymbolTable = errors.New("no symbol table found")
 
 type RawFileWrapper interface {
 	Text() (textStart uint64, text []byte, err error)
 	GoArch() string
 	ReadAddr(addr, size uint64) ([]byte, error)
-	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType)) error
+	LoadSymbols(marker func(name string, addr, size uint64, typ entity.AddrType), goSCb func(addr, size uint64)) error
 	LoadSections() *entity.Store
 	DWARF() (*dwarf.Data, error)
 }

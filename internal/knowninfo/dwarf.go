@@ -59,7 +59,9 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 	symbol := entity.NewSymbol(entryName, uint64(addr), typSize, entity.AddrTypeData)
 
 	ap := k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
-
+	if ap == nil {
+		return
+	}
 	pkg.AddSymbol(symbol, ap)
 
 	if len(contents) > 0 {
@@ -79,7 +81,9 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 			symbol = entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
 
 			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
-
+			if ap == nil {
+				continue
+			}
 			pkg.AddSymbol(symbol, ap)
 		}
 	}
@@ -132,6 +136,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 		Receiver: receiverName,
 		PclnSize: entity.NewEmptyPclnSymbolSize(),
 	}
+	fn.Init()
 
 	added := pkg.AddFuncIfNotExists(filename, fn)
 
