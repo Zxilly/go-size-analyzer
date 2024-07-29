@@ -21,9 +21,9 @@ func diffString(b Base) string {
 
 		return sign + utils.PercentString(float64(b.To-b.From)/float64(b.From))
 	case changeTypeAdd:
-		return "add"
+		return "+100%"
 	case changeTypeRemove:
-		return "remove"
+		return "-100%"
 	default:
 		panic("unreachable")
 	}
