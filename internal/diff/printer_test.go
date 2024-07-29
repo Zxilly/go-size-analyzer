@@ -17,12 +17,12 @@ func TestDiffStringChangeTypeChangeReturnsPercentage(t *testing.T) {
 
 func TestDiffStringChangeTypeAddReturnsAdd(t *testing.T) {
 	b := Base{ChangeType: changeTypeAdd}
-	assert.Equal(t, "add", diffString(b))
+	assert.Equal(t, "+100%", diffString(b))
 }
 
 func TestDiffStringChangeTypeRemoveReturnsRemove(t *testing.T) {
 	b := Base{ChangeType: changeTypeRemove}
-	assert.Equal(t, "remove", diffString(b))
+	assert.Equal(t, "-100%", diffString(b))
 }
 
 func TestSignedBytesStringPositiveValueReturnsPlusSign(t *testing.T) {
