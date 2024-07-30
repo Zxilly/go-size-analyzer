@@ -3,6 +3,7 @@ package wrapper
 import (
 	"debug/dwarf"
 	"debug/macho"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -167,15 +168,21 @@ func machoSectionShouldIgnore(sect *macho.Section) bool {
 }
 
 func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
-	mf := m.file
-	for _, sect := range mf.Sections {
-		if machoSectionShouldIgnore(sect) {
+	for _, load := range m.file.Loads {
+		seg, ok := load.(*macho.Segment)
+		if !ok {
 			continue
 		}
-
-		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
+		if seg.Addr <= addr && addr <= seg.Addr+seg.Filesz-1 {
+			if seg.Name == "__PAGEZERO" {
+				continue
+			}
+			n := seg.Addr + seg.Filesz - addr
+			if n > size {
+				return nil, errors.New("size too large")
+			}
 			data := make([]byte, size)
-			if _, err := sect.ReadAt(data, int64(addr-sect.Addr)); err != nil {
+			if _, err := seg.ReadAt(data, int64(addr-seg.Addr)); err != nil {
 				return nil, err
 			}
 			return data, nil

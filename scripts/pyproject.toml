@@ -13,6 +13,7 @@ tqdm = "^4.66.4"
 matplotlib = "^3.9.1"
 psutil = "^6.0.0"
 markdown-strings = "^3.4.0"
+sh = "^2.0.7"
 
 [tool.poetry.group.research]
 optional = true
