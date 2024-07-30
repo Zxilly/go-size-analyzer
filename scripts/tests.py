@@ -305,15 +305,25 @@ def run_web_test(entry: str):
 
         raise Exception("Failed to start the server.")
 
-    ret = requests.get(f"http://127.0.0.1:59347").text
+    failed = False
+    try:
+        ret = requests.get(f"http://127.0.0.1:59347").text
 
-    assert_html_valid(ret)
-
-    p.terminate()
-    p.wait()
+        assert_html_valid(ret)
+    except Exception as e:
+        log(f"Web test failed: {e}")
+        failed = True
+    finally:
+        p.terminate()
+        p.wait()
 
     stdout_data += p.stdout.read()
     stderr_data += p.stderr.read()
+
+    if failed:
+        print(stdout_data)
+        print(stderr_data)
+        exit(1)
 
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(f"stdout:\n{stdout_data}\nstderr:\n{stderr_data}\n")
