@@ -76,11 +76,11 @@ class GSAInstance:
             env=self.getenv(profiler_dir),
             stderr=subprocess.STDOUT)
 
-        with open(output, "w") as f:
+        with open(output, "w", encoding="utf-8") as f:
             f.write(out)
 
     def expect(self, *args, output: str, profiler_dir: str, expect: str, callback: Callable[[subprocess.Popen], None]):
-        with open(output, "w") as f:
+        with open(output, "w", encoding="utf-8") as f:
             with subprocess.Popen(
                     args=[self.binary, *args],
                     cwd=get_project_root(),
@@ -101,7 +101,7 @@ class GSAInstance:
         start_time = time.time()
 
         def collect_stdout(p: subprocess.Popen):
-            with open(output, "w") as f:
+            with open(output, "w", encoding="utf-8") as f:
                 for line in p.stdout:
                     f.write(line)
 
@@ -136,7 +136,7 @@ class GSAInstance:
 
         if figure_output is not None and timestamps[-1] > 2:
             pic = draw_usage(figure_name, cpu_percentages, memory_usage_mb, timestamps)
-            with open(figure_output, "w") as f:
+            with open(figure_output, "w", encoding="utf-8") as f:
                 f.write(pic)
 
 
