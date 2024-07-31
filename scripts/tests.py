@@ -1,21 +1,81 @@
 import os.path
 import platform
 import subprocess
-import threading
 import time
 from argparse import ArgumentParser
 
 import requests
 from markdown_strings import code_block
 
-from tool.gsa import build_gsa
+from tool.gsa import build_gsa, GSAInstance
 from tool.html import assert_html_valid
 from tool.junit import generate_junit
 from tool.merge import merge_covdata
-from tool.process import run_process
 from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
-from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, get_covdata_integration_dir, \
-    init_dirs, write_github_summary, require_go
+from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, init_dirs, write_github_summary, \
+    require_go
+
+unit_path = os.path.join(get_project_root(), "covdata", "unit")
+unit_output_dir = os.path.join(get_project_root(), "results", "unit")
+ensure_dir(unit_path)
+ensure_dir(unit_output_dir)
+
+
+def run_unit(name: str, env: dict[str, str], pargs: list[str], timeout: int):
+    log(f"Running unit test {name}...")
+    start = time.time()
+    stdout = subprocess.run(
+        args=pargs,
+        text=True,
+        env=env,
+        cwd=get_project_root(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=timeout
+    )
+    stdout.check_returncode()
+
+    with open(os.path.join(unit_output_dir, f"{name}.txt"), "w", encoding="utf-8") as f:
+        f.write(stdout.stdout)
+
+    generate_junit(stdout.stdout, os.path.join(get_project_root(), f"{name}.xml"))
+
+    log(f"Unit test {name} passed in {format_time(time.time() - start)}.")
+
+
+def build_wasm_env():
+    env = os.environ.copy()
+    for raw in list(env.keys()):
+        k = raw.upper()
+        if (k.startswith("GITHUB_")
+                or k.startswith("JAVA_")
+                or k.startswith("PSMODULEPATH")
+                or k.startswith("PYTHONPATH")
+                or k.startswith("STATS_")
+                or k.startswith("RUNNER_")
+                or k.startswith("LIBRARY_")
+                or k.startswith("ANDROID_")
+                or k.startswith("DOTNET")
+                or k == "_OLD_VIRTUAL_PATH"
+        ):
+            del env[raw]
+
+        if platform.system() == "Windows":
+            if k == "PATH":
+                parts = env[raw].split(";")
+                new_parts = []
+                for i, part in enumerate(parts):
+                    lower = part.lower()
+                    if ("go" in lower
+                            or "pip" in lower
+                            or "python" in lower
+                            or "node" in lower):
+                        new_parts.append(part)
+                env[raw] = ";".join(new_parts)
+
+    env["GOOS"] = "js"
+    env["GOARCH"] = "wasm"
+    return env
 
 
 def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
@@ -25,143 +85,45 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
     log("Running unit tests...")
     load_remote_for_unit_test()
 
-    unit_path = os.path.join(get_project_root(), "covdata", "unit")
-
-    unit_output_dir = os.path.join(get_project_root(), "results", "unit")
     ensure_dir(unit_output_dir)
 
     go = require_go()
 
     if full:
-        try:
-            log("Running full unit tests...")
-            embed_result = subprocess.run(
-                [
-                    go,
-                    "test",
-                    "-v",
-                    "-covermode=atomic",
-                    "-cover",
-                    "-tags=embed",
-                    "./...",
-                    "-args",
-                    f"-test.gocoverdir={unit_path}"
-                ],
-                text=True,
-                cwd=get_project_root(),
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-                timeout=600
-            )
-            embed_result.check_returncode()
-
-            with open(os.path.join(unit_output_dir, "unit_embed.txt"), "w", encoding="utf-8") as f:
-                f.write(embed_result.stdout)
-
-            generate_junit(embed_result.stdout, os.path.join(get_project_root(), "unit_embed.xml"))
-
-            log("Full unit tests passed.")
-        except subprocess.CalledProcessError as e:
-            log("Error running embed unit tests:")
-            log(f"stdout: {e.stdout}")
-            exit(1)
+        run_unit("unit_embed", os.environ.copy(),
+                 [go,
+                  "test",
+                  "-v",
+                  "-covermode=atomic",
+                  "-cover",
+                  "-tags=embed",
+                  "./...",
+                  "-args",
+                  f"-test.gocoverdir={unit_path}"],
+                 600)
 
     if no_embed:
-        try:
-            log("Running normal unit tests for webui...")
-            normal_result = subprocess.run(
-                [
-                    go,
-                    "test",
-                    "-v",
-                    "-covermode=atomic",
-                    "-cover",
-                    "./internal/webui",
-                    "-args",
-                    f"-test.gocoverdir={unit_path}"
-                ],
-                text=True,
-                cwd=get_project_root(),
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-                timeout=600
-            )
-            normal_result.check_returncode()
-
-            with open(os.path.join(unit_output_dir, "unit.txt"), "w", encoding="utf-8") as f:
-                f.write(normal_result.stdout)
-
-            generate_junit(normal_result.stdout, os.path.join(get_project_root(), "unit.xml"))
-
-            log("Normal network unit tests passed.")
-        except subprocess.CalledProcessError as e:
-            log("Error running normal unit tests:")
-            log(f"stdout: {e.stdout}")
-            exit(1)
+        run_unit("unit", os.environ.copy(),
+                 [go,
+                  "test",
+                  "-v",
+                  "-covermode=atomic",
+                  "-cover",
+                  "./internal/webui",
+                  "-args",
+                  f"-test.gocoverdir={unit_path}"],
+                 600)
 
     if wasm:
-        try:
-            log("Running WebAssembly unit tests...")
-
-            env = os.environ.copy()
-            for raw in list(env.keys()):
-                k = raw.upper()
-                if (k.startswith("GITHUB_")
-                        or k.startswith("JAVA_")
-                        or k.startswith("PSMODULEPATH")
-                        or k.startswith("PYTHONPATH")
-                        or k.startswith("STATS_")
-                        or k.startswith("RUNNER_")
-                        or k.startswith("LIBRARY_")
-                        or k.startswith("ANDROID_")
-                        or k.startswith("DOTNET")
-                        or k == "_OLD_VIRTUAL_PATH"
-                ):
-                    del env[raw]
-
-                if platform.system() == "Windows":
-                    if k == "PATH":
-                        parts = env[raw].split(";")
-                        new_parts = []
-                        for i, part in enumerate(parts):
-                            lower = part.lower()
-                            if ("go" in lower
-                                    or "pip" in lower
-                                    or "python" in lower
-                                    or "node" in lower):
-                                new_parts.append(part)
-                        env[raw] = ";".join(new_parts)
-
-            env["GOOS"] = "js"
-            env["GOARCH"] = "wasm"
-
-            wasm_result = subprocess.run(
-                [
-                    go,
-                    "test",
-                    "-v",
-                    "-covermode=atomic",
-                    "-cover",
-                    "-coverpkg=../../...",
-                    f"-test.gocoverdir={unit_path}",
-                ],
-                text=True,
-                cwd=os.path.join(get_project_root(), "internal", "result"),
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-                timeout=600,
-                env=env
-            )
-            wasm_result.check_returncode()
-
-            with open(os.path.join(unit_output_dir, "unit_wasm.txt"), "w", encoding="utf-8") as f:
-                f.write(wasm_result.stdout)
-
-            generate_junit(wasm_result.stdout, os.path.join(get_project_root(), "unit_wasm.xml"))
-        except subprocess.CalledProcessError as e:
-            log("Error running wasm unit tests:")
-            log(f"stdout: {e.stdout}")
-            exit(1)
+        run_unit("unit_wasm", build_wasm_env(),
+                 [go,
+                  "test",
+                  "-v",
+                  "-covermode=atomic",
+                  "-cover",
+                  "-coverpkg=../../...",
+                  f"-test.gocoverdir={unit_path}"],
+                 600)
 
     log("Unit tests passed.")
 
@@ -169,7 +131,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
 global_failed = 0
 
 
-def run_integration_tests(typ: str, gsa_path: str):
+def run_integration_tests(typ: str, entry: GSAInstance):
     scope_failed_count = 0
 
     log(f"Running integration tests {typ}...")
@@ -205,7 +167,7 @@ def run_integration_tests(typ: str, gsa_path: str):
             def report_typ(rtyp: TestType):
                 log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - base)}.")
 
-            target.run_test(gsa_path, report_typ, timeout=timeout)
+            target.run_test(entry, report_typ, timeout=timeout)
             log(f"{head} passed in {format_time(time.time() - base)}.")
         except Exception as e:
             log(f"{head} failed")
@@ -224,7 +186,7 @@ def run_integration_tests(typ: str, gsa_path: str):
         global_failed += scope_failed_count
 
 
-def run_version_and_help_test(entry: str):
+def run_version_and_help_test(entry: GSAInstance):
     log("Running flag test...")
 
     def get_file(n: str):
@@ -232,101 +194,38 @@ def run_version_and_help_test(entry: str):
         ensure_dir(d)
         return os.path.join(d, f"{n}.output.txt")
 
-    try:
-        [out, _] = run_process([entry, "--version"],
-                               "version",
-                               profiler_dir=os.path.join(get_project_root(), "results", "version", "profiler"),
-                               timeout=2,
-                               draw=False)
+    entry.run("--version",
+              output=get_file("version"),
+              profiler_dir=os.path.join(get_project_root(), "results", "version", "profiler"))
+    entry.run("--help",
+              output=get_file("help"),
+              profiler_dir=os.path.join(get_project_root(), "results", "help", "profiler"))
 
-        with open(get_file("version"), "w", encoding="utf-8") as f:
-            f.write(out)
-
-        [out, _] = run_process([entry, "--help"],
-                               "help",
-                               profiler_dir=os.path.join(get_project_root(), "results", "help", "profiler"),
-                               timeout=2,
-                               draw=False)
-
-        with open(get_file("help"), "w", encoding="utf-8") as f:
-            f.write(out)
-
-    except Exception as e:
-        log(f"flag test failed: {e}")
-        exit(1)
+    log("Flag test passed.")
 
 
-def run_web_test(entry: str):
+def run_web_test(entry: GSAInstance):
     log("Running web test...")
 
-    env = os.environ.copy()
-    env["GOCOVERDIR"] = get_covdata_integration_dir()
-    env["OUTPUT_DIR"] = os.path.join(get_project_root(), "results", "web", "profiler")
-    ensure_dir(env["OUTPUT_DIR"])
+    profiler_dir = os.path.join(get_project_root(), "results", "web", "profiler")
+    ensure_dir(profiler_dir)
 
-    output_dir = os.path.join(get_project_root(), "results", "web")
-    output_file = os.path.join(output_dir, "web.output.txt")
+    output_file = os.path.join(get_project_root(), "results", "web", "web.output.txt")
 
-    stdout_data, stderr_data = "", ""
-    p = subprocess.Popen(
-        args=[entry, "--verbose", "--web", "--listen", f"127.0.0.1:59347", entry],
-        text=True, cwd=get_project_root(),
-        encoding="utf-8", env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    )
+    def check(proc: subprocess.Popen):
+        log("Web server started.")
 
-    log(f"Waiting for the server to start on port 59347...")
-
-    timeout_seconds = 10
-    timeout_occurred = False
-
-    def timeout_handler():
-        nonlocal timeout_occurred
-        timeout_occurred = True
-        p.kill()  # 强制终止进程
-
-    timer = threading.Timer(timeout_seconds, timeout_handler)
-    timer.start()
-    try:
-        for line in iter(p.stdout.readline, ""):
-            if "localhost" in line:
-                break
-            stdout_data += line
-    finally:
-        timer.cancel()
-
-    if p.poll() is not None or timeout_occurred:
-        log(f"args: {p.args}")
-
-        stdout_data += p.stdout.read()
-        stderr_data = p.stderr.read()
-
-        log(f"stdout:\n {stdout_data}\n")
-        log(f"stderr:\n {stderr_data}\n")
-
-        raise Exception("Failed to start the server.")
-
-    failed = False
-    try:
         ret = requests.get(f"http://127.0.0.1:59347").text
 
         assert_html_valid(ret)
-    except Exception as e:
-        log(f"Web test failed: {e}")
-        failed = True
-    finally:
-        p.terminate()
-        p.wait()
 
-    stdout_data += p.stdout.read()
-    stderr_data += p.stderr.read()
+        proc.terminate()
+        proc.wait()
 
-    if failed:
-        print(stdout_data)
-        print(stderr_data)
-        exit(1)
-
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(f"stdout:\n{stdout_data}\nstderr:\n{stderr_data}\n")
+    log(f"Waiting for the server to start on port 59347...")
+    entry.expect("--verbose", "--web", "--listen", "127.0.0.1:59347", entry.binary,
+                 output=output_file, profiler_dir=profiler_dir, expect="localhost",
+                 callback=check)
 
     log("Web test passed.")
 
