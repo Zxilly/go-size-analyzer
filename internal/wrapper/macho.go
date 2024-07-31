@@ -178,7 +178,7 @@ func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 				continue
 			}
 			n := seg.Addr + seg.Filesz - addr
-			if n > size {
+			if size > n {
 				return nil, errors.New("size too large")
 			}
 			data := make([]byte, size)
