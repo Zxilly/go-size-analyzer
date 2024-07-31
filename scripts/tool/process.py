@@ -5,10 +5,9 @@ from threading import Thread
 
 import psutil
 
+from .gsa import DISABLE_DRAW
 from .matplotlib import draw_usage
 from .utils import get_covdata_integration_dir, get_project_root
-
-DISABLE_DRAW = False
 
 
 def run_process(

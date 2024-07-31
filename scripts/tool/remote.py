@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 import requests
 from tqdm import tqdm
 
+from .gsa import GSAInstance
 from .process import run_process
 from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_path
 
@@ -71,36 +72,32 @@ class IntegrationTest:
 
         return os.path.join(self.typed_dir(typ), f"{self.name}.{ext}")
 
-    def run_test(self, gsa: str, log_typ: callable(TestType), timeout=240):
+    def run_test(self, gsa: GSAInstance, log_typ: callable(TestType), timeout=240):
         threads = []
 
         draw = not self.name.startswith("bin-")
 
         def run(pargs: list[str], typ: TestType):
-            [output_data, graph_data] = run_process(
-                pargs,
-                self.name,
-                profiler_dir=self.profiler_dir(typ),
-                timeout=timeout,
-                draw=draw,
-            )
-            with open(self.output_filepath(typ), "w", encoding="utf-8") as f:
-                f.write(output_data)
+            figure_output = self.performance_figure_filepath(typ)
+            if not draw:
+                figure_output = None
 
-            if draw and graph_data is not None:
-                with open(self.performance_figure_filepath(typ), "wb") as f:
-                    f.write(graph_data.encode("utf-8"))
+            gsa.run_with_figure(*pargs,
+                                output=self.output_filepath(typ),
+                                profiler_dir=self.profiler_dir(typ),
+                                figure_name=self.name,
+                                timeout=timeout,
+                                figure_output=figure_output)
 
             log_typ(typ)
 
         if TestType.TEXT_TEST in self.type:
-            threads.append(Thread(target=run, args=([gsa, "-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
+            threads.append(Thread(target=run, args=(["-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
 
         if TestType.JSON_TEST in self.type:
             threads.append(
                 Thread(target=run,
-                       args=([gsa,
-                              "-f", "json",
+                       args=(["-f", "json",
                               "--verbose",
                               "--indent", "2",
                               self.path,
@@ -110,8 +107,7 @@ class IntegrationTest:
         if TestType.HTML_TEST in self.type:
             threads.append(
                 Thread(target=run,
-                       args=([gsa,
-                              "-f", "html",
+                       args=(["-f", "html",
                               self.path,
                               "-o", self.generated_filepath(TestType.HTML_TEST)],
                              TestType.HTML_TEST)))
@@ -119,8 +115,7 @@ class IntegrationTest:
         if TestType.SVG_TEST in self.type:
             threads.append(
                 Thread(target=run,
-                       args=([gsa,
-                              "-f", "svg",
+                       args=(["-f", "svg",
                               self.path,
                               "-o", self.generated_filepath(TestType.SVG_TEST)],
                              TestType.SVG_TEST)))
