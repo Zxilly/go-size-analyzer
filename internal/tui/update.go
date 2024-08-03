@@ -67,9 +67,9 @@ func handleKeyEvent(m mainModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 func tableHandleMouseEvent(t table.Model, msg tea.MouseMsg) (table.Model, tea.Cmd) {
 	switch msg.Button {
 	case tea.MouseButtonWheelUp:
-		t.MoveUp(3)
+		t.MoveUp(1)
 	case tea.MouseButtonWheelDown:
-		t.MoveDown(3)
+		t.MoveDown(1)
 	default:
 		return t, nil
 	}

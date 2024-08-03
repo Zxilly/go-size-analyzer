@@ -71,7 +71,7 @@ $ gsa --web golang-compiled-binary
 $ gsa --tui golang-compiled-binary
 ```
 
-![demo](https://github.com/Zxilly/go-size-analyzer/assets/31370133/9f38989e-ab9f-4098-a939-26ca23fef407)
+[![asciicast](https://asciinema.org/a/670664.svg)](https://asciinema.org/a/670664)
 
 #### 文本模式
 
