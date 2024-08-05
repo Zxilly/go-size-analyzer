@@ -10,7 +10,7 @@ package-mode = false
 python = "^3.12"
 requests = "^2.32.3"
 tqdm = "^4.66.5"
-matplotlib = "^3.9.1"
+matplotlib = "3.9.0"
 psutil = "^6.0.0"
 markdown-strings = "^3.4.0"
 
