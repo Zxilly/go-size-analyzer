@@ -26,10 +26,10 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/samber/lo v1.46.0
 	github.com/stretchr/testify v1.9.0
-	golang.org/x/arch v0.8.0
+	golang.org/x/arch v0.9.0
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56
 	golang.org/x/net v0.27.0
-	golang.org/x/sync v0.7.0
+	golang.org/x/sync v0.8.0
 )
 
 require (
