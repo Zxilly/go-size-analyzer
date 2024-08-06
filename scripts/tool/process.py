@@ -5,7 +5,6 @@ from threading import Thread
 
 import psutil
 
-from .gsa import DISABLE_DRAW
 from .matplotlib import draw_usage
 from .utils import get_covdata_integration_dir, get_project_root
 
@@ -16,8 +15,6 @@ def run_process(
         timeout=240,
         profiler_dir: str = None,
         draw: bool = False) -> [str, bytes | None]:
-    if DISABLE_DRAW:
-        draw = False
 
     env = os.environ.copy()
     env["GOCOVERDIR"] = get_covdata_integration_dir()

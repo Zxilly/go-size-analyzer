@@ -53,9 +53,6 @@ def build_pgo_gsa():
     os.remove(temp_binary)
 
 
-DISABLE_DRAW = False
-
-
 class GSAInstance:
     def __init__(self, binary: str):
         self.binary = binary

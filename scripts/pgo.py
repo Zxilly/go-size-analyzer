@@ -46,8 +46,6 @@ def merge_profiles():
 if __name__ == '__main__':
     shutil.rmtree(os.path.join(get_project_root(), "results"), ignore_errors=True)
 
-    tool.gsa.DISABLE_DRAW = True
-
     with build_pgo_gsa() as gsa:
         run_integration_tests("real", gsa)
     merge_profiles()

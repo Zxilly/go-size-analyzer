@@ -115,12 +115,10 @@ python scripts/generate.py
 
 Collect the test results and generate a report in GitHub Actions format.
 
-Requires `svgo` to be installed to optimize the SVG files.
-
 It uses service [Zxilly/data2image](https://github.com/Zxilly/data2image) to bypass
 GitHub data-uri limit. This project was written in `Rust`.
 
-The svg data was optimized with `svgo` then compressed with `zstd` and encoded with `base64`
+The svg data was optimized then compressed with `zstd` and encoded with `base64`
 for safe inclusion in the url.
 
 ```bash

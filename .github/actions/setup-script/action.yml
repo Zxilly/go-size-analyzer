@@ -36,11 +36,6 @@ runs:
       run: |
         poetry install
 
-    - name: Install svgo
-      if: ${{ inputs.report == 'true' }}
-      shell: bash
-      run: npm install -g svgo
-
     - name: Install Go tools
       shell: bash
       if: ${{ inputs.coverage == 'true' }}
