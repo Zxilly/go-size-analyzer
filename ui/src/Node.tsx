@@ -47,7 +47,11 @@ interface RenderAttributes {
   display: string;
 }
 
-function getTransform(scale: number): string {
+function getTransform(scale: number): string | undefined {
+  if (scale === 1) {
+    return undefined;
+  }
+
   return `scale(${scale.toFixed(2)})`;
 }
 
@@ -101,6 +105,9 @@ export const Node: React.FC<NodeProps> = React.memo((
       );
       if (scale > 1) {
         scale = Math.sqrt(scale);
+      }
+      if (scale === Infinity) {
+        scale = 1;
       }
     }
 
