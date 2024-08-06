@@ -1,61 +1,53 @@
-import React, { useCallback, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from "@mui/material";
 import { formatBytes } from "../tool/utils.ts";
 
 const SizeLimit = 1024 * 1024 * 30;
 
-type fileChangeHandler = (file: File) => void;
+type FileChangeHandler = (file: File) => void;
 
-export function FileSelector({ handler }: {
-  value?: File | null;
-  handler: fileChangeHandler;
-}) {
-  const [open, setOpen] = useState(false);
-  const [pendingFile, setPendingFile] = useState<File | null>(null);
+interface FileSelectorProps {
+  handler: FileChangeHandler;
+}
+
+export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
+  const [dialogState, setDialogState] = useState<{ open: boolean; file: File | null }>({ open: false, file: null });
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
+    const file = e.target.files?.[0];
+    if (!file)
       return;
-    }
 
-    const f = e.target.files[0];
-
-    if (f.size > SizeLimit) {
-      setOpen(true);
-      setPendingFile(f);
+    if (file.size > SizeLimit) {
+      setDialogState({ open: true, file });
     }
     else {
-      handler(f);
+      handler(file);
     }
   }, [handler]);
 
-  const handleClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+  const handleClose = useCallback(() => setDialogState(prev => ({ ...prev, open: false })), []);
 
   const handleContinue = useCallback(() => {
-    if (pendingFile) {
-      handler(pendingFile);
-      setOpen(false);
+    if (dialogState.file) {
+      handler(dialogState.file);
+      setDialogState({ open: false, file: null });
     }
-  }, [handler, pendingFile]);
+  }, [handler, dialogState.file]);
 
   return (
     <>
-      <Dialog
-        open={open}
-      >
-        <DialogTitle>
-          Binary too large
-        </DialogTitle>
+      <Dialog open={dialogState.open} onClose={handleClose}>
+        <DialogTitle>Binary too large</DialogTitle>
         <DialogContent>
           <DialogContentText>
             The selected binary
             {" "}
-            {pendingFile?.name}
+            {dialogState.file?.name}
             {" "}
             has a size of
-            {` ${formatBytes(pendingFile?.size || 0)}`}
+            {" "}
+            {formatBytes(dialogState.file?.size || 0)}
             .
             It is not recommended to use the wasm version for binary files larger than 30 MB.
           </DialogContentText>
@@ -65,51 +57,33 @@ export function FileSelector({ handler }: {
           <Button onClick={handleContinue}>Continue</Button>
         </DialogActions>
       </Dialog>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100%"
-      >
-        <Button
-          variant="outlined"
-          component="label"
-        >
+      <Box display="flex" flexDirection="column" alignItems="center" height="100%">
+        <Button variant="outlined" component="label">
           Select file
           <input
             type="file"
-            multiple={false}
             onChange={handleChange}
             data-testid="file-selector"
             hidden
           />
         </Button>
+        <DialogContentText sx={{ mt: 2, display: "flex", alignItems: "center" }}>
+          For full features, see
+          <Link
+            href="https://github.com/Zxilly/go-size-analyzer"
+            target="_blank"
+            rel="noreferrer noopener"
+            sx={{ ml: 0.5, display: "flex", alignItems: "center" }}
+          >
+            go-size-analyzer
+            <img
+              alt="GitHub Repo stars"
+              src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"
+              style={{ marginLeft: "0.3em" }}
+            />
+          </Link>
+        </DialogContentText>
       </Box>
-      <DialogContentText
-        marginTop={2}
-        style={{
-          verticalAlign: "middle",
-        }}
-      >
-        For full features, see
-        <Link
-          href="https://github.com/Zxilly/go-size-analyzer"
-          target="_blank"
-          rel="noreferrer noopener"
-          style={{
-            marginLeft: "0.3em",
-          }}
-        >
-          go-size-analyzer
-          <img
-            alt="GitHub Repo stars"
-            style={{
-              marginLeft: "0.3em",
-            }}
-            src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"
-          />
-        </Link>
-      </DialogContentText>
     </>
   );
-}
+});

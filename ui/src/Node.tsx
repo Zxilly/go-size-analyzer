@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import memoize from "lodash.memoize";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
@@ -44,10 +44,18 @@ interface RenderAttributes {
   x: number;
   y: number;
   scale: number;
+  display: string;
 }
 
 function getTransform(scale: number): string {
   return `scale(${scale.toFixed(2)})`;
+}
+
+const splitter = /[/\\]/;
+
+function getLastWord(title: string): string {
+  const words = title.split(splitter);
+  return words[words.length - 1];
 }
 
 export const Node: React.FC<NodeProps> = React.memo((
@@ -71,8 +79,13 @@ export const Node: React.FC<NodeProps> = React.memo((
   const width = x1 - x0;
   const height = y1 - y0;
 
-  const renderAttr = useMemo<RenderAttributes>(() => {
+  const getScale = useCallback((title: string, fallback: boolean = true): [string, number] => {
+    if (title === "") {
+      return ["", 0];
+    }
+
     const [textWidth, textHeight] = memoizedMeasureText(title);
+
     let scale: number;
     if (hasChildren) {
       scale = Math.min(
@@ -80,26 +93,42 @@ export const Node: React.FC<NodeProps> = React.memo((
         Math.min(height, TOP_PADDING + PADDING) / textHeight,
       );
       scale = Math.min(1, scale);
-      return {
-        x: width / 2 / scale,
-        y: Math.min(TOP_PADDING + PADDING, height) / 2 / scale,
-        scale,
-      };
     }
     else {
       scale = Math.min(
         (width * 0.9) / textWidth,
         (height * 0.9) / textHeight,
       );
-      scale = Math.min(1, scale);
+      if (scale > 1) {
+        scale = Math.sqrt(scale);
+      }
+    }
 
+    if (scale < 0.7 && fallback) {
+      return getScale(getLastWord(title), false);
+    }
+    return [title, scale];
+  }, [hasChildren, height, width]);
+
+  const renderAttr = useMemo<RenderAttributes>(() => {
+    const [display, scale] = getScale(title);
+    if (hasChildren) {
       return {
         x: width / 2 / scale,
-        y: height / 2 / scale,
+        y: Math.min(TOP_PADDING + PADDING, height) / 2 / scale,
+        display,
         scale,
       };
     }
-  }, [hasChildren, height, width, title]);
+    else {
+      return {
+        x: width / 2 / scale,
+        y: height / 2 / scale,
+        display,
+        scale,
+      };
+    }
+  }, [getScale, title, hasChildren, width, height]);
 
   return (
     <g
@@ -116,7 +145,7 @@ export const Node: React.FC<NodeProps> = React.memo((
       >
       </rect>
       {
-        width > 12 && height > 12 && renderAttr.scale > 0.25 && (
+        width > 12 && height > 12 && renderAttr.scale > 0.5 && (
           <text
             ref={textRef}
             fill={fontColor}
@@ -132,7 +161,7 @@ export const Node: React.FC<NodeProps> = React.memo((
             y={renderAttr.y}
             transform={getTransform(renderAttr.scale)}
           >
-            {title}
+            {renderAttr.display}
           </text>
         )
       }
