@@ -3,8 +3,6 @@ from io import StringIO
 import matplotlib
 from matplotlib import pyplot as plt
 
-from .svgo import optimize_svg
-
 matplotlib.use('svg')
 matplotlib.rcParams['svg.fonttype'] = 'none'
 
@@ -50,4 +48,4 @@ def draw_usage(
     plt.close()
 
     svg = buf.getvalue()
-    return optimize_svg(svg)
+    return svg
