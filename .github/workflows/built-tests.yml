@@ -64,7 +64,7 @@ jobs:
           script: 'wasm.py'
 
       - name: Upload wasm artifact
-        uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4.3.5
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           path: 'ui/gsa.wasm'
           name: wasm
@@ -147,7 +147,7 @@ jobs:
           verbose: true
 
       - name: Upload results
-        uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4.3.5
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
@@ -163,7 +163,7 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
     steps:
       - name: Merge
-        uses: actions/upload-artifact/merge@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4.3.5
+        uses: actions/upload-artifact/merge@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           name: ${{ matrix.os }}-results
           compression-level: '9'
