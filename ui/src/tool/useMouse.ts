@@ -1,6 +1,5 @@
 import type { RefObject } from "react";
-import { useCallback, useState } from "react";
-import { useLifecycles } from "react-use";
+import { useEffect, useState } from "react";
 
 export interface useMouseResult {
   clientX: number | null;
@@ -16,40 +15,31 @@ export function useMouse(ref: RefObject<SVGElement>): useMouseResult {
 
   const [isOver, setIsOver] = useState(false);
 
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    setClientX(e.clientX);
-    setClientY(e.clientY);
+  useEffect(() => {
+    const abort = new AbortController();
+    const signal = abort.signal;
 
-    if (e.target !== eventTarget) {
-      setEventTarget(e.target);
-    }
-  }, [eventTarget]);
-
-  const onMouseOver = useCallback(() => {
-    setIsOver(true);
-  }, []);
-
-  const onMouseOut = useCallback(() => {
-    setIsOver(false);
-  }, []);
-
-  const mount = useCallback(() => {
     if (ref.current) {
-      ref.current.addEventListener("mousemove", onMouseMove);
-      ref.current.addEventListener("mouseover", onMouseOver);
-      ref.current.addEventListener("mouseout", onMouseOut);
-    }
-  }, [onMouseMove, onMouseOut, onMouseOver, ref]);
+      ref.current.addEventListener("mousemove", (e) => {
+        setClientX(e.clientX);
+        setClientY(e.clientY);
 
-  const unmount = useCallback(() => {
-    if (ref.current) {
-      ref.current.removeEventListener("mousemove", onMouseMove);
-      ref.current.removeEventListener("mouseover", onMouseOver);
-      ref.current.removeEventListener("mouseout", onMouseOut);
+        if (e.target !== eventTarget) {
+          setEventTarget(e.target);
+        }
+      }, { signal });
+      ref.current.addEventListener("mouseover", () => {
+        setIsOver(true);
+      }, { signal });
+      ref.current.addEventListener("mouseout", () => {
+        setIsOver(false);
+      }, { signal });
     }
-  }, [onMouseMove, onMouseOut, onMouseOver, ref]);
 
-  useLifecycles(mount, unmount);
+    return () => {
+      abort.abort();
+    };
+  }, [eventTarget, ref]);
 
   return {
     clientX,
