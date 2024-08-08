@@ -34,6 +34,8 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	}
 
 	slog.Info("Parsed binary done")
+	utils.WaitDebugger("Parsed binary done")
+
 	slog.Info("Finding build info...")
 
 	k := &knowninfo.KnownInfo{
@@ -49,6 +51,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	}
 
 	slog.Info("Found build info")
+	utils.WaitDebugger("Found build info")
 
 	err = k.LoadSectionMap()
 	if err != nil {
@@ -79,9 +82,11 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	// DWARF can still add new package, so we defer this
 	k.Deps.FinishLoad()
+	utils.WaitDebugger("DWARF and deps done")
 
-	// we force a gc here, since the gore file is no longer needed
+	// we force a gc here, since the gore file is no longer used
 	debug.FreeOSMemory()
+	utils.WaitDebugger("After force gc")
 
 	record := !dwarfOk && !options.SkipSymbol
 	err = k.AnalyzeSymbol(record)
@@ -94,6 +99,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	if record {
 		analyzers = append(analyzers, entity.AnalyzerSymbol)
 	}
+	utils.WaitDebugger("Symbol done")
 
 	if !options.SkipDisasm {
 		if k.GoStringSymbol == nil {
@@ -129,6 +135,8 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return cmp.Compare(a.Name, b.Name)
 	})
 	slices.Sort(analyzers)
+
+	utils.WaitDebugger("Analyze done")
 
 	return &result.Result{
 		Name:      filepath.Base(name),
