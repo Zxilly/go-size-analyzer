@@ -23,8 +23,7 @@ runs:
       run: pipx install poetry
 
     - name: Setup Python
-      # fixme: use official version after https://github.com/actions/setup-python/pull/896 merged
-      uses: Zxilly/setup-python@ae59c5af9656f2efa3191e798da170f40e8832dc
+      uses: actions/setup-python@2bd53f9a4d1dd1cd21eaffcc01a7b91a8e73ea4c
       with:
         python-version: '3.12'
         check-latest: true
