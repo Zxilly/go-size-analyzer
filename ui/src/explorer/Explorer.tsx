@@ -11,7 +11,7 @@ type ModalState = {
   isOpen: false;
 } | {
   isOpen: true;
-  title: string;
+  title: string | ReactNode;
   content: ReactNode;
 };
 
@@ -89,7 +89,24 @@ export const Explorer: React.FC = () => {
     else if (!file) {
       setModalState({
         isOpen: true,
-        title: "Select a go binary",
+        title: (
+          <>
+            Select a go binary
+            <a
+              href="https://github.com/Zxilly/go-size-analyzer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                alt="GitHub Repo stars"
+                src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer?style=flat-square"
+                style={{
+                  display: "block",
+                }}
+              />
+            </a>
+          </>
+        ),
         content: (
           <FileSelector handler={(file) => {
             setFile(file);
@@ -125,11 +142,29 @@ export const Explorer: React.FC = () => {
     <>
       <Dialog
         open={modalState.isOpen}
+        sx={{
+          "& .MuiDialog-paper": {
+            minWidth: "300px",
+          },
+        }}
       >
-        <DialogTitle>{modalState.isOpen && modalState.title}</DialogTitle>
-        <DialogContent dividers>
-          {modalState.isOpen && modalState.content}
-        </DialogContent>
+        {modalState.isOpen && (
+          <>
+            <DialogTitle
+              sx={{
+                wordBreak: "break-all",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {modalState.title}
+            </DialogTitle>
+            <DialogContent dividers>
+              {modalState.isOpen && modalState.content}
+            </DialogContent>
+          </>
+        )}
       </Dialog>
       {entry && <TreeMap entry={entry} />}
     </>

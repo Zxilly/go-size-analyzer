@@ -76,11 +76,6 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
             sx={{ ml: 0.5, display: "flex", alignItems: "center" }}
           >
             go-size-analyzer
-            <img
-              alt="GitHub Repo stars"
-              src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer"
-              style={{ marginLeft: "0.3em" }}
-            />
           </Link>
         </DialogContentText>
       </Box>
