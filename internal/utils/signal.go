@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,6 +12,6 @@ func WaitSignal() {
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
 
-	fmt.Println("Press Ctrl+C to exit")
+	slog.Info("Press Ctrl+C to exit")
 	<-done
 }

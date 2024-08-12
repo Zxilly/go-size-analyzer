@@ -27,7 +27,7 @@ func analyze(_ js.Value, args []js.Value) any {
 		SkipDisasm: true,
 	})
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		slog.Error(fmt.Sprintf("Error: %v\n", err))
 		return js.ValueOf(nil)
 	}
 
