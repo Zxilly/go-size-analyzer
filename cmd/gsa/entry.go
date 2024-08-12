@@ -131,7 +131,7 @@ func entry() error {
 
 		url := utils.GetURLFromListen(Options.Listen)
 
-		fmt.Println("Server started at", url)
+		slog.Info("Server started at " + url)
 
 		if Options.Open {
 			err = browser.OpenURL(url)

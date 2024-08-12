@@ -3,7 +3,7 @@ import os.path
 import shutil
 import subprocess
 import time
-from threading import Thread
+from threading import Thread, Timer
 from typing import Callable
 
 import psutil
@@ -76,7 +76,8 @@ class GSAInstance:
         with open(output, "w", encoding="utf-8") as f:
             f.write(out)
 
-    def expect(self, *args, output: str, profiler_dir: str, expect: str, callback: Callable[[subprocess.Popen], None]):
+    def expect(self, *args, output: str, profiler_dir: str, expect: str, callback: Callable[[subprocess.Popen], None],
+               timeout: int):
         with open(output, "w", encoding="utf-8") as f:
             with subprocess.Popen(
                     args=[self.binary, *args],
@@ -84,14 +85,23 @@ class GSAInstance:
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,
+                    bufsize=1,
                     env=self.getenv(profiler_dir),
-                    encoding="utf-8") as proc:
-                for line in proc.stdout:
+                    encoding="utf-8",
+
+            ) as proc:
+                def kill():
+                    proc.kill()
+                    raise TimeoutError(f"Process timed out after {timeout} seconds.")
+
+                Timer(timeout, kill).start()
+                for line in iter(proc.stdout.readline, ""):
                     f.write(line)
                     if expect in line:
                         callback(proc)
 
-    def run_with_figure(self, *args, output: str, profiler_dir: str, timeout: int, figure_name:str, figure_output: str = None):
+    def run_with_figure(self, *args, output: str, profiler_dir: str, timeout: int, figure_name: str,
+                        figure_output: str = None):
         cpu_percentages = []
         memory_usage_mb = []
         timestamps = []
@@ -135,6 +145,3 @@ class GSAInstance:
             pic = draw_usage(figure_name, cpu_percentages, memory_usage_mb, timestamps)
             with open(figure_output, "w", encoding="utf-8") as f:
                 f.write(pic)
-
-
-

@@ -212,12 +212,18 @@ def run_web_test(entry: GSAInstance):
 
     output_file = os.path.join(get_project_root(), "results", "web", "web.output.txt")
 
+    passed = False
+
     def check(proc: subprocess.Popen):
         log("Web server started.")
+        time.sleep(1)
 
         ret = requests.get(f"http://127.0.0.1:59347").text
 
         assert_html_valid(ret)
+
+        nonlocal passed
+        passed = True
 
         proc.terminate()
         proc.wait()
@@ -225,9 +231,13 @@ def run_web_test(entry: GSAInstance):
     log(f"Waiting for the server to start on port 59347...")
     entry.expect("--verbose", "--web", "--listen", "127.0.0.1:59347", entry.binary,
                  output=output_file, profiler_dir=profiler_dir, expect="localhost",
-                 callback=check)
+                 callback=check, timeout=10)
 
-    log("Web test passed.")
+    if passed:
+        log("Web test passed.")
+    else:
+        log("Web test failed.")
+        exit(1)
 
 
 def get_parser() -> ArgumentParser:
