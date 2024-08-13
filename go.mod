@@ -2,6 +2,8 @@ module github.com/Zxilly/go-size-analyzer
 
 go 1.23
 
+toolchain go1.23.0
+
 require (
 	github.com/ZxillyFork/gore v0.0.0-20240809102208-6b9ec1388217
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
@@ -10,7 +12,7 @@ require (
 	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
 	github.com/charmbracelet/bubbletea v0.26.6
 	github.com/charmbracelet/lipgloss v0.12.1
-	github.com/charmbracelet/x/exp/teatest v0.0.0-20240709134850-9d428570ae29
+	github.com/charmbracelet/x/exp/teatest v0.0.0-20240812190614-74518029592c
 	github.com/charmbracelet/x/term v0.1.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.23.0
@@ -22,7 +24,7 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/samber/lo v1.46.0
+	github.com/samber/lo v1.47.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/arch v0.9.0
 	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa
