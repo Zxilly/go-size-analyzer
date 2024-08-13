@@ -1,5 +1,17 @@
 import React, { memo, useCallback, useState } from "react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Link,
+  Typography,
+} from "@mui/material";
+import { useDropzone } from "react-dropzone";
+import { Troubleshoot } from "@mui/icons-material";
 import { formatBytes } from "../tool/utils.ts";
 
 const SizeLimit = 1024 * 1024 * 30;
@@ -13,11 +25,7 @@ interface FileSelectorProps {
 export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
   const [dialogState, setDialogState] = useState<{ open: boolean; file: File | null }>({ open: false, file: null });
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file)
-      return;
-
+  const handleFile = useCallback((file: File) => {
     if (file.size > SizeLimit) {
       setDialogState({ open: true, file });
     }
@@ -25,6 +33,14 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
       handler(file);
     }
   }, [handler]);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      handleFile(acceptedFiles[0]);
+    }
+  }, [handleFile]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleClose = useCallback(() => setDialogState(prev => ({ ...prev, open: false })), []);
 
@@ -49,7 +65,7 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
             {" "}
             {formatBytes(dialogState.file?.size || 0)}
             .
-            It is not recommended to use the wasm version for binary files larger than 30 MB.
+            It is not recommended to use the WebAssembly version for binary files larger than 30 MB.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -58,15 +74,39 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
         </DialogActions>
       </Dialog>
       <Box display="flex" flexDirection="column" alignItems="center" height="100%">
-        <Button variant="outlined" component="label">
-          Select file
-          <input
-            type="file"
-            onChange={handleChange}
-            data-testid="file-selector"
-            hidden
-          />
-        </Button>
+        <Box
+          {...getRootProps()}
+          sx={{
+            "border": "2px dashed #cccccc",
+            "borderRadius": "4px",
+            "padding": "20px",
+            "textAlign": "center",
+            "cursor": "pointer",
+            "height": "120px",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "transition": "all 0.3s ease",
+            "backgroundColor": isDragActive ? "#e8f0fe" : "transparent",
+            "&:hover": {
+              backgroundColor: "#f0f0f0",
+            },
+            "minWidth": "20vw",
+            "width": "100%",
+          }}
+        >
+          <input {...getInputProps()} data-testid="file-selector" />
+          <Troubleshoot sx={{ fontSize: 40, mb: 1, color: isDragActive ? "#1976d2" : "#757575" }} />
+          <Typography
+            variant="body1"
+            sx={{
+              color: isDragActive ? "#1976d2" : "inherit", // Change color on drag, if desired
+            }}
+          >
+            {isDragActive ? "Drop the file here" : "Click or drag file to analyze"}
+          </Typography>
+        </Box>
         <DialogContentText sx={{ mt: 2, width: "100%" }}>
           For full features, see
           <Link

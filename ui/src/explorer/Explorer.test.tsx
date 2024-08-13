@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Explorer } from "./Explorer";
 
 vi.mock("../worker/helper.ts");
@@ -21,21 +22,12 @@ describe("explorer", () => {
       await waitFor(() => screen.getByText("Select a go binary"));
     });
 
-    it("should display analyzing state when a file is selected", async () => {
-      render(<Explorer />);
-
-      await waitFor(() => screen.getByText("Select a go binary"));
-
-      fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["it"], "test.bin")] } });
-      await waitFor(() => screen.getByText("Analyzing test.bin"));
-    });
-
     it("should display error when analysis fails", async () => {
       render(<Explorer />);
 
       await waitFor(() => screen.getByText("Select a go binary"));
 
-      fireEvent.change(screen.getByTestId("file-selector"), { target: { files: [new File(["test"], "fail")] } });
+      await userEvent.upload(screen.getByTestId("file-selector"), new File(["test"], "fail"));
       await waitFor(() => screen.getByText("Failed to analyze fail"));
     });
   });

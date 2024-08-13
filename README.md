@@ -54,10 +54,10 @@ $ gsa --web golang-compiled-binary
 
 Will start a web server on port 8080, you can view the result in your browser.
 
-Or you can use the WASM version in the browser: [GSA Treemap](https://gsa.zxilly.dev)
+Or you can use the WebAssembly version in the browser: [GSA Treemap](https://gsa.zxilly.dev)
 
 > [!NOTE]  
-> Due to the limitation of the browser, the wasm version is much slower than the native version.
+> Due to the limitation of the browser, the WebAssembly version is much slower than the native version.
 > Normally costs 10x time to analyze the same binary.
 > 
 > Only recommended for analysing small applications (less than 30 MB in size)

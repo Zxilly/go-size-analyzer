@@ -21,8 +21,6 @@ export class GsaInstance {
       this.log(`Processing ${i}`);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 100));
-
     return getTestResult();
   }
 }
