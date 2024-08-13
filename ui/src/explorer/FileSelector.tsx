@@ -67,13 +67,13 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
             hidden
           />
         </Button>
-        <DialogContentText sx={{ mt: 2, display: "flex", alignItems: "center" }}>
+        <DialogContentText sx={{ mt: 2, width: "100%" }}>
           For full features, see
           <Link
             href="https://github.com/Zxilly/go-size-analyzer"
             target="_blank"
             rel="noreferrer noopener"
-            sx={{ ml: 0.5, display: "flex", alignItems: "center" }}
+            sx={{ ml: 0.5 }}
           >
             go-size-analyzer
           </Link>
