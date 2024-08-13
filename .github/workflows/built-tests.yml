@@ -34,13 +34,6 @@ jobs:
           cache: true
           check-latest: true
 
-      - name: Get GOROOT
-        id: go-root
-        shell: bash
-        run: |
-          GOROOT=$(go env GOROOT)
-          echo "GOROOT=$GOROOT" >> $GITHUB_OUTPUT
-
       - name: Setup Binaryen
         # fixme: use acifani/setup-tinygo after pr acceptance
         uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
