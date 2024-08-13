@@ -22,7 +22,7 @@ export default defineConfig({
         "src/tool/wasm_exec.js",
         "src/schema/schema.ts",
         "src/generated/schema.ts",
-        "src/testhelper.ts",
+        "src/test/testhelper.ts",
         "**/__mocks__/**",
         "**/*.js",
         "vite.*.ts",
