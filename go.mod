@@ -5,18 +5,18 @@ go 1.23
 toolchain go1.23.0
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20240809102208-6b9ec1388217
+	github.com/ZxillyFork/gore v0.0.0-20240817161703-8709011f8ec2
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v0.9.0
 	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
-	github.com/charmbracelet/bubbletea v0.26.6
+	github.com/charmbracelet/bubbletea v0.27.0
 	github.com/charmbracelet/lipgloss v0.12.1
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240812190614-74518029592c
 	github.com/charmbracelet/x/term v0.1.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.23.0
-	github.com/go-json-experiment/json v0.0.0-20240524174822-2d9f40f7385b
+	github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
