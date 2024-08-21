@@ -9,9 +9,9 @@ require (
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v0.9.0
-	github.com/charmbracelet/bubbles v0.18.1-0.20240515012114-50b0bb0f3b53
+	github.com/charmbracelet/bubbles v0.19.0
 	github.com/charmbracelet/bubbletea v0.27.0
-	github.com/charmbracelet/lipgloss v0.12.1
+	github.com/charmbracelet/lipgloss v0.13.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240812190614-74518029592c
 	github.com/charmbracelet/x/term v0.2.0
 	github.com/dustin/go-humanize v1.0.1
@@ -36,7 +36,7 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/charmbracelet/x/ansi v0.1.4 // indirect
-	github.com/charmbracelet/x/exp/golden v0.0.0-20240625134410-de32bb7b5d4e // indirect
+	github.com/charmbracelet/x/exp/golden v0.0.0-20240815200342-61de596daa2b // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
 	github.com/kr/pretty v0.3.1 // indirect
