@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       gomod-normal-deps:
         update-types:
@@ -16,7 +16,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/ui"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       ui-prod-deps:
         dependency-type: production
@@ -26,7 +26,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/scripts"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       pip-deps:
         patterns:
@@ -35,7 +35,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       actions-deps:
         patterns:
