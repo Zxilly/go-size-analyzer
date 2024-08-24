@@ -341,11 +341,11 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
       }
       const packageContainerSize = packageContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
       const packageContainer = new ContainerImpl(
-                `${title(type)} Packages Size`,
-                `${type}-packages`,
-                packageContainerSize,
-                packageContainerChildren,
-                `The size of the ${type} packages in the binary.`,
+        `${title(type)} Packages Size`,
+        `${type}-packages`,
+        packageContainerSize,
+        packageContainerChildren,
+        `The size of the ${type} packages in the binary.`,
       );
 
       typedPackagesChildren.push(packageContainer);
