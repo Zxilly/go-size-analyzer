@@ -109,9 +109,9 @@ linters-settings:
       - name: empty-lines
         disabled: true
 
-  misspell:
-    locale: "US" # Fix the colour => color, and co
-
+  gosec:
+    excludes:
+      - G115
 
 output:
   # Make issues output unique by line.
