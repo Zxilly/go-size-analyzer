@@ -304,6 +304,10 @@ export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
   }
 }
 
+function isDebugSection(name: string): boolean {
+  return name.startsWith(".debug_") || name.startsWith(".zdebug_") || name.endsWith("__DWARF");
+}
+
 export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
   private readonly children: EntryChildren["result"];
 
@@ -312,19 +316,36 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
 
     const children: EntryChildren["result"] = [];
 
-    const sectionContainerChildren: EntryLike<"section">[] = [];
+    const uknSectChildren: EntryLike<"section">[] = [];
+    const debugSectChildren: EntryLike<"section">[] = [];
+
     for (const section of data.sections) {
-      sectionContainerChildren.push(new SectionImpl(section));
+      const s = new SectionImpl(section);
+      if (isDebugSection(section.name)) {
+        debugSectChildren.push(s);
+      }
+      else {
+        uknSectChildren.push(s);
+      }
     }
-    const sectionContainerSize = sectionContainerChildren.reduce((acc, child) => acc + child.getSize(), 0);
+    const uknSectContainerSize = uknSectChildren.reduce((acc, child) => acc + child.getSize(), 0);
     const sectionContainer = new ContainerImpl(
       "Unknown Sections Size",
       "unk-sections",
-      sectionContainerSize,
-      sectionContainerChildren,
+      uknSectContainerSize,
+      uknSectChildren,
       "The unknown size of the sections in the binary.",
     );
-    children.push(sectionContainer);
+    const debugSectContainerSize = debugSectChildren.reduce((acc, child) => acc + child.getSize(), 0);
+    const debugSectionContainer = new ContainerImpl(
+      "Debug Sections Size",
+      "debug-sections",
+      debugSectContainerSize,
+      debugSectChildren,
+      "The size of the debug sections in the binary. Can be stripped.",
+    );
+
+    children.push(sectionContainer, debugSectionContainer);
 
     const typedPackages: Record<string, Package[]> = {};
     for (const pkg of Object.values(data.packages)) {
