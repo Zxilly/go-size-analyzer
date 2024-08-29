@@ -56,9 +56,17 @@ function getTransform(scale: number): string | undefined {
 }
 
 const splitter = /[/\\]/;
+const verMatcher = /v\d+/;
 
-function getLastWord(title: string): string {
+function getShortName(title: string): string {
   const words = title.split(splitter);
+  const last = words[words.length - 1];
+
+  if (words.length >= 2 && verMatcher.test(last)) {
+    const split = title[title.length - last.length - 1];
+    return `${words[words.length - 2]}${split}${last}`;
+  }
+
   return words[words.length - 1];
 }
 
@@ -112,7 +120,7 @@ export const Node: React.FC<NodeProps> = React.memo((
     }
 
     if (scale < 0.7 && fallback) {
-      return getScale(getLastWord(title), false);
+      return getScale(getShortName(title), false);
     }
     return [title, scale];
   }, [hasChildren, height, width]);
