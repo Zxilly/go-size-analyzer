@@ -1,4 +1,5 @@
 import csv
+import itertools
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
@@ -43,42 +44,41 @@ def generate_cockroachdb() -> list[RemoteBinary]:
 def generate_kubernetes() -> list[RemoteBinary]:
     ret = []
 
-    for o in ["windows", "linux", "darwin"]:
-        for a in ["amd64", "arm64", "386"]:
-            if o == "darwin" and a == "386":
-                continue
+    # kubectl 部分
+    kubectl_oses = ["windows", "linux", "darwin"]
+    kubectl_archs = ["amd64", "arm64", "386"]
 
-            name = f"kubectl-{o}-{a}"
-            url = f"https://dl.k8s.io/v1.30.1/bin/{o}/{a}/kubectl"
-            if o == "windows":
-                url += ".exe"
-            ret.append(
-                RemoteBinary(
-                    name,
-                    url,
-                    TestType.JSON_TEST,
-                    RemoteBinaryType.RAW,
-                    [
-                        Target(None, name)
-                    ]
-                )
-            )
+    for o, a in itertools.product(kubectl_oses, kubectl_archs):
+        if o == "darwin" and a == "386":
+            continue
 
-    for n in ["kube-proxy", "kube-apiserver"]:
-        for a in ["amd64", "arm64"]:
-            name = f"{n}-{a}"
-            url = f"https://dl.k8s.io/v1.30.1/bin/linux/{a}/{n}"
-            ret.append(
-                RemoteBinary(
-                    name,
-                    url,
-                    TestType.JSON_TEST,
-                    RemoteBinaryType.RAW,
-                    [
-                        Target(None, name)
-                    ]
-                )
-            )
+        name = f"kubectl-{o}-{a}"
+        url = f"https://dl.k8s.io/v1.30.1/bin/{o}/{a}/kubectl"
+        url += ".exe" if o == "windows" else ""
+
+        ret.append(RemoteBinary(
+            name,
+            url,
+            TestType.JSON_TEST,
+            RemoteBinaryType.RAW,
+            [Target(None, name)]
+        ))
+
+    # kube-proxy 和 kube-apiserver 部分
+    kube_components = ["kube-proxy", "kube-apiserver"]
+    kube_archs = ["amd64", "arm64"]
+
+    for n, a in itertools.product(kube_components, kube_archs):
+        name = f"{n}-{a}"
+        url = f"https://dl.k8s.io/v1.30.1/bin/linux/{a}/{n}"
+
+        ret.append(RemoteBinary(
+            name,
+            url,
+            TestType.JSON_TEST,
+            RemoteBinaryType.RAW,
+            [Target(None, name)]
+        ))
 
     return ret
 
@@ -128,36 +128,34 @@ def generate_vitess() -> list[RemoteBinary]:
 
 
 def generate_example() -> list[RemoteBinary]:
+    versions = ["1.21", "1.22", "1.23"]
+    oses = ["linux", "windows", "darwin"]
+    pies = ["-pie", ""]
+    cgos = ["-cgo", ""]
+    archs = ["amd64", "arm64", "386"]
+    strips = ["-strip", "-stripdwarf", ""]
+
     ret = []
-    for v in ["1.21", "1.22"]:
-        for o in ["linux", "windows", "darwin"]:
-            for pie in ["-pie", ""]:
-                for cgo in ["-cgo", ""]:
-                    for a in ["amd64", "arm64", "386"]:
-                        for s in ["-strip", "-stripdwarf", ""]:
-                            if pie == "-pie" and cgo == "":
-                                continue
+    for v, o, pie, cgo, a, s in itertools.product(versions, oses, pies, cgos, archs, strips):
+        if (pie == "-pie" and cgo == "") or \
+                (o == "darwin" and a == "386") or \
+                (o == "windows" and a == "arm64"):
+            continue
 
-                            if o == "darwin" and a == "386":
-                                continue
+        name = f"bin-{o}-{v}-{a}{s}{pie}{cgo}"
+        url = get_example_download_url(name)
 
-                            if o == "windows" and a == "arm64":
-                                continue
+        if url is None:
+            continue
 
-                            name = f"bin-{o}-{v}-{a}{s}{pie}{cgo}"
-                            url = get_example_download_url(name)
-
-                            if url is None:
-                                continue
-
-                            ret.append(
-                                RemoteBinary(
-                                    name,
-                                    get_example_download_url(name),
-                                    TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
-                                    RemoteBinaryType.RAW,
-                                )
-                            )
+        ret.append(
+            RemoteBinary(
+                name,
+                url,
+                TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
+                RemoteBinaryType.RAW,
+            )
+        )
 
     return ret
 
