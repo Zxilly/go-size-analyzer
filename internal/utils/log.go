@@ -13,9 +13,9 @@ var startTime time.Time
 
 func InitLogger(level slog.Level) {
 	startTime = time.Now()
-	slog.SetDefault(slog.New(slog.NewTextHandler(Stderr, &slog.HandlerOptions{
+	slog.SetDefault(slog.New(slog.NewTextHandler(SyncStderr, &slog.HandlerOptions{
 		ReplaceAttr: func(_ []string, a slog.Attr) slog.Attr {
-			// remove time
+			// replace time with duration
 			if a.Key == "time" {
 				return slog.Duration(slog.TimeKey, time.Since(startTime))
 			}
@@ -60,9 +60,17 @@ func (s *SyncOutput) SetOutput(output io.Writer) {
 	s.output = output
 }
 
-var Stderr = &SyncOutput{
+var SyncStdout = &SyncOutput{
+	Mutex:  sync.Mutex{},
+	output: os.Stdout,
+}
+
+var SyncStderr = &SyncOutput{
 	Mutex:  sync.Mutex{},
 	output: os.Stderr,
 }
 
-var _ io.Writer = Stderr
+var (
+	_ io.Writer = SyncStdout
+	_ io.Writer = SyncStderr
+)
