@@ -38,7 +38,7 @@ func (UpdateCacheFlag) BeforeReset(app *kong.Kong, _ kong.Vars) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintf(app.Stdout, "Cache updated: %s\n", p)
+	_, err = fmt.Fprintf(app.Stderr, "Cache updated: %s\n", p)
 	if err != nil {
 		return err
 	}

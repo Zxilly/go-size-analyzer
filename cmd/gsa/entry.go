@@ -37,7 +37,7 @@ func entry() error {
 			return err
 		}
 	} else {
-		writer = utils.Stdout
+		writer = os.Stdout
 		if Options.Web {
 			writer = new(bytes.Buffer)
 		}
