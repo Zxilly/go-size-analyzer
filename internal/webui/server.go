@@ -1,6 +1,8 @@
 package webui
 
 import (
+	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -21,7 +23,12 @@ func HostServer(content []byte, listen string) io.Closer {
 	}
 	server.SetKeepAlivesEnabled(false)
 	go func() {
-		slog.Error(server.ListenAndServe().Error())
+		err := server.ListenAndServe()
+		if errors.Is(err, http.ErrServerClosed) {
+			slog.Info("webui server closed")
+		} else {
+			slog.Error(fmt.Sprintf("webui server error: %v", err))
+		}
 	}()
 	return server
 }
