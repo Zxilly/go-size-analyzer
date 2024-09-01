@@ -59,8 +59,8 @@ func init() {
 			NoAppSummary: true,
 		}),
 		kong.Help(func(options kong.HelpOptions, ctx *kong.Context) error {
-			utils.Must2(ctx.Stdout.Write([]byte("Usage: \n\tgsa <file> [flags]\n")))
-			utils.Must2(ctx.Stdout.Write([]byte("\tgsa <old file> <new file> [flags]\n")))
+			utils.Must2(ctx.Stderr.Write([]byte("Usage: \n\tgsa <file> [flags]\n")))
+			utils.Must2(ctx.Stderr.Write([]byte("\tgsa <old file> <new file> [flags]\n")))
 			return kong.DefaultHelpPrinter(options, ctx)
 		}),
 		kong.ExplicitGroups([]kong.Group{
