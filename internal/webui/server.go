@@ -2,6 +2,7 @@ package webui
 
 import (
 	"io"
+	"log/slog"
 	"net/http"
 	"time"
 )
@@ -20,7 +21,7 @@ func HostServer(content []byte, listen string) io.Closer {
 	}
 	server.SetKeepAlivesEnabled(false)
 	go func() {
-		_ = server.ListenAndServe()
+		slog.Error(server.ListenAndServe().Error())
 	}()
 	return server
 }
