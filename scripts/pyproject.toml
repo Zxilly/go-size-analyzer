@@ -18,7 +18,7 @@ markdown-strings = "^3.4.0"
 optional = true
 
 [tool.poetry.group.research.dependencies]
-watchdog = "^5.0.0"
+watchdog = "^5.0.2"
 
 [build-system]
 requires = ["poetry-core"]
