@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { group } from "d3-array";
-import type { HierarchyNode } from "d3-hierarchy";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTitle, useWindowSize } from "react-use";
-import type { Entry } from "./tool/entry.ts";
-import createRainbowColor from "./tool/color.ts";
-import { Tooltip } from "./Tooltip.tsx";
+import type { HierarchyNode } from "d3-hierarchy";
 import { Node } from "./Node.tsx";
-import "./style.scss";
-import { trimPrefix } from "./tool/utils.ts";
-import { shallowCopy } from "./tool/copy.ts";
+import createRainbowColor from "./tool/color.ts";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
+import { shallowCopy } from "./tool/copy.ts";
+import { trimPrefix } from "./tool/utils.ts";
+import { Tooltip } from "./Tooltip.tsx";
+import type { Entry } from "./tool/entry.ts";
+import "./style.scss";
 
 interface TreeMapProps {
   entry: Entry;

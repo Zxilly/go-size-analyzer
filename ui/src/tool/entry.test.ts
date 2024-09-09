@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { getTestResult } from "../test/testhelper.ts";
+import { BaseImpl, createEntry, DisasmImpl, UnknownImpl } from "./entry.ts";
 import type { EntryChildren, EntryLike, EntryType } from "./entry.ts";
-import { BaseImpl, DisasmImpl, UnknownImpl, createEntry } from "./entry.ts";
 
 describe("entry", () => {
   it("type should met children type", () => {

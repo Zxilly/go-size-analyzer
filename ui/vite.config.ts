@@ -1,9 +1,9 @@
 import * as fs from "node:fs";
 import * as process from "node:process";
-import type { HtmlTagDescriptor } from "vite";
 import { defineConfig } from "vite";
-import { viteSingleFile } from "vite-plugin-singlefile";
 import { createHtmlPlugin } from "vite-plugin-html";
+import { viteSingleFile } from "vite-plugin-singlefile";
+import type { HtmlTagDescriptor } from "vite";
 import { build, codecov, commonPlugin, getVersionTag } from "./vite.common";
 
 const placeHolder = `"GSA_PACKAGE_DATA"`;

@@ -1,5 +1,5 @@
-import type { tags } from "typia";
 import typia from "typia";
+import type { tags } from "typia";
 
 export interface Section {
   name: string;

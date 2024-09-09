@@ -1,6 +1,6 @@
+import worker from "./worker.ts?worker&url";
 import type { Result } from "../generated/schema.ts";
 import type { LoadEvent, WasmEvent } from "./event.ts";
-import worker from "./worker.ts?worker&url";
 
 export class GsaInstance {
   logHandler: (line: string) => void;

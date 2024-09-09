@@ -1,11 +1,11 @@
 // @vitest-environment node
 
-import "@vitest/web-worker";
-
 import { readFile } from "node:fs/promises";
+
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { GsaInstance } from "./helper.ts";
+import "@vitest/web-worker";
 import "../runtime/wasm_exec.js";
 
 vi.mock("../../gsa.wasm?init", async () => {

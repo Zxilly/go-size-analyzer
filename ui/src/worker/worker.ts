@@ -1,7 +1,7 @@
-import "../runtime/wasm_exec.js";
-import { setCallback } from "../runtime/fs";
 import gsa from "../../gsa.wasm?init";
+import { setCallback } from "../runtime/fs";
 import type { AnalyzeEvent, LoadEvent, LogEvent } from "./event.ts";
+import "../runtime/wasm_exec.js";
 
 declare const self: DedicatedWorkerGlobalScope;
 declare function gsa_analyze(name: string, data: Uint8Array): import("../generated/schema.ts").Result;

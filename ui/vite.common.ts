@@ -1,9 +1,9 @@
-import * as path from "node:path";
 import { execSync } from "node:child_process";
+import * as path from "node:path";
 import process from "node:process";
-import type { BuildOptions, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 import react from "@vitejs/plugin-react-swc";
+import type { BuildOptions, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
 
 export function getSha(): string | undefined {
   const envs = process.env;

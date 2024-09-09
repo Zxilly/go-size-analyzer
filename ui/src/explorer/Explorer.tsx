@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import { Box, Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React, { useEffect, useMemo } from "react";
 import { useAsync } from "react-use";
-import { Box, Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import type { ReactNode } from "react";
 import { createEntry } from "../tool/entry.ts";
 import TreeMap from "../TreeMap.tsx";
 import { GsaInstance } from "../worker/helper.ts";

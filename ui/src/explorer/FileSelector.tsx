@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import { Troubleshoot } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -10,8 +10,8 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+import React, { memo, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Troubleshoot } from "@mui/icons-material";
 import { formatBytes } from "../tool/utils.ts";
 
 const SizeLimit = 1024 * 1024 * 30;

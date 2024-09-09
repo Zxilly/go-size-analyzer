@@ -1,5 +1,5 @@
-import type { Result } from "../../generated/schema.ts";
 import { getTestResult } from "../../test/testhelper.ts";
+import type { Result } from "../../generated/schema.ts";
 
 export class GsaInstance {
   log: any;

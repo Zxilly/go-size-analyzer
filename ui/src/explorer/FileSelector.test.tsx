@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import { FileSelector } from "./FileSelector.tsx";
 
 function createFileWithSize(sizeInBytes: number, fileName = "test.txt", fileType = "text/plain") {
