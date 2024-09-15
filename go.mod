@@ -2,7 +2,7 @@ module github.com/Zxilly/go-size-analyzer
 
 go 1.23
 
-toolchain go1.23.0
+toolchain go1.23.1
 
 require (
 	github.com/ZxillyFork/gore v0.0.0-20240915204338-5dc408f28f52
