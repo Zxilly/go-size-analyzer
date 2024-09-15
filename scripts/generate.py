@@ -139,7 +139,8 @@ def generate_example() -> list[RemoteBinary]:
     for v, o, pie, cgo, a, s in itertools.product(versions, oses, pies, cgos, archs, strips):
         if (pie == "-pie" and cgo == "") or \
                 (o == "darwin" and a == "386") or \
-                (o == "windows" and a == "arm64"):
+                (o == "windows" and a == "arm64") or \
+                (o == "darwin" and pie == ""):
             continue
 
         name = f"bin-{o}-{v}-{a}{s}{pie}{cgo}"
