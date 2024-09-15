@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.0
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20240915200205-a676e98e413f
+	github.com/ZxillyFork/gore v0.0.0-20240915204338-5dc408f28f52
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.2.1
