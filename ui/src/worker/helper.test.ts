@@ -1,21 +1,23 @@
 // @vitest-environment node
 
 import { readFile } from "node:fs/promises";
-
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
+import createFetchMock from "vitest-fetch-mock";
 import { GsaInstance } from "./helper.ts";
 import "@vitest/web-worker";
 import "../runtime/wasm_exec.js";
 
-vi.mock("../../gsa.wasm?init", async () => {
+const fetchMocker = createFetchMock(vi);
+fetchMocker.enableMocks();
+
+// @ts-expect-error the mocker got the wrong type
+fetchMocker.mockResponse(async () => {
   const buffer = await readFile(path.join(__dirname, "../../gsa.wasm"));
-  // create blob
-  return {
-    default: async (i: WebAssembly.Imports) => {
-      return (await WebAssembly.instantiate(buffer, i)).instance;
-    },
-  };
+  return new Response(buffer, {
+    status: 200,
+    headers: { "Content-Type": "application/octet-stream" },
+  });
 });
 
 describe("worker helper", () => {
