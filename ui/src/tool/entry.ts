@@ -1,7 +1,7 @@
+import type { File, FileSymbol, Package, Result, Section } from "../generated/schema.ts";
 import { Aligner } from "./aligner.ts";
 import { orderedID } from "./id.ts";
 import { formatBytes, title, trimPrefix } from "./utils.ts";
-import type { File, FileSymbol, Package, Result, Section } from "../generated/schema.ts";
 
 export type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
 

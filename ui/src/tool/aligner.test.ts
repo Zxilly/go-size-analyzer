@@ -6,7 +6,7 @@ it("aligner should correctly add and align strings", () => {
   al.add("short", "post1");
   al.add("a bit longer", "post2");
   expect(al.toString()).toBe("short        post1\n"
-  + "a bit longer post2");
+    + "a bit longer post2");
 });
 
 it("aligner should handle empty pre string", () => {
@@ -14,7 +14,7 @@ it("aligner should handle empty pre string", () => {
   al.add("", "post1");
   al.add("a bit longer", "post2");
   expect(al.toString()).toBe("             post1\n"
-  + "a bit longer post2");
+    + "a bit longer post2");
 });
 
 it("aligner should handle empty post string", () => {
@@ -29,7 +29,7 @@ it("aligner should handle empty pre and post strings", () => {
   al.add("", "");
   al.add("a bit longer", "post2");
   expect(al.toString()).toBe("             \n"
-  + "a bit longer post2");
+    + "a bit longer post2");
 });
 
 it("aligner should handle no added strings", () => {

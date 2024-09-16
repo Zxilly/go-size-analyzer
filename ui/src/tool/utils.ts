@@ -1,5 +1,5 @@
-import { parseResult } from "../generated/schema.ts";
 import type { Result } from "../generated/schema.ts";
+import { parseResult } from "../generated/schema.ts";
 
 export function loadDataFromEmbed(): Result {
   const doc = document.querySelector("#data")!;

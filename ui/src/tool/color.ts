@@ -1,9 +1,9 @@
-import { hsl } from "d3-color";
-import { scaleLinear, scaleSequential } from "d3-scale";
 import type { RGBColor } from "d3-color";
 import type { HierarchyNode } from "d3-hierarchy";
-
 import type { Entry } from "./entry.ts";
+import { hsl } from "d3-color";
+
+import { scaleLinear, scaleSequential } from "d3-scale";
 
 type CssColor = string;
 

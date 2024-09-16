@@ -1,6 +1,6 @@
+import type { AnalyzeEvent, LoadEvent, LogEvent } from "./event.ts";
 import gsa from "../../gsa.wasm?init";
 import { setCallback } from "../runtime/fs";
-import type { AnalyzeEvent, LoadEvent, LogEvent } from "./event.ts";
 import "../runtime/wasm_exec.js";
 
 declare const self: DedicatedWorkerGlobalScope;
