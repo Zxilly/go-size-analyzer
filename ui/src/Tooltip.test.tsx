@@ -1,9 +1,9 @@
+import type { Entry, EntryChildren, EntryType } from "./tool/entry.ts";
 import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./Tooltip.tsx";
-import type { Entry, EntryChildren, EntryType } from "./tool/entry.ts";
 
 function getTestNode(): Entry {
   return {
