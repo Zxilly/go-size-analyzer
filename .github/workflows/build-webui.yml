@@ -25,7 +25,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ./.github/actions/setup-ui-deps
+      - name: Setup UI dependencies
+        uses: ./.github/actions/setup-ui-deps
 
       - name: Build
         working-directory: ./ui
