@@ -57,7 +57,7 @@ func NewPackage() *Package {
 		filesCache:      make(map[string]*File),
 		funcsCache:      make(map[string]*Function),
 	}
-	p.coverageGetter = sync.OnceValue(p.coverageGetter)
+	p.coverageGetter = sync.OnceValue(p.buildPackageCoverage)
 	return p
 }
 
