@@ -78,7 +78,7 @@ if __name__ == '__main__':
                 text=True,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
-                timeout=120
+                timeout=300
             )
             result.check_returncode()
             log("Wasm optimized successfully")
