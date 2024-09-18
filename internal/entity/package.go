@@ -3,6 +3,7 @@ package entity
 import (
 	"fmt"
 	"maps"
+	"sync"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
@@ -43,19 +44,21 @@ type Package struct {
 	loaded bool // mean it comes from gore
 
 	symbolAddrSpace AddrSpace
-	coverage        *utils.ValueOnce[AddrCoverage]
+	coverageGetter  func() AddrCoverage
 }
 
 func NewPackage() *Package {
-	return &Package{
-		SubPackages:     make(map[string]*Package),
-		Files:           make([]*File, 0),
-		Symbols:         make([]*Symbol, 0),
-		coverage:        utils.NewOnce[AddrCoverage](),
+	p := &Package{
+		SubPackages: make(map[string]*Package),
+		Files:       make([]*File, 0),
+		Symbols:     make([]*Symbol, 0),
+
 		symbolAddrSpace: AddrSpace{},
 		filesCache:      make(map[string]*File),
 		funcsCache:      make(map[string]*Function),
 	}
+	p.coverageGetter = sync.OnceValue(p.coverageGetter)
+	return p
 }
 
 func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, pclntab *gosym.Table) *Package {
@@ -203,24 +206,25 @@ func (p *Package) GetFunctionSizeRecursive() uint64 {
 }
 
 func (p *Package) GetPackageCoverage() AddrCoverage {
-	p.coverage.Do(func() {
-		disasmcov := p.GetDisasmAddrSpace().ToDirtyCoverage()
-		symbolcov := p.symbolAddrSpace.ToDirtyCoverage()
+	return p.coverageGetter()
+}
 
-		covs := []AddrCoverage{disasmcov, symbolcov}
+func (p *Package) buildPackageCoverage() AddrCoverage {
+	disasmcov := p.GetDisasmAddrSpace().ToDirtyCoverage()
+	symbolcov := p.symbolAddrSpace.ToDirtyCoverage()
 
-		for _, sp := range p.SubPackages {
-			covs = append(covs, sp.GetPackageCoverage())
-		}
+	covs := []AddrCoverage{disasmcov, symbolcov}
 
-		cov, err := MergeAndCleanCoverage(covs)
-		if err != nil {
-			panic(err)
-		}
+	for _, sp := range p.SubPackages {
+		covs = append(covs, sp.GetPackageCoverage())
+	}
 
-		p.coverage.Set(cov)
-	})
-	return p.coverage.Get()
+	cov, err := MergeAndCleanCoverage(covs)
+	if err != nil {
+		panic(err)
+	}
+
+	return cov
 }
 
 func (p *Package) AssignPackageSize() {
@@ -233,7 +237,7 @@ func (p *Package) AssignPackageSize() {
 
 func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 	// first, load as coverage
-	// no need to check section type as it has been checked before
+	// no need to check the section type as it has been checked before
 	p.symbolAddrSpace.Insert(ap)
 
 	// then, add to the symbol list
