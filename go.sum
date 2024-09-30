@@ -39,8 +39,8 @@ github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkp
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f h1:Y/CXytFA4m6baUTXGLOoWe4PQhGxaX0KpnayAqC48p4=
 github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f/go.mod h1:vw97MGsxSvLiUE2X8qFplwetxpGLQrlU1Q9AUEIzCaM=
-github.com/go-delve/delve v1.23.0 h1:jYgZISZ14KAO3ys8kD07kjrowrygE9F9SIwnpz9xXys=
-github.com/go-delve/delve v1.23.0/go.mod h1:S3SLuEE2mn7wipKilTvk1p9HdTMnXXElcEpiZ+VcuqU=
+github.com/go-delve/delve v1.23.1 h1:MtZ13ppptttkqSuvVnwJ5CPhIAzDiOwRrYuCk3ES7fU=
+github.com/go-delve/delve v1.23.1/go.mod h1:S3SLuEE2mn7wipKilTvk1p9HdTMnXXElcEpiZ+VcuqU=
 github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1 h1:xcuWappghOVI8iNWoF2OKahVejd1LSVi/v4JED44Amo=
 github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1/go.mod h1:BWmvoE1Xia34f3l/ibJweyhrT+aROb/FQ6d+37F0e2s=
 github.com/hexops/gotextdiff v1.0.3 h1:gitA9+qJrrTCsiCl7+kh75nPqQt1cx4ZkudSTLoUqJM=
