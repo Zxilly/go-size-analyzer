@@ -54,7 +54,11 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return
 	}
 
-	entryName := utils.Deduplicate(entry.Val(dwarf.AttrName).(string))
+	entryName, ok := safeGetEntryVal[string](entry, dwarf.AttrName, "variable name")
+	if !ok {
+		slog.Debug(fmt.Sprintf("Failed to load DWARF var name: %s", dwarfutil.EntryPrettyPrint(entry)))
+		return
+	}
 
 	symbol := entity.NewSymbol(entryName, uint64(addr), typSize, entity.AddrTypeData)
 
