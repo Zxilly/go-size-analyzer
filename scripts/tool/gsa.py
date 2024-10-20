@@ -88,18 +88,33 @@ class GSAInstance:
                     bufsize=1,
                     env=self.getenv(profiler_dir),
                     encoding="utf-8",
-
             ) as proc:
                 def kill():
                     proc.kill()
                     raise TimeoutError(f"Process timed out after {timeout} seconds.")
 
-                Timer(timeout, kill).start()
-                for line in iter(proc.stdout.readline, ""):
-                    f.write(line)
-                    print(line, end="")
-                    if expect in line:
-                        callback(proc)
+                timer = Timer(timeout, kill)
+                timer.start()
+                expect_found = False
+                try:
+                    for line in iter(proc.stdout.readline, ""):
+                        f.write(line)
+                        print(line, end="")
+                        if expect in line:
+                            expect_found = True
+                            callback(proc)
+                            break
+                finally:
+                    timer.cancel()
+
+                exit_code = proc.wait()
+                print(f"Process exited with code: {exit_code}")
+
+                if not expect_found:
+                    raise RuntimeError(
+                        f"Expected output '{expect}' not found before process exit. Exit code: {exit_code}")
+
+                return exit_code
 
     def run_with_figure(self, *args, output: str, profiler_dir: str, timeout: int, figure_name: str,
                         figure_output: str = None):

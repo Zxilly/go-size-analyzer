@@ -226,7 +226,6 @@ def run_web_test(entry: GSAInstance):
         passed = True
 
         proc.terminate()
-        proc.wait()
 
     log(f"Waiting for the server to start on port 59347...")
     entry.expect("--verbose", "--web", "--listen", "127.0.0.1:59347", entry.binary,
