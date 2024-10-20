@@ -1,5 +1,7 @@
 github.com/ZxillyFork/gore v0.0.0-20240915204338-5dc408f28f52 h1:Y13goLfc6dQJO/Vg2318Jvfq2yEqvf6a0x+cvCVniCs=
 github.com/ZxillyFork/gore v0.0.0-20240915204338-5dc408f28f52/go.mod h1:gwGKzczBd4x7bgqwP0mFX2GyMx/nrvPaJkBY59Lr7Uo=
+github.com/ZxillyFork/gore v0.0.0-20241020200655-c872ce91719b h1:9YBCc53JaphsSBpu4hoigY06tIbLSq2+eIkut3n7Qj8=
+github.com/ZxillyFork/gore v0.0.0-20241020200655-c872ce91719b/go.mod h1:sSIhs/qonuXnrcWFzxoAlCwcef2NiWqcrXYjJPP+DXE=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
@@ -18,6 +20,8 @@ github.com/blacktop/go-dwarf v1.0.10 h1:i9zYgcIROETsNZ6V+zZn3uDH21FCG5BLLZ837Git
 github.com/blacktop/go-dwarf v1.0.10/go.mod h1:4W2FKgSFYcZLDwnR7k+apv5i3nrau4NGl9N6VQ9DSTo=
 github.com/blacktop/go-macho v1.1.232 h1:9spphgi1rVnhW1HnBXaPaa75t1Rb1FlgL27IUHEYWSc=
 github.com/blacktop/go-macho v1.1.232/go.mod h1:dtlW2AJKQpFzImBVPWiUKZ6OxrQ2MLfWi/BPPe0EONE=
+github.com/blacktop/go-macho v1.1.233 h1:Pm/9pgAjcwFNyTeoO3GoQ9qNPXhAhraqG55ZCQ031nM=
+github.com/blacktop/go-macho v1.1.233/go.mod h1:dtlW2AJKQpFzImBVPWiUKZ6OxrQ2MLfWi/BPPe0EONE=
 github.com/charmbracelet/bubbles v0.20.0 h1:jSZu6qD8cRQ6k9OMfR1WlM+ruM8fkPWkHvQWD9LIutE=
 github.com/charmbracelet/bubbles v0.20.0/go.mod h1:39slydyswPy+uVOHZ5x/GjwVAFkCsV8IIVy+4MhzwwU=
 github.com/charmbracelet/bubbletea v1.1.1 h1:KJ2/DnmpfqFtDNVTvYZ6zpPFL9iRCRr0qqKOCvppbPY=
