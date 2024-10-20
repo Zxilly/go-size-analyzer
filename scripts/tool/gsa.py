@@ -97,6 +97,7 @@ class GSAInstance:
                 Timer(timeout, kill).start()
                 for line in iter(proc.stdout.readline, ""):
                     f.write(line)
+                    print(line, end="")
                     if expect in line:
                         callback(proc)
 
