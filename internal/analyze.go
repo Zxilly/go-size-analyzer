@@ -28,7 +28,7 @@ type Options struct {
 func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*result.Result, error) {
 	slog.Info("Parsing binary...")
 
-	file, err := gore.Open(reader)
+	file, err := gore.OpenReader(reader)
 	if err != nil {
 		return nil, err
 	}
