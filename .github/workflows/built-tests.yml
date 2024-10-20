@@ -102,7 +102,7 @@ jobs:
       - name: Download deps
         run: go mod download
 
-      - name: Collect profiles
+      - name: Run ${{ matrix.test }} tests
         uses: ./.github/actions/setup-script
         with:
           cache: ${{ matrix.test }}

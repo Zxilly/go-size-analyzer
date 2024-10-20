@@ -1,12 +1,18 @@
 package wrapper
 
 import (
+	"bytes"
+	"compress/zlib"
 	"debug/dwarf"
-	"debug/macho"
+	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
 	"slices"
 	"strings"
+
+	"github.com/blacktop/go-macho"
+	"github.com/blacktop/go-macho/types"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
@@ -15,8 +21,93 @@ type MachoWrapper struct {
 	file *macho.File
 }
 
+// DWARF a copy of go-macho's DWARF function
 func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
-	return m.file.DWARF()
+	dwarfSuffix := func(s *types.Section) string {
+		switch {
+		case strings.HasPrefix(s.Name, "__debug_"):
+			return s.Name[8:]
+		case strings.HasPrefix(s.Name, "__zdebug_"):
+			return s.Name[9:]
+		default:
+			return ""
+		}
+	}
+	sectionData := func(s *types.Section) ([]byte, error) {
+		b, err := s.Data()
+		if err != nil && uint64(len(b)) < s.Size {
+			return nil, err
+		}
+
+		if len(b) >= 12 && string(b[:4]) == "ZLIB" {
+			dlen := binary.BigEndian.Uint64(b[4:12])
+			dbuf := make([]byte, dlen)
+			r, err := zlib.NewReader(bytes.NewBuffer(b[12:]))
+			if err != nil {
+				return nil, err
+			}
+			if _, err := io.ReadFull(r, dbuf); err != nil {
+				return nil, err
+			}
+			if err := r.Close(); err != nil {
+				return nil, err
+			}
+			b = dbuf
+		}
+		return b, nil
+	}
+
+	// There are many other DWARF sections, but these
+	// are the ones the debug/dwarf package uses.
+	// Don't bother loading others.
+	var dat = map[string][]byte{"abbrev": nil, "info": nil, "str": nil, "line": nil, "ranges": nil}
+	for _, s := range m.file.Sections {
+		suffix := dwarfSuffix(s)
+		if suffix == "" {
+			continue
+		}
+		if _, ok := dat[suffix]; !ok {
+			continue
+		}
+		b, err := sectionData(s)
+		if err != nil {
+			return nil, err
+		}
+		dat[suffix] = b
+	}
+
+	d, err := dwarf.New(dat["abbrev"], nil, nil, dat["info"], dat["line"], nil, dat["ranges"], dat["str"])
+	if err != nil {
+		return nil, err
+	}
+
+	// Look for DWARF4 .debug_types sections and DWARF5 sections.
+	for i, s := range m.file.Sections {
+		suffix := dwarfSuffix(s)
+		if suffix == "" {
+			continue
+		}
+		if _, ok := dat[suffix]; ok {
+			// Already handled.
+			continue
+		}
+
+		b, err := sectionData(s)
+		if err != nil {
+			return nil, err
+		}
+
+		if suffix == "types" {
+			err = d.AddTypes(fmt.Sprintf("types-%d", i), b)
+		} else {
+			err = d.AddSection(".debug_"+suffix, b)
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return d, nil
 }
 
 func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size uint64, typ entity.AddrType), goStrSymCb func(addr, size uint64)) error {
@@ -88,7 +179,7 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 	return nil
 }
 
-func machoSectionType(s *macho.Section) entity.SectionContentType {
+func machoSectionType(s *types.Section) entity.SectionContentType {
 	switch {
 	case s.Name == "__text":
 		return entity.SectionContentText
@@ -144,7 +235,7 @@ func (m *MachoWrapper) LoadSections() *entity.Store {
 	return ret
 }
 
-func machoSectionShouldIgnore(sect *macho.Section) bool {
+func machoSectionShouldIgnore(sect *types.Section) bool {
 	if sect.Seg == "__DATA" && (sect.Name == "__bss" || sect.Name == "__noptrbss") {
 		return true
 	}
@@ -192,7 +283,13 @@ func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 }
 
 func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {
-	sect := m.file.Section("__text")
+	var sect *types.Section
+	for _, s := range m.file.Sections {
+		if s.Name == "__text" {
+			sect = s
+			break
+		}
+	}
 	if sect == nil {
 		return 0, nil, fmt.Errorf("text section not found")
 	}
@@ -202,16 +299,16 @@ func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {
 }
 
 func (m *MachoWrapper) GoArch() string {
-	switch m.file.Cpu {
-	case macho.Cpu386:
+	switch m.file.CPU {
+	case types.CPUI386:
 		return "386"
-	case macho.CpuAmd64:
+	case types.CPUAmd64:
 		return "amd64"
-	case macho.CpuArm:
+	case types.CPUArm:
 		return "arm"
-	case macho.CpuArm64:
+	case types.CPUArm64:
 		return "arm64"
-	case macho.CpuPpc64:
+	case types.CPUPpc64:
 		return "ppc64"
 	}
 	return ""

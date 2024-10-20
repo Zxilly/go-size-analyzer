@@ -3,9 +3,10 @@ package wrapper
 import (
 	"debug/dwarf"
 	"debug/elf"
-	"debug/macho"
 	"debug/pe"
 	"errors"
+
+	"github.com/blacktop/go-macho"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
