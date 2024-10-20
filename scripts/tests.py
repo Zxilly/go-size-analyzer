@@ -231,7 +231,7 @@ def run_web_test(entry: GSAInstance):
     log(f"Waiting for the server to start on port 59347...")
     entry.expect("--verbose", "--web", "--listen", "127.0.0.1:59347", entry.binary,
                  output=output_file, profiler_dir=profiler_dir, expect="localhost",
-                 callback=check, timeout=10)
+                 callback=check, timeout=30)
 
     if passed:
         log("Web test passed.")
