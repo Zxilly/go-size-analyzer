@@ -32,7 +32,7 @@ func NewWrapper(file any) RawFileWrapper {
 	case *pe.File:
 		return &PeWrapper{f, utils.GetImageBase(f)}
 	case *macho.File:
-		return &MachoWrapper{f}
+		return NewMachoWrapper(f)
 	}
 	return nil
 }

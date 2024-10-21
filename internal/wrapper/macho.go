@@ -17,10 +17,21 @@ import (
 )
 
 type MachoWrapper struct {
-	file *macho.File
+	file           *macho.File
+	chainedFixedUp bool
+}
+
+func NewMachoWrapper(f *macho.File) *MachoWrapper {
+	return &MachoWrapper{
+		file:           f,
+		chainedFixedUp: f.HasDyldChainedFixups(),
+	}
 }
 
 func (m *MachoWrapper) SlidePointer(addr uint64) uint64 {
+	if !m.chainedFixedUp {
+		return addr
+	}
 	return m.file.SlidePointer(addr) + m.file.GetBaseAddress()
 }
 
