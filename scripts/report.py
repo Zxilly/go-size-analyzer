@@ -66,6 +66,8 @@ if __name__ == '__main__':
     if not os.path.exists(results):
         raise FileNotFoundError(f"Directory {results} does not exist")
 
+    graphs = ""
+
     for root, dirs, files in os.walk(results):
         for file in files:
             if file.endswith(".output.txt"):
@@ -77,8 +79,9 @@ if __name__ == '__main__':
 
             if file.endswith(".graph.svg"):
                 image_url = generate_image_url(str(os.path.join(root, file)))
-                write_github_summary(header(f"Graph for `{file}`", header_level=4) + '\n')
-                write_github_summary(
-                    details(f'<img src="{image_url}" alt="{file}" width="900" />')
-                    + '\n'
-                )
+                graphs += header(f"Graph for `{file}`", header_level=4) + '\n'
+                graphs += f'<img src="{image_url}" alt="{file}" width="900" />' + '\n'
+
+    if graphs:
+        write_github_summary(header("Graphs", header_level=3) + '\n')
+        write_github_summary(details(graphs) + '\n')
