@@ -72,3 +72,10 @@ func (k *KnownInfo) RequireModInfo() error {
 	}
 	return nil
 }
+
+func (k *KnownInfo) convertAddr(addr uint64) uint64 {
+	if w, ok := k.Wrapper.(*wrapper.MachoWrapper); ok {
+		return w.SlidePointer(addr)
+	}
+	return addr
+}

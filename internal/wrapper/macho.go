@@ -5,7 +5,6 @@ import (
 	"compress/zlib"
 	"debug/dwarf"
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"io"
 	"slices"
@@ -19,6 +18,10 @@ import (
 
 type MachoWrapper struct {
 	file *macho.File
+}
+
+func (m *MachoWrapper) SlidePointer(addr uint64) uint64 {
+	return m.file.SlidePointer(addr) + m.file.GetBaseAddress()
 }
 
 // DWARF a copy of go-macho's DWARF function
@@ -259,27 +262,17 @@ func machoSectionShouldIgnore(sect *types.Section) bool {
 }
 
 func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
-	for _, load := range m.file.Loads {
-		seg, ok := load.(*macho.Segment)
-		if !ok {
-			continue
-		}
-		if seg.Addr <= addr && addr <= seg.Addr+seg.Filesz-1 {
-			if seg.Name == "__PAGEZERO" {
-				continue
-			}
-			n := seg.Addr + seg.Filesz - addr
-			if size > n {
-				return nil, errors.New("size too large")
-			}
-			data := make([]byte, size)
-			if _, err := seg.ReadAt(data, int64(addr-seg.Addr)); err != nil {
-				return nil, err
-			}
-			return data, nil
-		}
+	addr = m.file.SlidePointer(addr)
+	off, err := m.file.GetOffset(addr)
+	if err != nil {
+		return nil, ErrAddrNotFound
 	}
-	return nil, ErrAddrNotFound
+	b := make([]byte, size)
+	if size == 0 {
+		return b, nil
+	}
+	_, err = m.file.ReadAt(b, int64(off))
+	return b, err
 }
 
 func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {

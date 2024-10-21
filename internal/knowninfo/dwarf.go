@@ -82,7 +82,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 			valueName := utils.Deduplicate(fmt.Sprintf("%s.%s", entryName, content.Name))
 
-			symbol = entity.NewSymbol(valueName, content.Addr, content.Size, entity.AddrTypeData)
+			symbol = entity.NewSymbol(valueName, k.convertAddr(content.Addr), content.Size, entity.AddrTypeData)
 
 			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 			if ap == nil {
