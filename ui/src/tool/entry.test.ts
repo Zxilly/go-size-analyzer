@@ -17,7 +17,7 @@ describe("entry", () => {
       expect(e.getName()).toMatchSnapshot();
       expect(e.getType()).toMatchSnapshot();
       expect(e.getSize()).toMatchSnapshot();
-      expect(e.getChildren().map((e => e.getName()))).toMatchSnapshot();
+      expect(e.getChildren().map(e => e.getName())).toMatchSnapshot();
       expect(e.toString()).toMatchSnapshot();
 
       e.getChildren().forEach(e => matchEntry(e));
