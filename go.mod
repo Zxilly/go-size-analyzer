@@ -9,15 +9,16 @@ require (
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.2.1
+	github.com/blacktop/go-macho v1.1.233
 	github.com/charmbracelet/bubbles v0.20.0
-	github.com/charmbracelet/bubbletea v1.1.1
-	github.com/charmbracelet/lipgloss v0.13.0
+	github.com/charmbracelet/bubbletea v1.1.2
+	github.com/charmbracelet/lipgloss v0.13.1
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240812190614-74518029592c
 	github.com/charmbracelet/x/term v0.2.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.23.1
 	github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1
-	github.com/jedib0t/go-pretty/v6 v6.6.0
+	github.com/jedib0t/go-pretty/v6 v6.6.1
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.15.2
@@ -36,8 +37,7 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/blacktop/go-dwarf v1.0.10 // indirect
-	github.com/blacktop/go-macho v1.1.233 // indirect
-	github.com/charmbracelet/x/ansi v0.3.1 // indirect
+	github.com/charmbracelet/x/ansi v0.4.0 // indirect
 	github.com/charmbracelet/x/exp/golden v0.0.0-20240815200342-61de596daa2b // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
