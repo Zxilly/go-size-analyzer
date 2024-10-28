@@ -74,7 +74,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	// There are many other DWARF sections, but these
 	// are the ones the debug/dwarf package uses.
 	// Don't bother loading others.
-	var dat = map[string][]byte{"abbrev": nil, "info": nil, "str": nil, "line": nil, "ranges": nil}
+	dat := map[string][]byte{"abbrev": nil, "info": nil, "str": nil, "line": nil, "ranges": nil}
 	for _, s := range m.file.Sections {
 		suffix := dwarfSuffix(s)
 		if suffix == "" {
