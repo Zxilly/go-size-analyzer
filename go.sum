@@ -4,10 +4,10 @@ github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvD
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
-github.com/alecthomas/assert/v2 v2.10.0 h1:jjRCHsj6hBJhkmhznrCzoNpbA3zqy0fYiUcYZP/GkPY=
-github.com/alecthomas/assert/v2 v2.10.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
-github.com/alecthomas/kong v1.2.1 h1:E8jH4Tsgv6wCRX2nGrdPyHDUCSG83WH2qE4XLACD33Q=
-github.com/alecthomas/kong v1.2.1/go.mod h1:rKTSFhbdp3Ryefn8x5MOEprnRFQ7nlmMC01GKhehhBM=
+github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8vS6K3D0=
+github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
+github.com/alecthomas/kong v1.3.0 h1:YJKuU6/TV2XOBtymafSeuzDvLAFR8cYMZiXVNLhAO6g=
+github.com/alecthomas/kong v1.3.0/go.mod h1:IDc8HyiouDdpdiEiY81iaEJM8rSIW6LzX8On4FCO0bE=
 github.com/alecthomas/repr v0.4.0 h1:GhI2A8MACjfegCPVq9f1FLvIBS+DrQ2KQBFZP1iFzXc=
 github.com/alecthomas/repr v0.4.0/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
