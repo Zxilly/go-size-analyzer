@@ -57,8 +57,6 @@ It runs on the binaries from [Zxilly/go-testdata](https://github.com/Zxilly/go-t
 
 The project uses `golangci-lint` to lint the code.
 
-> Golangci-lint doesn't officially support `Go 1.23` at the moment. Use the preview version.
-
 ```bash
 golangci-lint run
 ```
