@@ -6,6 +6,7 @@ run:
 
 linters:
   enable:
+    - bodyclose
     - errorlint
 #    - gci # fixme: disable for now, see https://github.com/daixiang0/gci/issues/209
     - loggercheck

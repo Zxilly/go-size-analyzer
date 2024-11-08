@@ -52,9 +52,9 @@ func download() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer func(body io.ReadCloser) {
-		_ = body.Close()
-	}(resp.Body)
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	// check status code
 	if resp.StatusCode != http.StatusOK {
