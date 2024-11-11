@@ -9,7 +9,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 requests = "^2.32.3"
-tqdm = "^4.66.6"
+tqdm = "^4.67.0"
 matplotlib = "3.9.2"
 psutil = "^6.1.0"
 markdown-strings = "^3.4.0"
