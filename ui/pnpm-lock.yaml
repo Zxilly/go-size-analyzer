@@ -48,8 +48,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-dropzone:
-        specifier: ^14.3.3
-        version: 14.3.3(react@18.3.1)
+        specifier: ^14.3.5
+        version: 14.3.5(react@18.3.1)
       react-use:
         specifier: ^17.5.1
         version: 17.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1428,8 +1428,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  attr-accept@2.2.4:
-    resolution: {integrity: sha512-2pA6xFIbdTUDCAwjN8nQwI+842VwzbDUXO2IYlpPXQIORgKnavorcr4Ce3rwh+zsNg9zK7QPsdvDj3Lum4WX4w==}
+  attr-accept@2.2.5:
+    resolution: {integrity: sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==}
     engines: {node: '>=4'}
 
   babel-plugin-macros@3.1.0:
@@ -2970,6 +2970,10 @@ packages:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postcss@8.4.48:
+    resolution: {integrity: sha512-GCRK8F6+Dl7xYniR5a4FYbpBzU8XnZVeowqsQFYdcXuSbChgiks7qybSkbvnaeqv0G0B+dd9/jJgH8kkLDQeEA==}
+    engines: {node: ^10 || ^12 || >=14}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -2981,8 +2985,8 @@ packages:
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
-  psl@1.9.0:
-    resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
+  psl@1.10.0:
+    resolution: {integrity: sha512-KSKHEbjAnpUuAUserOq0FxGXCUrzC3WniuSJhvdbs102rL55266ZcHBqLWOsG30spQMlPdpy7icATiAQehg/iA==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -3003,8 +3007,8 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
-  react-dropzone@14.3.3:
-    resolution: {integrity: sha512-38yaWovqDqZdtn7LKTE5lFdqc57hYbPdS/oIxyhmaTP/yzC0yztPxnNy+poxew5HKF44gzGCNcNDBYjqlCXr6g==}
+  react-dropzone@14.3.5:
+    resolution: {integrity: sha512-9nDUaEEpqZLOz5v5SUcFA0CjM4vq8YbqO0WRls+EYT7+DvxUdzDPKNCPLqGfj3YL9MsniCLCD4RFA6M95V6KMQ==}
     engines: {node: '>= 10.13'}
     peerDependencies:
       react: '>= 16.8 || 18.0.0'
@@ -5015,7 +5019,7 @@ snapshots:
       '@vue/shared': 3.4.31
       estree-walker: 2.0.2
       magic-string: 0.30.12
-      postcss: 8.4.47
+      postcss: 8.4.48
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.4.31':
@@ -5088,7 +5092,7 @@ snapshots:
   asynckit@0.4.0:
     optional: true
 
-  attr-accept@2.2.4: {}
+  attr-accept@2.2.5: {}
 
   babel-plugin-macros@3.1.0:
     dependencies:
@@ -6988,6 +6992,12 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
+  postcss@8.4.48:
+    dependencies:
+      nanoid: 3.3.7
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
   prelude-ls@1.2.1: {}
 
   pretty-format@27.5.1:
@@ -7002,7 +7012,9 @@ snapshots:
       object-assign: 4.1.1
       react-is: 16.13.1
 
-  psl@1.9.0:
+  psl@1.10.0:
+    dependencies:
+      punycode: 2.3.1
     optional: true
 
   punycode@2.3.1: {}
@@ -7023,9 +7035,9 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
-  react-dropzone@14.3.3(react@18.3.1):
+  react-dropzone@14.3.5(react@18.3.1):
     dependencies:
-      attr-accept: 2.2.4
+      attr-accept: 2.2.5
       file-selector: 2.1.0
       prop-types: 15.8.1
       react: 18.3.1
@@ -7404,7 +7416,7 @@ snapshots:
 
   tough-cookie@4.1.4:
     dependencies:
-      psl: 1.9.0
+      psl: 1.10.0
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
