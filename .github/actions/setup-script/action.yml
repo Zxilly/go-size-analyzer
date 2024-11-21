@@ -15,6 +15,10 @@ inputs:
     default: "false"
     required: false
     description: "Collect coverage"
+  setup-python:
+    default: "true"
+    required: false
+    description: "Setup Python"
 runs:
   using: 'composite'
   steps:
@@ -22,7 +26,15 @@ runs:
       shell: bash
       run: pipx install poetry
 
+    - name: Setup Python
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      with:
+        python-version: '3.12'
+        check-latest: true
+        cache: poetry
+
     - name: Add python dependencies
+      if: ${{ inputs.setup-python == 'true' }}
       shell: bash
       working-directory: ./scripts
       run: |
