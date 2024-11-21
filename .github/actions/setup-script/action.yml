@@ -27,6 +27,7 @@ runs:
       run: pipx install poetry
 
     - name: Setup Python
+      if: ${{ inputs.setup-python == 'true' }}
       uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
       with:
         python-version: '3.12'
@@ -34,7 +35,6 @@ runs:
         cache: poetry
 
     - name: Add python dependencies
-      if: ${{ inputs.setup-python == 'true' }}
       shell: bash
       working-directory: ./scripts
       run: |
