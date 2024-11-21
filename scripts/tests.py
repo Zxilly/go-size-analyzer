@@ -33,10 +33,12 @@ def run_unit(name: str, env: dict[str, str], pargs: list[str], timeout: int):
         stderr=subprocess.STDOUT,
         timeout=timeout
     )
-    stdout.check_returncode()
 
     with open(os.path.join(unit_output_dir, f"{name}.txt"), "w", encoding="utf-8") as f:
         f.write(stdout.stdout)
+
+    if stdout.returncode != 0:
+        raise Exception(f"Unit test {name} failed with return code {stdout.returncode}.")
 
     generate_junit(stdout.stdout, os.path.join(get_project_root(), f"{name}.xml"))
 
