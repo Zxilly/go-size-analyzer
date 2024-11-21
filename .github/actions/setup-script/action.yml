@@ -22,13 +22,6 @@ runs:
       shell: bash
       run: pipx install poetry
 
-    - name: Setup Python
-      uses: actions/setup-python@2bd53f9a4d1dd1cd21eaffcc01a7b91a8e73ea4c
-      with:
-        python-version: '3.12'
-        check-latest: true
-        cache: 'poetry'
-
     - name: Add python dependencies
       shell: bash
       working-directory: ./scripts
