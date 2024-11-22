@@ -103,7 +103,7 @@ options:
 
 ##### Integration binary source generator
 
-GeGenerate `scripts/binaries.csv` as a source for tests.
+Generate `scripts/binaries.csv` as a source for tests.
 
 ```bash
 python scripts/generate.py
