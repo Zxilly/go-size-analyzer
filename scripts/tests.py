@@ -123,7 +123,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                   "-v",
                   "-covermode=atomic",
                   "-cover",
-                  "-coverpkg=../../...",
+                  "-coverpkg=github.com/Zxilly/go-size-analyzer/...",
                   f"-test.gocoverdir={unit_path}"],
                  600)
 
