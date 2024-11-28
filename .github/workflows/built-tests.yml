@@ -119,7 +119,7 @@ jobs:
         with:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ${{ matrix.test-type }}.profile
+          files: ${{ matrix.test-type }}.profile
           flags: ${{ matrix.test-type }}
           verbose: true
 
