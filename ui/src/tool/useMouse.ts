@@ -8,7 +8,7 @@ export interface useMouseResult {
   eventTarget: EventTarget | null;
 }
 
-export function useMouse(ref: RefObject<SVGElement>): useMouseResult {
+export function useMouse(ref: RefObject<SVGElement | null>): useMouseResult {
   const [clientX, setClientX] = useState<number | null>(null);
   const [clientY, setClientY] = useState<number | null>(null);
   const [eventTarget, setEventTarget] = useState<EventTarget | null>(null);

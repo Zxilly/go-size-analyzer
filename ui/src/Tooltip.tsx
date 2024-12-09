@@ -7,7 +7,7 @@ const Tooltip_marginX = 10;
 const Tooltip_marginY = 30;
 
 export interface TooltipProps {
-  moveRef: RefObject<SVGElement>;
+  moveRef: RefObject<SVGElement | null>;
   getTargetNode: (e: EventTarget) => Entry | null;
 }
 
