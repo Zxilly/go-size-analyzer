@@ -4,9 +4,11 @@ import { describe, expect, it, vi } from "vitest";
 import { FileSelector } from "./FileSelector.tsx";
 
 function createFileWithSize(sizeInBytes: number, fileName = "test.txt", fileType = "text/plain") {
-  const buffer = new ArrayBuffer(sizeInBytes);
-  const blob = new Blob([buffer], { type: fileType });
-  return new File([blob], fileName, { type: fileType });
+  return {
+    name: fileName,
+    size: sizeInBytes,
+    type: fileType,
+  } as unknown as File;
 }
 
 describe("fileSelector", () => {

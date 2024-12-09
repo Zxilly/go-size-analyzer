@@ -1,7 +1,7 @@
 import process from "node:process";
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
+import react from '@vitejs/plugin-react'
 import { coverageConfigDefaults } from "vitest/config";
+import { defineConfig } from 'vitest/config'
 
 const reporters = ["default", "junit"];
 if (process.env.CI) {
@@ -10,13 +10,13 @@ if (process.env.CI) {
 
 export default defineConfig({
   plugins: [
-    react(),
+    react() as any,
   ],
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     coverage: {
-      provider: "v8",
+      provider: "istanbul",
       enabled: true,
       exclude: [
         "src/tool/wasm_exec.js",
