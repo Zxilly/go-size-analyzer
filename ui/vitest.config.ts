@@ -1,7 +1,6 @@
 import process from "node:process";
-import react from '@vitejs/plugin-react'
-import { coverageConfigDefaults } from "vitest/config";
-import { defineConfig } from 'vitest/config'
+import react from "@vitejs/plugin-react";
+import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
 const reporters = ["default", "junit"];
 if (process.env.CI) {

@@ -2,7 +2,7 @@ import type { HierarchyNode } from "d3-hierarchy";
 import type { Entry } from "./tool/entry.ts";
 import { group } from "d3-array";
 import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTitle, useWindowSize } from "react-use";
 import { Node } from "./Node.tsx";
 import createRainbowColor from "./tool/color.ts";
