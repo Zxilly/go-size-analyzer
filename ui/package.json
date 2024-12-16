@@ -14,10 +14,10 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^6.1.10",
-    "@mui/material": "^6.1.10",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.2.0",
     "@types/lodash.memoize": "^4.1.9",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
@@ -27,7 +27,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5",
-    "react-use": "^17.5.1"
+    "react-use": "^17.6.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.12.0",
