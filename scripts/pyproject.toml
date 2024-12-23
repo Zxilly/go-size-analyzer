@@ -11,7 +11,7 @@ python = "^3.12"
 requests = "^2.32.3"
 tqdm = "^4.67.1"
 matplotlib = "3.10.0"
-psutil = "^6.1.0"
+psutil = "^6.1.1"
 markdown-strings = "^3.4.0"
 
 [tool.poetry.group.research]
