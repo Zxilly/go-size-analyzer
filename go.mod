@@ -9,14 +9,14 @@ require (
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.6.0
-	github.com/blacktop/go-macho v1.1.233
+	github.com/blacktop/go-macho v1.1.234
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.2.4
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20240812190614-74518029592c
 	github.com/charmbracelet/x/term v0.2.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/go-delve/delve v1.23.1
+	github.com/go-delve/delve v1.24.0
 	github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1
 	github.com/jedib0t/go-pretty/v6 v6.6.5
 	github.com/knadh/profiler v0.2.0
@@ -29,7 +29,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/arch v0.12.0
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
-	golang.org/x/net v0.32.0
+	golang.org/x/net v0.33.0
 	golang.org/x/sync v0.10.0
 )
 
