@@ -249,3 +249,7 @@ For development, see the [Development Guide](./DEVELOPMENT.md) for more details.
 ## LICENSE
 
 Published under the [AGPL-3.0](./LICENSE).
+
+### Supported by
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
