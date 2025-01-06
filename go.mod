@@ -27,7 +27,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/samber/lo v1.47.0
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/arch v0.12.0
+	golang.org/x/arch v0.13.0
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
 	golang.org/x/net v0.33.0
 	golang.org/x/sync v0.10.0
