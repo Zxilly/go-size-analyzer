@@ -125,7 +125,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && matrix.test-type == 'unit' && matrix.os != 'self-hosted' }}
-        uses: codecov/test-results-action@4e79e65778be1cecd5df25e14af1eafb6df80ea9 # v1.0.2
+        uses: codecov/test-results-action@44ecb3a270cd942bdf0fa8f2ce14cb32493e810a # v1.0.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }} unit tests
@@ -213,7 +213,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@4e79e65778be1cecd5df25e14af1eafb6df80ea9 # v1.0.2
+        uses: codecov/test-results-action@44ecb3a270cd942bdf0fa8f2ce14cb32493e810a # v1.0.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: Web UI tests
