@@ -91,7 +91,7 @@ jobs:
       - name: Setup Go global dependencies
         run: |
           go install github.com/jstemmer/go-junit-report/v2@85bf4716ac1f025f2925510a9f5e9f5bb347c009
-          go install github.com/Zxilly/go_js_wasm_exec@3802c2707235940a7cd767744297e8e3d245687b
+          go install github.com/Zxilly/go_js_wasm_exec@a1ae72b2fab700f2cc07766cc8dfb33966250014
 
       - name: Download UI file
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
