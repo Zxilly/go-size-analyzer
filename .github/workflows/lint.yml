@@ -60,7 +60,7 @@ jobs:
           check-latest: true
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@2e788936b09dd82dc280e845628a40d2ba6b204c # v6.3.1
+        uses: golangci/golangci-lint-action@818ec4d51a1feacefc42ff1b3ec25d4962690f39 # v6.4.1
         with:
           version: 'latest'
           install-mode: 'binary'
@@ -81,6 +81,6 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: typos-action
-        uses: crate-ci/typos@11ca4583f2f3f74c7e7785c0ecb20fe2c99a4308 # v1.29.5
+        uses: crate-ci/typos@51f257b946f503b768e522781f56e9b7b5570d48 # v1.29.7
         with:
           config: typos.toml
