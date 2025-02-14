@@ -3,7 +3,7 @@ package utils
 import (
 	"debug/gosym"
 	"debug/pe"
-	"fmt"
+	"errors"
 	"maps"
 	"reflect"
 	"strings"
@@ -157,7 +157,7 @@ func TestMust(t *testing.T) {
 	})
 
 	t.Run("panics for non-nil error", func(t *testing.T) {
-		assert.Panics(t, func() { Must(fmt.Errorf("test error")) })
+		assert.Panics(t, func() { Must(errors.New("test error")) })
 	})
 }
 

@@ -171,7 +171,7 @@ func (e *ElfWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 func (e *ElfWrapper) Text() (textStart uint64, text []byte, err error) {
 	sect := e.file.Section(".text")
 	if sect == nil {
-		return 0, nil, fmt.Errorf("text section not found")
+		return 0, nil, errors.New("text section not found")
 	}
 	textStart = sect.Addr
 	text, err = sect.Data()

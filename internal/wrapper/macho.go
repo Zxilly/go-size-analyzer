@@ -5,6 +5,7 @@ import (
 	"compress/zlib"
 	"debug/dwarf"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"slices"
@@ -295,7 +296,7 @@ func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {
 		}
 	}
 	if sect == nil {
-		return 0, nil, fmt.Errorf("text section not found")
+		return 0, nil, errors.New("text section not found")
 	}
 	textStart = sect.Addr
 	text, err = sect.Data()
