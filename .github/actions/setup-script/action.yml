@@ -40,12 +40,6 @@ runs:
       run: |
         poetry install
 
-    - name: Install Go tools
-      shell: bash
-      if: ${{ inputs.coverage == 'true' }}
-      run: |
-        go install github.com/ZxillyFork/courtney@9f98af51b9fb040946fa7c035cd5a641c5e524f2
-
     - name: Cache test binaries
       if: ${{ inputs.cache != '' }}
       uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2

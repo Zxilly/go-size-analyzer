@@ -1,29 +1,8 @@
 import os
-import shutil
 import subprocess
 import tempfile
 
 from .utils import dir_is_empty, get_project_root, log, get_covdata_unit_dir, get_covdata_integration_dir, require_go
-
-
-def require_courtney():
-    courtney = shutil.which("courtney")
-    if courtney is None:
-        raise Exception("Courtney is not installed. Please install Courtney and try again.")
-    return courtney
-
-
-def enhance_coverage(f: str, out: str):
-    subprocess.check_call(
-        [
-            require_courtney(),
-            "-l",
-            f,
-            "-o",
-            out,
-        ],
-        cwd=get_project_root(),
-    )
 
 
 def merge_covdata():
@@ -50,8 +29,6 @@ def merge_covdata():
                 cwd=get_project_root(),
             )
             log(f"Merged coverage data from {d}.")
-            enhance_coverage(tmp.name, output)
-            log(f"Enhanced coverage data from {d}.")
 
         if not os.path.exists(output):
             raise Exception("Failed to merge coverage data.")
