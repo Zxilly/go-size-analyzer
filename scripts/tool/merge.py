@@ -1,6 +1,5 @@
 import os
 import subprocess
-import tempfile
 
 from .utils import dir_is_empty, get_project_root, log, get_covdata_unit_dir, get_covdata_integration_dir, require_go
 
@@ -16,19 +15,18 @@ def merge_covdata():
             log(f"Coverage data directory is empty. Skipping merge {output}")
             return
 
-        with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            subprocess.check_call(
-                [
-                    require_go(),
-                    "tool",
-                    "covdata",
-                    "textfmt",
-                    "-i=" + d,
-                    "-o=" + tmp.name,
-                ],
-                cwd=get_project_root(),
-            )
-            log(f"Merged coverage data from {d}.")
+        subprocess.check_call(
+            [
+                require_go(),
+                "tool",
+                "covdata",
+                "textfmt",
+                "-i=" + d,
+                "-o=" + output,
+            ],
+            cwd=get_project_root(),
+        )
+        log(f"Merged coverage data from {d}.")
 
         if not os.path.exists(output):
             raise Exception("Failed to merge coverage data.")
