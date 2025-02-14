@@ -29,7 +29,7 @@ func TestCommonResultFromFullResult(t *testing.T) {
 	err = json.UnmarshalRead(jsonData, crFromJSON)
 	require.NoError(t, err)
 
-	assert.Equal(t, cr, crFromJSON) //nolint:testifylint
+	assert.Equal(t, cr, crFromJSON)
 }
 
 func TestCommonResultFromFullAndCompactJSON(t *testing.T) {
@@ -58,5 +58,5 @@ func TestCommonResultFromFullAndCompactJSON(t *testing.T) {
 	err = json.UnmarshalRead(fullJSONData, crFromFullJSON)
 	require.NoError(t, err)
 
-	assert.Equal(t, crFromCompactJSON, crFromFullJSON) //nolint:testifylint
+	assert.Equal(t, crFromCompactJSON, crFromFullJSON)
 }

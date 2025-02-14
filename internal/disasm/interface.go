@@ -1,6 +1,7 @@
 package disasm
 
 import (
+	"errors"
 	"fmt"
 	"unicode/utf8"
 
@@ -28,7 +29,7 @@ type Extractor struct {
 	extractor  extractorFunc // disassembler function for goarch
 }
 
-var ErrArchNotSupported = fmt.Errorf("unsupported GOARCH")
+var ErrArchNotSupported = errors.New("unsupported GOARCH")
 
 func NewExtractor(rawFile wrapper.RawFileWrapper,
 	size uint64,

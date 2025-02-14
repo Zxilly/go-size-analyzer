@@ -2,6 +2,7 @@ package dwarf
 
 import (
 	"debug/dwarf"
+	"errors"
 	"fmt"
 	"log/slog"
 	"strconv"
@@ -25,7 +26,7 @@ func SizeForDWARFVar(
 ) ([]Content, uint64, error) {
 	sizeOffset, ok := entry.Val(dwarf.AttrType).(dwarf.Offset)
 	if !ok {
-		return nil, 0, fmt.Errorf("failed to get type offset")
+		return nil, 0, errors.New("failed to get type offset")
 	}
 
 	typ, err := d.Type(sizeOffset)

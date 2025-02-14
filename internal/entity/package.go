@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"errors"
 	"fmt"
 	"maps"
 	"sync"
@@ -160,7 +161,7 @@ func (p *Package) getOrInitFile(s string) *File {
 // Merge p always hold an empty subpackage
 func (p *Package) Merge(rp *Package) {
 	if rp == nil {
-		panic(fmt.Errorf("nil package"))
+		panic(errors.New("nil package"))
 	}
 
 	if (rp.loaded) && p.Name != rp.Name {

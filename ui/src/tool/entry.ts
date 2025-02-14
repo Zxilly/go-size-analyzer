@@ -196,8 +196,8 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
       .add("Size:", formatBytes(this.size));
     let ret = align.toString();
     ret += "\n\n"
-    + "This size was not accurate."
-    + "The real size determined by disassembling can be larger.";
+      + "This size was not accurate."
+      + "The real size determined by disassembling can be larger.";
     return ret;
   }
 
@@ -293,9 +293,9 @@ export class UnknownImpl extends BaseImpl implements EntryLike<"unknown"> {
     align.add("Size:", formatBytes(this.size));
     let ret = align.toString();
     ret += "\n\n"
-    + "The unknown part in the binary.\n"
-    + "Can be ELF Header, Program Header, align offset...\n"
-    + "We just don't know.";
+      + "The unknown part in the binary.\n"
+      + "Can be ELF Header, Program Header, align offset...\n"
+      + "We just don't know.";
     return ret;
   }
 
