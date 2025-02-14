@@ -67,7 +67,7 @@ jobs:
       checks: write
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-13, macos-14, self-hosted ]
+        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
         test: [ unit, integration-example, integration-real ]
         include:
           - test: unit
