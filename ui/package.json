@@ -71,5 +71,6 @@
     "overrides": {
       "micromatch": "4.0.8"
     }
-  }
+  },
+  "packageManager": "pnpm@10.3.0"
 }
