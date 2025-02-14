@@ -1,7 +1,7 @@
 package knowninfo
 
 import (
-	"fmt"
+	"errors"
 	"log/slog"
 
 	"github.com/ZxillyFork/gore"
@@ -68,7 +68,7 @@ func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 
 func (k *KnownInfo) RequireModInfo() error {
 	if k.BuildInfo == nil {
-		return fmt.Errorf("no build info")
+		return errors.New("no build info")
 	}
 	return nil
 }

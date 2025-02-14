@@ -3,6 +3,7 @@ package wrapper
 import (
 	"debug/dwarf"
 	"debug/pe"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -42,7 +43,7 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 			continue // not addr, skip
 		}
 		if s.SectionNumber < 0 || len(p.file.Sections) < int(s.SectionNumber) {
-			return fmt.Errorf("invalid section number in symbol table")
+			return errors.New("invalid section number in symbol table")
 		}
 		if ignoreSymbols.Contains(s.Name) {
 			continue
@@ -164,7 +165,7 @@ func (p *PeWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 func (p *PeWrapper) Text() (textStart uint64, text []byte, err error) {
 	sect := p.file.Section(".text")
 	if sect == nil {
-		return 0, nil, fmt.Errorf("text section not found")
+		return 0, nil, errors.New("text section not found")
 	}
 	textStart = p.imageBase + uint64(sect.VirtualAddress)
 	text, err = sect.Data()
