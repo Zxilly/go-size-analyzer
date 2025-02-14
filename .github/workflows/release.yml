@@ -7,6 +7,9 @@ on:
 
 permissions: read-all
 
+env:
+  GOTOOLCHAIN: "local"
+
 jobs:
   build-ui:
     name: Build Treemap WebUI
