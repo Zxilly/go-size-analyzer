@@ -116,6 +116,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug
+        if: ${{ matrix.test == 'unit' && matrix.os == 'windows-latest' && always() }}
+        shell: bash
+        run: |
+          cat "C:\hostedtoolcache\windows\go\1.24.0\x64\lib\wasm\wasm_exec_node.js"
+
       - name: Upload coverage
         uses: codecov/codecov-action@13ce06bfc6bbe3ecf90edbbf1bc32fe5978ca1d3 # v5.3.1
         if: ${{ !cancelled() && matrix.os != 'self-hosted' }}
