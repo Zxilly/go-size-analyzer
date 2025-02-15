@@ -157,7 +157,7 @@ jobs:
         with:
           name: ${{ matrix.os }}-results
           compression-level: '9'
-          pattern: ${{ matrix.os }}-*-results
+          pattern: ${{ matrix.os }}-{unit,integration-{example,real}}-results
           delete-merged: true
           retention-days: 7
 
