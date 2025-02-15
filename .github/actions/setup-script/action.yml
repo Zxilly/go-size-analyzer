@@ -3,7 +3,7 @@ description: 'Setup test script, should be called after checkout'
 inputs:
   cache:
     default: ""
-    description: 'Cache key for test'
+    description: 'Cache key for test bins'
   report:
     default: "false"
     required: false
@@ -15,30 +15,24 @@ inputs:
     default: "false"
     required: false
     description: "Collect coverage"
-  setup-python:
+  cache-python:
     default: "true"
     required: false
-    description: "Setup Python"
+    description: "Cache python dependencies"
 runs:
   using: 'composite'
   steps:
-    - name: Install poetry
-      shell: bash
-      run: pipx install poetry
-
-    - name: Setup Python
-      if: ${{ inputs.setup-python == 'true' }}
-      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+    - name: Install uv
+      uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355 # v5.2.2
       with:
-        python-version: '3.13'
-        check-latest: true
-        cache: poetry
+        enable-cache: ${{ inputs.cache-python }}
+        prune-cache: ${{ inputs.cache-python }}
 
     - name: Add python dependencies
       shell: bash
       working-directory: ./scripts
       run: |
-        poetry install
+        uv sync
 
     - name: Cache test binaries
       if: ${{ inputs.cache != '' }}
@@ -51,10 +45,10 @@ runs:
     - name: Run script
       shell: bash
       working-directory: ./scripts
-      run: poetry run python ${{ inputs.script }}
+      run: uv run python ${{ inputs.script }}
 
     - name: Report results
       if: ${{ inputs.report == 'true' }}
       shell: bash
       working-directory: ./scripts
-      run: poetry run python report.py
+      run: uv run python report.py

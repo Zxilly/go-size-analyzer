@@ -112,7 +112,7 @@ jobs:
           script: 'tests.py --${{ matrix.test }}'
           report: 'true'
           coverage: 'true'
-          setup-python: ${{ matrix.os != 'self-hosted' }}
+          cache-python: ${{ matrix.os != 'self-hosted' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

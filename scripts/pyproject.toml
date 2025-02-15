@@ -1,25 +1,18 @@
-[tool.poetry]
+[project]
 name = "gsa-scripts"
 version = "0.1.0"
 authors = ["Zxilly <zxilly@outlook.com>"]
-license = "AGPL-3.0"
-readme = "README.md"
-package-mode = false
+description = "Scripts for GSA"
+requires-python = ">=3.13"
+dependencies = [
+    "markdown-strings>=3.4.0",
+    "matplotlib>=3.10.0",
+    "psutil>=7.0.0",
+    "requests>=2.32.3",
+    "tqdm>=4.67.1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-requests = "^2.32.3"
-tqdm = "^4.67.1"
-matplotlib = "3.10.0"
-psutil = "^6.1.1"
-markdown-strings = "^3.4.0"
-
-[tool.poetry.group.research]
-optional = true
-
-[tool.poetry.group.research.dependencies]
-watchdog = "^6.0.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+research = [
+    "watchdog>=6.0.0",
+]

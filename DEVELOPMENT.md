@@ -65,7 +65,7 @@ golangci-lint run
 
 ### Helper scripts
 
-Helper scripts are managed by `poetry`. Make sure you have it installed.
+Helper scripts are managed by `uv`. Make sure you have it installed.
 
 All scripts are in the `scripts` directory.
 
