@@ -150,7 +150,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-13, macos-14 ]
+        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
     steps:
       - name: Merge
         uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
