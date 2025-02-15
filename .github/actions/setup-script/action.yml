@@ -23,7 +23,7 @@ runs:
   using: 'composite'
   steps:
     - name: Install uv
-      uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355 # v5.2.2
+      uses: Zxilly/setup-uv@45f58ae383902bd64e09d003f17f638391b745d8
       with:
         enable-cache: ${{ inputs.cache-python }}
         prune-cache: ${{ inputs.cache-python }}
