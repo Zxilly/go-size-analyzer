@@ -89,7 +89,7 @@ jobs:
         with:
           go-version: '1.24.0'
           cache: true
-          check-latest: true
+          check-latest: ${{ matrix.os != 'self-hosted' }}
 
       - name: Setup Go global dependencies
         run: |
