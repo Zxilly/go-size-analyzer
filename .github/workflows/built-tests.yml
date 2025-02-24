@@ -53,7 +53,7 @@ jobs:
           script: 'wasm.py'
 
       - name: Upload wasm artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           path: 'ui/gsa.wasm'
           name: wasm
@@ -128,7 +128,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && matrix.test-type == 'unit' && matrix.os != 'self-hosted' }}
-        uses: codecov/test-results-action@44ecb3a270cd942bdf0fa8f2ce14cb32493e810a # v1.0.3
+        uses: codecov/test-results-action@5c441a7bcc06f8706cde90192857d337c5dab8a6 # v1.0.4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }} unit tests
@@ -137,7 +137,7 @@ jobs:
           verbose: true
 
       - name: Upload results
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
@@ -153,7 +153,7 @@ jobs:
         os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
     steps:
       - name: Merge
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: ${{ matrix.os }}-results
           compression-level: '9'
@@ -216,7 +216,7 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@44ecb3a270cd942bdf0fa8f2ce14cb32493e810a # v1.0.3
+        uses: codecov/test-results-action@5c441a7bcc06f8706cde90192857d337c5dab8a6 # v1.0.4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: Web UI tests
