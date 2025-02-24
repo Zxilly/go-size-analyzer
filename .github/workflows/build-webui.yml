@@ -37,7 +37,7 @@ jobs:
 
       - name: Release
         if: ${{ inputs.release }}
-        uses: ncipollo/release-action@cdcc88a9acf3ca41c16c37bb7d21b9ad48560d87 # v1.15.0
+        uses: ncipollo/release-action@440c8c1cb0ed28b9f43e4d1d670870f059653174 # v1.16.0
         with:
           artifactErrorsFailBuild: true
           allowUpdates: true
@@ -48,7 +48,7 @@ jobs:
           prerelease: true
 
       - name: Upload artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: ui
           path: 'ui/dist/webui/index.html'
