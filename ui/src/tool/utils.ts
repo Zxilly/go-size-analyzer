@@ -7,7 +7,7 @@ export function loadDataFromEmbed(): Result {
     throw new Error("Failed to find data element");
   }
 
-  const ret = parseResult(doc.textContent);
+  const ret = parseResult(doc.textContent!);
   if (ret === null) {
     throw new Error("Failed to parse data");
   }

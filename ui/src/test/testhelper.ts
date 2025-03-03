@@ -11,5 +11,5 @@ export function getTestResult() {
   const r = parseResult(data);
   assert.isNotNull(r);
 
-  return r;
+  return r!;
 }

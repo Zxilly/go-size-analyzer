@@ -66,6 +66,9 @@ importers:
       '@microsoft/eslint-formatter-sarif':
         specifier: ^3.1.0
         version: 3.1.0
+      '@samchon/openapi':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -134,7 +137,7 @@ importers:
         version: 5.8.2
       typia:
         specifier: ^8.0.0
-        version: 8.0.0(@samchon/openapi@1.2.4)(typescript@5.8.2)
+        version: 8.0.0(@samchon/openapi@3.0.0)(typescript@5.8.2)
       vite:
         specifier: ^6.2.0
         version: 6.2.0(@types/node@22.13.8)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0)
@@ -1116,8 +1119,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@samchon/openapi@1.2.4':
-    resolution: {integrity: sha512-fEFAI2tXJHdsc4CYghNDuLmz2lDlwnGIQLW7+x5IEznYK3Hm6MBwU1RmD9v9QoCYgUyYJ7R8bZDn9GKoQnb8FA==}
+  '@samchon/openapi@3.0.0':
+    resolution: {integrity: sha512-eVQlyKRYv1/C2Mikc1xZr7c0jMjg1vjPkeY/gheKB4c5WOOWyTNZ1uvnXR+ETpPHwaQ54I9NrQZhoNk6BEGuuw==}
 
   '@stylistic/eslint-plugin@4.0.1':
     resolution: {integrity: sha512-RwKkRKiDrF4ptiur54ckDhOByQYKYZ1dEmI5K8BJCmuGpauFJXzVL1UQYTA2zq702CqMFdYiJcVFJWfokIgFxw==}
@@ -4798,7 +4801,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.34.9':
     optional: true
 
-  '@samchon/openapi@1.2.4': {}
+  '@samchon/openapi@3.0.0': {}
 
   '@stylistic/eslint-plugin@4.0.1(eslint@9.21.0)(typescript@5.8.2)':
     dependencies:
@@ -7587,9 +7590,9 @@ snapshots:
 
   typescript@5.8.2: {}
 
-  typia@8.0.0(@samchon/openapi@1.2.4)(typescript@5.8.2):
+  typia@8.0.0(@samchon/openapi@3.0.0)(typescript@5.8.2):
     dependencies:
-      '@samchon/openapi': 1.2.4
+      '@samchon/openapi': 3.0.0
       commander: 10.0.1
       comment-json: 4.2.5
       inquirer: 8.2.6
