@@ -7,3 +7,5 @@ extend-exclude = [
     "result.json"
 ]
 
+[default.extend-words]
+typ = "typ"
