@@ -117,7 +117,7 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                   f"-test.gocoverdir={unit_path}"],
                  600)
 
-    if wasm and not sys.platform.startswith('win32'):
+    if wasm:
         run_unit("unit_wasm", build_wasm_env(),
                  [go,
                   "test",
