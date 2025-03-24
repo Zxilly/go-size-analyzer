@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Go
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:
           go-version: '1.24.1'
           cache: true
@@ -53,7 +53,7 @@ jobs:
           script: 'wasm.py'
 
       - name: Upload wasm artifact
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           path: 'ui/gsa.wasm'
           name: wasm
@@ -85,7 +85,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Go
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:
           go-version: '1.24.1'
           cache: true
@@ -97,7 +97,7 @@ jobs:
           go install github.com/Zxilly/go_js_wasm_exec@149a70ce858641392338293a05ba15b00585860e
 
       - name: Download UI file
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: ui
           path: internal/webui
@@ -137,7 +137,7 @@ jobs:
           verbose: true
 
       - name: Upload results
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
@@ -153,7 +153,7 @@ jobs:
         os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
     steps:
       - name: Merge
-        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.os }}-results
           compression-level: '9'
@@ -195,7 +195,7 @@ jobs:
         run: pnpm install
 
       - name: Download WASM
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: wasm
           path: ui/
@@ -240,7 +240,7 @@ jobs:
         uses: ./.github/actions/setup-ui-deps
 
       - name: Download WASM
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: wasm
           path: ui/
