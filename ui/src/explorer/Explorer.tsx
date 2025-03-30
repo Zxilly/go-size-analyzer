@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Box, Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useAsync } from "react-use";
 import { createEntry } from "../tool/entry.ts";
 import TreeMap from "../TreeMap.tsx";
@@ -43,8 +43,6 @@ export const Explorer: React.FC = () => {
 
   const [file, setFile] = React.useState<File | null>(null);
 
-  const [modalState, setModalState] = React.useState<ModalState>({ isOpen: false });
-
   const { value: result, loading: analyzing } = useAsync(async () => {
     if (!file || !analyzer) {
       return;
@@ -64,79 +62,78 @@ export const Explorer: React.FC = () => {
     return createEntry(result);
   }, [result]);
 
-  useEffect(() => {
-    if (loadError || (!analyzer && !loading)) {
-      setModalState({
-        isOpen: true,
-        title: "Error",
-        content:
+  let modalState: ModalState = {
+    isOpen: false,
+  };
+
+  if (loadError || (!analyzer && !loading)) {
+    modalState = {
+      isOpen: true,
+      title: "Error",
+      content:
           <>
             <DialogContentText>
               Failed to load WebAssembly module
             </DialogContentText>
             {loadError && <DialogContentText>{loadError.message}</DialogContentText>}
           </>,
-      });
-    }
-    else if (loading) {
-      setModalState({
-        isOpen: true,
-        title: "Loading",
-        content:
+    };
+  }
+  else if (loading) {
+    modalState = {
+      isOpen: true,
+      title: "Loading",
+      content:
           <DialogContentText>Loading WebAssembly module...</DialogContentText>,
-      });
-    }
-    else if (!file) {
-      setModalState({
-        isOpen: true,
-        title: (
-          <>
-            Select a go binary
-            <a
-              href="https://github.com/Zxilly/go-size-analyzer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                alt="GitHub Repo stars"
-                src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer?style=flat-square"
-                style={{
-                  display: "block",
-                }}
-              />
-            </a>
-          </>
-        ),
-        content: (
-          <FileSelector handler={(file) => {
-            setFile(file);
-          }}
-          />
-        ),
-      });
-    }
-    else if (analyzing) {
-      setModalState({
-        isOpen: true,
-        title: `Analyzing ${file.name}`,
-        content: (
-          <LogViewer log={log} />
-        ),
-      });
-    }
-    else if (!analyzing && !result && !entry) {
-      setModalState({
-        isOpen: true,
-        title: `Failed to analyze ${file.name}`,
-        content: (
-          <LogViewer log={log} />
-        ),
-      });
-    }
-    else {
-      setModalState({ isOpen: false });
-    }
-  }, [loadError, loading, file, result, analyzing, entry, analyzer, log]);
+    };
+  }
+  else if (!file) {
+    modalState = {
+      isOpen: true,
+      title: (
+        <>
+          Select a go binary
+          <a
+            href="https://github.com/Zxilly/go-size-analyzer"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              alt="GitHub Repo stars"
+              src="https://img.shields.io/github/stars/Zxilly/go-size-analyzer?style=flat-square"
+              style={{
+                display: "block",
+              }}
+            />
+          </a>
+        </>
+      ),
+      content: (
+        <FileSelector handler={(file) => {
+          setFile(file);
+        }}
+        />
+      ),
+    };
+  }
+  else if (analyzing) {
+    modalState = {
+      isOpen: true,
+      title: `Analyzing ${file.name}`,
+      content: (
+        <LogViewer log={log} />
+      ),
+    };
+  }
+  else if (!analyzing && !result && !entry) {
+    modalState = {
+      isOpen: true,
+      title: `Failed to analyze ${file.name}`,
+      content: (
+        <LogViewer log={log} />
+      ),
+    };
+  }
 
   return (
     <>
