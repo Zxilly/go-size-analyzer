@@ -64,7 +64,7 @@ jobs:
         with:
           version: 'latest'
           install-mode: 'binary'
-          args: '--out-format=colored-line-number,sarif:golangci-lint-results.sarif'
+          args: '--output.text.path stdout --output.sarif.path golangci-lint-results.sarif'
         continue-on-error: true
 
       - name: Upload analysis results to GitHub

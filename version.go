@@ -93,7 +93,7 @@ func SprintVersion() string {
 			continue
 		}
 
-		s.WriteString(fmt.Sprintf("  %-11s      %s\n", k, values[k]))
+		_, _ = fmt.Fprintf(s, "  %-11s      %s\n", k, values[k])
 	}
 
 	return s.String()

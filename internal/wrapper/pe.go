@@ -110,10 +110,10 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 }
 
 func peSectionType(s *pe.Section) entity.SectionContentType {
-	switch {
-	case s.Name == ".text":
+	switch s.Name {
+	case ".text":
 		return entity.SectionContentText
-	case s.Name == ".rdata" || s.Name == ".data":
+	case ".rdata", ".data":
 		return entity.SectionContentData
 	default:
 		return entity.SectionContentOther

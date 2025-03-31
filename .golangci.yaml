@@ -1,118 +1,112 @@
----
-# Options for analysis running.
+version: "2"
 run:
-  timeout: 5m
   tests: true
-
 linters:
   enable:
     - bodyclose
-    - errorlint
-#    - gci # fixme: disable for now, see https://github.com/daixiang0/gci/issues/209
-    - loggercheck
-    - gosec
-    - revive
-    - thelper
-    - nolintlint
-    - dupword
-    - usestdlibvars
-    - mirror
-    - testifylint
     - contextcheck
-    - gofumpt
-
-linters-settings:
-  loggercheck:
-    require-string-key: true
-    # Require printf-like format specifier (%s, %d for example) not present.
-    # Default: false
-    no-printf-like: true
-
-  nolintlint:
-    # Disable to ensure that all nolint directives actually have an effect.
-    # Default: false
-    allow-unused: true
-    # Enable to require an explanation of nonzero length
-    # after each nolint directive.
-    # Default: false
-    require-explanation: true
-    # Enable to require nolint directives to mention the specific
-    # linter being suppressed.
-    # Default: false
-    require-specific: true
-
-  gci:
-    sections:
-      - standard
-      - prefix(syscall/js,unique,iter) # fixme: workaround, wait for https://github.com/daixiang0/gci/pull/208 merged
-      - default
-      - localmodule
-    custom-order: true
-
-  staticcheck:
-    # SAxxxx checks in https://staticcheck.io/docs/configuration/options/#checks
-    checks: [ "all" ]
-
-  revive:
-    enable-all-rules: true
-    rules:
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#exported
-      - name: exported
-        arguments:
-          # enables checking public methods of private types
-          - "checkPrivateReceivers"
-          # make error messages clearer
-          - "sayRepetitiveInsteadOfStutters"
-
-      - name: unhandled-error
-        arguments: # here are the exceptions we don't want to be reported
-          - "fmt.Print.*"
-          - "fmt.Fprint.*"
-          - "bytes.Buffer.Write"
-          - "bytes.Buffer.WriteByte"
-          - "bytes.Buffer.WriteString"
-          - "strings.Builder.WriteString"
-          - "strings.Builder.WriteRune"
-
-      - name: cognitive-complexity
-        severity: warning
-        arguments: [ 300 ]
-
-      - name: cyclomatic
-        arguments: [ 100 ]
-
-      - name: struct-tag
-        disabled: true
-      - name: add-constant
-        disabled: true
-      - name: flag-parameter
-        disabled: true
-      - name: imports-blocklist
-        disabled: true
-      - name: nested-structs
-        disabled: true
-      - name: modifies-value-receiver
-        disabled: true
-      - name: line-length-limit
-        disabled: true
-      - name: argument-limit
-        disabled: true
-      - name: banned-characters
-        disabled: true
-      - name: max-public-structs
-        disabled: true
-      - name: function-result-limit
-        disabled: true
-      - name: function-length
-        disabled: true
-      - name: file-header
-        disabled: true
-      - name: empty-lines
-        disabled: true
-
-  gosec:
-    excludes:
-      - G115
-
+    - dupword
+    - errorlint
+    - gosec
+    - loggercheck
+    - mirror
+    - nolintlint
+    - revive
+    - testifylint
+    - thelper
+    - usestdlibvars
+  settings:
+    gosec:
+      excludes:
+        - G115
+    loggercheck:
+      require-string-key: true
+      no-printf-like: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-unused: true
+    revive:
+      enable-all-rules: true
+      rules:
+        - name: exported
+          arguments:
+            - checkPrivateReceivers
+            - sayRepetitiveInsteadOfStutters
+        - name: unhandled-error
+          arguments:
+            - fmt.Print.*
+            - fmt.Fprint.*
+            - bytes.Buffer.Write
+            - bytes.Buffer.WriteByte
+            - bytes.Buffer.WriteString
+            - strings.Builder.WriteString
+            - strings.Builder.WriteRune
+        - name: cognitive-complexity
+          arguments:
+            - 300
+          severity: warning
+        - name: cyclomatic
+          arguments:
+            - 100
+        - name: struct-tag
+          disabled: true
+        - name: add-constant
+          disabled: true
+        - name: flag-parameter
+          disabled: true
+        - name: imports-blocklist
+          disabled: true
+        - name: nested-structs
+          disabled: true
+        - name: modifies-value-receiver
+          disabled: true
+        - name: line-length-limit
+          disabled: true
+        - name: argument-limit
+          disabled: true
+        - name: banned-characters
+          disabled: true
+        - name: max-public-structs
+          disabled: true
+        - name: function-result-limit
+          disabled: true
+        - name: function-length
+          disabled: true
+        - name: file-header
+          disabled: true
+        - name: empty-lines
+          disabled: true
+    staticcheck:
+      checks:
+        - all
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
 issues:
   uniq-by-line: false
+formatters:
+  enable:
+    - gofumpt
+  settings:
+    gci:
+      sections:
+        - standard
+        - prefix(syscall/js,unique,iter)
+        - default
+        - localmodule
+      custom-order: true
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

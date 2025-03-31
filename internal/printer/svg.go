@@ -60,8 +60,8 @@ func Svg(r *result.Result, writer io.Writer, options *SvgOption) error {
 	// write packages
 	var writePackage func(p *entity.Package)
 	writePackage = func(p *entity.Package) {
-		if !((options.HideMain && p.Type == entity.PackageTypeMain) ||
-			(options.HideStd && p.Type == entity.PackageTypeStd)) {
+		if (!options.HideMain || p.Type != entity.PackageTypeMain) &&
+			(!options.HideStd || p.Type != entity.PackageTypeStd) {
 			insert(merge(p.Name), float64(p.Size))
 		}
 		for _, sub := range p.SubPackages {

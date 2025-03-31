@@ -38,7 +38,8 @@ func SizeForDWARFVar(
 	if ok {
 		// check string
 		// user can still define a struct has this name, but it's rare
-		if structTyp.StructName == "string" {
+		switch structTyp.StructName {
+		case "string":
 			strAddr, size, err := readString(structTyp, addr, readMemory)
 			if err != nil || size == 0 {
 				return nil, uint64(typ.Size()), err
@@ -49,7 +50,7 @@ func SizeForDWARFVar(
 				Addr: strAddr,
 				Size: size,
 			}}, uint64(typ.Size()), nil
-		} else if structTyp.StructName == "[]uint8" {
+		case "[]uint8":
 			// check byte slice, normally it comes from embed
 			dataAddr, size, err := readSlice(structTyp, addr, readMemory, "*uint8")
 			if err != nil || size == 0 {
@@ -191,7 +192,7 @@ func EntryPrettyPrint(entry *dwarf.Entry) string {
 	ret.WriteString(strconv.Itoa(int(entry.Offset)))
 	ret.WriteString(" ")
 	for _, field := range entry.Field {
-		ret.WriteString(fmt.Sprintf("%#v ", field))
+		_, _ = fmt.Fprintf(ret, "%#v ", field)
 	}
 
 	return ret.String()

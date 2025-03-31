@@ -56,6 +56,6 @@ func TestSyncOutputSetOutputLocksAndSets(t *testing.T) {
 	_, err := syncOutput.Write([]byte("test"))
 
 	require.NoError(t, err)
-	assert.Equal(t, "", buf1.String())
+	assert.Empty(t, buf1.String())
 	assert.Equal(t, "test", buf2.String())
 }
