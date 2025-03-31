@@ -2,8 +2,6 @@ module github.com/Zxilly/go-size-analyzer
 
 go 1.24
 
-toolchain go1.24.1
-
 require (
 	github.com/ZxillyFork/gore v0.0.0-20250305071506-57373772cb1f
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
@@ -29,7 +27,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/arch v0.15.0
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.38.0
 	golang.org/x/sync v0.12.0
 )
 
