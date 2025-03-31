@@ -1,6 +1,6 @@
 module github.com/Zxilly/go-size-analyzer
 
-go 1.24
+go 1.24.1
 
 require (
 	github.com/ZxillyFork/gore v0.0.0-20250305071506-57373772cb1f
