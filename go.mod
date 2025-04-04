@@ -1,17 +1,17 @@
 module github.com/Zxilly/go-size-analyzer
 
-go 1.24.1
+go 1.24.2
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20250305071506-57373772cb1f
+	github.com/ZxillyFork/gore v0.0.0-20250402071623-d083f311aad2
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
-	github.com/alecthomas/kong v1.9.0
+	github.com/alecthomas/kong v1.10.0
 	github.com/blacktop/go-macho v1.1.245
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.3.4
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/charmbracelet/x/exp/teatest v0.0.0-20250313150240-c09addb0e197
+	github.com/charmbracelet/x/exp/teatest v0.0.0-20250331185309-2c96f2c3a435
 	github.com/charmbracelet/x/term v0.2.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.24.1
@@ -35,10 +35,10 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/blacktop/go-dwarf v1.0.14 // indirect
-	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
+	github.com/charmbracelet/colorprofile v0.3.0 // indirect
 	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
-	github.com/charmbracelet/x/exp/golden v0.0.0-20250313150240-c09addb0e197 // indirect
+	github.com/charmbracelet/x/exp/golden v0.0.0-20250331185309-2c96f2c3a435 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
 	github.com/kr/pretty v0.3.1 // indirect
