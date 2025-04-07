@@ -52,7 +52,7 @@ def generate_image_url(p: str) -> str:
     with open(p, "r", encoding="utf-8") as f:
         data = f.read()
 
-    resp = requests.post("https://bin2image.zxilly.dev", data=data)
+    resp = requests.post("https://bin2image.zxilly.dev", data=data, headers={"X-Optimize-Svg": "true"})
     resp.raise_for_status()
 
     return resp.text
