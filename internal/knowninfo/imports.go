@@ -65,7 +65,7 @@ func (m *Dependencies) UpdateImportBy() {
 					}
 					newValue.Add(pkg.Name)
 					op = xsync.UpdateOp
-					return
+					return newValue, op
 				})
 			}
 			return nil

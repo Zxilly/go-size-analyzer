@@ -167,12 +167,12 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
       .add("Size:", formatBytes(this.data.size));
     let content = align.toString();
     if (this.data.importedBy && this.data.importedBy.length > 0) {
-      content += "\n\n"
-        + "Imported by:\n"
-        + this.data.importedBy.slice(0, 15).map(pkg => `- ${pkg}`).join("\n");
-        if (this.data.importedBy.length > 15) {
-            content += "\n- And more...";
-        }
+      content += `\n\n`
+        + `Imported by:\n${
+          this.data.importedBy.slice(0, 15).map(pkg => `- ${pkg}`).join("\n")}`;
+      if (this.data.importedBy.length > 15) {
+        content += "\n- And more...";
+      }
     }
     return content;
   }

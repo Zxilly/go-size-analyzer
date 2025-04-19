@@ -1,5 +1,5 @@
-import type {GenericSchema, InferInput,} from "valibot";
-import {array, boolean, lazy, literal, number, object, optional, record, safeParse, string, union,} from "valibot";
+import type { GenericSchema, InferInput } from "valibot";
+import { array, boolean, lazy, literal, number, object, optional, record, safeParse, string, union } from "valibot";
 
 export const SectionSchema = object({
   name: string(),
