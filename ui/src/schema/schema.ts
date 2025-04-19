@@ -73,6 +73,8 @@ export const PackageSchema: GenericSchema<PackageRef> = object({
   size: number(),
 });
 
+export type Package = InferInput<typeof PackageSchema>;
+
 export const ResultSchema = object({
   name: string(),
   size: number(),
