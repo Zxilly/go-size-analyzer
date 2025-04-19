@@ -38,7 +38,9 @@ var Options struct {
 	Open        bool                  `long:"open" help:"Open browser" group:"web"`
 	UpdateCache webui.UpdateCacheFlag `long:"update-cache" help:"Update the cache file for the web UI" group:"web"`
 
-	Tui bool `long:"tui" help:"use terminal interface to explore the details" group:"tui"`
+	Tui bool `long:"tui" help:"Use terminal interface to explore the details" group:"tui"`
+
+	Imports bool `long:"imports" help:"Try analyze package imports from source" group:"imports"`
 
 	Output string `short:"o" help:"Write to file"`
 
@@ -59,8 +61,6 @@ func init() {
 			NoAppSummary: true,
 		}),
 		kong.Help(func(options kong.HelpOptions, ctx *kong.Context) error {
-			utils.Must2(ctx.Stderr.Write([]byte("Usage: \n\tgsa <file> [flags]\n")))
-			utils.Must2(ctx.Stderr.Write([]byte("\tgsa <old file> <new file> [flags]\n")))
 			return kong.DefaultHelpPrinter(options, ctx)
 		}),
 		kong.ExplicitGroups([]kong.Group{
@@ -83,6 +83,10 @@ func init() {
 			{
 				Key:   "tui",
 				Title: "Terminal interface options",
+			},
+			{
+				Key:   "imports",
+				Title: "Imports analysis options",
 			},
 		}),
 		kong.Vars{

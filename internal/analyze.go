@@ -23,6 +23,8 @@ type Options struct {
 	SkipSymbol bool
 	SkipDisasm bool
 	SkipDwarf  bool
+
+	Imports bool
 }
 
 func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*result.Result, error) {
@@ -33,8 +35,8 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		return nil, err
 	}
 
-	slog.Info("Parsed binary done")
-	utils.WaitDebugger("Parsed binary done")
+	slog.Info("Parsed binary")
+	utils.WaitDebugger("Parsed binary")
 
 	slog.Info("Finding build info...")
 
@@ -69,19 +71,17 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	if !options.SkipDwarf {
 		slog.Info("Parsing DWARF...")
 		dwarfOk = k.TryLoadDwarf()
-	}
 
-	if !dwarfOk && !options.SkipDwarf {
-		slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
-	}
-
-	if dwarfOk {
-		analyzers = append(analyzers, entity.AnalyzerDwarf)
-		slog.Info("Parsed DWARF")
+		if !dwarfOk {
+			slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
+		} else {
+			analyzers = append(analyzers, entity.AnalyzerDwarf)
+			slog.Info("Parsed DWARF")
+		}
 	}
 
 	// DWARF can still add new package, so we defer this
-	k.Deps.FinishLoad()
+	k.Deps.FinishLoad(options.Imports)
 	utils.WaitDebugger("DWARF and deps done")
 
 	// we force a gc here, since the gore file is no longer used

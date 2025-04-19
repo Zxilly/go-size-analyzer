@@ -39,6 +39,8 @@ type Package struct {
 	// relies on coverage.
 	Symbols []*Symbol `json:"symbols"`
 
+	ImportedBy []string `json:"importedBy,omitempty"`
+
 	filesCache map[string]*File
 	funcsCache map[string]*Function
 
@@ -53,6 +55,7 @@ func NewPackage() *Package {
 		SubPackages: make(map[string]*Package),
 		Files:       make([]*File, 0),
 		Symbols:     make([]*Symbol, 0),
+		ImportedBy:  make([]string, 0),
 
 		symbolAddrSpace: AddrSpace{},
 		filesCache:      make(map[string]*File),

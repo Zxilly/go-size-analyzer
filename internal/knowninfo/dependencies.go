@@ -61,7 +61,7 @@ func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) 
 	}
 }
 
-func (m *Dependencies) FinishLoad() {
+func (m *Dependencies) FinishLoad(imports bool) {
 	type pair struct {
 		m  entity.PackageMap
 		tc *trie.PathTrie[*entity.Package]
@@ -88,6 +88,10 @@ func (m *Dependencies) FinishLoad() {
 		p := pending[0]
 		pending = pending[1:]
 		load(p.m, p.tc)
+	}
+
+	if imports {
+		m.UpdateImportBy()
 	}
 
 	// clear caches

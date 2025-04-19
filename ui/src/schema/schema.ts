@@ -1,20 +1,5 @@
-import type {
-  GenericSchema,
-  InferInput,
-} from "valibot";
-import {
-  array,
-  boolean,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  record,
-  safeParse,
-  string,
-  union,
-} from "valibot";
+import type {GenericSchema, InferInput,} from "valibot";
+import {array, boolean, lazy, literal, number, object, optional, record, safeParse, string, union,} from "valibot";
 
 export const SectionSchema = object({
   name: string(),
@@ -55,6 +40,7 @@ interface PackageRef {
   files: File[];
   symbols: FileSymbol[];
   size: number;
+  importedBy?: string[];
 }
 
 export const PackageSchema: GenericSchema<PackageRef> = object({
@@ -71,6 +57,7 @@ export const PackageSchema: GenericSchema<PackageRef> = object({
   files: array(FileSchema),
   symbols: array(FileSymbolSchema),
   size: number(),
+  importedBy: optional(array(string())),
 });
 
 export type Package = InferInput<typeof PackageSchema>;
@@ -86,19 +73,12 @@ export const ResultSchema = object({
 export type Result = InferInput<typeof ResultSchema>;
 
 export function parseResult(data: string): Result | null {
-  try {
-    const obj = JSON.parse(data);
-    const result = safeParse(ResultSchema, obj);
+  const obj = JSON.parse(data);
+  const result = safeParse(ResultSchema, obj);
 
-    if (result.success) {
-      return result.output;
-    }
-
-    console.warn(result.issues);
-    return null;
+  if (result.success) {
+    return result.output;
   }
-  catch (error) {
-    console.error("Failed to parse JSON:", error);
-    return null;
-  }
+  console.error("Failed to parse result", result.issues);
+  return null;
 }

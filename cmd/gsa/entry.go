@@ -26,6 +26,7 @@ func entry() error {
 		SkipSymbol: Options.NoSymbol,
 		SkipDisasm: Options.NoDisasm,
 		SkipDwarf:  Options.NoDwarf,
+		Imports:    Options.Imports,
 	}
 
 	var writer io.Writer

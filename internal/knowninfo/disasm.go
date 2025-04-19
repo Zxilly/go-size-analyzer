@@ -58,7 +58,7 @@ func (k *KnownInfo) Disasm() error {
 	}()
 
 	var (
-		maxWorkers = runtime.GOMAXPROCS(0)
+		maxWorkers = runtime.NumCPU()
 		eg         = errgroup.Group{}
 	)
 	eg.SetLimit(maxWorkers)

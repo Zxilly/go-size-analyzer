@@ -88,6 +88,14 @@ func (w *wrapper) Description() string {
 			writeln("Size: %s (%d Bytes)", humanize.Bytes(w.pkg.Size), w.pkg.Size)
 			writeln("Type: %s", w.pkg.Type)
 
+			if len(w.pkg.ImportedBy) > 0 {
+				writeln("")
+				writeln("Imported By:")
+				for _, k := range w.pkg.ImportedBy {
+					writeln("  %s", k)
+				}
+			}
+
 			if len(w.pkg.Files) > 0 {
 				writeln("")
 				writeln("Files:")

@@ -177,10 +177,6 @@ $ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ### 完整选项
 
 ```bash
-Usage: 
-	gsa <file> [flags]
-	gsa <old file> <new file> [flags]
-
 A tool for determining the extent to which dependencies contribute to the
 bloated size of compiled Go binaries.
 
@@ -218,9 +214,13 @@ Web interface options
   --web               use web interface to explore the details
   --listen=":8080"    listen address
   --open              Open browser
+  --update-cache      Update the cache file for the web UI
 
 Terminal interface options
-  --tui    use terminal interface to explore the details
+  --tui    Use terminal interface to explore the details
+
+Imports analysis options
+  --imports    Try analyze package imports from source
 
 ```
 
