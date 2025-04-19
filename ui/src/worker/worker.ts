@@ -4,7 +4,7 @@ import { setCallback } from "../runtime/fs";
 import "../runtime/wasm_exec.js";
 
 declare const self: DedicatedWorkerGlobalScope;
-declare function gsa_analyze(name: string, data: Uint8Array): import("../generated/schema.ts").Result;
+declare function gsa_analyze(name: string, data: Uint8Array): import("../schema/schema.ts").Result;
 
 async function init() {
   const go = new Go();

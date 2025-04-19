@@ -6,7 +6,7 @@ export interface LoadEvent {
 
 export interface AnalyzeEvent {
   type: "analyze";
-  result: import("../generated/schema.ts").Result | null;
+  result: import("../schema/schema.ts").Result | null;
 }
 
 export interface LogEvent {

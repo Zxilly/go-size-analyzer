@@ -1,4 +1,4 @@
-import type { Result } from "../generated/schema.ts";
+import type { Result } from "../schema/schema.ts";
 import type { LoadEvent, WasmEvent } from "./event.ts";
 import worker from "./worker.ts?worker&url";
 

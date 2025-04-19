@@ -1,4 +1,4 @@
-import type { Result } from "../../generated/schema.ts";
+import type { Result } from "../../schema/schema.ts";
 import { getTestResult } from "../../test/testhelper.ts";
 
 export class GsaInstance {

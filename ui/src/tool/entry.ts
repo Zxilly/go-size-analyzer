@@ -1,4 +1,4 @@
-import type { File, FileSymbol, Package, Result, Section } from "../generated/schema.ts";
+import type { File, FileSymbol, Package, Result, Section } from "../schema/schema.ts";
 import { Aligner } from "./aligner.ts";
 import { orderedID } from "./id.ts";
 import { formatBytes, title, trimPrefix } from "./utils.ts";

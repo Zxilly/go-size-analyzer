@@ -1,4 +1,4 @@
-import { Troubleshoot } from "@mui/icons-material";
+import Troubleshoot from "@mui/icons-material/Troubleshoot";
 import {
   Box,
   Button,
