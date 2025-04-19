@@ -38,6 +38,6 @@ describe("loadDataFromEmbed", () => {
 
   it("should throw error when data is not parsable", () => {
     document.body.innerHTML = `<div id="data">unparsable data</div>`;
-    expect(() => loadDataFromEmbed()).toThrow(`Unexpected token 'u', "unparsable data" is not valid JSON`);
+    expect(() => loadDataFromEmbed()).toThrow(`Failed to parse data`);
   });
 });

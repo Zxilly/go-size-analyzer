@@ -1,93 +1,102 @@
-import { z } from "zod";
+import type {
+  GenericSchema,
+  InferInput,
+} from "valibot";
+import {
+  array,
+  boolean,
+  lazy,
+  literal,
+  number,
+  object,
+  optional,
+  record,
+  safeParse,
+  string,
+  union,
+} from "valibot";
 
-export const SectionSchema = z.object({
-  name: z.string(),
-  size: z.number(),
-  file_size: z.number(),
-  known_size: z.number(),
-  offset: z.number(),
-  end: z.number(),
-  addr: z.number(),
-  addr_end: z.number(),
-  only_in_memory: z.boolean(),
-  debug: z.boolean(),
+export const SectionSchema = object({
+  name: string(),
+  size: number(),
+  file_size: number(),
+  known_size: number(),
+  offset: number(),
+  end: number(),
+  addr: number(),
+  addr_end: number(),
+  only_in_memory: boolean(),
+  debug: boolean(),
 });
 
-export type Section = z.infer<typeof SectionSchema>;
+export type Section = InferInput<typeof SectionSchema>;
 
-export const FileSchema = z.object({
-  file_path: z.string(),
-  size: z.number(),
-  pcln_size: z.number(),
+export const FileSchema = object({
+  file_path: string(),
+  size: number(),
+  pcln_size: number(),
 });
 
-export type File = z.infer<typeof FileSchema>;
+export type File = InferInput<typeof FileSchema>;
 
-export const FileSymbolSchema = z.object({
-  name: z.string(),
-  addr: z.number(),
-  size: z.number(),
-  type: z.union([z.literal("unknown"), z.literal("text"), z.literal("data")]),
+export const FileSymbolSchema = object({
+  name: string(),
+  addr: number(),
+  size: number(),
+  type: union([literal("unknown"), literal("text"), literal("data")]),
 });
 
-export type FileSymbol = z.infer<typeof FileSymbolSchema>;
+export type FileSymbol = InferInput<typeof FileSymbolSchema>;
 
-interface packageRefer {
+interface PackageRef {
   name: string;
   type: "main" | "std" | "vendor" | "generated" | "unknown" | "cgo";
-  subPackages: Record<string, Package>;
+  subPackages: Record<string, PackageRef>;
   files: File[];
   symbols: FileSymbol[];
   size: number;
 }
 
-export const PackageSchema: z.ZodSchema<packageRefer> = z.lazy(() =>
-  z.object({
-    name: z.string(),
-    type: z.union([
-      z.literal("main"),
-      z.literal("std"),
-      z.literal("vendor"),
-      z.literal("generated"),
-      z.literal("unknown"),
-      z.literal("cgo"),
-    ]),
-    subPackages: z.record(PackageSchema),
-    files: z.array(FileSchema),
-    symbols: z.array(FileSymbolSchema),
-    size: z.number(),
-  }),
-);
-
-export type Package = z.infer<typeof PackageSchema>;
-
-export const ResultSchema = z.object({
-  name: z.string(),
-  size: z.number(),
-  packages: z.record(PackageSchema),
-  sections: z.array(SectionSchema),
-  analyzers: z.union([
-    z.array(
-      z.union([
-        z.literal("dwarf"),
-        z.literal("disasm"),
-        z.literal("symbol"),
-        z.literal("pclntab"),
-      ]),
-    ),
-    z.undefined(),
+export const PackageSchema: GenericSchema<PackageRef> = object({
+  name: string(),
+  type: union([
+    literal("main"),
+    literal("std"),
+    literal("vendor"),
+    literal("generated"),
+    literal("unknown"),
+    literal("cgo"),
   ]),
+  subPackages: record(string(), lazy(() => PackageSchema)),
+  files: array(FileSchema),
+  symbols: array(FileSymbolSchema),
+  size: number(),
 });
 
-export type Result = z.infer<typeof ResultSchema>;
+export const ResultSchema = object({
+  name: string(),
+  size: number(),
+  packages: record(string(), PackageSchema),
+  sections: array(SectionSchema),
+  analyzers: optional(array(union([literal("dwarf"), literal("disasm"), literal("symbol"), literal("pclntab")]))),
+});
+
+export type Result = InferInput<typeof ResultSchema>;
 
 export function parseResult(data: string): Result | null {
-  const obj = JSON.parse(data);
+  try {
+    const obj = JSON.parse(data);
+    const result = safeParse(ResultSchema, obj);
 
-  const ret = ResultSchema.safeParse(obj);
-  if (ret.success) {
-    return ret.data;
+    if (result.success) {
+      return result.output;
+    }
+
+    console.warn(result.issues);
+    return null;
   }
-  console.warn(ret.error);
-  return null;
+  catch (error) {
+    console.error("Failed to parse JSON:", error);
+    return null;
+  }
 }
