@@ -108,6 +108,6 @@ func init() {
 	if Options.Verbose {
 		utils.InitLogger(slog.LevelDebug)
 	} else {
-		utils.InitLogger(slog.LevelWarn)
+		utils.InitLogger(slog.LevelInfo)
 	}
 }
