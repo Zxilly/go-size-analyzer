@@ -1,6 +1,5 @@
 import os
 import shutil
-import socket
 import tempfile
 import time
 
@@ -80,6 +79,10 @@ def clear_folder(folder_path: str) -> None:
 
 
 def get_bin_path(name: str) -> str:
+    use_cached_bin = os.getenv("TESTDATA_PATH")
+    if use_cached_bin is not None:
+        return os.path.abspath(use_cached_bin)
+
     return os.path.join(get_project_root(), "scripts", "bins", name)
 
 
@@ -111,7 +114,7 @@ def load_skip() -> list[str]:
 process_timeout = 360 if os.name == "nt" else 180
 
 
-def get_binaries_path():
+def get_binaries_source_path():
     return os.path.join(get_project_root(), "scripts", "binaries.csv")
 
 

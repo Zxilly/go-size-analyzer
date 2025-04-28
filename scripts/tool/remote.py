@@ -12,8 +12,7 @@ import requests
 from tqdm import tqdm
 
 from .gsa import GSAInstance
-from .process import run_process
-from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_path
+from .utils import get_project_root, ensure_dir, get_bin_path, log, get_binaries_source_path
 
 
 class TestType(Flag):
@@ -177,11 +176,11 @@ class RemoteBinary:
 
             self.targets = targets
 
-    def to_csv(self) -> [str]:
+    def to_csv(self) -> list[str]:
         return [self.name, self.url, self.test_type.value, self.type.value, "@".join([str(t) for t in self.targets])]
 
     @staticmethod
-    def from_csv(line: [str]):
+    def from_csv(line: list[str]):
         ret = RemoteBinary(line[0],
                            line[1],
                            TestType(int(line[2])),
@@ -259,7 +258,7 @@ class RemoteBinary:
 def load_remote_binaries_as_test(cond: Callable[[str], bool]) -> list[IntegrationTest]:
     log("Fetching remote binaries...")
 
-    with open(get_binaries_path(), "r", encoding="utf-8") as f:
+    with open(get_binaries_source_path(), "r", encoding="utf-8") as f:
         reader = csv.reader(f)
         ret = [RemoteBinary.from_csv(line) for line in reader]
 

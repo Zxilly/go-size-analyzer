@@ -6,7 +6,7 @@ import requests
 
 from tool.example import get_example_download_url
 from tool.remote import RemoteBinary, RemoteBinaryType, TestType, Target
-from tool.utils import get_binaries_path
+from tool.utils import get_binaries_source_path
 
 
 def add_exe(name: str, is_windows: bool) -> str:
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
     pool.shutdown(wait=True)
 
-    with open(get_binaries_path(), "w", newline="", encoding="utf-8") as f:
+    with open(get_binaries_source_path(), "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         for remote in remotes:
             writer.writerow(remote.to_csv())
