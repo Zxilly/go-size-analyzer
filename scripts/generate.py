@@ -136,6 +136,21 @@ def generate_example() -> list[RemoteBinary]:
     strips = ["-strip", "-stripdwarf", ""]
 
     ret = []
+
+    # These are some special cases for the unit tests.
+    for v in ["1.21", "1.22"]:
+        name = f"bin-linux-{v}-amd64"
+        url = get_example_download_url(name)
+        ret.append(
+            RemoteBinary(
+                name,
+                url,
+                TestType.NO_TEST,
+                RemoteBinaryType.RAW,
+            )
+        )
+
+
     for v, o, pie, cgo, a, s in itertools.product(versions, oses, pies, cgos, archs, strips):
         if (pie == "-pie" and cgo == "") or \
                 (o == "darwin" and a == "386") or \

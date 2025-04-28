@@ -1,3 +1,5 @@
+bin-linux-1.21-amd64,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64,16,raw,bin-linux-1.21-amd64
+bin-linux-1.22-amd64,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64,16,raw,bin-linux-1.22-amd64
 bin-linux-1.22-amd64-strip-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-strip-pie-cgo,15,raw,bin-linux-1.22-amd64-strip-pie-cgo
 bin-linux-1.22-amd64-stripdwarf-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-stripdwarf-pie-cgo,15,raw,bin-linux-1.22-amd64-stripdwarf-pie-cgo
 bin-linux-1.22-amd64-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-pie-cgo,15,raw,bin-linux-1.22-amd64-pie-cgo

@@ -20,6 +20,7 @@ class TestType(Flag):
     JSON_TEST = auto()
     HTML_TEST = auto()
     SVG_TEST = auto()
+    NO_TEST = auto()
 
 
 def get_flag_str(typ: TestType) -> str:
@@ -31,6 +32,8 @@ def get_flag_str(typ: TestType) -> str:
         return "html"
     elif typ == TestType.SVG_TEST:
         return "svg"
+    elif typ == TestType.NO_TEST:
+        return "none"
 
     raise Exception(f"Unknown test type {typ}")
 
@@ -195,7 +198,7 @@ class RemoteBinary:
                 ok = False
                 break
         if ok and os.getenv("FORCE_REFRESH") is None:
-            log(f"{self} already exists.")
+            log(f"{self} already exists at {self.targets[0].path}")
             return
 
         header = dict()
