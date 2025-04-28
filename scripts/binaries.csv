@@ -1,5 +1,3 @@
-bin-linux-1.21-amd64,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64,16,raw,bin-linux-1.21-amd64
-bin-linux-1.22-amd64,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64,16,raw,bin-linux-1.22-amd64
 bin-linux-1.22-amd64-strip-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-strip-pie-cgo,15,raw,bin-linux-1.22-amd64-strip-pie-cgo
 bin-linux-1.22-amd64-stripdwarf-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-stripdwarf-pie-cgo,15,raw,bin-linux-1.22-amd64-stripdwarf-pie-cgo
 bin-linux-1.22-amd64-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64-pie-cgo,15,raw,bin-linux-1.22-amd64-pie-cgo
@@ -173,12 +171,12 @@ kube-proxy-amd64,https://dl.k8s.io/v1.32.3/bin/linux/amd64/kube-proxy,2,raw,kube
 kube-proxy-arm64,https://dl.k8s.io/v1.32.3/bin/linux/arm64/kube-proxy,2,raw,kube-proxy-arm64
 kube-apiserver-amd64,https://dl.k8s.io/v1.32.3/bin/linux/amd64/kube-apiserver,2,raw,kube-apiserver-amd64
 kube-apiserver-arm64,https://dl.k8s.io/v1.32.3/bin/linux/arm64/kube-apiserver,2,raw,kube-apiserver-arm64
-prometheus-windows-amd64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.windows-amd64.tar.gz,2,tar,prometheus.exe:prometheus-windows-amd64@promtool.exe:promtool-windows-amd64
-prometheus-windows-arm64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.windows-arm64.tar.gz,2,tar,prometheus.exe:prometheus-windows-arm64@promtool.exe:promtool-windows-arm64
-prometheus-windows-386,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.windows-386.tar.gz,2,tar,prometheus.exe:prometheus-windows-386@promtool.exe:promtool-windows-386
-prometheus-linux-amd64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.linux-amd64.tar.gz,2,tar,prometheus:prometheus-linux-amd64@promtool:promtool-linux-amd64
-prometheus-linux-arm64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.linux-arm64.tar.gz,2,tar,prometheus:prometheus-linux-arm64@promtool:promtool-linux-arm64
-prometheus-linux-386,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.linux-386.tar.gz,2,tar,prometheus:prometheus-linux-386@promtool:promtool-linux-386
-prometheus-darwin-amd64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.darwin-amd64.tar.gz,2,tar,prometheus:prometheus-darwin-amd64@promtool:promtool-darwin-amd64
-prometheus-darwin-arm64,https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.darwin-arm64.tar.gz,2,tar,prometheus:prometheus-darwin-arm64@promtool:promtool-darwin-arm64
+prometheus-windows-amd64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.windows-amd64.tar.gz,2,tar,prometheus.exe:prometheus-windows-amd64@promtool.exe:promtool-windows-amd64
+prometheus-windows-arm64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.windows-arm64.tar.gz,2,tar,prometheus.exe:prometheus-windows-arm64@promtool.exe:promtool-windows-arm64
+prometheus-windows-386,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.windows-386.tar.gz,2,tar,prometheus.exe:prometheus-windows-386@promtool.exe:promtool-windows-386
+prometheus-linux-amd64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.linux-amd64.tar.gz,2,tar,prometheus:prometheus-linux-amd64@promtool:promtool-linux-amd64
+prometheus-linux-arm64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.linux-arm64.tar.gz,2,tar,prometheus:prometheus-linux-arm64@promtool:promtool-linux-arm64
+prometheus-linux-386,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.linux-386.tar.gz,2,tar,prometheus:prometheus-linux-386@promtool:promtool-linux-386
+prometheus-darwin-amd64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.darwin-amd64.tar.gz,2,tar,prometheus:prometheus-darwin-amd64@promtool:promtool-darwin-amd64
+prometheus-darwin-arm64,https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.darwin-arm64.tar.gz,2,tar,prometheus:prometheus-darwin-arm64@promtool:promtool-darwin-arm64
 vitess,https://github.com/vitessio/vitess/releases/download/v21.0.3/vitess-21.0.3-94fdc73.tar.gz,2,tar,vtctl:vtctl@vtgate:vtgate@vttablet:vttablet@vtcombo:vtcombo@vtgate:vtgate@vtorc:vtorc

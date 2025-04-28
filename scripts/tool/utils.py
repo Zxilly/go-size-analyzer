@@ -79,11 +79,12 @@ def clear_folder(folder_path: str) -> None:
 
 
 def get_bin_path(name: str) -> str:
+    base = os.path.join(get_project_root(), "scripts", "bins")
     use_cached_bin = os.getenv("TESTDATA_PATH")
     if use_cached_bin is not None:
-        return os.path.abspath(use_cached_bin)
+        base = os.path.abspath(use_cached_bin)
 
-    return os.path.join(get_project_root(), "scripts", "bins", name)
+    return os.path.join(base, name)
 
 
 def require_go() -> str:

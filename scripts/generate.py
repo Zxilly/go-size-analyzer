@@ -64,7 +64,7 @@ def generate_kubernetes() -> list[RemoteBinary]:
             [Target(None, name)]
         ))
 
-    # kube-proxy 和 kube-apiserver 部分
+    # kube-proxy kube-apiserver
     kube_components = ["kube-proxy", "kube-apiserver"]
     kube_archs = ["amd64", "arm64"]
 
@@ -99,7 +99,7 @@ def generate_prometheus() -> list[RemoteBinary]:
             ret.append(
                 RemoteBinary(
                     f"prometheus-{o}-{a}",
-                    f"https://github.com/prometheus/prometheus/releases/download/v3.2.1/prometheus-3.2.1.{o}-{a}.tar.gz",
+                    f"https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.{o}-{a}.tar.gz",
                     TestType.JSON_TEST,
                     RemoteBinaryType.TAR,
                     targets)
@@ -136,20 +136,6 @@ def generate_example() -> list[RemoteBinary]:
     strips = ["-strip", "-stripdwarf", ""]
 
     ret = []
-
-    # These are some special cases for the unit tests.
-    for v in ["1.21", "1.22"]:
-        name = f"bin-linux-{v}-amd64"
-        url = get_example_download_url(name)
-        ret.append(
-            RemoteBinary(
-                name,
-                url,
-                TestType.NO_TEST,
-                RemoteBinaryType.RAW,
-            )
-        )
-
 
     for v, o, pie, cgo, a, s in itertools.product(versions, oses, pies, cgos, archs, strips):
         if (pie == "-pie" and cgo == "") or \

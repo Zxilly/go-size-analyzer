@@ -283,7 +283,7 @@ def load_remote_for_unit_test():
                   TestType.TEXT_TEST, RemoteBinaryType.RAW, [Target("bin-linux-1.21-amd64", "bin-linux-1.21-amd64")])
      .ensure_exist())
     (RemoteBinary("bin-linux-1.22-amd64",
-                  "https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.21-amd64-cgo",
+                  "https://github.com/Zxilly/go-testdata/releases/download/latest/bin-linux-1.22-amd64",
                   TestType.TEXT_TEST, RemoteBinaryType.RAW,
                   [Target("bin-linux-1.22-amd64", "bin-linux-1.22-amd64")])
      .ensure_exist())
