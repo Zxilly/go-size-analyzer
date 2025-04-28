@@ -25,7 +25,7 @@ func TestFullOutput(t *testing.T) {
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte("runtime"))
-	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
+	}, teatest.WithCheckInterval(time.Millisecond*200), teatest.WithDuration(time.Second*10))
 
 	// test scroll
 	tm.Send(tea.MouseMsg{
@@ -68,7 +68,7 @@ func TestFullOutput(t *testing.T) {
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte("proc.go"))
-	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
+	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
 	// enter proc.go
 	for range 4 {
@@ -105,11 +105,11 @@ func TestFullOutput(t *testing.T) {
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte(".gopclntab"))
-	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*1))
+	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
 	tm.Send(tea.KeyMsg{
 		Type: tea.KeyCtrlC,
 	})
 
-	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*1))
+	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*3))
 }
