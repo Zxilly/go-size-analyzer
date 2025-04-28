@@ -42,6 +42,11 @@ func GetProjectRoot(t *testing.T) string {
 func GetTestBinPath(t *testing.T) string {
 	t.Helper()
 
+	testdataPath := os.Getenv("TESTDATA_PATH")
+	if testdataPath != "" {
+		return testdataPath
+	}
+
 	p := filepath.Join(GetProjectRoot(t), "scripts", "bins", "bin-linux-1.21-amd64")
 	p, err := filepath.Abs(p)
 	require.NoError(t, err)
