@@ -39,6 +39,17 @@ func GetProjectRoot(t *testing.T) string {
 	return RewritePathOnDemand(t, filepath.Join(filepath.Dir(filename), "..", ".."))
 }
 
+func getTestBinBasePath(t *testing.T) string {
+	t.Helper()
+
+	testdataPath := os.Getenv("TESTDATA_PATH")
+	if testdataPath != "" {
+		return testdataPath
+	}
+
+	return filepath.Join(GetProjectRoot(t), "scripts", "bins")
+}
+
 func GetTestBinPath(t *testing.T) string {
 	t.Helper()
 
@@ -47,7 +58,7 @@ func GetTestBinPath(t *testing.T) string {
 		return testdataPath
 	}
 
-	p := filepath.Join(GetProjectRoot(t), "scripts", "bins", "bin-linux-1.21-amd64")
+	p := filepath.Join(getTestBinBasePath(t), "bin-linux-1.21-amd64")
 	p, err := filepath.Abs(p)
 	require.NoError(t, err)
 
@@ -60,7 +71,7 @@ func GetTestBinPath(t *testing.T) string {
 func GetTestDiffBinPath(t *testing.T) string {
 	t.Helper()
 
-	p := filepath.Join(GetProjectRoot(t), "scripts", "bins", "bin-linux-1.22-amd64")
+	p := filepath.Join(getTestBinBasePath(t), "bin-linux-1.22-amd64")
 	p, err := filepath.Abs(p)
 	require.NoError(t, err)
 
