@@ -9,7 +9,7 @@ require (
 	github.com/alecthomas/kong v1.10.0
 	github.com/blacktop/go-macho v1.1.245
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.4
+	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250331185309-2c96f2c3a435
 	github.com/charmbracelet/x/term v0.2.1
@@ -23,7 +23,7 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/puzpuzpuz/xsync/v4 v4.0.0
+	github.com/puzpuzpuz/xsync/v4 v4.1.0
 	github.com/samber/lo v1.50.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/arch v0.16.0
