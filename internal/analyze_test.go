@@ -36,7 +36,7 @@ func TestAnalyzeImports(t *testing.T) {
 	f, err := mmap.Open(bin)
 	require.NoError(t, err)
 	defer func() {
-		err := f.Close()
+		err = f.Close()
 		require.NoError(t, err)
 	}()
 

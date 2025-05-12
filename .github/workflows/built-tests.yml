@@ -141,7 +141,9 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
-          path: results/
+          path: |
+            results/
+            ${{ matrix.test-type }}.profile
 
   merge:
     name: Merge Go test results
