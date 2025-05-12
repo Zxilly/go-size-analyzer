@@ -1,7 +1,7 @@
 import os.path
-import sys
 import platform
 import subprocess
+import sys
 import time
 from argparse import ArgumentParser
 
@@ -14,9 +14,9 @@ from tool.junit import generate_junit
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, init_dirs, write_github_summary, \
-    require_go
+    require_go, get_covdata_unit_dir
 
-unit_path = os.path.join(get_project_root(), "covdata", "unit")
+unit_path = get_covdata_unit_dir()
 unit_output_dir = os.path.join(get_project_root(), "results", "unit")
 ensure_dir(unit_path)
 ensure_dir(unit_output_dir)
@@ -99,10 +99,11 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                   "-v",
                   "-covermode=atomic",
                   "-cover",
+                  "-coverpkg=github.com/Zxilly/go-size-analyzer/...",
+                  f"-coverprofile={unit_path}/embed.out",
                   "-tags=embed",
-                  "./...",
-                  "-args",
-                  f"-test.gocoverdir={unit_path}"],
+                  "github.com/Zxilly/go-size-analyzer/...",
+                  ],
                  600)
 
     if no_embed:
@@ -112,9 +113,10 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                   "-v",
                   "-covermode=atomic",
                   "-cover",
-                  "./internal/webui",
-                  "-args",
-                  f"-test.gocoverdir={unit_path}"],
+                  f"-coverprofile={unit_path}/normal.out",
+                  "-coverpkg=github.com/Zxilly/go-size-analyzer/...",
+                  "github.com/Zxilly/go-size-analyzer/internal/webui",
+                  ],
                  600)
 
     if wasm and not sys.platform.startswith('win32'):
@@ -124,8 +126,9 @@ def run_unit_tests(full: bool, wasm: bool, no_embed: bool):
                   "-v",
                   "-covermode=atomic",
                   "-cover",
+                  f"-coverprofile={unit_path}/wasm.out",
                   "-coverpkg=github.com/Zxilly/go-size-analyzer/...",
-                  f"-test.gocoverdir={unit_path}"],
+                  ],
                  600)
 
     log("Unit tests passed.")
@@ -294,8 +297,7 @@ if __name__ == "__main__":
                 run_integration_tests("example", gsa)
             if args.integration_real:
                 run_integration_tests("real", gsa)
-
-    merge_covdata()
+        merge_covdata()
 
     if global_failed == 0:
         log("All tests passed.")

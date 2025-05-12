@@ -58,7 +58,7 @@ def init_dirs():
     for p in paths:
         ensure_dir(p)
         for f in os.listdir(p):
-            os.remove(os.path.join(p, f))
+            clear_folder(os.path.join(p, f))
 
     results = os.path.join(get_project_root(), "results")
     clear_folder(results)

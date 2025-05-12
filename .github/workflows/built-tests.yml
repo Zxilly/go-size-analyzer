@@ -118,12 +118,13 @@ jobs:
 
       - name: Upload coverage
         uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5.4.2
-        if: ${{ !cancelled() && matrix.os != 'self-hosted' }}
+        if: ${{ !cancelled() }}
         with:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ${{ matrix.test-type }}.profile
+          files: ${{ matrix.test-type }}.profile,covdata/unit/normal.out,covdata/unit/embed.out,covdata/unit/wasm.out
           flags: ${{ matrix.test-type }}
+          use_pypi: true
           verbose: true
 
       - name: Upload test results to Codecov
