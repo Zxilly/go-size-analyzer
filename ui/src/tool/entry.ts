@@ -406,7 +406,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
     const align = new Aligner();
     align.add("Result:", this.data.name);
     if (this.data.analyzers) {
-      align.add("Analyzer", this.data.analyzers.join(", "));
+      align.add("Analyzer:", this.data.analyzers.join(", "));
     }
     align.add("Size:", formatBytes(this.data.size));
     return align.toString();

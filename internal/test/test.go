@@ -3,7 +3,6 @@ package test
 import (
 	"os"
 	"path/filepath"
-	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -11,33 +10,8 @@ import (
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
+	"github.com/Zxilly/go-size-analyzer/internal/test/testutils"
 )
-
-func RewritePathOnDemand(t *testing.T, path string) string {
-	t.Helper()
-
-	first := path[0]
-	// is upper?
-	if first >= 'A' && first <= 'Z' {
-		// we assume it's a Windows environment
-		n := []byte(path)
-
-		for i, c := range n {
-			if c == '/' {
-				n[i] = '\\'
-			}
-		}
-		return string(n)
-	}
-	return path
-}
-
-func GetProjectRoot(t *testing.T) string {
-	t.Helper()
-
-	_, filename, _, _ := runtime.Caller(0)
-	return RewritePathOnDemand(t, filepath.Join(filepath.Dir(filename), "..", ".."))
-}
 
 func getTestBinBasePath(t *testing.T) string {
 	t.Helper()
@@ -47,7 +21,7 @@ func getTestBinBasePath(t *testing.T) string {
 		return testdataPath
 	}
 
-	return filepath.Join(GetProjectRoot(t), "scripts", "bins")
+	return filepath.Join(testutils.GetProjectRoot(t), "scripts", "bins")
 }
 
 func GetTestBinPath(t *testing.T) string {
@@ -60,7 +34,7 @@ func GetTestBinPath(t *testing.T) string {
 	_, err = os.Stat(p)
 	require.NoError(t, err)
 
-	return RewritePathOnDemand(t, p)
+	return testutils.RewritePathOnDemand(t, p)
 }
 
 func GetTestDiffBinPath(t *testing.T) string {
@@ -73,27 +47,27 @@ func GetTestDiffBinPath(t *testing.T) string {
 	_, err = os.Stat(p)
 	require.NoError(t, err)
 
-	return RewritePathOnDemand(t, p)
+	return testutils.RewritePathOnDemand(t, p)
 }
 
 func GetTestJSONPath(t *testing.T) string {
 	t.Helper()
 
-	p := filepath.Join(GetProjectRoot(t), "testdata", "result.json")
+	p := filepath.Join(testutils.GetProjectRoot(t), "testdata", "result.json")
 	p, err := filepath.Abs(p)
 	require.NoError(t, err)
 
-	return RewritePathOnDemand(t, p)
+	return testutils.RewritePathOnDemand(t, p)
 }
 
 func GetTestGobPath(t *testing.T) string {
 	t.Helper()
 
-	p := filepath.Join(GetProjectRoot(t), "testdata", "result.gob.gz")
+	p := filepath.Join(testutils.GetProjectRoot(t), "testdata", "result.gob.gz")
 	p, err := filepath.Abs(p)
 	require.NoError(t, err)
 
-	return RewritePathOnDemand(t, p)
+	return testutils.RewritePathOnDemand(t, p)
 }
 
 func GetTestResult(t *testing.T) *result.Result {

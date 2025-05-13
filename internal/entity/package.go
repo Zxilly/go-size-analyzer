@@ -65,18 +65,24 @@ func NewPackage() *Package {
 	return p
 }
 
-func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, pclntab *gosym.Table) *Package {
+func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, pclntab *gosym.Table, getCodeSize func(function *gore.Function) uint64, isWasm bool) *Package {
 	p := NewPackage()
 	p.Name = utils.Deduplicate(name)
 	p.Type = typ
 	p.loaded = true
 
 	getFunction := func(f *gore.Function) *Function {
+		// fixme: pclntab size for wasm currently broken
+		pclnSize := PclnSymbolSize{}
+		if !isWasm {
+			pclnSize = NewPclnSymbolSize(f.Func)
+		}
+
 		return &Function{
 			Name:     utils.Deduplicate(f.Name),
 			Addr:     f.Offset,
-			CodeSize: f.End - f.Offset,
-			PclnSize: NewPclnSymbolSize(f.Func),
+			CodeSize: getCodeSize(f),
+			PclnSize: pclnSize,
 			Type:     FuncTypeFunction,
 			disasm:   AddrSpace{},
 			pkg:      p,
@@ -167,7 +173,7 @@ func (p *Package) Merge(rp *Package) {
 		panic(errors.New("nil package"))
 	}
 
-	if (rp.loaded) && p.Name != rp.Name {
+	if rp.loaded && p.Name != rp.Name {
 		panic(fmt.Errorf("package name not match %s %s", p.Name, rp.Name))
 	}
 

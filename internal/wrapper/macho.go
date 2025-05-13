@@ -22,6 +22,8 @@ type MachoWrapper struct {
 	chainedFixedUp bool
 }
 
+var _ RawFileWrapper = (*MachoWrapper)(nil)
+
 func NewMachoWrapper(f *macho.File) *MachoWrapper {
 	return &MachoWrapper{
 		file:           f,

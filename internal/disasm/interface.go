@@ -106,7 +106,7 @@ func (e *Extractor) checkAddrString(addr, size uint64) bool {
 		return false
 	}
 
-	data, err := e.raw.ReadAddr(addr, uint64(size))
+	data, err := e.raw.ReadAddr(addr, size)
 	if err != nil {
 		return false
 	}

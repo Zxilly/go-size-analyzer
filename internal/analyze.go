@@ -55,20 +55,25 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	slog.Info("Found build info")
 	utils.WaitDebugger("Found build info")
 
-	err = k.LoadSectionMap()
-	if err != nil {
-		return nil, err
+	isWasm := file.FileInfo.Arch == "wasm"
+
+	// fixme: add section info for wasm
+	if !isWasm {
+		err = k.LoadSectionMap()
+		if err != nil {
+			return nil, err
+		}
+
+		k.KnownAddr = entity.NewKnownAddr(k.Sects)
 	}
 
-	k.KnownAddr = entity.NewKnownAddr(k.Sects)
-
-	err = k.LoadGoreInfo(file)
+	err = k.LoadGoreInfo(file, isWasm)
 	if err != nil {
 		return nil, err
 	}
 
 	dwarfOk := false
-	if !options.SkipDwarf {
+	if !options.SkipDwarf && !isWasm {
 		slog.Info("Parsing DWARF...")
 		dwarfOk = k.TryLoadDwarf()
 
@@ -88,20 +93,22 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	debug.FreeOSMemory()
 	utils.WaitDebugger("After force gc")
 
-	record := !dwarfOk && !options.SkipSymbol
-	err = k.AnalyzeSymbol(record)
-	if err != nil {
-		if !errors.Is(err, wrapper.ErrNoSymbolTable) {
-			return nil, err
+	if !isWasm {
+		record := !dwarfOk && !options.SkipSymbol
+		err = k.AnalyzeSymbol(record)
+		if err != nil {
+			if !errors.Is(err, wrapper.ErrNoSymbolTable) {
+				return nil, err
+			}
+			slog.Warn("No symbol table found, this can lead to inaccurate results")
 		}
-		slog.Warn("No symbol table found, this can lead to inaccurate results")
+		if record {
+			analyzers = append(analyzers, entity.AnalyzerSymbol)
+		}
+		utils.WaitDebugger("Symbol done")
 	}
-	if record {
-		analyzers = append(analyzers, entity.AnalyzerSymbol)
-	}
-	utils.WaitDebugger("Symbol done")
 
-	if !options.SkipDisasm {
+	if !options.SkipDisasm && !isWasm {
 		if k.GoStringSymbol == nil {
 			slog.Info("no go:string.* symbol found, false-positive rates may rise")
 		}
@@ -115,25 +122,32 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	// we have collected everything, now we can calculate the size
 
-	// first, merge all results to coverage
-	err = k.CollectCoverage()
-	if err != nil {
-		return nil, err
-	}
+	if !isWasm {
+		// first, merge all results to coverage
+		err = k.CollectCoverage()
+		if err != nil {
+			return nil, err
+		}
 
-	// for sections
-	err = k.CalculateSectionSize()
-	if err != nil {
-		return nil, err
+		// for sections
+		err = k.CalculateSectionSize()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// for packages
 	k.CalculatePackageSize()
 
-	sections := utils.Collect(maps.Values(k.Sects.Sections))
-	slices.SortFunc(sections, func(a, b *entity.Section) int {
-		return cmp.Compare(a.Name, b.Name)
-	})
+	sections := make([]*entity.Section, 0)
+
+	if !isWasm {
+		sections = utils.Collect(maps.Values(k.Sects.Sections))
+		slices.SortFunc(sections, func(a, b *entity.Section) int {
+			return cmp.Compare(a.Name, b.Name)
+		})
+	}
+
 	slices.Sort(analyzers)
 
 	utils.WaitDebugger("Analyze done")

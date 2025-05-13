@@ -17,6 +17,8 @@ type ElfWrapper struct {
 	file *elf.File
 }
 
+var _ RawFileWrapper = (*ElfWrapper)(nil)
+
 func (e *ElfWrapper) DWARF() (*dwarf.Data, error) {
 	return e.file.DWARF()
 }

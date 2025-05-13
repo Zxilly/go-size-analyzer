@@ -6,6 +6,7 @@ import (
 	"debug/pe"
 	"errors"
 
+	"github.com/ZxillyFork/gore"
 	"github.com/blacktop/go-macho"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -33,6 +34,8 @@ func NewWrapper(file any) RawFileWrapper {
 		return &PeWrapper{f, utils.GetImageBase(f)}
 	case *macho.File:
 		return NewMachoWrapper(f)
+	case *gore.WasmModule:
+		return &WasmWrapper{f}
 	}
 	return nil
 }

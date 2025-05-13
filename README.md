@@ -11,7 +11,7 @@ English | [简体中文](./README_zh_CN.md)
 
 A simple tool to analyze the size of a Go compiled binary.
 
-- [x] Cross-platform support for analyzing `ELF`, `Mach-O`, and `PE` binary formats
+- [x] Cross-platform support for analyzing `ELF`, `Mach-O`, `PE` and `WebAssembly (experimental)` binary formats
 - [x] Detailed size breakdown by packages and sections
 - [x] Support multiple output formats: `text`, `json`, `html`, `svg`
 - [x] Interactive exploration via web interface and terminal UI

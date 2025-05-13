@@ -3,10 +3,13 @@ package internal
 import (
 	"bytes"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 	"golang.org/x/exp/mmap"
+
+	"github.com/Zxilly/go-size-analyzer/internal/test/testutils"
 )
 
 func FuzzAnalyze(f *testing.F) {
@@ -54,4 +57,17 @@ func TestAnalyzeImports(t *testing.T) {
 	require.NotNil(t, testingPkg)
 
 	require.Contains(t, testingPkg.ImportedBy, "github.com/Zxilly/go-size-analyzer/internal")
+}
+
+func TestAnalyzeWASM(t *testing.T) {
+	loc := filepath.Join(testutils.GetProjectRoot(t), "testdata", "wasm", "test.wasm")
+	data, err := os.ReadFile(loc)
+	require.NoError(t, err)
+
+	b := bytes.NewReader(data)
+
+	result, err := Analyze("test.wasm", b, uint64(len(data)), Options{})
+	require.NoError(t, err)
+	require.NotNil(t, result)
+	require.NotNil(t, result.Packages["main"])
 }

@@ -45,7 +45,7 @@ func entry() error {
 	}
 
 	if Options.DiffTarget != "" {
-		return diff.Diff(writer, diff.DOptions{
+		return diff.Diff(writer, diff.DiffOptions{
 			Options:   options,
 			OldTarget: Options.Binary,
 			NewTarget: Options.DiffTarget,

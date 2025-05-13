@@ -16,6 +16,8 @@ type PeWrapper struct {
 	imageBase uint64
 }
 
+var _ RawFileWrapper = (*PeWrapper)(nil)
+
 func (p *PeWrapper) DWARF() (*dwarf.Data, error) {
 	return p.file.DWARF()
 }

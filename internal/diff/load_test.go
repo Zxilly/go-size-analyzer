@@ -36,7 +36,7 @@ func TestDiffJSONAndBinary(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			require.NoError(t, Diff(io.Discard, DOptions{
+			require.NoError(t, Diff(io.Discard, DiffOptions{
 				OldTarget: tt.old,
 				NewTarget: tt.new,
 				Format:    tt.format,
@@ -67,7 +67,7 @@ func TestDifferentAnalyzer(t *testing.T) {
 	createFile(first, []entity.Analyzer{entity.AnalyzerDwarf, entity.AddrSourceSymbol})
 	createFile(second, []entity.Analyzer{entity.AnalyzerDisasm})
 
-	require.Error(t, Diff(io.Discard, DOptions{
+	require.Error(t, Diff(io.Discard, DiffOptions{
 		OldTarget: first,
 		NewTarget: second,
 	}))

@@ -11,6 +11,7 @@ import (
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
+	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
 // Dependencies a pseudo package for the whole binary
@@ -101,14 +102,29 @@ func (m *Dependencies) FinishLoad(imports bool) {
 	})
 }
 
-func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table) {
+func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table, isWasm bool) {
 	name := utils.UglyGuess(gp.Name)
 
-	p := entity.NewPackageWithGorePackage(gp, name, typ, pclntab)
+	var w *wrapper.WasmWrapper
+	if isWasm {
+		w = m.k.Wrapper.(*wrapper.WasmWrapper)
+	}
 
-	// update addrs
-	for f := range p.Functions {
-		m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f)
+	getCodeSize := func(f *gore.Function) uint64 {
+		if !isWasm {
+			return f.End - f.Offset
+		}
+
+		return w.GetFunctionSize(f.Offset)
+	}
+
+	p := entity.NewPackageWithGorePackage(gp, name, typ, pclntab, getCodeSize, isWasm)
+
+	if !isWasm {
+		// update addrs
+		for f := range p.Functions {
+			m.k.KnownAddr.InsertTextFromPclnTab(f.Addr, f.CodeSize, f)
+		}
 	}
 
 	// we need merge since the gore relies on the broken std PackageName() function
@@ -120,7 +136,7 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 	m.Trie.Put(name, p)
 }
 
-func (k *KnownInfo) LoadPackages(f *gore.GoFile) error {
+func (k *KnownInfo) LoadPackages(f *gore.GoFile, isWasm bool) error {
 	slog.Info("Loading packages...")
 
 	pkgs := NewDependencies(k)
@@ -136,30 +152,30 @@ func (k *KnownInfo) LoadPackages(f *gore.GoFile) error {
 		return err
 	}
 	for _, p := range self {
-		pkgs.AddFromPclntab(p, entity.PackageTypeMain, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeMain, pclntab, isWasm)
 	}
 
 	grStd, _ := f.GetSTDLib()
 	for _, p := range grStd {
-		pkgs.AddFromPclntab(p, entity.PackageTypeStd, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeStd, pclntab, isWasm)
 	}
 
 	grVendor, _ := f.GetVendors()
 	for _, p := range grVendor {
-		pkgs.AddFromPclntab(p, entity.PackageTypeVendor, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeVendor, pclntab, isWasm)
 	}
 
 	grGenerated, _ := f.GetGeneratedPackages()
 	for _, p := range grGenerated {
-		pkgs.AddFromPclntab(p, entity.PackageTypeGenerated, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeGenerated, pclntab, isWasm)
 	}
 
 	grUnknown, _ := f.GetUnknown()
 	for _, p := range grUnknown {
-		pkgs.AddFromPclntab(p, entity.PackageTypeUnknown, pclntab)
+		pkgs.AddFromPclntab(p, entity.PackageTypeUnknown, pclntab, isWasm)
 	}
 
-	if err = k.RequireModInfo(); err == nil {
+	if k.BuildInfo != nil {
 		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
 		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
 	}

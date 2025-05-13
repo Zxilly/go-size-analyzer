@@ -1,7 +1,6 @@
 package knowninfo
 
 import (
-	"errors"
 	"log/slog"
 
 	"github.com/ZxillyFork/gore"
@@ -35,8 +34,8 @@ type KnownInfo struct {
 	HasDWARF bool
 }
 
-func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile) error {
-	err := k.LoadPackages(f)
+func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {
+	err := k.LoadPackages(f, isWasm)
 	if err != nil {
 		return err
 	}
@@ -64,13 +63,6 @@ func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 		Leq118: gore.GoVersionCompare(ver.Name, "go1.18.10") <= 0,
 		Meq120: gore.GoVersionCompare(ver.Name, "go1.20rc1") >= 0,
 	}
-}
-
-func (k *KnownInfo) RequireModInfo() error {
-	if k.BuildInfo == nil {
-		return errors.New("no build info")
-	}
-	return nil
 }
 
 func (k *KnownInfo) convertAddr(addr uint64) uint64 {
