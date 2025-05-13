@@ -24,9 +24,9 @@ exports[`entry > match 4`] = `
 `;
 
 exports[`entry > match 5`] = `
-"Result:  bin-linux-1.21-amd64
-Analyzer dwarf, pclntab
-Size:    1.51 MB"
+"Result:   bin-linux-1.21-amd64
+Analyzer: dwarf, pclntab
+Size:     1.51 MB"
 `;
 
 exports[`entry > match 6`] = `"Unknown Sections Size"`;
