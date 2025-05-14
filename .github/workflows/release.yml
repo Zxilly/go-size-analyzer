@@ -71,7 +71,13 @@ jobs:
         id: attest
         uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
         with:
-          subject-path: 'dist/go-size-analyzer*.*'
+          subject-path: |
+            dist/go-size-analyzer*.apk
+            dist/go-size-analyzer*.deb
+            dist/go-size-analyzer*.pkg.tar.zst
+            dist/go-size-analyzer*.rpm
+            dist/go-size-analyzer*.tar.gz
+            dist/go-size-analyzer*.zip
 
       - name: Upload build provenance
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd # v2.9.0
