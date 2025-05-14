@@ -10,6 +10,14 @@ export class Aligner {
     return this;
   }
 
+  public add_if(pre: string, post: string, cond: boolean): Aligner {
+    if (cond) {
+      this.pre.push(pre);
+      this.post.push(post);
+    }
+    return this;
+  }
+
   public toString(): string {
     // determine the maximum length of the pre-strings
     const maxPreLength = max(this.pre, d => d.length) ?? 0;

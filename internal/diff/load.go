@@ -14,7 +14,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-type DiffOptions struct {
+type Options struct {
 	internal.Options
 
 	OldTarget string
@@ -33,7 +33,7 @@ func formatAnalyzer(analyzers []string) string {
 	return strings.Join(analyzers, ", ")
 }
 
-func Diff(writer io.Writer, options DiffOptions) error {
+func Diff(writer io.Writer, options Options) error {
 	oldResult, err := autoLoadFile(options.OldTarget, options.Options)
 	if err != nil {
 		return err

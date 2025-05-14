@@ -73,7 +73,7 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
       .add("Known size:", formatBytes(this.data.known_size))
       .add("Unknown size:", formatBytes(this.getSize()))
       .add("Offset:", `0x${this.data.offset.toString(16)} - 0x${this.data.end.toString(16)}`)
-      .add("Address:", `0x${this.data.addr.toString(16)} - 0x${this.data.addr_end.toString(16)}`)
+      .add_if("Address:", `0x${this.data.addr.toString(16)} - 0x${this.data.addr_end.toString(16)}`, this.data.addr != 0 || this.data.addr_end != 0)
       .add("Memory:", this.data.only_in_memory.toString())
       .add("Debug:", this.data.debug.toString());
     return align.toString();

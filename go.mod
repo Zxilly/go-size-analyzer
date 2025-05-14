@@ -6,6 +6,7 @@ require (
 	github.com/ZxillyFork/gore v0.0.0-20250513055204-8ccfb134a594
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
+	github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c
 	github.com/alecthomas/kong v1.10.0
 	github.com/blacktop/go-macho v1.1.245
 	github.com/charmbracelet/bubbles v0.21.0
@@ -33,7 +34,6 @@ require (
 )
 
 require (
-	github.com/ZxillyFork/wazero v0.0.0-20250510195821-bc4cfe6ec57d // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/blacktop/go-dwarf v1.0.14 // indirect

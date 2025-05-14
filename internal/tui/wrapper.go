@@ -126,7 +126,9 @@ func (w *wrapper) Description() string {
 				humanize.Bytes(w.section.FileSize), w.section.FileSize)
 			writeln("Known Size: %s (%d Bytes)",
 				humanize.Bytes(w.section.KnownSize), w.section.KnownSize)
-			writeln("Addr: 0x%x - 0x%x", w.section.Addr, w.section.Addr+w.section.Size)
+			if w.section.Addr != 0 || w.section.AddrEnd != 0 {
+				writeln("Addr: 0x%x - 0x%x", w.section.Addr, w.section.AddrEnd)
+			}
 			writeln("Offset: 0x%x - 0x%x", w.section.Offset, w.section.Offset+w.section.FileSize)
 			writeln("Only In Memory: %t", w.section.OnlyInMemory)
 		}

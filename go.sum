@@ -4,8 +4,8 @@ github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvD
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646/go.mod h1:wbU6+GbSHDwVSMpzFyOVrX/WdFHXH4j7j8Rg8rbyo+4=
-github.com/ZxillyFork/wazero v0.0.0-20250510195821-bc4cfe6ec57d h1:7C2i5HiajTAVLcdf+23KAT9zyi6Jj/P9I3tllaeWKns=
-github.com/ZxillyFork/wazero v0.0.0-20250510195821-bc4cfe6ec57d/go.mod h1:AmoMZr8hv1sw6F/qvXhoctusyEGF2mms3kdz45lF+GQ=
+github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c h1:cUYDynDc2OmO6a+e05X6Gxa/rBL+lYpSgexMR9glDjA=
+github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c/go.mod h1:AmoMZr8hv1sw6F/qvXhoctusyEGF2mms3kdz45lF+GQ=
 github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8vS6K3D0=
 github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v1.10.0 h1:8K4rGDpT7Iu+jEXCIJUeKqvpwZHbsFRoebLbnzlmrpw=

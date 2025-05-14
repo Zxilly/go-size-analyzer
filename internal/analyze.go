@@ -57,7 +57,8 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	isWasm := file.FileInfo.Arch == "wasm"
 
-	// fixme: add section info for wasm
+	// wasm section is different and not use addr space
+	// we handle it later
 	if !isWasm {
 		err = k.LoadSectionMap()
 		if err != nil {
@@ -73,6 +74,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	}
 
 	dwarfOk := false
+	// fixme: add wasm dwarf support
 	if !options.SkipDwarf && !isWasm {
 		slog.Info("Parsing DWARF...")
 		dwarfOk = k.TryLoadDwarf()
@@ -93,6 +95,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	debug.FreeOSMemory()
 	utils.WaitDebugger("After force gc")
 
+	// fixme: add data symbol support to go gc
 	if !isWasm {
 		record := !dwarfOk && !options.SkipSymbol
 		err = k.AnalyzeSymbol(record)
@@ -139,14 +142,24 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	// for packages
 	k.CalculatePackageSize()
 
-	sections := make([]*entity.Section, 0)
-
+	var sections []*entity.Section
 	if !isWasm {
 		sections = utils.Collect(maps.Values(k.Sects.Sections))
-		slices.SortFunc(sections, func(a, b *entity.Section) int {
-			return cmp.Compare(a.Name, b.Name)
+	} else {
+		codeSectUsed := uint64(0)
+		_ = k.Deps.Trie.Walk(func(_ string, pkg *entity.Package) error {
+			for f := range pkg.Functions {
+				codeSectUsed += f.CodeSize
+			}
+			return nil
 		})
+
+		sections = k.Wrapper.(*wrapper.WasmWrapper).GetSections(codeSectUsed)
 	}
+
+	slices.SortFunc(sections, func(a, b *entity.Section) int {
+		return cmp.Compare(a.Name, b.Name)
+	})
 
 	slices.Sort(analyzers)
 

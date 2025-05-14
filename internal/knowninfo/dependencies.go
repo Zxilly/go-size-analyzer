@@ -107,7 +107,11 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 
 	var w *wrapper.WasmWrapper
 	if isWasm {
-		w = m.k.Wrapper.(*wrapper.WasmWrapper)
+		var ok bool
+		w, ok = m.k.Wrapper.(*wrapper.WasmWrapper)
+		if !ok {
+			panic("wasm wrapper not found")
+		}
 	}
 
 	getCodeSize := func(f *gore.Function) uint64 {
