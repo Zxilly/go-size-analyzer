@@ -3,7 +3,7 @@ module github.com/Zxilly/go-size-analyzer
 go 1.24.2
 
 require (
-	github.com/ZxillyFork/gore v0.0.0-20250513055204-8ccfb134a594
+	github.com/ZxillyFork/gore v0.0.0-20250514184105-e844704a04bd
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c

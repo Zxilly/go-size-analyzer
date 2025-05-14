@@ -181,7 +181,7 @@ func (k *KnownInfo) LoadPackages(f *gore.GoFile, isWasm bool) error {
 
 	if k.BuildInfo != nil {
 		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
-		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeVendor)
+		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeMain)
 	}
 
 	slog.Info("Loaded packages done")
