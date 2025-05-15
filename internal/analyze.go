@@ -52,10 +52,17 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		entity.AnalyzerPclntab,
 	}
 
+	isWasm := file.FileInfo.Arch == "wasm"
+
+	if isWasm {
+		// buildinfo didn't support wasm yet, we do parse ourselves
+		k.BuildInfo = &gore.BuildInfo{
+			ModInfo: k.Wrapper.(*wrapper.WasmWrapper).GetModInfo(),
+		}
+	}
+
 	slog.Info("Found build info")
 	utils.WaitDebugger("Found build info")
-
-	isWasm := file.FileInfo.Arch == "wasm"
 
 	// wasm section is different and not use addr space
 	// we handle it later

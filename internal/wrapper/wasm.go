@@ -1,9 +1,12 @@
 package wrapper
 
 import (
+	"bytes"
 	"debug/dwarf"
+	"encoding/hex"
 	"errors"
 	"log/slog"
+	"runtime/debug"
 	"strings"
 
 	"github.com/ZxillyFork/wazero/notinternal/wasm"
@@ -13,6 +16,7 @@ import (
 
 type WasmWrapper struct {
 	module *wasm.Module
+	memory []byte
 }
 
 var _ RawFileWrapper = (*WasmWrapper)(nil)
@@ -78,6 +82,42 @@ func (w *WasmWrapper) GetSections(codeSectUsed uint64) []*entity.Section {
 		})
 	}
 	return ret
+}
+
+var (
+	infoStart, _ = hex.DecodeString("3077af0c9274080241e1c107e6d618e6")
+	infoEnd, _   = hex.DecodeString("f932433186182072008242104116d8f2")
+)
+
+func (w *WasmWrapper) GetModInfo() *debug.BuildInfo {
+	data := w.memory
+
+	startMarkerLocation := bytes.Index(data, infoStart)
+	if startMarkerLocation == -1 {
+		return nil
+	}
+
+	searchForEndMarkerFrom := startMarkerLocation + len(infoStart)
+	if searchForEndMarkerFrom > len(data) {
+		return nil
+	}
+
+	remainingData := data[searchForEndMarkerFrom:]
+	endMarkerRelativeLocation := bytes.Index(remainingData, infoEnd)
+
+	if endMarkerRelativeLocation == -1 {
+		return nil
+	}
+
+	sliceEndIndex := searchForEndMarkerFrom + endMarkerRelativeLocation + len(infoEnd)
+
+	modinfo := string(data[startMarkerLocation:sliceEndIndex])
+
+	bi, err := debug.ParseBuildInfo(modinfo)
+	if err != nil {
+		return nil
+	}
+	return bi
 }
 
 var _ RawFileWrapper = (*WasmWrapper)(nil)

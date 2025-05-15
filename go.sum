@@ -1,5 +1,5 @@
-github.com/ZxillyFork/gore v0.0.0-20250514184105-e844704a04bd h1:aPlD5NfZa5FtZI/ekAMEWWTFKV83obXxB608nFclDY4=
-github.com/ZxillyFork/gore v0.0.0-20250514184105-e844704a04bd/go.mod h1:Ol94D+N8gvqgQdHUEjuvqYNfxcqA5Zia9/BfWL6KReQ=
+github.com/ZxillyFork/gore v0.0.0-20250515160049-66c9fdb68efe h1:93xuJuNtJ7vhhslr4RFNKcXyM2wKRQvFCdkOh68jLe8=
+github.com/ZxillyFork/gore v0.0.0-20250515160049-66c9fdb68efe/go.mod h1:Ol94D+N8gvqgQdHUEjuvqYNfxcqA5Zia9/BfWL6KReQ=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525/go.mod h1:AC2xDL/KBa60pBB/m0zRCDCGvzLrMkmW/aY0q+uThFE=
 github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646 h1:Mkm17zXN+CiAXdV9/7mdCUGuEzlUNu73mB6En++kUkE=
@@ -10,6 +10,8 @@ github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8v
 github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v1.10.0 h1:8K4rGDpT7Iu+jEXCIJUeKqvpwZHbsFRoebLbnzlmrpw=
 github.com/alecthomas/kong v1.10.0/go.mod h1:p2vqieVMeTAnaC83txKtXe8FLke2X07aruPWXyMPQrU=
+github.com/alecthomas/kong v1.11.0 h1:y++1gI7jf8O7G7l4LZo5ASFhrhJvzc+WgF/arranEmM=
+github.com/alecthomas/kong v1.11.0/go.mod h1:p2vqieVMeTAnaC83txKtXe8FLke2X07aruPWXyMPQrU=
 github.com/alecthomas/repr v0.4.0 h1:GhI2A8MACjfegCPVq9f1FLvIBS+DrQ2KQBFZP1iFzXc=
 github.com/alecthomas/repr v0.4.0/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
@@ -32,10 +34,10 @@ github.com/charmbracelet/x/ansi v0.9.2 h1:92AGsQmNTRMzuzHEYfCdjQeUzTrgE1vfO5/7fE
 github.com/charmbracelet/x/ansi v0.9.2/go.mod h1:3RQDQ6lDnROptfpWuUVIUG64bD2g2BgntdxH0Ya5TeE=
 github.com/charmbracelet/x/cellbuf v0.0.13 h1:/KBBKHuVRbq1lYx5BzEHBAFBP8VcQzJejZ/IA3iR28k=
 github.com/charmbracelet/x/cellbuf v0.0.13/go.mod h1:xe0nKWGd3eJgtqZRaN9RjMtK7xUYchjzPr7q6kcvCCs=
-github.com/charmbracelet/x/exp/golden v0.0.0-20250512155337-1597d732b701 h1:FDTxAAd7lfICyf+JdWHDYscG4NJHjTfYq/VArngRwjI=
-github.com/charmbracelet/x/exp/golden v0.0.0-20250512155337-1597d732b701/go.mod h1:929X+xY3LeoOZrDWIBVZcx/zyS0CYtyLiUIvE4VbKC0=
-github.com/charmbracelet/x/exp/teatest v0.0.0-20250512155337-1597d732b701 h1:KPoaMvM2U8fvFmwbPLvx+1PpwP4DU9CCSR6UL2gJm0w=
-github.com/charmbracelet/x/exp/teatest v0.0.0-20250512155337-1597d732b701/go.mod h1:MhV4atqUTcHvdaA7Qbkgb0Tvvr+BrH6IW7/i2XW39R8=
+github.com/charmbracelet/x/exp/golden v0.0.0-20250514204301-7f4ee4d0d5fe h1:tfNKP8xafNMX8CJNKeW1BlnefZ9bZ49A5Ke3+0IFJco=
+github.com/charmbracelet/x/exp/golden v0.0.0-20250514204301-7f4ee4d0d5fe/go.mod h1:929X+xY3LeoOZrDWIBVZcx/zyS0CYtyLiUIvE4VbKC0=
+github.com/charmbracelet/x/exp/teatest v0.0.0-20250514204301-7f4ee4d0d5fe h1:8zhWpjB89c3IWkpyNOICIYS8h0ni7yx5XNZrpMxxBbY=
+github.com/charmbracelet/x/exp/teatest v0.0.0-20250514204301-7f4ee4d0d5fe/go.mod h1:MhV4atqUTcHvdaA7Qbkgb0Tvvr+BrH6IW7/i2XW39R8=
 github.com/charmbracelet/x/term v0.2.1 h1:AQeHeLZ1OqSXhrAWpYUtZyX1T3zVxfpZuEQMIQaGIAQ=
 github.com/charmbracelet/x/term v0.2.1/go.mod h1:oQ4enTYFV7QN4m0i9mzHrViD7TQKvNEEkHUMCmsxdUg=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

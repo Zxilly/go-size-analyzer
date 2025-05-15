@@ -34,8 +34,8 @@ func NewWrapper(file any) RawFileWrapper {
 		return &PeWrapper{f, utils.GetImageBase(f)}
 	case *macho.File:
 		return NewMachoWrapper(f)
-	case *gore.WasmModule:
-		return &WasmWrapper{f}
+	case gore.WasmInfo:
+		return &WasmWrapper{f.Mod, f.Memory}
 	}
 	return nil
 }
