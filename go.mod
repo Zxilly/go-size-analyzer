@@ -8,7 +8,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c
 	github.com/alecthomas/kong v1.11.0
-	github.com/blacktop/go-macho v1.1.245
+	github.com/blacktop/go-macho v1.1.246
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
