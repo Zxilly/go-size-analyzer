@@ -16,8 +16,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^7.1.0",
-    "@mui/material": "^7.1.0",
+    "@mui/icons-material": "^7.1.1",
+    "@mui/material": "^7.1.1",
     "@types/lodash.memoize": "^4.1.9",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
