@@ -8,7 +8,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c
 	github.com/alecthomas/kong v1.11.0
-	github.com/blacktop/go-macho v1.1.246
+	github.com/blacktop/go-macho v1.1.247
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
@@ -27,10 +27,10 @@ require (
 	github.com/puzpuzpuz/xsync/v4 v4.1.0
 	github.com/samber/lo v1.50.0
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/arch v0.17.0
+	golang.org/x/arch v0.18.0
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
-	golang.org/x/net v0.40.0
-	golang.org/x/sync v0.14.0
+	golang.org/x/net v0.41.0
+	golang.org/x/sync v0.15.0
 )
 
 require (
@@ -55,7 +55,7 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/text v0.26.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
