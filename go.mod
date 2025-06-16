@@ -8,7 +8,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20250514163401-2d87ad97b37c
 	github.com/alecthomas/kong v1.11.0
-	github.com/blacktop/go-macho v1.1.247
+	github.com/blacktop/go-macho v1.1.248
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/charmbracelet/lipgloss v1.1.0
@@ -25,7 +25,7 @@ require (
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/puzpuzpuz/xsync/v4 v4.1.0
-	github.com/samber/lo v1.50.0
+	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/arch v0.18.0
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
