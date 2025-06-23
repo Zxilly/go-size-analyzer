@@ -15,7 +15,7 @@ require (
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250514204301-7f4ee4d0d5fe
 	github.com/charmbracelet/x/term v0.2.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/go-delve/delve v1.24.2
+	github.com/go-delve/delve v1.25.0
 	github.com/go-json-experiment/json v0.0.0-20250417205406-170dfdcf87d1
 	github.com/jedib0t/go-pretty/v6 v6.6.7
 	github.com/knadh/profiler v0.2.0
