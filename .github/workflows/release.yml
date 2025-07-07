@@ -80,7 +80,7 @@ jobs:
             dist/go-size-analyzer*.zip
 
       - name: Upload build provenance
-        uses: svenstaro/upload-release-action@ebd922b779f285dafcac6410a0710daee9c12b82 # v2.10.0
+        uses: svenstaro/upload-release-action@81c65b7cd4de9b2570615ce3aad67a41de5b1a13 # v2.11.2
         with:
           asset_name: attestations.intoto.jsonl
           file: ${{ steps.attest.outputs.bundle-path }}
