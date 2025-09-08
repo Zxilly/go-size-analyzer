@@ -10,7 +10,7 @@ require (
 	github.com/alecthomas/kong v1.12.1
 	github.com/blacktop/go-macho v1.1.249
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.6
+	github.com/charmbracelet/bubbletea v1.3.7
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250514204301-7f4ee4d0d5fe
 	github.com/charmbracelet/x/term v0.2.1
@@ -27,10 +27,10 @@ require (
 	github.com/puzpuzpuz/xsync/v4 v4.1.0
 	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/arch v0.20.0
+	golang.org/x/arch v0.21.0
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
 	golang.org/x/net v0.43.0
-	golang.org/x/sync v0.16.0
+	golang.org/x/sync v0.17.0
 )
 
 require (
@@ -38,7 +38,7 @@ require (
 	github.com/aymanbagabas/go-udiff v0.2.0 // indirect
 	github.com/blacktop/go-dwarf v1.0.14 // indirect
 	github.com/charmbracelet/colorprofile v0.3.1 // indirect
-	github.com/charmbracelet/x/ansi v0.9.3 // indirect
+	github.com/charmbracelet/x/ansi v0.10.1 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/exp/golden v0.0.0-20250514204301-7f4ee4d0d5fe // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
