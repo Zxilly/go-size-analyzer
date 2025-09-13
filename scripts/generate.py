@@ -17,11 +17,11 @@ def add_exe(name: str, is_windows: bool) -> str:
 
 def generate_cockroachdb() -> list[RemoteBinary]:
     urls = [
-        ("https://binaries.cockroachdb.com/cockroach-v25.1.2.linux-amd64.tgz", "linux-amd64"),
-        ("https://binaries.cockroachdb.com/cockroach-v25.1.2.linux-arm64.tgz", "linux-arm64"),
-        ("https://binaries.cockroachdb.com/cockroach-v25.1.2.darwin-10.9-amd64.tgz", "darwin-amd64"),
-        ("https://binaries.cockroachdb.com/cockroach-v25.1.2.darwin-11.0-arm64.tgz", "darwin-arm64"),
-        ("https://binaries.cockroachdb.com/cockroach-v25.1.2.windows-6.2-amd64.zip", "windows-amd64"),
+        ("https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-amd64.tgz", "linux-amd64"),
+        ("https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-arm64.tgz", "linux-arm64"),
+        ("https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-10.9-amd64.tgz", "darwin-amd64"),
+        ("https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-11.0-arm64.tgz", "darwin-arm64"),
+        ("https://binaries.cockroachdb.com/cockroach-v25.3.1.windows-6.2-amd64.zip", "windows-amd64"),
     ]
 
     ret = []
@@ -53,7 +53,7 @@ def generate_kubernetes() -> list[RemoteBinary]:
             continue
 
         name = f"kubectl-{o}-{a}"
-        url = f"https://dl.k8s.io/v1.32.3/bin/{o}/{a}/kubectl"
+        url = f"https://dl.k8s.io/v1.34.0/bin/{o}/{a}/kubectl"
         url += ".exe" if o == "windows" else ""
 
         ret.append(RemoteBinary(
@@ -70,7 +70,7 @@ def generate_kubernetes() -> list[RemoteBinary]:
 
     for n, a in itertools.product(kube_components, kube_archs):
         name = f"{n}-{a}"
-        url = f"https://dl.k8s.io/v1.32.3/bin/linux/{a}/{n}"
+        url = f"https://dl.k8s.io/v1.34.0/bin/linux/{a}/{n}"
 
         ret.append(RemoteBinary(
             name,
@@ -99,7 +99,7 @@ def generate_prometheus() -> list[RemoteBinary]:
             ret.append(
                 RemoteBinary(
                     f"prometheus-{o}-{a}",
-                    f"https://github.com/prometheus/prometheus/releases/download/v3.3.0/prometheus-3.3.0.{o}-{a}.tar.gz",
+                    f"https://github.com/prometheus/prometheus/releases/download/v3.5.0/prometheus-3.5.0.{o}-{a}.tar.gz",
                     TestType.JSON_TEST,
                     RemoteBinaryType.TAR,
                     targets)
@@ -120,7 +120,7 @@ def generate_vitess() -> list[RemoteBinary]:
     return [
         RemoteBinary(
             "vitess",
-            "https://github.com/vitessio/vitess/releases/download/v21.0.3/vitess-21.0.3-94fdc73.tar.gz",
+            "https://github.com/vitessio/vitess/releases/download/v22.0.1/vitess-22.0.1-aafd403.tar.gz",
             TestType.JSON_TEST,
             RemoteBinaryType.TAR,
             targets)
@@ -128,7 +128,7 @@ def generate_vitess() -> list[RemoteBinary]:
 
 
 def generate_example() -> list[RemoteBinary]:
-    versions = ["1.22", "1.23", "1.24"]
+    versions = ["1.23", "1.24", "1.25"]
     oses = ["linux", "windows", "darwin"]
     pies = ["-pie", ""]
     cgos = ["-cgo", ""]
