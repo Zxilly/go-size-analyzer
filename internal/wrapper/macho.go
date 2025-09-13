@@ -20,15 +20,98 @@ import (
 type MachoWrapper struct {
 	file           *macho.File
 	chainedFixedUp bool
+	memOnly        []addrRange // sorted, merged memory-only ranges (zerofill/bss)
 }
 
 var _ RawFileWrapper = (*MachoWrapper)(nil)
 
+type addrRange struct{ start, end uint64 }
+
+func mergeRanges(rs []addrRange) []addrRange {
+	if len(rs) == 0 {
+		return rs
+	}
+	slices.SortFunc(rs, func(a, b addrRange) int {
+		switch {
+		case a.start < b.start:
+			return -1
+		case a.start > b.start:
+			return 1
+		default:
+			if a.end < b.end {
+				return -1
+			}
+			if a.end > b.end {
+				return 1
+			}
+			return 0
+		}
+	})
+	out := rs[:0]
+	cur := rs[0]
+	for i := 1; i < len(rs); i++ {
+		r := rs[i]
+		if r.start <= cur.end { // overlap or touch
+			if r.end > cur.end {
+				cur.end = r.end
+			}
+			continue
+		}
+		out = append(out, cur)
+		cur = r
+	}
+	out = append(out, cur)
+	return out
+}
+
+func contains(r addrRange, addr, size uint64) bool {
+	return r.start <= addr && addr+size <= r.end
+}
+
+// isMemOnly reports whether [addr, addr+size) lies entirely in a memory-only range.
+func (m *MachoWrapper) isMemOnly(addr, size uint64) bool {
+	if len(m.memOnly) == 0 || size == 0 {
+		return false
+	}
+	// Binary search by start; candidate container can only be the previous one.
+	i, _ := slices.BinarySearchFunc(m.memOnly, addr, func(r addrRange, v uint64) int {
+		if r.start <= v {
+			if r.start == v {
+				return 0
+			}
+			return -1
+		}
+		return 1
+	})
+	if i > 0 {
+		if contains(m.memOnly[i-1], addr, size) {
+			return true
+		}
+	}
+	// If BinarySearchFunc found exact start, i points to first >= addr; check that as well.
+	if i < len(m.memOnly) && contains(m.memOnly[i], addr, size) {
+		return true
+	}
+	return false
+}
+
 func NewMachoWrapper(f *macho.File) *MachoWrapper {
-	return &MachoWrapper{
+	w := &MachoWrapper{
 		file:           f,
 		chainedFixedUp: f.HasDyldChainedFixups(),
 	}
+	// Precompute memory-only ranges (zerofill/bss/offset==0) for fast checks.
+	ranges := make([]addrRange, 0)
+	for _, s := range f.Sections {
+		if s.Size == 0 {
+			continue
+		}
+		if machoSectionShouldIgnore(s) {
+			ranges = append(ranges, addrRange{start: s.Addr, end: s.Addr + s.Size})
+		}
+	}
+	w.memOnly = mergeRanges(ranges)
+	return w
 }
 
 func (m *MachoWrapper) SlidePointer(addr uint64) uint64 {
@@ -276,7 +359,11 @@ func machoSectionShouldIgnore(sect *types.Section) bool {
 }
 
 func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
-	addr = m.file.SlidePointer(addr)
+	// DWARF/on-disk addresses use unslid VM addresses; do not apply dyld slide here.
+	// Quick reject for memory-only (zerofill) ranges using precomputed intervals.
+	if m.isMemOnly(addr, size) {
+		return nil, ErrAddrNotFound
+	}
 	off, err := m.file.GetOffset(addr)
 	if err != nil {
 		return nil, ErrAddrNotFound
