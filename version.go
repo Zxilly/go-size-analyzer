@@ -49,6 +49,7 @@ func SprintVersion() string {
 				if dirtyBuild == unknownProperty && kv.Value != "" {
 					dirtyBuild = kv.Value
 				}
+			default:
 			}
 		}
 	}

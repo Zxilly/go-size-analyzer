@@ -67,6 +67,7 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 		switch s.Section {
 		case elf.SHN_UNDEF, elf.SHN_ABS, elf.SHN_COMMON:
 			continue // not addr, skip
+		default:
 		}
 
 		if s.Size == 0 {
@@ -197,6 +198,7 @@ func (e *ElfWrapper) GoArch() string {
 		return "ppc64"
 	case elf.EM_S390:
 		return "s390x"
+	default:
+		return ""
 	}
-	return ""
 }
