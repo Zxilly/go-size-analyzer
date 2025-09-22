@@ -10,7 +10,7 @@ require (
 	github.com/alecthomas/kong v1.12.1
 	github.com/blacktop/go-macho v1.1.250
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.9
+	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250514204301-7f4ee4d0d5fe
 	github.com/charmbracelet/x/term v0.2.1
