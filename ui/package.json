@@ -28,7 +28,7 @@
     "react-dom": "^19.2.0",
     "react-dropzone": "^14.3.8",
     "react-use": "^17.6.0",
-    "valibot": "^1.1.0"
+    "valibot": "^1.2.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.0.0",
