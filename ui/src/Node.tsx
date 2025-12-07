@@ -70,6 +70,46 @@ function getShortName(title: string): string {
   return words[words.length - 1];
 }
 
+function getScaleInternal(
+  title: string,
+  width: number,
+  height: number,
+  hasChildren: boolean,
+  fallback: boolean = true,
+): [string, number] {
+  if (title === "") {
+    return ["", 0];
+  }
+
+  const [textWidth, textHeight] = memoizedMeasureText(title);
+
+  let scale: number;
+  if (hasChildren) {
+    scale = Math.min(
+      (width * 0.9) / textWidth,
+      Math.min(height, TOP_PADDING + PADDING) / textHeight,
+    );
+    scale = Math.min(1, scale);
+  }
+  else {
+    scale = Math.min(
+      (width * 0.9) / textWidth,
+      (height * 0.9) / textHeight,
+    );
+    if (scale > 1) {
+      scale = Math.sqrt(scale);
+    }
+    if (scale === Infinity) {
+      scale = 1;
+    }
+  }
+
+  if (scale < 0.7 && fallback) {
+    return getScaleInternal(getShortName(title), width, height, hasChildren, false);
+  }
+  return [title, scale];
+}
+
 export const Node: React.FC<NodeProps> = React.memo((
   {
     id,
@@ -91,39 +131,9 @@ export const Node: React.FC<NodeProps> = React.memo((
   const width = x1 - x0;
   const height = y1 - y0;
 
-  const getScale = useCallback((title: string, fallback: boolean = true): [string, number] => {
-    if (title === "") {
-      return ["", 0];
-    }
-
-    const [textWidth, textHeight] = memoizedMeasureText(title);
-
-    let scale: number;
-    if (hasChildren) {
-      scale = Math.min(
-        (width * 0.9) / textWidth,
-        Math.min(height, TOP_PADDING + PADDING) / textHeight,
-      );
-      scale = Math.min(1, scale);
-    }
-    else {
-      scale = Math.min(
-        (width * 0.9) / textWidth,
-        (height * 0.9) / textHeight,
-      );
-      if (scale > 1) {
-        scale = Math.sqrt(scale);
-      }
-      if (scale === Infinity) {
-        scale = 1;
-      }
-    }
-
-    if (scale < 0.7 && fallback) {
-      return getScale(getShortName(title), false);
-    }
-    return [title, scale];
-  }, [hasChildren, height, width]);
+  const getScale = useCallback((title: string): [string, number] => {
+    return getScaleInternal(title, width, height, hasChildren);
+  }, [width, height, hasChildren]);
 
   const renderAttr = useMemo<RenderAttributes>(() => {
     const [display, scale] = getScale(title);
