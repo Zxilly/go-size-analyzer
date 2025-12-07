@@ -1,4 +1,4 @@
-{
+ {
   "compilerOptions": {
     "target": "ES2020",
     "jsx": "react-jsx",
@@ -16,7 +16,8 @@
     "types": [
       "@testing-library/jest-dom",
       "@types/golang-wasm-exec",
-      "vite/client"
+      "vite/client",
+      "node"
     ],
     "allowImportingTsExtensions": true,
     "allowJs": true,

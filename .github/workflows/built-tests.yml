@@ -38,11 +38,9 @@ jobs:
           check-latest: true
 
       - name: Setup Binaryen
-        # fixme: use acifani/setup-tinygo after pr acceptance
-        uses: Zxilly/setup-tinygo@da87f9a9d5f7f1fcd8b6fcbd0af84d8789742c34 # main
+        uses: Zxilly/setup-binaryen@3cda60f50c9575dff0dc7a1d27cdf1306333a7c5 # v1.1.0
         with:
-          install-tinygo: false
-          binaryen-version: '119'
+          version: '125'
 
       - name: Download deps
         run: go mod download
