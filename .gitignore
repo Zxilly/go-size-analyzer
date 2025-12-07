@@ -27,3 +27,5 @@ data.json
 *.sarif
 
 unit*.xml
+
+ref

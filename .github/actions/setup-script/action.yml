@@ -22,12 +22,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Setup testbin cache
-      shell: bash
-      if: ${{ runner.environment != 'github-hosted' }}
-      run: |
-        echo "TESTDATA_PATH=/opt/cache/testdata" >> $GITHUB_ENV
-
+  
     - name: Install uv
       uses: astral-sh/setup-uv@c7f87aa956e4c323abf06d5dec078e358f6b4d04 # v6.0.0
       with:
@@ -40,7 +35,7 @@ runs:
         uv sync
 
     - name: Cache test binaries
-      if: ${{ inputs.cache != '' && runner.environment == 'github-hosted' }}
+      if: ${{ inputs.cache != '' }}
       uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
       with:
         path: ./scripts/bins

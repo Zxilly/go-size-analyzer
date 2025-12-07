@@ -67,7 +67,7 @@ jobs:
       checks: write
     strategy:
       matrix:
-        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
+        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14 ]
         test: [ unit, integration-example, integration-real ]
         include:
           - test: unit
@@ -88,8 +88,8 @@ jobs:
         uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
           go-version: '1.25.1'
-          cache: ${{ runner.environment == 'github-hosted' }}
-          check-latest: ${{ runner.environment == 'github-hosted' }}
+          cache: true
+          check-latest: true
 
       - name: Setup Go global dependencies
         run: |
@@ -112,7 +112,7 @@ jobs:
           script: 'tests.py --${{ matrix.test }}'
           report: 'true'
           coverage: 'true'
-          cache-python: ${{ matrix.os != 'self-hosted' }}
+          cache-python: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -128,7 +128,7 @@ jobs:
           verbose: true
 
       - name: Upload test results to Codecov
-        if: ${{ !cancelled() && matrix.test-type == 'unit' && matrix.os != 'self-hosted' }}
+        if: ${{ !cancelled() && matrix.test-type == 'unit' }}
         uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f # v1.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -153,7 +153,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14, self-hosted ]
+        os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-13, macos-14 ]
     steps:
       - name: Merge
         uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
