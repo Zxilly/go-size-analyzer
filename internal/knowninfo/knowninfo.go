@@ -12,6 +12,7 @@ import (
 type VersionFlag struct {
 	Leq118 bool
 	Meq120 bool
+	Meq125 bool // Go 1.25+ changed wasm pclntab to store PC_F instead of full PC
 }
 
 type KnownInfo struct {
@@ -35,14 +36,16 @@ type KnownInfo struct {
 }
 
 func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {
+	slog.Info("Loading version flag")
+	k.VersionFlag = UpdateVersionFlag(f)
+	slog.Info("Loaded version flag")
+
 	err := k.LoadPackages(f, isWasm)
 	if err != nil {
 		return err
 	}
 
-	slog.Info("Loading version flag and meta info...")
-	k.VersionFlag = UpdateVersionFlag(f)
-	slog.Info("Loaded version flag")
+	slog.Info("Loading meta info...")
 	k.PClnTabAddr = f.GetPCLNTableAddr()
 	slog.Info("Loaded meta info")
 
@@ -62,6 +65,7 @@ func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 	return VersionFlag{
 		Leq118: gore.GoVersionCompare(ver.Name, "go1.18.10") <= 0,
 		Meq120: gore.GoVersionCompare(ver.Name, "go1.20rc1") >= 0,
+		Meq125: gore.GoVersionCompare(ver.Name, "go1.25rc1") >= 0,
 	}
 }
 

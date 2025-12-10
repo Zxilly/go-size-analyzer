@@ -23,9 +23,11 @@ var _ RawFileWrapper = (*WasmWrapper)(nil)
 
 const funcValueOffset = 0x1000
 
-func (w *WasmWrapper) GetFunctionSize(idx uint64) uint64 {
-	// get PC_F from PC
-	idx = idx >> 16
+func (w *WasmWrapper) GetFunctionSize(idx uint64, meq125 bool) uint64 {
+	// Go 1.25+ stores PC_F directly in pclntab, older versions store full PC (PC_F << 16)
+	if !meq125 {
+		idx = idx >> 16
+	}
 	idx = idx - funcValueOffset
 
 	return uint64(len(w.module.CodeSection[idx].Body))

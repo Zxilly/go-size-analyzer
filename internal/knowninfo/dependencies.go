@@ -119,7 +119,7 @@ func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, 
 			return f.End - f.Offset
 		}
 
-		return w.GetFunctionSize(f.Offset)
+		return w.GetFunctionSize(f.Offset, m.k.VersionFlag.Meq125)
 	}
 
 	p := entity.NewPackageWithGorePackage(gp, name, typ, pclntab, getCodeSize, isWasm)
