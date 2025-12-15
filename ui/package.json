@@ -24,8 +24,8 @@
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
     "lodash.memoize": "^4.1.2",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-dropzone": "^14.3.8",
     "react-use": "^17.6.0",
     "valibot": "^1.2.0"
