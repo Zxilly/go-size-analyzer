@@ -51,7 +51,7 @@ jobs:
           script: 'wasm.py'
 
       - name: Upload wasm artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           path: 'ui/gsa.wasm'
           name: wasm
@@ -95,7 +95,7 @@ jobs:
           go install github.com/Zxilly/go_js_wasm_exec@149a70ce858641392338293a05ba15b00585860e
 
       - name: Download UI file
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ui
           path: internal/webui
@@ -115,7 +115,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload coverage
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         if: ${{ !cancelled() }}
         with:
           disable_search: true
@@ -136,7 +136,7 @@ jobs:
           verbose: true
 
       - name: Upload results
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: ${{ !cancelled() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.test }}-results
@@ -154,7 +154,7 @@ jobs:
         os: [ ubuntu-24.04, ubuntu-24.04-arm, windows-latest, macos-15-intel, macos-14 ]
     steps:
       - name: Merge
-        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact/merge@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ matrix.os }}-results
           compression-level: '9'
@@ -196,7 +196,7 @@ jobs:
         run: pnpm install
 
       - name: Download WASM
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: wasm
           path: ui/
@@ -207,7 +207,7 @@ jobs:
 
       - name: Upload coverage
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ui
@@ -241,7 +241,7 @@ jobs:
         uses: ./.github/actions/setup-ui-deps
 
       - name: Download WASM
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: wasm
           path: ui/
