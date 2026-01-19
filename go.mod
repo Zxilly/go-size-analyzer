@@ -24,12 +24,12 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/puzpuzpuz/xsync/v4 v4.2.0
+	github.com/puzpuzpuz/xsync/v4 v4.3.0
 	github.com/samber/lo v1.52.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/arch v0.23.0
 	golang.org/x/exp v0.0.0-20251125195548-87e1e737ad39
-	golang.org/x/net v0.48.0
+	golang.org/x/net v0.49.0
 	golang.org/x/sync v0.19.0
 )
 
@@ -57,8 +57,8 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
