@@ -73,6 +73,7 @@ if __name__ == '__main__':
                     tmp_file.name,
                     "-O3",
                     "--enable-bulk-memory",
+                    "--enable-nontrapping-float-to-int",
                     "-o", wasm_location()
                 ],
                 text=True,
