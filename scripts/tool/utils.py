@@ -69,6 +69,10 @@ def clear_folder(folder_path: str) -> None:
     if not os.path.exists(folder_path):
         return
 
+    if os.path.isfile(folder_path):
+        os.remove(folder_path)
+        return
+
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
 

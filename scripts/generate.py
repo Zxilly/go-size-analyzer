@@ -128,7 +128,7 @@ def generate_vitess() -> list[RemoteBinary]:
 
 
 def generate_example() -> list[RemoteBinary]:
-    versions = ["1.23", "1.24", "1.25"]
+    versions = ["1.24", "1.25", "1.26"]
     oses = ["linux", "windows", "darwin"]
     pies = ["-pie", ""]
     cgos = ["-cgo", ""]
