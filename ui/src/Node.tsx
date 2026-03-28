@@ -61,14 +61,14 @@ const verMatcher = /v\d+/;
 
 function getShortName(title: string): string {
   const words = title.split(splitter);
-  const last = words.at(-1);
+  const last = words[words.length - 1];
 
   if (words.length >= 2 && verMatcher.test(last)) {
     const split = title[title.length - last.length - 1];
     return `${words[words.length - 2]}${split}${last}`;
   }
 
-  return words.at(-1);
+  return words[words.length - 1];
 }
 
 function getScaleInternal(

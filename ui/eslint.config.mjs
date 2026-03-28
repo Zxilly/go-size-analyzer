@@ -4,6 +4,7 @@ export default antfu({
   react: true,
   rules: {
     "no-console": "off",
+    "e18e/prefer-array-at": "off",
   },
   stylistic: {
     indent: 2,
