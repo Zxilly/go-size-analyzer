@@ -50,6 +50,7 @@ func (m mainModel) View() string {
 	case focusedDetail:
 		left = disabledBorderStyle.Render(left)
 		right = borderStyle.Render(right)
+	default:
 	}
 
 	main := lipgloss.JoinHorizontal(lipgloss.Top, left, right)

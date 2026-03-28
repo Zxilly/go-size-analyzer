@@ -1,5 +1,6 @@
 import memoize from "lodash.memoize";
-import React, { useCallback, useMemo, useRef } from "react";
+import * as React from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 
 export interface NodeProps {
@@ -60,14 +61,14 @@ const verMatcher = /v\d+/;
 
 function getShortName(title: string): string {
   const words = title.split(splitter);
-  const last = words[words.length - 1];
+  const last = words.at(-1);
 
   if (words.length >= 2 && verMatcher.test(last)) {
     const split = title[title.length - last.length - 1];
     return `${words[words.length - 2]}${split}${last}`;
   }
 
-  return words[words.length - 1];
+  return words.at(-1);
 }
 
 function getScaleInternal(

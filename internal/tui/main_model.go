@@ -70,6 +70,7 @@ func (m mainModel) getKeyMap() help.KeyMap {
 	case focusedDetail:
 		ret.Short = append(ret.Short, m.rightDetail.KeyMap()...)
 		ret.Long = append(ret.Long, m.rightDetail.KeyMap())
+	default:
 	}
 
 	return ret

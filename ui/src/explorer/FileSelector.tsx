@@ -10,7 +10,8 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import React, { memo, useCallback, useState } from "react";
+import * as React from "react";
+import { memo, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { formatBytes } from "../tool/utils.ts";
 

@@ -148,6 +148,7 @@ func (w *wrapper) Description() string {
 						name = k.Name
 					case entity.FuncTypeMethod:
 						name = fmt.Sprintf("%s.%s", k.Receiver, k.Name)
+					default:
 					}
 
 					writeln("  %s", name)
