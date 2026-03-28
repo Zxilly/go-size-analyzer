@@ -258,6 +258,7 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 			typ = entity.AddrTypeData
 		case "__TEXT":
 			typ = entity.AddrTypeText
+		default:
 		}
 
 		if machoSectionShouldIgnore(sect) {

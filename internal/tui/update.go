@@ -49,6 +49,7 @@ func handleKeyEvent(m mainModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 	case key.Matches(msg, DefaultKeyMap.Exit):
 		return m, tea.Quit
+	default:
 	}
 
 	var cmd tea.Cmd
@@ -59,6 +60,7 @@ func handleKeyEvent(m mainModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m = m.updateDetail()
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
+	default:
 	}
 
 	return m, cmd
@@ -90,6 +92,7 @@ func handleMouseEvent(m mainModel, msg tea.MouseMsg) (mainModel, tea.Cmd) {
 		m = m.updateDetail()
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
+	default:
 	}
 
 	return m, cmd

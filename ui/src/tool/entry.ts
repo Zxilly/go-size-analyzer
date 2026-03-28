@@ -358,9 +358,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
 
     const typedPackages: Record<string, Package[]> = {};
     for (const pkg of Object.values(data.packages)) {
-      if (typedPackages[pkg.type] == null) {
-        typedPackages[pkg.type] = [];
-      }
+      typedPackages[pkg.type] ??= [];
       typedPackages[pkg.type].push(pkg);
     }
     const typedPackagesChildren: EntryLike<"container">[] = [];

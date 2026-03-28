@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 import type { Entry } from "./tool/entry.ts";
-import React, { useLayoutEffect, useMemo, useRef } from "react";
+import * as React from "react";
+import { useLayoutEffect, useMemo, useRef } from "react";
 import { useMouse } from "./tool/useMouse.ts";
 
 const Tooltip_marginX = 10;

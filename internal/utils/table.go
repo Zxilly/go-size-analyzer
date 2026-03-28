@@ -1,4 +1,4 @@
-package utils
+package utils //nolint:revive // utils is a common package name for internal utilities
 
 import (
 	"github.com/jedib0t/go-pretty/v6/table"

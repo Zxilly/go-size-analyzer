@@ -211,6 +211,7 @@ func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entr
 			k.AddDwarfSubProgram(cuLang == dwarfutil.DwLangGo, d, e, pkg, readFileName)
 		case dwarf.TagVariable:
 			k.AddDwarfVariable(e, d, pkg, ptrSize)
+		default:
 		}
 	}, true
 }
@@ -279,6 +280,7 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 				feeder: feeder,
 				entry:  entry,
 			}
+		default:
 		}
 	}
 
