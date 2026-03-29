@@ -118,21 +118,21 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		utils.WaitDebugger("Symbol done")
 	}
 
-	// Capture pclntab symbol addresses and run new analyzers (not for wasm)
+	// Capture pclntab symbol addresses and run analyzers
 	if !isWasm {
 		k.CapturePclntabSymbolAddrs()
+	}
 
-		if err = k.AnalyzeTypes(); err != nil {
-			slog.Warn("Type analysis failed", "err", err)
-		} else {
-			analyzers = append(analyzers, entity.AnalyzerTyp)
-		}
+	if err = k.AnalyzeTypes(); err != nil {
+		slog.Warn("Type analysis failed", "err", err)
+	} else {
+		analyzers = append(analyzers, entity.AnalyzerTyp)
+	}
 
-		if err = k.AnalyzePclntabMeta(); err != nil {
-			slog.Warn("pclntab meta analysis failed", "err", err)
-		} else {
-			analyzers = append(analyzers, entity.AnalyzerPclntabMeta)
-		}
+	if err = k.AnalyzePclntabMeta(); err != nil {
+		slog.Warn("pclntab meta analysis failed", "err", err)
+	} else {
+		analyzers = append(analyzers, entity.AnalyzerPclntabMeta)
 	}
 
 	if !options.SkipDisasm && !isWasm {
