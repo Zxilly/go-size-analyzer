@@ -151,6 +151,15 @@ bin-darwin-1.26-amd64-pie-cgo,https://github.com/Zxilly/go-testdata/releases/dow
 bin-darwin-1.26-arm64-strip-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-darwin-1.26-arm64-strip-pie-cgo,15,raw,bin-darwin-1.26-arm64-strip-pie-cgo
 bin-darwin-1.26-arm64-stripdwarf-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-darwin-1.26-arm64-stripdwarf-pie-cgo,15,raw,bin-darwin-1.26-arm64-stripdwarf-pie-cgo
 bin-darwin-1.26-arm64-pie-cgo,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-darwin-1.26-arm64-pie-cgo,15,raw,bin-darwin-1.26-arm64-pie-cgo
+bin-js-1.24-wasm-strip,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.24-wasm-strip,15,raw,bin-js-1.24-wasm-strip
+bin-js-1.24-wasm-stripdwarf,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.24-wasm-stripdwarf,15,raw,bin-js-1.24-wasm-stripdwarf
+bin-js-1.24-wasm,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.24-wasm,15,raw,bin-js-1.24-wasm
+bin-js-1.25-wasm-strip,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.25-wasm-strip,15,raw,bin-js-1.25-wasm-strip
+bin-js-1.25-wasm-stripdwarf,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.25-wasm-stripdwarf,15,raw,bin-js-1.25-wasm-stripdwarf
+bin-js-1.25-wasm,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.25-wasm,15,raw,bin-js-1.25-wasm
+bin-js-1.26-wasm-strip,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.26-wasm-strip,15,raw,bin-js-1.26-wasm-strip
+bin-js-1.26-wasm-stripdwarf,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.26-wasm-stripdwarf,15,raw,bin-js-1.26-wasm-stripdwarf
+bin-js-1.26-wasm,https://github.com/Zxilly/go-testdata/releases/download/latest/bin-js-1.26-wasm,15,raw,bin-js-1.26-wasm
 const-windows,https://github.com/Zxilly/go-testdata/releases/download/const/const-windows,2,raw,const-windows
 const-linux,https://github.com/Zxilly/go-testdata/releases/download/const/const-linux,2,raw,const-linux
 const-macos,https://github.com/Zxilly/go-testdata/releases/download/const/const-macos,2,raw,const-macos

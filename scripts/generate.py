@@ -159,6 +159,24 @@ def generate_example() -> list[RemoteBinary]:
             )
         )
 
+    # wasm binaries
+    wasm_strips = ["-strip", "-stripdwarf", ""]
+    for v, s in itertools.product(versions, wasm_strips):
+        name = f"bin-js-{v}-wasm{s}"
+        url = get_example_download_url(name)
+
+        if url is None:
+            continue
+
+        ret.append(
+            RemoteBinary(
+                name,
+                url,
+                TestType.TEXT_TEST | TestType.JSON_TEST | TestType.HTML_TEST | TestType.SVG_TEST,
+                RemoteBinaryType.RAW,
+            )
+        )
+
     return ret
 
 
