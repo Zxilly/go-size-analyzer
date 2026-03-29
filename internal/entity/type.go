@@ -15,4 +15,5 @@ const (
 	AddrSourceSymbol    AddrSourceType = "symbol"
 	AddrSourceDisasm    AddrSourceType = "disasm"
 	AddrSourceDwarf     AddrSourceType = "dwarf"
+	AddrSourceTyp       AddrSourceType = "type"
 )

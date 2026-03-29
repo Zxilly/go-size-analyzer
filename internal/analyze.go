@@ -104,7 +104,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	// fixme: add data symbol support to go gc
 	if !isWasm {
-		record := !dwarfOk && !options.SkipSymbol
+		record := !options.SkipSymbol
 		err = k.AnalyzeSymbol(record)
 		if err != nil {
 			if !errors.Is(err, wrapper.ErrNoSymbolTable) {
@@ -118,6 +118,23 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		utils.WaitDebugger("Symbol done")
 	}
 
+	// Capture pclntab symbol addresses and run new analyzers (not for wasm)
+	if !isWasm {
+		k.CapturePclntabSymbolAddrs()
+
+		if err = k.AnalyzeTypes(); err != nil {
+			slog.Warn("Type analysis failed", "err", err)
+		} else {
+			analyzers = append(analyzers, entity.AnalyzerTyp)
+		}
+
+		if err = k.AnalyzePclntabMeta(); err != nil {
+			slog.Warn("pclntab meta analysis failed", "err", err)
+		} else {
+			analyzers = append(analyzers, entity.AnalyzerPclntabMeta)
+		}
+	}
+
 	if !options.SkipDisasm && !isWasm {
 		if k.GoStringSymbol == nil {
 			slog.Info("no go:string.* symbol found, false-positive rates may rise")
@@ -129,6 +146,9 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		}
 		analyzers = append(analyzers, entity.AnalyzerDisasm)
 	}
+
+	// All analyzers done, release per-package caches
+	k.Deps.ClearCaches()
 
 	// we have collected everything, now we can calculate the size
 

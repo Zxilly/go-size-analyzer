@@ -1,7 +1,9 @@
 package knowninfo
 
 import (
+	"encoding/binary"
 	"log/slog"
+	"strings"
 
 	"github.com/ZxillyFork/gore"
 
@@ -9,10 +11,38 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
+// ptrSizeAndOrder returns the pointer size in bytes and byte order for the
+// given Go architecture string.
+func ptrSizeAndOrder(goarch string) (int, binary.ByteOrder) {
+	ptrSize := 8
+	switch goarch {
+	case "386", "arm", "armbe", "mips", "mipsle", "mips64p32":
+		ptrSize = 4
+	}
+
+	var order binary.ByteOrder = binary.LittleEndian
+	switch goarch {
+	case "s390x", "ppc64":
+		order = binary.BigEndian
+	}
+
+	return ptrSize, order
+}
+
 type VersionFlag struct {
 	Leq118 bool
 	Meq120 bool
 	Meq125 bool // Go 1.25+ changed wasm pclntab to store PC_F instead of full PC
+}
+
+// PclntabMeta holds addresses of pclntab sub-tables captured from the symbol table.
+type PclntabMeta struct {
+	FuncnametabAddr uint64
+	CutabAddr       uint64
+	FiletabAddr     uint64
+	PctabAddr       uint64
+	FunctabAddr     uint64
+	PclntabEnd      uint64 // runtime.epclntab
 }
 
 type KnownInfo struct {
@@ -33,6 +63,9 @@ type KnownInfo struct {
 	VersionFlag VersionFlag
 
 	HasDWARF bool
+
+	// PclntabSyms holds addresses of pclntab sub-tables captured from the symbol table.
+	PclntabSyms PclntabMeta
 }
 
 func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {
@@ -67,6 +100,19 @@ func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 		Meq120: gore.GoVersionCompare(ver.Name, "go1.20rc1") >= 0,
 		Meq125: gore.GoVersionCompare(ver.Name, "go1.25rc1") >= 0,
 	}
+}
+
+// isMainModulePackage checks if a package path belongs to the main module
+// by comparing against BuildInfo.ModInfo.Main.Path.
+func (k *KnownInfo) isMainModulePackage(pkgName string) bool {
+	if k.BuildInfo == nil || k.BuildInfo.ModInfo == nil {
+		return false
+	}
+	mainPath := k.BuildInfo.ModInfo.Main.Path
+	if mainPath == "" {
+		return false
+	}
+	return pkgName == mainPath || strings.HasPrefix(pkgName, mainPath+"/")
 }
 
 func (k *KnownInfo) convertAddr(addr uint64) uint64 {

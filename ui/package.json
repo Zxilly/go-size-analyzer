@@ -1,7 +1,7 @@
 {
   "name": "go-size-analyzer-ui",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {

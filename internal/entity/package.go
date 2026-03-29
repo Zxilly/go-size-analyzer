@@ -258,3 +258,8 @@ func (p *Package) ClearCache() {
 	p.filesCache = nil
 	p.funcsCache = nil
 }
+
+// FuncCount returns the number of functions in this package
+func (p *Package) FuncCount() int {
+	return len(p.funcsCache)
+}

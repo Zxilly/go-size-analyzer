@@ -43,7 +43,7 @@ jobs:
           allowUpdates: true
           artifactContentType: 'text/html'
           artifacts: 'ui/dist/webui/index.html'
-          tag: ui-v1
+          tag: ui-v2
           commit: master
           prerelease: true
 

@@ -1,13 +1,18 @@
 package entity
 
 import (
+	"cmp"
 	"fmt"
+	"slices"
 )
 
 type Store struct {
 	Sections          map[string]*Section
 	DataSectionsCache []AddrPos
 	TextSectionsCache []AddrPos
+
+	// sorted by Addr for binary search in FindSection
+	sortedSections []*Section
 }
 
 func NewStore() *Store {
@@ -18,22 +23,36 @@ func NewStore() *Store {
 	}
 }
 
-func (s *Store) FindSection(addr, size uint64) *Section {
-	for _, section := range s.Sections {
-		if section.Debug {
-			// we can't find things in debug sections
+// searchSorted finds the element in a sorted slice whose range [start, end) contains [addr, addr+size].
+// getStart returns the range start for an element; contains checks the full containment.
+// Returns the index of the matching element, or -1 if not found.
+func searchSorted[T any](slice []T, addr uint64, getStart func(T) uint64, contains func(T, uint64, uint64) bool, size uint64) int {
+	idx, _ := slices.BinarySearchFunc(slice, addr, func(elem T, target uint64) int {
+		return cmp.Compare(getStart(elem), target)
+	})
+	// BinarySearchFunc returns the insertion point where getStart(elem) >= addr.
+	// The containing element may be at idx-1 (starts before addr) or idx (exact match).
+	for i := idx; i >= idx-1 && i >= 0; i-- {
+		if i >= len(slice) {
 			continue
 		}
-
-		if section.ContentType == SectionContentOther {
-			continue
-		}
-
-		if section.Addr <= addr && addr+size <= section.AddrEnd {
-			return section
+		if contains(slice[i], addr, size) {
+			return i
 		}
 	}
-	return nil
+	return -1
+}
+
+func (s *Store) FindSection(addr, size uint64) *Section {
+	idx := searchSorted(s.sortedSections, addr,
+		func(sect *Section) uint64 { return sect.Addr },
+		func(sect *Section, a, sz uint64) bool { return sect.Addr <= a && a+sz <= sect.AddrEnd },
+		size,
+	)
+	if idx < 0 {
+		return nil
+	}
+	return s.sortedSections[idx]
 }
 
 func (s *Store) AssertSize(size uint64) error {
@@ -50,6 +69,12 @@ func (s *Store) AssertSize(size uint64) error {
 	}
 
 	return nil
+}
+
+func sortAddrPos(a []AddrPos) {
+	slices.SortFunc(a, func(x, y AddrPos) int {
+		return cmp.Compare(x.Addr, y.Addr)
+	})
 }
 
 func (s *Store) BuildCache() {
@@ -75,24 +100,37 @@ func (s *Store) BuildCache() {
 			// ignore
 		}
 	}
+
+	sortAddrPos(s.DataSectionsCache)
+	sortAddrPos(s.TextSectionsCache)
+
+	// build sorted section list for FindSection (exclude debug and other)
+	s.sortedSections = make([]*Section, 0, len(s.Sections))
+	for _, section := range s.Sections {
+		if section.Debug || section.ContentType == SectionContentOther {
+			continue
+		}
+		s.sortedSections = append(s.sortedSections, section)
+	}
+	slices.SortFunc(s.sortedSections, func(a, b *Section) int {
+		return cmp.Compare(a.Addr, b.Addr)
+	})
 }
 
 func (s *Store) IsData(addr, size uint64) bool {
-	for _, sect := range s.DataSectionsCache {
-		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
-			return true
-		}
-	}
-	return false
+	return searchSorted(s.DataSectionsCache, addr,
+		func(ap AddrPos) uint64 { return ap.Addr },
+		func(ap AddrPos, a, sz uint64) bool { return ap.Addr <= a && a+sz <= ap.Addr+ap.Size },
+		size,
+	) >= 0
 }
 
 func (s *Store) IsText(addr, size uint64) bool {
-	for _, sect := range s.TextSectionsCache {
-		if sect.Addr <= addr && addr+size <= sect.Addr+sect.Size {
-			return true
-		}
-	}
-	return false
+	return searchSorted(s.TextSectionsCache, addr,
+		func(ap AddrPos) uint64 { return ap.Addr },
+		func(ap AddrPos, a, sz uint64) bool { return ap.Addr <= a && a+sz <= ap.Addr+ap.Size },
+		size,
+	) >= 0
 }
 
 func (s *Store) IsType(addr, size uint64, t AddrType) bool {

@@ -174,6 +174,8 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 			typ = entity.PackageTypeMain
 		} else if gore.IsStandardLibrary(cuName) {
 			typ = entity.PackageTypeStd
+		} else if k.isMainModulePackage(cuName) {
+			typ = entity.PackageTypeMain
 		}
 		pkg.Type = typ
 	} else {
@@ -223,14 +225,7 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 		return false
 	}
 
-	goarch := k.Wrapper.GoArch()
-	var ptrSize int
-	switch goarch {
-	case "386", "arm":
-		ptrSize = 4
-	default:
-		ptrSize = 8
-	}
+	ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
 
 	k.HasDWARF = true
 

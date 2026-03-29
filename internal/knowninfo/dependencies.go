@@ -38,6 +38,21 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 	return p, true
 }
 
+// GetPackageByPrefixMatch returns the package with the longest matching prefix.
+// This is used as a fallback when exact match fails, e.g. when a symbol's
+// package name contains receiver/method info that extends beyond the actual package path.
+func (m *Dependencies) GetPackageByPrefixMatch(name string) (*entity.Package, bool) {
+	var best *entity.Package
+	_ = m.Trie.WalkPath(name, func(_ string, p *entity.Package) error {
+		best = p
+		return nil
+	})
+	if best == nil {
+		return nil, false
+	}
+	return best, true
+}
+
 func (m *Dependencies) Functions(yield func(*entity.Function) bool) {
 	_ = m.Trie.Walk(func(_ string, p *entity.Package) error {
 		for f := range p.Functions {
@@ -94,8 +109,11 @@ func (m *Dependencies) FinishLoad(imports bool) {
 	if imports {
 		m.UpdateImportBy()
 	}
+}
 
-	// clear caches
+// ClearCaches releases per-package file and function caches.
+// Call after all analyzers that need FuncCount() have completed.
+func (m *Dependencies) ClearCaches() {
 	_ = m.Trie.Walk(func(_ string, value *entity.Package) error {
 		value.ClearCache()
 		return nil

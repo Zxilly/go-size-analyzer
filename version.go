@@ -17,7 +17,7 @@ const (
 
 const (
 	// StaticVersion when update this, also update the version string in workflow
-	StaticVersion = "1"
+	StaticVersion = "2"
 )
 
 var (

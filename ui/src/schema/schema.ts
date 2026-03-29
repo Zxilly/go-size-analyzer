@@ -67,7 +67,7 @@ export const ResultSchema = object({
   size: number(),
   packages: record(string(), PackageSchema),
   sections: array(SectionSchema),
-  analyzers: optional(array(union([literal("dwarf"), literal("disasm"), literal("symbol"), literal("pclntab")]))),
+  analyzers: optional(array(union([literal("dwarf"), literal("disasm"), literal("symbol"), literal("pclntab"), literal("type"), literal("pclntab_meta")]))),
 });
 
 export type Result = InferInput<typeof ResultSchema>;

@@ -9,6 +9,9 @@ import (
 // src\cmd\link\internal\ld\data.go
 var ignoreSymbols = utils.NewSet[string]()
 
+// PclntabSymbols are runtime symbols whose addresses we capture for pclntab sub-table analysis.
+var PclntabSymbols = utils.NewSet[string]()
+
 func init() {
 	symbols := []string{
 		"runtime.text",
@@ -32,8 +35,6 @@ func init() {
 		"internal/fuzz._counters",
 		"internal/fuzz._ecounters",
 
-		"runtime.rodata",
-		"runtime.erodata",
 		"runtime.types",
 		"runtime.etypes",
 
@@ -42,12 +43,6 @@ func init() {
 		"runtime.esymtab",
 		"runtime.pclntab",
 		"runtime.pcheader",
-		"runtime.funcnametab",
-		"runtime.cutab",
-		"runtime.filetab",
-		"runtime.pctab",
-		"runtime.functab",
-		"runtime.epclntab",
 
 		"runtime.zerobase",
 
@@ -56,6 +51,20 @@ func init() {
 	}
 
 	for _, sym := range symbols {
+		ignoreSymbols.Add(sym)
+	}
+
+	pclntabSyms := []string{
+		"runtime.funcnametab",
+		"runtime.cutab",
+		"runtime.filetab",
+		"runtime.pctab",
+		"runtime.functab",
+		"runtime.epclntab",
+	}
+
+	for _, sym := range pclntabSyms {
+		PclntabSymbols.Add(sym)
 		ignoreSymbols.Add(sym)
 	}
 }
