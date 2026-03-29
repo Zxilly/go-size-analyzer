@@ -146,9 +146,13 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 	}
 
 	// Collect all non-zero itab addresses and find the contiguous region.
+	// On PIE binaries, each pointer in the array is a fixup descriptor that
+	// must be resolved to the actual virtual address.
 	itabAddrs := make([]uint64, 0, numItabs)
 	for i := uint64(0); i < numItabs; i++ {
-		addr := readPtr(ptrData, i*ptrSz, ptrSize, order)
+		fileAddr := itabSection.Address + i*ptrSz
+		raw := readPtr(ptrData, i*ptrSz, ptrSize, order)
+		addr := md.ResolvePointer(raw, fileAddr)
 		if addr != 0 {
 			itabAddrs = append(itabAddrs, addr)
 		}
@@ -185,19 +189,22 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 			itabSize = minItabSize
 		}
 		// Read _type pointer (at offset ptrSize within the itab struct).
+		// The _type field is also a pointer that needs fixup resolution on PIE binaries.
+		typeFileAddr := itabAddr + ptrSz
 		var typeAddr uint64
 		localOff := itabAddr - regionStart + ptrSz
 		if regionData != nil && localOff+ptrSz <= uint64(len(regionData)) {
 			typeAddr = readPtr(regionData, localOff, ptrSize, order)
 		} else {
 			// Fallback: individual read for out-of-range itabs.
-			typeFieldData, err := k.Wrapper.ReadAddr(itabAddr+ptrSz, ptrSz)
+			typeFieldData, err := k.Wrapper.ReadAddr(typeFileAddr, ptrSz)
 			if err != nil {
 				slog.Debug("Failed to read itab _type field", "itabAddr", itabAddr, "err", err)
 				continue
 			}
 			typeAddr = readPtr(typeFieldData, 0, ptrSize, order)
 		}
+		typeAddr = md.ResolvePointer(typeAddr, typeFileAddr)
 
 		goType, ok := typeAddrCache[typeAddr]
 
