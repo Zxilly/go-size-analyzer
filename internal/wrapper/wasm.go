@@ -5,6 +5,7 @@ import (
 	"debug/dwarf"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"log/slog"
 	"runtime/debug"
 	"strings"
@@ -41,16 +42,36 @@ func (*WasmWrapper) GoArch() string {
 	return "wasm"
 }
 
-func (*WasmWrapper) ReadAddr(uint64, uint64) ([]byte, error) {
-	return nil, errors.New("read addr not supported")
+func (w *WasmWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
+	end := addr + size
+	if end > uint64(len(w.memory)) || end < addr {
+		return nil, fmt.Errorf("read addr 0x%x size 0x%x out of range (memory size 0x%x)", addr, size, len(w.memory))
+	}
+	return w.memory[addr:end], nil
 }
 
 func (*WasmWrapper) LoadSymbols(func(name string, addr uint64, size uint64, typ entity.AddrType), func(addr uint64, size uint64)) error {
 	return errors.New("load symbols not supported")
 }
 
-func (*WasmWrapper) LoadSections() *entity.Store {
-	return nil
+func (w *WasmWrapper) LoadSections() *entity.Store {
+	store := entity.NewStore()
+
+	// The linear memory acts as a single data section for type/pclntab analysis.
+	// Type descriptors and pclntab metadata use offsets into this memory.
+	memSize := uint64(len(w.memory))
+	if memSize > 0 {
+		store.Sections["memory.data"] = &entity.Section{
+			Name:         "memory.data",
+			Size:         memSize,
+			Addr:         0,
+			AddrEnd:      memSize,
+			OnlyInMemory: true,
+			ContentType:  entity.SectionContentData,
+		}
+	}
+
+	return store
 }
 
 func (*WasmWrapper) DWARF() (*dwarf.Data, error) {

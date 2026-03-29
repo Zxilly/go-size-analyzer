@@ -64,16 +64,12 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	slog.Info("Found build info")
 	utils.WaitDebugger("Found build info")
 
-	// wasm section is different and not use addr space
-	// we handle it later
-	if !isWasm {
-		err = k.LoadSectionMap()
-		if err != nil {
-			return nil, err
-		}
-
-		k.KnownAddr = entity.NewKnownAddr(k.Sects)
+	err = k.LoadSectionMap()
+	if err != nil {
+		return nil, err
 	}
+
+	k.KnownAddr = entity.NewKnownAddr(k.Sects)
 
 	err = k.LoadGoreInfo(file, isWasm)
 	if err != nil {
@@ -118,7 +114,7 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		utils.WaitDebugger("Symbol done")
 	}
 
-	// Capture pclntab symbol addresses and run analyzers
+	// Capture pclntab symbol addresses (requires symbol table, not available for wasm)
 	if !isWasm {
 		k.CapturePclntabSymbolAddrs()
 	}
