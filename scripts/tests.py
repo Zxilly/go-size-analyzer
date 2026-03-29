@@ -39,6 +39,8 @@ def run_unit(name: str, env: dict[str, str], pargs: list[str], timeout: int):
         f.write(stdout.stdout)
 
     if stdout.returncode != 0:
+        log(f"Unit test {name} output:")
+        print(stdout.stdout, flush=True)
         raise Exception(f"Unit test {name} failed with return code {stdout.returncode}.")
 
     generate_junit(stdout.stdout, os.path.join(get_project_root(), f"{name}.xml"))
@@ -176,7 +178,8 @@ def run_integration_tests(typ: str, entry: GSAInstance):
             target.run_test(entry, report_typ, timeout=timeout)
             log(f"{head} passed in {format_time(time.time() - base)}.")
         except Exception as e:
-            log(f"{head} failed")
+            log(f"{head} failed:")
+            print(str(e), flush=True)
 
             write_github_summary(code_block(str(e)))
 

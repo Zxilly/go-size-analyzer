@@ -65,16 +65,22 @@ class GSAInstance:
         return env
 
     def run(self, *args, output: str, profiler_dir: str):
-        out = subprocess.check_output(
+        result = subprocess.run(
             args=[self.binary, *args],
             cwd=get_project_root(),
             text=True,
             encoding="utf-8",
             env=self.getenv(profiler_dir),
+            stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT)
 
         with open(output, "w", encoding="utf-8") as f:
-            f.write(out)
+            f.write(result.stdout)
+
+        if result.returncode != 0:
+            log(f"GSA run failed (exit code {result.returncode}), output:")
+            print(result.stdout, flush=True)
+            result.check_returncode()
 
     def expect(self, *args, output: str, profiler_dir: str, expect: str, callback: Callable[[subprocess.Popen], None],
                timeout: int):
@@ -111,6 +117,10 @@ class GSAInstance:
                 print(f"Process exited with code: {exit_code}")
 
                 if not expect_found:
+                    if os.path.exists(output):
+                        log(f"GSA expect failed, output from {output}:")
+                        with open(output, "r", encoding="utf-8") as of:
+                            print(of.read(), flush=True)
                     raise RuntimeError(
                         f"Expected output '{expect}' not found before process exit. Exit code: {exit_code}")
 
@@ -127,6 +137,12 @@ class GSAInstance:
             with open(output, "w", encoding="utf-8") as f:
                 for line in p.stdout:
                     f.write(line)
+
+        def dump_output_on_error():
+            if os.path.exists(output):
+                log(f"GSA run_with_figure failed, output from {output}:")
+                with open(output, "r", encoding="utf-8") as f:
+                    print(f.read(), flush=True)
 
         with subprocess.Popen(
                 args=[self.binary, *args],
@@ -153,9 +169,14 @@ class GSAInstance:
                         timestamps.append(elapsed_time)
             except TimeoutError as e:
                 proc.kill()
+                dump_output_on_error()
                 raise e
             except psutil.NoSuchProcess:
                 pass
+
+        if proc.returncode != 0:
+            dump_output_on_error()
+            raise subprocess.CalledProcessError(proc.returncode, self.binary)
 
         if figure_output is not None and timestamps[-1] > 2:
             pic = draw_usage(figure_name, cpu_percentages, memory_usage_mb, timestamps)

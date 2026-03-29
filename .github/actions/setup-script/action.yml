@@ -47,6 +47,17 @@ runs:
       working-directory: ./scripts
       run: uv run ${{ inputs.script }}
 
+    - name: Dump test logs on failure
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        echo "::group::Test output logs"
+        find results -name '*.output.txt' -print -exec cat {} \; 2>/dev/null || true
+        echo "::endgroup::"
+        echo "::group::Unit test logs"
+        find results/unit -name '*.txt' -print -exec cat {} \; 2>/dev/null || true
+        echo "::endgroup::"
+
     - name: Report results
       if: ${{ inputs.report == 'true' }}
       shell: bash
