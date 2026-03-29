@@ -168,13 +168,22 @@ $ gsa bin-linux-1.21-amd64 bin-linux-1.22-amd64
 └─────────┴──────────────────────┴──────────┴──────────┴─────────┘
 ```
 
-#### Svg Mode
+#### SVG Mode
 
 ```bash
 $ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ```
 
 ![image](./assets/example.svg)
+
+#### JSON Queries
+
+Get size of specific dependency.
+```bash
+$ gsa /usr/bin/runc which runc` -f json | jq '.packages."github.com/urfave/cli".size'
+...
+174126
+```
 
 ### Full options
 
