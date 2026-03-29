@@ -234,14 +234,15 @@ func (m *MachoWrapper) LoadSymbols(marker func(name string, addr uint64, size ui
 		addrs = append(addrs, s.Value)
 	}
 	slices.Sort(addrs)
+	addrs = slices.Compact(addrs) // deduplicate
 
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Value)
-		if !ok {
-			// maybe we met the last symbol, no way to get the CodeSize
+		if !ok || i+1 >= len(addrs) {
+			// last symbol or not found, no way to get the size
 			continue
 		}
-		size := addrs[i] - s.Value
+		size := addrs[i+1] - s.Value
 
 		if s.Sect == 0 {
 			continue // unknown

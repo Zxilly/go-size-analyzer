@@ -173,12 +173,19 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 		regionData = nil
 	}
 
-	// Conservative itab size: inter + _type + hash/pad + 1 method slot.
-	itabSize := 2*ptrSz + 8 + ptrSz
+	// Minimum itab size for the last entry: inter + _type + hash/pad + 1 method slot.
+	minItabSize := 2*ptrSz + 8 + ptrSz
 
 	var itabsAttributed int
 
-	for _, itabAddr := range itabAddrs {
+	for idx, itabAddr := range itabAddrs {
+		// Use gap to next itab for size; last itab uses conservative minimum.
+		var itabSize uint64
+		if idx+1 < len(itabAddrs) {
+			itabSize = itabAddrs[idx+1] - itabAddr
+		} else {
+			itabSize = minItabSize
+		}
 		// Read _type pointer (at offset ptrSize within the itab struct).
 		var typeAddr uint64
 		localOff := itabAddr - regionStart + ptrSz

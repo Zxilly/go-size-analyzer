@@ -68,7 +68,7 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		pkg = k.getOrCreateVirtualPackage("CGO", entity.PackageTypeCGO)
 	case pkgName == "$f64" || pkgName == "$f32":
-		return
+		pkg = k.getOrCreateVirtualPackage("runtime/consts", entity.PackageTypeGenerated)
 	default:
 		var ok bool
 		pkg, ok = k.Deps.GetPackage(pkgName)

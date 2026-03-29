@@ -61,6 +61,15 @@ func (k *KnownInfo) CalculateSectionSize() error {
 		slog.Warn(fmt.Sprintf("pclntab addr %d not in any section", k.PClnTabAddr))
 	}
 
+	// Mark debug sections and linker metadata sections as fully known.
+	// Their content is well-defined (DWARF info, symbol tables, relocation
+	// tables, etc.) and should not count as "unknown".
+	for _, s := range k.Sects.Sections {
+		if s.Debug || s.ContentType == entity.SectionContentOther {
+			s.KnownSize = s.FileSize
+		}
+	}
+
 	// linear map virtual size to file size
 	for s, size := range sectCache {
 		mapper := 1.0

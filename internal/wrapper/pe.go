@@ -87,14 +87,15 @@ func (p *PeWrapper) LoadSymbols(marker func(name string, addr uint64, size uint6
 	}
 
 	slices.Sort(addrs)
+	addrs = slices.Compact(addrs) // deduplicate
 
 	for _, s := range syms {
 		i, ok := slices.BinarySearch(addrs, s.Addr)
-		if !ok {
-			// Maybe we met the last symbol, skip it, no way to get the CodeSize
+		if !ok || i+1 >= len(addrs) {
+			// last symbol or not found, skip — no way to get the size
 			continue
 		}
-		size := addrs[i] - s.Addr
+		size := addrs[i+1] - s.Addr
 
 		if s.Name == GoStringSymbol {
 			goSCb(s.Addr, size)

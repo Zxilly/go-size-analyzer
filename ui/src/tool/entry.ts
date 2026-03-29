@@ -317,6 +317,26 @@ function isDebugSection(name: string): boolean {
   return name.startsWith(".debug_") || name.startsWith(".zdebug_") || name.endsWith("__DWARF");
 }
 
+const linkerMetadataSections = new Set([
+  ".symtab",
+  ".strtab",
+  ".dynsym",
+  ".dynstr",
+  ".pdata",
+  ".xdata",
+  ".reloc",
+  ".idata",
+  ".gnu.hash",
+  ".hash",
+  ".dynamic",
+]);
+
+function isLinkerMetadataSection(name: string): boolean {
+  return linkerMetadataSections.has(name)
+    || name.startsWith(".rela.")
+    || name.startsWith(".rel.");
+}
+
 export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
   private readonly children: EntryChildren["result"];
 
@@ -327,11 +347,15 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
 
     const uknSectChildren: EntryLike<"section">[] = [];
     const debugSectChildren: EntryLike<"section">[] = [];
+    const metadataSectChildren: EntryLike<"section">[] = [];
 
     for (const section of data.sections) {
       const s = new SectionImpl(section);
       if (isDebugSection(section.name)) {
         debugSectChildren.push(s);
+      }
+      else if (isLinkerMetadataSection(section.name)) {
+        metadataSectChildren.push(s);
       }
       else {
         uknSectChildren.push(s);
@@ -353,8 +377,16 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
       debugSectChildren,
       "The size of the debug sections in the binary. Can be stripped.",
     );
+    const metadataSectContainerSize = metadataSectChildren.reduce((acc, child) => acc + child.getSize(), 0);
+    const metadataSectionContainer = new ContainerImpl(
+      "Linker Metadata Size",
+      "metadata-sections",
+      metadataSectContainerSize,
+      metadataSectChildren,
+      "The size of linker metadata sections (symbol tables, relocations, exception data, imports).",
+    );
 
-    children.push(sectionContainer, debugSectionContainer);
+    children.push(sectionContainer, debugSectionContainer, metadataSectionContainer);
 
     const typedPackages: Record<string, Package[]> = {};
     for (const pkg of Object.values(data.packages)) {

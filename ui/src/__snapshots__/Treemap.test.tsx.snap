@@ -37,20 +37,20 @@ exports[`treeMap > render snapshot 1`] = `
     >
       <g
         class="node"
-        data-id="589"
-        transform="translate(235,247)"
+        data-id="590"
+        transform="translate(261,229)"
       >
         <rect
-          fill="rgb(204, 172, 210)"
-          height="521"
-          width="789"
+          fill="rgb(210, 172, 210)"
+          height="539"
+          width="763"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="394.5"
+          x="381.5"
           y="10.5"
         >
           Std Packages Size
@@ -62,20 +62,20 @@ exports[`treeMap > render snapshot 1`] = `
     >
       <g
         class="node"
-        data-id="32"
+        data-id="33"
         transform="translate(0,20)"
       >
         <rect
           fill="rgb(210, 172, 172)"
-          height="32"
-          width="234"
+          height="29"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="117"
+          x="130"
           y="10.5"
         >
           Generated Packages Size
@@ -83,20 +83,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="623"
-        transform="translate(0,53)"
+        data-id="624"
+        transform="translate(0,50)"
       >
         <rect
-          fill="rgb(204, 210, 172)"
-          height="35"
-          width="234"
+          fill="rgb(210, 210, 172)"
+          height="31"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="117"
+          x="130"
           y="10.5"
         >
           Main Packages Size
@@ -104,23 +104,23 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="97"
-        transform="translate(235,275)"
+        data-id="98"
+        transform="translate(261,257)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="4"
+          fill="rgb(183, 123, 183)"
+          height="5"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="572"
-        transform="translate(235,335)"
+        data-id="573"
+        transform="translate(261,320)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="37"
+          fill="rgb(183, 123, 183)"
+          height="38"
           width="26"
         />
         <text
@@ -136,12 +136,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="75"
-        transform="translate(235,654)"
+        data-id="76"
+        transform="translate(261,650)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="114"
+          fill="rgb(183, 123, 183)"
+          height="118"
           width="26"
         />
         <text
@@ -157,20 +157,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="500"
-        transform="translate(262,297)"
+        data-id="501"
+        transform="translate(288,280)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="32"
-          width="117"
+          fill="rgb(183, 123, 183)"
+          height="34"
+          width="112"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="58.5"
+          x="56"
           y="10.5"
         >
           sync
@@ -178,20 +178,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="118"
-        transform="translate(380,267)"
+        data-id="119"
+        transform="translate(401,249)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="501"
-          width="644"
+          fill="rgb(183, 123, 183)"
+          height="519"
+          width="623"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="322"
+          x="311.5"
           y="10.5"
         >
           runtime
@@ -203,41 +203,41 @@ exports[`treeMap > render snapshot 1`] = `
     >
       <g
         class="node"
-        data-id="24"
-        transform="translate(0,89)"
+        data-id="25"
+        transform="translate(0,82)"
       >
         <rect
-          fill="rgb(172, 210, 187)"
-          height="679"
-          width="234"
+          fill="rgb(172, 210, 172)"
+          height="197"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="117"
+          x="130"
           y="10.5"
         >
-          Debug Sections Size
+          Linker Metadata Size
         </text>
       </g>
       <g
         class="node"
         data-id="23"
-        transform="translate(235,20)"
+        transform="translate(0,280)"
       >
         <rect
-          fill="rgb(172, 187, 210)"
-          height="226"
-          width="789"
+          fill="rgb(172, 210, 210)"
+          height="488"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="394.5"
+          x="130"
           y="10.5"
         >
           Unknown Sections Size
@@ -245,99 +245,110 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="25"
-        transform="translate(0,40)"
+        data-id="24"
+        transform="translate(261,20)"
       >
         <rect
-          fill="rgb(183, 123, 123)"
-          height="12"
-          width="234"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="590"
-        transform="translate(0,73)"
-      >
-        <rect
-          fill="rgb(173, 183, 123)"
-          height="15"
-          width="234"
+          fill="rgb(172, 172, 210)"
+          height="208"
+          width="763"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="117"
-          y="7.5"
+          x="381.5"
+          y="10.5"
         >
-          main
+          Debug Sections Size
         </text>
       </g>
       <g
         class="node"
-        data-id="102"
-        transform="translate(235,269)"
+        data-id="26"
+        transform="translate(0,40)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
+          fill="rgb(183, 123, 123)"
+          height="9"
+          width="260"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="591"
+        transform="translate(0,70)"
+      >
+        <rect
+          fill="rgb(183, 183, 123)"
+          height="11"
+          width="260"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="103"
+        transform="translate(261,251)"
+      >
+        <rect
+          fill="rgb(183, 123, 183)"
           height="2"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="104"
-        transform="translate(235,272)"
+        data-id="105"
+        transform="translate(261,254)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
+          fill="rgb(183, 123, 183)"
           height="2"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="62"
-        transform="translate(235,280)"
+        data-id="63"
+        transform="translate(261,263)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
+          fill="rgb(183, 123, 183)"
           height="8"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="60"
-        transform="translate(235,289)"
+        data-id="61"
+        transform="translate(261,272)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
+          fill="rgb(183, 123, 183)"
           height="11"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="36"
-        transform="translate(235,301)"
+        data-id="37"
+        transform="translate(261,284)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="11"
+          fill="rgb(183, 123, 183)"
+          height="12"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="45"
-        transform="translate(235,313)"
+        data-id="46"
+        transform="translate(261,297)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="21"
+          fill="rgb(183, 123, 183)"
+          height="22"
           width="26"
         />
         <text
@@ -353,12 +364,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="71"
-        transform="translate(235,373)"
+        data-id="72"
+        transform="translate(261,359)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="58"
+          fill="rgb(183, 123, 183)"
+          height="60"
           width="26"
         />
         <text
@@ -374,12 +385,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="495"
-        transform="translate(235,432)"
+        data-id="496"
+        transform="translate(261,420)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="59"
+          fill="rgb(183, 123, 183)"
+          height="61"
           width="26"
         />
         <text
@@ -395,12 +406,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="51"
-        transform="translate(235,492)"
+        data-id="52"
+        transform="translate(261,482)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="70"
+          fill="rgb(183, 123, 183)"
+          height="73"
           width="26"
         />
         <text
@@ -416,12 +427,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="40"
-        transform="translate(235,563)"
+        data-id="41"
+        transform="translate(261,556)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="90"
+          fill="rgb(183, 123, 183)"
+          height="93"
           width="26"
         />
         <text
@@ -437,20 +448,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="33"
-        transform="translate(262,267)"
+        data-id="34"
+        transform="translate(288,249)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="29"
-          width="117"
+          fill="rgb(183, 123, 183)"
+          height="30"
+          width="112"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="58.5"
+          x="56"
           y="10.5"
         >
           embed
@@ -458,20 +469,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="523"
-        transform="translate(262,330)"
+        data-id="524"
+        transform="translate(288,315)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="44"
-          width="117"
+          fill="rgb(183, 123, 183)"
+          height="45"
+          width="112"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="58.5"
+          x="56"
           y="10.5"
         >
           syscall
@@ -479,20 +490,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="107"
-        transform="translate(262,375)"
+        data-id="108"
+        transform="translate(288,361)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="88"
-          width="117"
+          fill="rgb(183, 123, 183)"
+          height="91"
+          width="112"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="58.5"
+          x="56"
           y="10.5"
         >
           reflect
@@ -500,20 +511,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="544"
-        transform="translate(262,464)"
+        data-id="545"
+        transform="translate(288,453)"
       >
         <rect
-          fill="rgb(173, 123, 183)"
-          height="304"
-          width="117"
+          fill="rgb(183, 123, 183)"
+          height="315"
+          width="112"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="58.5"
+          x="56"
           y="10.5"
         >
           time
@@ -521,23 +532,23 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="574"
-        transform="translate(236,363)"
+        data-id="575"
+        transform="translate(262,348)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="9"
+          fill="rgb(149, 80, 149)"
+          height="10"
           width="25"
         />
       </g>
       <g
         class="node"
-        data-id="77"
-        transform="translate(235,685)"
+        data-id="78"
+        transform="translate(261,681)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="83"
+          fill="rgb(149, 80, 149)"
+          height="87"
           width="26"
         />
         <text
@@ -553,45 +564,55 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="513"
-        transform="translate(356,317)"
+        data-id="514"
+        transform="translate(378,300)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="23"
+          fill="rgb(149, 80, 149)"
+          height="14"
+          width="22"
         />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="11"
+          y="7"
+        >
+          atomic
+        </text>
       </g>
       <g
         class="node"
-        data-id="242"
-        transform="translate(388,302)"
+        data-id="243"
+        transform="translate(410,283)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="6"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="237"
-        transform="translate(388,317)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
           width="19"
         />
       </g>
       <g
         class="node"
-        data-id="244"
-        transform="translate(388,570)"
+        data-id="238"
+        transform="translate(410,299)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="16"
+          fill="rgb(149, 80, 149)"
+          height="6"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="245"
+        transform="translate(410,549)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="17"
           width="19"
         />
         <text
@@ -600,27 +621,27 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="9.5"
-          y="8"
+          y="8.5"
         >
           internal/syscall
         </text>
       </g>
       <g
         class="node"
-        data-id="239"
-        transform="translate(547,287)"
+        data-id="240"
+        transform="translate(508,726)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="36"
+          fill="rgb(149, 80, 149)"
+          height="42"
+          width="59"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="18"
+          x="29.5"
           y="10.5"
         >
           internal/atomic
@@ -632,224 +653,21 @@ exports[`treeMap > render snapshot 1`] = `
     >
       <g
         class="node"
-        data-id="4"
-        transform="translate(1,109)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="22"
-          width="5"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="10"
-        transform="translate(7,109)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="22"
-          width="227"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="113.5"
-          y="11"
-        >
-          .debug_ranges
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="5"
-        transform="translate(0,132)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="192"
-          width="62"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="31"
-          y="96"
-        >
-          .debug_frame
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="8"
-        transform="translate(63,132)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="192"
-          width="171"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="85.5"
-          y="96"
-        >
-          .debug_line
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="9"
-        transform="translate(0,325)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="144"
-          width="234"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="117"
-          y="72"
-        >
-          .debug_loc
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="7"
-        transform="translate(0,470)"
-      >
-        <rect
-          fill="rgb(123, 183, 146)"
-          height="298"
-          width="234"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="117"
-          y="149"
-        >
-          .debug_info
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="13"
-        transform="translate(235,40)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="8"
-          width="2"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="16"
-        transform="translate(235,49)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="10"
-          width="2"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="18"
-        transform="translate(235,60)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="26"
-          width="2"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="11"
-        transform="translate(235,87)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="29"
-          width="2"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="22"
-        transform="translate(235,117)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="129"
-          width="2"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="15"
-        transform="translate(238,40)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="7"
-          width="126"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="3"
-        transform="translate(238,48)"
-      >
-        <rect
-          fill="rgb(123, 146, 183)"
-          height="14"
-          width="126"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="63"
-          y="7"
-        >
-          .data
-        </text>
-      </g>
-      <g
-        class="node"
         data-id="20"
-        transform="translate(238,63)"
+        transform="translate(0,102)"
       >
         <rect
-          fill="rgb(123, 146, 183)"
-          height="183"
-          width="126"
+          fill="rgb(123, 183, 123)"
+          height="86"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="63"
-          y="91.5"
+          x="130"
+          y="43"
         >
           .symtab
         </text>
@@ -857,41 +675,118 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="19"
-        transform="translate(365,40)"
+        transform="translate(0,189)"
       >
         <rect
-          fill="rgb(123, 146, 183)"
-          height="206"
-          width="114"
+          fill="rgb(123, 183, 123)"
+          height="90"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="57"
-          y="103"
+          x="130"
+          y="45"
         >
           .strtab
         </text>
       </g>
       <g
         class="node"
-        data-id="17"
-        transform="translate(480,40)"
+        data-id="13"
+        transform="translate(0,300)"
       >
         <rect
-          fill="rgb(123, 146, 183)"
-          height="206"
-          width="270"
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="4"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="16"
+        transform="translate(5,300)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="5"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="18"
+        transform="translate(11,300)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="14"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="11"
+        transform="translate(26,300)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="16"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="22"
+        transform="translate(43,300)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="71"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="15"
+        transform="translate(115,300)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="6"
+          width="145"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="3"
+        transform="translate(0,307)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="232"
+          width="8"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="17"
+        transform="translate(9,307)"
+      >
+        <rect
+          fill="rgb(123, 183, 183)"
+          height="232"
+          width="251"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="135"
-          y="103"
+          x="125.5"
+          y="116"
         >
           .rodata
         </text>
@@ -899,54 +794,214 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="12"
-        transform="translate(751,40)"
+        transform="translate(0,540)"
       >
         <rect
-          fill="rgb(123, 146, 183)"
-          height="206"
-          width="273"
+          fill="rgb(123, 183, 183)"
+          height="228"
+          width="260"
         />
         <text
           dominant-baseline="middle"
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="136.5"
-          y="103"
+          x="130"
+          y="114"
         >
           .gopclntab
         </text>
       </g>
       <g
         class="node"
-        data-id="573"
-        transform="translate(236,355)"
+        data-id="4"
+        transform="translate(261,41)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(123, 123, 183)"
+          height="3"
+          width="26"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="10"
+        transform="translate(261,45)"
+      >
+        <rect
+          fill="rgb(123, 123, 183)"
+          height="183"
+          width="26"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="13"
+          y="91.5"
+        >
+          .debug_ranges
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="5"
+        transform="translate(288,40)"
+      >
+        <rect
+          fill="rgb(123, 123, 183)"
+          height="49"
+          width="223"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="111.5"
+          y="24.5"
+        >
+          .debug_frame
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="8"
+        transform="translate(288,90)"
+      >
+        <rect
+          fill="rgb(123, 123, 183)"
+          height="138"
+          width="223"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="111.5"
+          y="69"
+        >
+          .debug_line
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="9"
+        transform="translate(512,40)"
+      >
+        <rect
+          fill="rgb(123, 123, 183)"
+          height="188"
+          width="167"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="83.5"
+          y="94"
+        >
+          .debug_loc
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="7"
+        transform="translate(680,40)"
+      >
+        <rect
+          fill="rgb(123, 123, 183)"
+          height="188"
+          width="344"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#000"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="172"
+          y="94"
+        >
+          .debug_info
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="48"
+        transform="translate(261,317)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="2"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="50"
+        transform="translate(264,317)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="2"
+          width="5"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="47"
+        transform="translate(270,317)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="2"
+          width="7"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="49"
+        transform="translate(278,317)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="2"
+          width="9"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="574"
+        transform="translate(262,340)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
           height="7"
           width="25"
         />
       </g>
       <g
         class="node"
-        data-id="72"
-        transform="translate(235,393)"
+        data-id="73"
+        transform="translate(261,379)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="13"
+          fill="rgb(149, 80, 149)"
+          height="14"
           width="2"
         />
       </g>
       <g
         class="node"
-        data-id="74"
-        transform="translate(238,393)"
+        data-id="75"
+        transform="translate(264,379)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="13"
+          fill="rgb(149, 80, 149)"
+          height="14"
           width="23"
         />
         <text
@@ -955,19 +1010,19 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="11.5"
-          y="6.5"
+          y="7"
         >
           &lt;autogenerated&gt;
         </text>
       </g>
       <g
         class="node"
-        data-id="73"
-        transform="translate(235,407)"
+        data-id="74"
+        transform="translate(261,394)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
+          fill="rgb(149, 80, 149)"
+          height="25"
           width="26"
         />
         <text
@@ -976,30 +1031,30 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="13"
-          y="12"
+          y="12.5"
         >
           type.go
         </text>
       </g>
       <g
         class="node"
-        data-id="497"
-        transform="translate(237,452)"
+        data-id="498"
+        transform="translate(264,440)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="2"
-          width="24"
+          width="23"
         />
       </g>
       <g
         class="node"
-        data-id="496"
-        transform="translate(235,455)"
+        data-id="497"
+        transform="translate(261,443)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="36"
+          fill="rgb(149, 80, 149)"
+          height="38"
           width="26"
         />
         <text
@@ -1008,30 +1063,30 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="13"
-          y="18"
+          y="19"
         >
           itoa.go
         </text>
       </g>
       <g
         class="node"
-        data-id="54"
-        transform="translate(235,514)"
+        data-id="55"
+        transform="translate(261,504)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="23"
+          fill="rgb(149, 80, 149)"
+          height="24"
           width="4"
         />
       </g>
       <g
         class="node"
-        data-id="52"
-        transform="translate(240,514)"
+        data-id="53"
+        transform="translate(266,504)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="23"
+          fill="rgb(149, 80, 149)"
+          height="24"
           width="21"
         />
         <text
@@ -1040,19 +1095,19 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="10.5"
-          y="11.5"
+          y="12"
         >
           cpu.go
         </text>
       </g>
       <g
         class="node"
-        data-id="53"
-        transform="translate(235,538)"
+        data-id="54"
+        transform="translate(261,529)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
+          fill="rgb(149, 80, 149)"
+          height="26"
           width="26"
         />
         <text
@@ -1061,41 +1116,41 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="13"
-          y="12"
+          y="13"
         >
           cpu_x86.go
         </text>
       </g>
       <g
         class="node"
-        data-id="42"
-        transform="translate(236,583)"
+        data-id="43"
+        transform="translate(262,576)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="5"
           width="10"
         />
       </g>
       <g
         class="node"
-        data-id="43"
-        transform="translate(247,583)"
+        data-id="44"
+        transform="translate(273,576)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="5"
           width="14"
         />
       </g>
       <g
         class="node"
-        data-id="41"
-        transform="translate(235,589)"
+        data-id="42"
+        transform="translate(261,582)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="64"
+          fill="rgb(149, 80, 149)"
+          height="67"
           width="26"
         />
         <text
@@ -1104,84 +1159,73 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="13"
-          y="32"
+          y="33.5"
         >
           type.go
         </text>
       </g>
       <g
         class="node"
-        data-id="76"
-        transform="translate(235,676)"
+        data-id="77"
+        transform="translate(261,672)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="8"
           width="26"
         />
       </g>
       <g
         class="node"
-        data-id="34"
-        transform="translate(262,287)"
+        data-id="35"
+        transform="translate(288,269)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="9"
-          width="117"
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="112"
         />
       </g>
       <g
         class="node"
-        data-id="510"
-        transform="translate(264,317)"
+        data-id="511"
+        transform="translate(290,300)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="3"
-          width="7"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="501"
-        transform="translate(264,321)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="4"
-          width="7"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="507"
-        transform="translate(264,326)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="3"
-          width="7"
+          width="6"
         />
       </g>
       <g
         class="node"
         data-id="502"
-        transform="translate(272,317)"
+        transform="translate(290,305)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="5"
+          fill="rgb(149, 80, 149)"
+          height="4"
+          width="6"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="508"
+        transform="translate(290,310)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="4"
           width="6"
         />
       </g>
       <g
         class="node"
         data-id="503"
-        transform="translate(272,323)"
+        transform="translate(297,300)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="6"
           width="6"
         />
@@ -1189,132 +1233,66 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="504"
-        transform="translate(279,317)"
+        transform="translate(297,307)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="6"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="505"
+        transform="translate(304,300)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
           height="4"
           width="15"
         />
       </g>
       <g
         class="node"
-        data-id="511"
-        transform="translate(279,322)"
+        data-id="512"
+        transform="translate(304,305)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
+          fill="rgb(149, 80, 149)"
+          height="9"
           width="15"
         />
       </g>
       <g
         class="node"
+        data-id="507"
+        transform="translate(320,300)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="6"
+          width="21"
+        />
+      </g>
+      <g
+        class="node"
         data-id="506"
-        transform="translate(295,317)"
+        transform="translate(320,307)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="10"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="505"
-        transform="translate(306,317)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="11"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="509"
-        transform="translate(318,317)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="13"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="508"
-        transform="translate(332,317)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="23"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="524"
-        transform="translate(263,350)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="3"
-          width="8"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="527"
-        transform="translate(263,354)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="3"
-          width="8"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="525"
-        transform="translate(263,358)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="8"
-          width="8"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="532"
-        transform="translate(263,367)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
-          width="8"
+          width="21"
         />
       </g>
       <g
         class="node"
-        data-id="533"
-        transform="translate(272,350)"
+        data-id="510"
+        transform="translate(342,300)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="13"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="530"
-        transform="translate(272,358)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="16"
+          fill="rgb(149, 80, 149)"
+          height="14"
           width="13"
         />
         <text
@@ -1323,222 +1301,330 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="6.5"
-          y="8"
+          y="7"
+        >
+          once.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="509"
+        transform="translate(356,300)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="14"
+          width="21"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="10.5"
+          y="7"
+        >
+          mutex.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="525"
+        transform="translate(289,335)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="3"
+          width="7"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="528"
+        transform="translate(289,339)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="3"
+          width="7"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="526"
+        transform="translate(289,343)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="8"
+          width="7"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="533"
+        transform="translate(289,352)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="8"
+          width="7"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="534"
+        transform="translate(297,335)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="6"
+          width="13"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="531"
+        transform="translate(297,342)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="18"
+          width="13"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="6.5"
+          y="9"
         >
           syscall_unix.go
         </text>
       </g>
       <g
         class="node"
-        data-id="528"
-        transform="translate(286,350)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="11"
-          width="22"
-        />
-      </g>
-      <g
-        class="node"
         data-id="529"
-        transform="translate(286,362)"
+        transform="translate(311,335)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="22"
+          fill="rgb(149, 80, 149)"
+          height="11"
+          width="21"
         />
       </g>
       <g
         class="node"
-        data-id="543"
-        transform="translate(309,350)"
+        data-id="530"
+        transform="translate(311,347)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
-          width="19"
+          fill="rgb(149, 80, 149)"
+          height="13"
+          width="21"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="9.5"
-          y="12"
+          x="10.5"
+          y="6.5"
         >
-          errors
+          syscall_linux.go
         </text>
       </g>
       <g
         class="node"
-        data-id="526"
-        transform="translate(329,350)"
+        data-id="544"
+        transform="translate(333,335)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
-          width="20"
+          fill="rgb(149, 80, 149)"
+          height="11"
+          width="39"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="527"
+        transform="translate(333,347)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="13"
+          width="39"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="10"
-          y="12"
+          x="19.5"
+          y="6.5"
         >
           env_unix.go
         </text>
       </g>
       <g
         class="node"
-        data-id="531"
-        transform="translate(350,350)"
+        data-id="532"
+        transform="translate(373,335)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
-          width="29"
+          fill="rgb(149, 80, 149)"
+          height="25"
+          width="27"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="14.5"
-          y="12"
+          x="13.5"
+          y="12.5"
         >
           zsyscall_linux_amd64.go
         </text>
       </g>
       <g
         class="node"
-        data-id="108"
-        transform="translate(262,398)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="13"
-          width="4"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="112"
-        transform="translate(262,412)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="4"
-        />
-      </g>
-      <g
-        class="node"
         data-id="109"
-        transform="translate(262,438)"
+        transform="translate(288,384)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="4"
+          fill="rgb(149, 80, 149)"
+          height="14"
+          width="3"
         />
       </g>
       <g
         class="node"
         data-id="113"
-        transform="translate(267,395)"
+        transform="translate(288,399)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="48"
+          fill="rgb(149, 80, 149)"
+          height="25"
+          width="3"
         />
       </g>
       <g
         class="node"
         data-id="110"
-        transform="translate(267,403)"
+        transform="translate(288,425)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="60"
-          width="48"
+          fill="rgb(149, 80, 149)"
+          height="27"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="114"
+        transform="translate(292,381)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="47"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="111"
+        transform="translate(292,389)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="63"
+          width="47"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="24"
-          y="30"
+          x="23.5"
+          y="31.5"
         >
           type.go
         </text>
       </g>
       <g
         class="node"
-        data-id="111"
-        transform="translate(316,395)"
+        data-id="112"
+        transform="translate(340,381)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="63"
+          fill="rgb(149, 80, 149)"
+          height="71"
+          width="60"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="31.5"
-          y="34"
+          x="30"
+          y="35.5"
         >
           value.go
         </text>
       </g>
       <g
         class="node"
-        data-id="562"
-        transform="translate(268,484)"
+        data-id="557"
+        transform="translate(291,473)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
           width="2"
         />
       </g>
       <g
         class="node"
-        data-id="564"
-        transform="translate(271,484)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="4"
-        />
-      </g>
-      <g
-        class="node"
         data-id="565"
-        transform="translate(276,484)"
+        transform="translate(296,473)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
           width="4"
         />
       </g>
       <g
         class="node"
-        data-id="551"
-        transform="translate(281,484)"
+        data-id="566"
+        transform="translate(301,473)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="4"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="552"
+        transform="translate(306,473)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="14"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="547"
+        transform="translate(321,473)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
           height="7"
           width="15"
         />
@@ -1546,587 +1632,54 @@ exports[`treeMap > render snapshot 1`] = `
       <g
         class="node"
         data-id="546"
-        transform="translate(297,484)"
+        transform="translate(337,473)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
-          width="15"
+          width="16"
         />
       </g>
       <g
         class="node"
-        data-id="545"
-        transform="translate(313,484)"
+        data-id="556"
+        transform="translate(354,473)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="7"
-          width="17"
+          width="46"
         />
       </g>
       <g
         class="node"
-        data-id="555"
-        transform="translate(331,484)"
+        data-id="549"
+        transform="translate(288,481)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="48"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="548"
-        transform="translate(262,492)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="38"
-          width="15"
+          fill="rgb(149, 80, 149)"
+          height="40"
+          width="14"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="7.5"
-          y="19"
+          x="7"
+          y="20"
         >
           sys_unix.go
         </text>
       </g>
       <g
         class="node"
-        data-id="554"
-        transform="translate(278,492)"
+        data-id="555"
+        transform="translate(303,481)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="38"
-          width="20"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="10"
-          y="19"
-        >
-          format_rfc3339.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="553"
-        transform="translate(299,492)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="38"
-          width="26"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="19"
-        >
-          zoneinfo_unix.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="549"
-        transform="translate(326,492)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="38"
-          width="53"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="26.5"
-          y="19"
-        >
-          time.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="550"
-        transform="translate(262,531)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="127"
-          width="48"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="24"
-          y="63.5"
-        >
-          zoneinfo.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="552"
-        transform="translate(311,531)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="127"
-          width="68"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="34"
-          y="63.5"
-        >
-          zoneinfo_read.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="547"
-        transform="translate(262,659)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="109"
-          width="117"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="58.5"
-          y="54.5"
-        >
-          format.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="169"
-        transform="translate(384,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="20"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="215"
-        transform="translate(384,308)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="19"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="224"
-        transform="translate(384,328)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="20"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="228"
-        transform="translate(384,349)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="20"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="382"
-        transform="translate(384,370)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="22"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="185"
-        transform="translate(384,393)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="23"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="203"
-        transform="translate(384,417)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="23"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="463"
-        transform="translate(384,441)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="451"
-        transform="translate(384,466)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="465"
-        transform="translate(384,492)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="449"
-        transform="translate(384,518)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="271"
-        transform="translate(384,544)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="25"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="134"
-        transform="translate(384,570)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="27"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="461"
-        transform="translate(384,598)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="26"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="120"
-        transform="translate(384,625)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="27"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="177"
-        transform="translate(384,653)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="28"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="181"
-        transform="translate(384,682)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="27"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="189"
-        transform="translate(384,710)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="28"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="227"
-        transform="translate(384,739)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="29"
-          width="3"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="166"
-        transform="translate(388,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="6"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="123"
-        transform="translate(388,294)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="315"
-        transform="translate(388,309)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="384"
-        transform="translate(388,325)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="133"
-        transform="translate(388,333)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="206"
-        transform="translate(388,341)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="204"
-        transform="translate(388,349)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="7"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="377"
-        transform="translate(388,357)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="9"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="428"
-        transform="translate(388,367)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="9"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="448"
-        transform="translate(388,377)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="10"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="174"
-        transform="translate(388,388)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="9"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="221"
-        transform="translate(388,398)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="10"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="466"
-        transform="translate(388,409)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="11"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="186"
-        transform="translate(388,421)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="10"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="309"
-        transform="translate(388,432)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="10"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="213"
-        transform="translate(388,443)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="11"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="472"
-        transform="translate(388,455)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="10"
-          width="19"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="125"
-        transform="translate(388,466)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="13"
+          fill="rgb(149, 80, 149)"
+          height="40"
           width="19"
         />
         <text
@@ -2135,40 +1688,871 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="9.5"
-          y="6.5"
+          y="20"
         >
-          cgo_sigaction.go
+          format_rfc3339.go
         </text>
       </g>
       <g
         class="node"
-        data-id="130"
-        transform="translate(388,480)"
+        data-id="554"
+        transform="translate(323,481)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="12"
-          width="19"
+          fill="rgb(149, 80, 149)"
+          height="40"
+          width="25"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="12.5"
+          y="20"
+        >
+          zoneinfo_unix.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="550"
+        transform="translate(349,481)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="40"
+          width="51"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="25.5"
+          y="20"
+        >
+          time.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="551"
+        transform="translate(288,522)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="132"
+          width="46"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="23"
+          y="66"
+        >
+          zoneinfo.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="553"
+        transform="translate(335,522)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="132"
+          width="65"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="32.5"
+          y="66"
+        >
+          zoneinfo_read.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="548"
+        transform="translate(288,655)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="113"
+          width="112"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="56"
+          y="56.5"
+        >
+          format.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="361"
+        transform="translate(403,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="2"
         />
       </g>
       <g
         class="node"
-        data-id="194"
-        transform="translate(388,493)"
+        data-id="252"
+        transform="translate(403,277)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="405"
+        transform="translate(403,285)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="406"
+        transform="translate(403,293)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="304"
+        transform="translate(403,301)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="339"
+        transform="translate(403,311)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="8"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="461"
+        transform="translate(403,320)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="364"
+        transform="translate(403,330)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="458"
+        transform="translate(403,341)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="314"
+        transform="translate(403,352)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
           height="12"
-          width="19"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="427"
+        transform="translate(403,365)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="14"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="250"
+        transform="translate(403,380)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="18"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="266"
+        transform="translate(403,399)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="18"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="463"
+        transform="translate(403,418)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="18"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="460"
+        transform="translate(403,437)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="19"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="120"
+        transform="translate(403,457)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="130"
+        transform="translate(403,478)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="173"
+        transform="translate(403,499)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="176"
+        transform="translate(403,520)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="19"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="177"
+        transform="translate(403,540)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="208"
+        transform="translate(403,561)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="212"
+        transform="translate(403,582)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="217"
+        transform="translate(403,603)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="265"
+        transform="translate(403,624)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="318"
+        transform="translate(403,645)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="23"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="478"
+        transform="translate(403,669)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="23"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="296"
+        transform="translate(403,693)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="24"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="201"
+        transform="translate(403,718)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="24"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="227"
+        transform="translate(403,743)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="25"
+          width="2"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="170"
+        transform="translate(406,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="216"
+        transform="translate(406,290)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="21"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="225"
+        transform="translate(406,312)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="20"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="229"
+        transform="translate(406,333)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="21"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="383"
+        transform="translate(406,355)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="23"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="186"
+        transform="translate(406,379)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="24"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="204"
+        transform="translate(406,404)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="24"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="464"
+        transform="translate(406,429)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="25"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="452"
+        transform="translate(406,455)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="25"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="466"
+        transform="translate(406,481)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="26"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="450"
+        transform="translate(406,508)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="26"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="272"
+        transform="translate(406,535)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="27"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="135"
+        transform="translate(406,563)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="27"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="462"
+        transform="translate(406,591)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="28"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="121"
+        transform="translate(406,620)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="28"
+          width="3"
         />
       </g>
       <g
         class="node"
         data-id="178"
-        transform="translate(388,506)"
+        transform="translate(406,649)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
+          height="29"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="182"
+        transform="translate(406,679)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="28"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="190"
+        transform="translate(406,708)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="29"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="228"
+        transform="translate(406,738)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="30"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="167"
+        transform="translate(410,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="6"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="124"
+        transform="translate(410,276)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="6"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="316"
+        transform="translate(410,291)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="385"
+        transform="translate(410,306)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="134"
+        transform="translate(410,314)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="207"
+        transform="translate(410,322)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="7"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="205"
+        transform="translate(410,330)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="8"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="378"
+        transform="translate(410,339)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="429"
+        transform="translate(410,349)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="449"
+        transform="translate(410,359)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="175"
+        transform="translate(410,369)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="9"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="222"
+        transform="translate(410,379)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="467"
+        transform="translate(410,390)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="187"
+        transform="translate(410,401)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="11"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="310"
+        transform="translate(410,413)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="214"
+        transform="translate(410,424)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="10"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="473"
+        transform="translate(410,435)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="11"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="126"
+        transform="translate(410,447)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="12"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="131"
+        transform="translate(410,460)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="12"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="195"
+        transform="translate(410,473)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="12"
+          width="19"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="179"
+        transform="translate(410,486)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
           height="13"
           width="19"
         />
@@ -2185,11 +2569,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="135"
-        transform="translate(388,520)"
+        data-id="136"
+        transform="translate(410,500)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="14"
           width="19"
         />
@@ -2206,12 +2590,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="132"
-        transform="translate(388,535)"
+        data-id="133"
+        transform="translate(410,515)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="17"
+          fill="rgb(149, 80, 149)"
+          height="16"
           width="19"
         />
         <text
@@ -2220,18 +2604,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="9.5"
-          y="8.5"
+          y="8"
         >
           exithook.go
         </text>
       </g>
       <g
         class="node"
-        data-id="219"
-        transform="translate(388,553)"
+        data-id="220"
+        transform="translate(410,532)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="16"
           width="19"
         />
@@ -2248,12 +2632,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="230"
-        transform="translate(388,587)"
+        data-id="231"
+        transform="translate(410,567)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="18"
+          fill="rgb(149, 80, 149)"
+          height="17"
           width="19"
         />
         <text
@@ -2262,18 +2646,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="9.5"
-          y="9"
+          y="8.5"
         >
           mfixalloc.go
         </text>
       </g>
       <g
         class="node"
-        data-id="126"
-        transform="translate(388,606)"
+        data-id="127"
+        transform="translate(410,585)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="18"
           width="19"
         />
@@ -2290,11 +2674,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="383"
-        transform="translate(388,625)"
+        data-id="384"
+        transform="translate(410,604)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="19"
         />
@@ -2311,11 +2695,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="124"
-        transform="translate(388,645)"
+        data-id="125"
+        transform="translate(410,624)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="19"
         />
@@ -2332,11 +2716,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="294"
-        transform="translate(388,665)"
+        data-id="295"
+        transform="translate(410,644)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="19"
         />
@@ -2353,11 +2737,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="356"
-        transform="translate(388,685)"
+        data-id="357"
+        transform="translate(410,664)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="19"
         />
@@ -2374,11 +2758,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="234"
-        transform="translate(388,705)"
+        data-id="235"
+        transform="translate(410,684)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="19"
         />
@@ -2395,12 +2779,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="212"
-        transform="translate(388,725)"
+        data-id="213"
+        transform="translate(410,704)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="21"
+          fill="rgb(149, 80, 149)"
+          height="20"
           width="19"
         />
         <text
@@ -2409,18 +2793,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="9.5"
-          y="10.5"
+          y="10"
         >
           unsafe.go
         </text>
       </g>
       <g
         class="node"
-        data-id="122"
-        transform="translate(388,747)"
+        data-id="123"
+        transform="translate(410,725)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="21"
           width="19"
         />
@@ -2437,32 +2821,32 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="152"
-        transform="translate(408,287)"
+        data-id="153"
+        transform="translate(410,747)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="13"
-          width="32"
+          fill="rgb(149, 80, 149)"
+          height="21"
+          width="19"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="6.5"
+          x="9.5"
+          y="10.5"
         >
           mfinal.go
         </text>
       </g>
       <g
         class="node"
-        data-id="235"
-        transform="translate(408,301)"
+        data-id="236"
+        transform="translate(430,269)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="13"
           width="32"
         />
@@ -2479,11 +2863,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="146"
-        transform="translate(408,315)"
+        data-id="147"
+        transform="translate(430,283)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="13"
           width="32"
         />
@@ -2500,12 +2884,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="149"
-        transform="translate(408,329)"
+        data-id="150"
+        transform="translate(430,297)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="14"
+          fill="rgb(149, 80, 149)"
+          height="15"
           width="32"
         />
         <text
@@ -2514,18 +2898,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="16"
-          y="7"
+          y="7.5"
         >
           mcheckmark.go
         </text>
       </g>
       <g
         class="node"
-        data-id="190"
-        transform="translate(408,344)"
+        data-id="191"
+        transform="translate(430,313)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="14"
           width="32"
         />
@@ -2542,11 +2926,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="170"
-        transform="translate(408,359)"
+        data-id="171"
+        transform="translate(430,328)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="17"
           width="32"
         />
@@ -2563,11 +2947,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="199"
-        transform="translate(408,377)"
+        data-id="200"
+        transform="translate(430,346)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="16"
           width="32"
         />
@@ -2584,11 +2968,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="225"
-        transform="translate(408,394)"
+        data-id="226"
+        transform="translate(430,363)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="17"
           width="32"
         />
@@ -2605,11 +2989,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="138"
-        transform="translate(408,412)"
+        data-id="139"
+        transform="translate(430,381)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="17"
           width="32"
         />
@@ -2626,12 +3010,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="218"
-        transform="translate(408,430)"
+        data-id="219"
+        transform="translate(430,399)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="17"
+          fill="rgb(149, 80, 149)"
+          height="18"
           width="32"
         />
         <text
@@ -2640,18 +3024,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="16"
-          y="8.5"
+          y="9"
         >
           duff_amd64.s
         </text>
       </g>
       <g
         class="node"
-        data-id="458"
-        transform="translate(408,448)"
+        data-id="459"
+        transform="translate(430,418)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="18"
           width="32"
         />
@@ -2668,12 +3052,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="202"
-        transform="translate(408,467)"
+        data-id="203"
+        transform="translate(430,437)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="19"
+          fill="rgb(149, 80, 149)"
+          height="18"
           width="32"
         />
         <text
@@ -2682,18 +3066,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="16"
-          y="9.5"
+          y="9"
         >
           symtabinl.go
         </text>
       </g>
       <g
         class="node"
-        data-id="433"
-        transform="translate(408,487)"
+        data-id="434"
+        transform="translate(430,456)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="19"
           width="32"
         />
@@ -2710,11 +3094,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="233"
-        transform="translate(408,507)"
+        data-id="234"
+        transform="translate(430,476)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="20"
           width="32"
         />
@@ -2731,12 +3115,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="150"
-        transform="translate(408,528)"
+        data-id="151"
+        transform="translate(430,497)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="20"
+          fill="rgb(149, 80, 149)"
+          height="21"
           width="32"
         />
         <text
@@ -2745,18 +3129,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="16"
-          y="10"
+          y="10.5"
         >
           mem.go
         </text>
       </g>
       <g
         class="node"
-        data-id="140"
-        transform="translate(408,549)"
+        data-id="141"
+        transform="translate(430,519)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="20"
           width="32"
         />
@@ -2773,11 +3157,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="168"
-        transform="translate(408,570)"
+        data-id="169"
+        transform="translate(430,540)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="21"
           width="32"
         />
@@ -2794,11 +3178,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="171"
-        transform="translate(408,592)"
+        data-id="172"
+        transform="translate(430,562)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="21"
           width="32"
         />
@@ -2815,11 +3199,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="220"
-        transform="translate(408,614)"
+        data-id="221"
+        transform="translate(430,584)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="21"
           width="32"
         />
@@ -2836,11 +3220,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="286"
-        transform="translate(408,636)"
+        data-id="287"
+        transform="translate(430,606)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="24"
           width="32"
         />
@@ -2857,12 +3241,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="136"
-        transform="translate(408,661)"
+        data-id="137"
+        transform="translate(430,631)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="24"
+          fill="rgb(149, 80, 149)"
+          height="25"
           width="32"
         />
         <text
@@ -2871,18 +3255,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="16"
-          y="12"
+          y="12.5"
         >
           hash64.go
         </text>
       </g>
       <g
         class="node"
-        data-id="188"
-        transform="translate(408,686)"
+        data-id="189"
+        transform="translate(430,657)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="26"
           width="32"
         />
@@ -2899,11 +3283,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="158"
-        transform="translate(408,713)"
+        data-id="159"
+        transform="translate(430,684)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="27"
           width="32"
         />
@@ -2920,11 +3304,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="232"
-        transform="translate(408,741)"
+        data-id="233"
+        transform="translate(430,712)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="27"
           width="32"
         />
@@ -2941,41 +3325,41 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="195"
-        transform="translate(441,287)"
+        data-id="196"
+        transform="translate(430,740)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="20"
-          width="45"
+          fill="rgb(149, 80, 149)"
+          height="28"
+          width="32"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
-          y="10"
+          x="16"
+          y="14"
         >
           slice.go
         </text>
       </g>
       <g
         class="node"
-        data-id="229"
-        transform="translate(441,308)"
+        data-id="230"
+        transform="translate(463,269)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="21"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="10.5"
         >
           mcentral.go
@@ -2983,20 +3367,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="192"
-        transform="translate(441,330)"
+        data-id="193"
+        transform="translate(463,291)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="22"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="11"
         >
           signal_amd64.go
@@ -3004,20 +3388,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="151"
-        transform="translate(441,353)"
+        data-id="152"
+        transform="translate(463,314)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="22"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="11"
         >
           mem_linux.go
@@ -3025,20 +3409,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="197"
-        transform="translate(441,376)"
+        data-id="198"
+        transform="translate(463,337)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="27"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="13.5"
         >
           stkframe.go
@@ -3046,20 +3430,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="180"
-        transform="translate(441,404)"
+        data-id="181"
+        transform="translate(463,365)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="27"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="13.5"
         >
           preempt.go
@@ -3067,62 +3451,62 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="144"
-        transform="translate(441,432)"
+        data-id="145"
+        transform="translate(463,393)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="30"
-          width="45"
+          fill="rgb(149, 80, 149)"
+          height="29"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
-          y="15"
+          x="22"
+          y="14.5"
         >
           map_fast64.go
         </text>
       </g>
       <g
         class="node"
-        data-id="128"
-        transform="translate(441,463)"
+        data-id="129"
+        transform="translate(463,423)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="29"
-          width="45"
+          fill="rgb(149, 80, 149)"
+          height="30"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
-          y="14.5"
+          x="22"
+          y="15"
         >
           debugcall.go
         </text>
       </g>
       <g
         class="node"
-        data-id="139"
-        transform="translate(441,493)"
+        data-id="140"
+        transform="translate(463,454)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="30"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="15"
         >
           lock_futex.go
@@ -3130,20 +3514,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="148"
-        transform="translate(441,524)"
+        data-id="149"
+        transform="translate(463,485)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="30"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="15"
         >
           mcache.go
@@ -3151,20 +3535,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="231"
-        transform="translate(441,555)"
+        data-id="232"
+        transform="translate(463,516)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="31"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="15.5"
         >
           mpagealloc_64bit.go
@@ -3172,20 +3556,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="143"
-        transform="translate(441,587)"
+        data-id="144"
+        transform="translate(463,548)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="34"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="17"
         >
           map_fast32.go
@@ -3193,20 +3577,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="214"
-        transform="translate(441,622)"
+        data-id="215"
+        transform="translate(463,583)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="34"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="17"
         >
           vdso_linux.go
@@ -3214,20 +3598,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="275"
-        transform="translate(441,657)"
+        data-id="276"
+        transform="translate(463,618)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="35"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="17.5"
         >
           itabTableInit
@@ -3235,20 +3619,20 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="184"
-        transform="translate(441,693)"
+        data-id="185"
+        transform="translate(463,654)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="36"
-          width="45"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
+          x="22"
           y="18"
         >
           profbuf.go
@@ -3256,54 +3640,54 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="236"
-        transform="translate(441,730)"
+        data-id="237"
+        transform="translate(463,691)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="38"
-          width="45"
+          fill="rgb(149, 80, 149)"
+          height="37"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22.5"
-          y="19"
+          x="22"
+          y="18.5"
         >
           signal_linux_amd64.go
         </text>
       </g>
       <g
         class="node"
-        data-id="121"
-        transform="translate(487,287)"
+        data-id="122"
+        transform="translate(463,729)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="29"
-          width="59"
+          fill="rgb(149, 80, 149)"
+          height="39"
+          width="44"
         />
         <text
           dominant-baseline="middle"
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="14.5"
+          x="22"
+          y="19.5"
         >
           alg.go
         </text>
       </g>
       <g
         class="node"
-        data-id="167"
-        transform="translate(487,317)"
+        data-id="168"
+        transform="translate(508,269)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="29"
+          fill="rgb(149, 80, 149)"
+          height="30"
           width="59"
         />
         <text
@@ -3312,39 +3696,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="29.5"
-          y="14.5"
+          y="15"
         >
           mspanset.go
         </text>
       </g>
       <g
         class="node"
-        data-id="154"
-        transform="translate(487,347)"
+        data-id="155"
+        transform="translate(508,300)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="33"
-          width="59"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="29.5"
-          y="16.5"
-        >
-          mgclimit.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="191"
-        transform="translate(487,381)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="32"
           width="59"
         />
@@ -3356,17 +3719,17 @@ exports[`treeMap > render snapshot 1`] = `
           x="29.5"
           y="16"
         >
-          sema.go
+          mgclimit.go
         </text>
       </g>
       <g
         class="node"
-        data-id="187"
-        transform="translate(487,414)"
+        data-id="192"
+        transform="translate(508,333)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="34"
+          fill="rgb(149, 80, 149)"
+          height="33"
           width="59"
         />
         <text
@@ -3375,19 +3738,40 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="29.5"
-          y="17"
+          y="16.5"
+        >
+          sema.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="188"
+        transform="translate(508,367)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="35"
+          width="59"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="29.5"
+          y="17.5"
         >
           runtime1.go
         </text>
       </g>
       <g
         class="node"
-        data-id="182"
-        transform="translate(487,449)"
+        data-id="183"
+        transform="translate(508,403)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="36"
+          fill="rgb(149, 80, 149)"
+          height="35"
           width="59"
         />
         <text
@@ -3396,19 +3780,19 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="29.5"
-          y="18"
+          y="17.5"
         >
           print.go
         </text>
       </g>
       <g
         class="node"
-        data-id="160"
-        transform="translate(487,486)"
+        data-id="161"
+        transform="translate(508,439)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="37"
+          fill="rgb(149, 80, 149)"
+          height="38"
           width="59"
         />
         <text
@@ -3417,19 +3801,19 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="29.5"
-          y="18.5"
+          y="19"
         >
           mgcwork.go
         </text>
       </g>
       <g
         class="node"
-        data-id="137"
-        transform="translate(487,524)"
+        data-id="138"
+        transform="translate(508,478)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="37"
+          fill="rgb(149, 80, 149)"
+          height="38"
           width="59"
         />
         <text
@@ -3438,18 +3822,18 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="29.5"
-          y="18.5"
+          y="19"
         >
           iface.go
         </text>
       </g>
       <g
         class="node"
-        data-id="198"
-        transform="translate(487,562)"
+        data-id="199"
+        transform="translate(508,517)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="39"
           width="59"
         />
@@ -3466,11 +3850,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="165"
-        transform="translate(487,602)"
+        data-id="166"
+        transform="translate(508,557)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="40"
           width="59"
         />
@@ -3487,32 +3871,11 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="145"
-        transform="translate(487,643)"
+        data-id="146"
+        transform="translate(508,598)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="40"
-          width="59"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="29.5"
-          y="20"
-        >
-          map_faststr.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="163"
-        transform="translate(487,684)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="41"
           width="59"
         />
@@ -3524,16 +3887,37 @@ exports[`treeMap > render snapshot 1`] = `
           x="29.5"
           y="20.5"
         >
+          map_faststr.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="164"
+        transform="translate(508,640)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="42"
+          width="59"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="29.5"
+          y="21"
+        >
           mpallocbits.go
         </text>
       </g>
       <g
         class="node"
-        data-id="222"
-        transform="translate(487,726)"
+        data-id="223"
+        transform="translate(508,683)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
+          fill="rgb(149, 80, 149)"
           height="42"
           width="59"
         />
@@ -3550,695 +3934,12 @@ exports[`treeMap > render snapshot 1`] = `
       </g>
       <g
         class="node"
-        data-id="223"
-        transform="translate(584,287)"
+        data-id="224"
+        transform="translate(568,269)"
       >
         <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="37"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="18.5"
-          y="34"
-        >
-          &lt;autogenerated&gt;
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="131"
-        transform="translate(622,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="43"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="21.5"
-          y="34"
-        >
-          error.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="127"
-        transform="translate(666,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="42"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="21"
-          y="34"
-        >
-          chan.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="261"
-        transform="translate(709,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="46"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="23"
-          y="34"
-        >
-          cpuprof
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="210"
-        transform="translate(756,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="48"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="24"
-          y="34"
-        >
-          type.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="343"
-        transform="translate(805,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="51"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="25.5"
-          y="34"
-        >
-          memstats
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="217"
-        transform="translate(857,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="54"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="27"
-          y="34"
-        >
-          asm_amd64.s
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="173"
-        transform="translate(912,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="55"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="27.5"
-          y="34"
-        >
-          os_linux.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="164"
-        transform="translate(968,287)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="68"
-          width="56"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="28"
-          y="34"
-        >
-          mprof.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="141"
-        transform="translate(547,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="44"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="22"
-        >
-          malloc.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="205"
-        transform="translate(547,401)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="45"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="22.5"
-        >
-          time.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="142"
-        transform="translate(547,447)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="45"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="22.5"
-        >
-          map.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="159"
-        transform="translate(547,493)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="48"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="24"
-        >
-          mgcsweep.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="156"
-        transform="translate(547,542)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="49"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="24.5"
-        >
-          mgcpacer.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="193"
-        transform="translate(547,592)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="51"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="25.5"
-        >
-          signal_unix.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="162"
-        transform="translate(547,644)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="58"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="29"
-        >
-          mpagealloc.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="147"
-        transform="translate(547,703)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="65"
-          width="88"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="44"
-          y="32.5"
-        >
-          mbitmap.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="157"
-        transform="translate(636,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="61"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="30.5"
-          y="46.5"
-        >
-          mgcscavenge.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="196"
-        transform="translate(698,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="62"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="31"
-          y="46.5"
-        >
-          stack.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="201"
-        transform="translate(761,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="63"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="31.5"
-          y="46.5"
-        >
-          symtab.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="208"
-        transform="translate(825,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="64"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="32"
-          y="46.5"
-        >
-          trace.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="153"
-        transform="translate(890,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="66"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="33"
-          y="46.5"
-        >
-          mgc.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="447"
-        transform="translate(957,356)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="93"
-          width="67"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="33.5"
-          y="46.5"
-        >
-          semtable
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="155"
-        transform="translate(636,450)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="72"
-          width="93"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="46.5"
-          y="36"
-        >
-          mgcmark.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="179"
-        transform="translate(636,523)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="73"
-          width="93"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="46.5"
-          y="36.5"
-        >
-          panic.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="161"
-        transform="translate(636,597)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="83"
-          width="93"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="46.5"
-          y="41.5"
-        >
-          mheap.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="209"
-        transform="translate(636,681)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="87"
-          width="93"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="46.5"
-          y="43.5"
-        >
-          traceback.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="476"
-        transform="translate(730,450)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="193"
-          width="134"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="67"
-          y="96.5"
-        >
-          trace
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="183"
-        transform="translate(865,450)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="193"
-          width="159"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="79.5"
-          y="96.5"
-        >
-          proc.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="319"
-        transform="translate(730,644)"
-      >
-        <rect
-          fill="rgb(137, 80, 149)"
-          height="124"
-          width="294"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="147"
-          y="62"
-        >
-          mheap_
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="80"
-        transform="translate(235,706)"
-      >
-        <rect
-          fill="rgb(91, 54, 99)"
-          height="27"
-          width="6"
-        />
-      </g>
-      <g
-        class="node"
-        data-id="78"
-        transform="translate(242,706)"
-      >
-        <rect
-          fill="rgb(91, 54, 99)"
-          height="27"
-          width="19"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="13.5"
-        >
-          format.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="79"
-        transform="translate(235,734)"
-      >
-        <rect
-          fill="rgb(91, 54, 99)"
-          height="34"
-          width="26"
-        />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="17"
-        >
-          fs.go
-        </text>
-      </g>
-      <g
-        class="node"
-        data-id="241"
-        transform="translate(549,307)"
-      >
-        <rect
-          fill="rgb(91, 54, 99)"
-          height="48"
+          fill="rgb(149, 80, 149)"
+          height="74"
           width="34"
         />
         <text
@@ -4247,7 +3948,701 @@ exports[`treeMap > render snapshot 1`] = `
           font-size="0.8em"
           text-anchor="middle"
           x="17"
+          y="37"
+        >
+          &lt;autogenerated&gt;
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="132"
+        transform="translate(603,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="39"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="19.5"
+          y="37"
+        >
+          error.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="128"
+        transform="translate(643,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="39"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="19.5"
+          y="37"
+        >
+          chan.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="262"
+        transform="translate(683,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="41"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="20.5"
+          y="37"
+        >
+          cpuprof
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="211"
+        transform="translate(725,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="44"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="22"
+          y="37"
+        >
+          type.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="344"
+        transform="translate(770,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="47"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="23.5"
+          y="37"
+        >
+          memstats
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="218"
+        transform="translate(818,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="49"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="24.5"
+          y="37"
+        >
+          asm_amd64.s
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="174"
+        transform="translate(868,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="50"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="25"
+          y="37"
+        >
+          os_linux.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="165"
+        transform="translate(919,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="51"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="25.5"
+          y="37"
+        >
+          mprof.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="142"
+        transform="translate(971,269)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="74"
+          width="53"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="26.5"
+          y="37"
+        >
+          malloc.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="206"
+        transform="translate(568,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="44"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="22"
+        >
+          time.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="143"
+        transform="translate(568,389)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="44"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="22"
+        >
+          map.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="160"
+        transform="translate(568,434)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="47"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="23.5"
+        >
+          mgcsweep.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="157"
+        transform="translate(568,482)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="48"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
           y="24"
+        >
+          mgcpacer.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="194"
+        transform="translate(568,531)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="50"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="25"
+        >
+          signal_unix.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="163"
+        transform="translate(568,582)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="57"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="28.5"
+        >
+          mpagealloc.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="148"
+        transform="translate(568,640)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="63"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="31.5"
+        >
+          mbitmap.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="158"
+        transform="translate(568,704)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="64"
+          width="90"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="45"
+          y="32"
+        >
+          mgcscavenge.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="197"
+        transform="translate(659,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="57"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="28.5"
+          y="51.5"
+        >
+          stack.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="202"
+        transform="translate(717,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="58"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="29"
+          y="51.5"
+        >
+          symtab.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="209"
+        transform="translate(776,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="59"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="29.5"
+          y="51.5"
+        >
+          trace.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="154"
+        transform="translate(836,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="60"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="30"
+          y="51.5"
+        >
+          mgc.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="448"
+        transform="translate(897,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="61"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="30.5"
+          y="51.5"
+        >
+          semtable
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="156"
+        transform="translate(959,344)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="103"
+          width="65"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="32.5"
+          y="51.5"
+        >
+          mgcmark.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="180"
+        transform="translate(659,448)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="45"
+          width="153"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="76.5"
+          y="22.5"
+        >
+          panic.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="162"
+        transform="translate(659,494)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="50"
+          width="153"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="76.5"
+          y="25"
+        >
+          mheap.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="210"
+        transform="translate(659,545)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="53"
+          width="153"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="76.5"
+          y="26.5"
+        >
+          traceback.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="477"
+        transform="translate(659,599)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="169"
+          width="153"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="76.5"
+          y="84.5"
+        >
+          trace
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="184"
+        transform="translate(813,448)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="320"
+          width="96"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="48"
+          y="160"
+        >
+          proc.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="320"
+        transform="translate(910,448)"
+      >
+        <rect
+          fill="rgb(149, 80, 149)"
+          height="320"
+          width="114"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="57"
+          y="160"
+        >
+          mheap_
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="81"
+        transform="translate(261,703)"
+      >
+        <rect
+          fill="rgb(99, 54, 99)"
+          height="28"
+          width="6"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="79"
+        transform="translate(268,703)"
+      >
+        <rect
+          fill="rgb(99, 54, 99)"
+          height="28"
+          width="19"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="9.5"
+          y="14"
+        >
+          format.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="80"
+        transform="translate(261,732)"
+      >
+        <rect
+          fill="rgb(99, 54, 99)"
+          height="36"
+          width="26"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="13"
+          y="18"
+        >
+          fs.go
+        </text>
+      </g>
+      <g
+        class="node"
+        data-id="241"
+        transform="translate(508,746)"
+      >
+        <rect
+          fill="rgb(99, 54, 99)"
+          height="22"
+          width="3"
+        />
+      </g>
+      <g
+        class="node"
+        data-id="242"
+        transform="translate(512,746)"
+      >
+        <rect
+          fill="rgb(99, 54, 99)"
+          height="22"
+          width="55"
+        />
+        <text
+          dominant-baseline="middle"
+          fill="#fff"
+          font-size="0.8em"
+          text-anchor="middle"
+          x="27.5"
+          y="11"
         >
           types.go
         </text>
