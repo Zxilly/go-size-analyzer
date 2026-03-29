@@ -24,7 +24,7 @@ runs:
   steps:
   
     - name: Install uv
-      uses: astral-sh/setup-uv@c7f87aa956e4c323abf06d5dec078e358f6b4d04 # v6.0.0
+      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
       with:
         working-directory: './scripts'
 
@@ -36,7 +36,7 @@ runs:
 
     - name: Cache test binaries
       if: ${{ inputs.cache != '' }}
-      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+      uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
       with:
         path: ./scripts/bins
         key: testbins-${{ hashFiles('scripts/binaries.csv') }}-${{ inputs.cache }}-v2
