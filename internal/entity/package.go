@@ -140,6 +140,7 @@ func (p *Package) fileEnsureUnique() {
 func (p *Package) addFunction(path string, fn *Function) {
 	file := p.getOrInitFile(path)
 	file.Functions = append(file.Functions, fn)
+	p.funcsCache[fn.Name] = fn
 }
 
 func (p *Package) AddFuncIfNotExists(path string, fn *Function) bool {
