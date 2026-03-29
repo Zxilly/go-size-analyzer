@@ -9,3 +9,4 @@ extend-exclude = [
 
 [default.extend-words]
 typ = "typ"
+rela = "rela"
