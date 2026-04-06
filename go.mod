@@ -7,8 +7,8 @@ require (
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c
-	github.com/alecthomas/kong v1.14.0
-	github.com/blacktop/go-macho v1.1.263
+	github.com/alecthomas/kong v1.15.0
+	github.com/blacktop/go-macho v1.1.266
 	github.com/charmbracelet/bubbles v1.0.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
@@ -17,7 +17,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.26.1
 	github.com/go-json-experiment/json v0.0.0-20251027170946-4849db3c2f7e
-	github.com/jedib0t/go-pretty/v6 v6.7.8
+	github.com/jedib0t/go-pretty/v6 v6.7.9
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.16.0
