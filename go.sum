@@ -1,9 +1,3 @@
-github.com/ZxillyFork/gore v0.0.0-20260329123640-9b58be666d3f h1:y39FNYlRyEgUuuY/JZGZ98I8lgLu9vAiUe0RG2T2JmE=
-github.com/ZxillyFork/gore v0.0.0-20260329123640-9b58be666d3f/go.mod h1:I0Y7VIJq/56APMh8okdsvzhQBpuow+qTatIJ4KxEBCg=
-github.com/ZxillyFork/gore v0.0.0-20260329181108-2289ebcf8f1b h1:NwTE0dRUwrXa4JNKdofaaakBSyK37HX3D17ULLRSYY4=
-github.com/ZxillyFork/gore v0.0.0-20260329181108-2289ebcf8f1b/go.mod h1:I0Y7VIJq/56APMh8okdsvzhQBpuow+qTatIJ4KxEBCg=
-github.com/ZxillyFork/gore v0.0.0-20260329185309-032e3bb100a2 h1:PPVU9/IJv0oM3qKkbvjLoOJn3l7vM+Ocey3gRrp9Uto=
-github.com/ZxillyFork/gore v0.0.0-20260329185309-032e3bb100a2/go.mod h1:I0Y7VIJq/56APMh8okdsvzhQBpuow+qTatIJ4KxEBCg=
 github.com/ZxillyFork/gore v0.0.0-20260329193203-529599c7b979 h1:BAPsvryHBqSPKXA6XfJSoG4R40t5ao4T1NoWLGWSeFg=
 github.com/ZxillyFork/gore v0.0.0-20260329193203-529599c7b979/go.mod h1:I0Y7VIJq/56APMh8okdsvzhQBpuow+qTatIJ4KxEBCg=
 github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525 h1:JtN7QBnRxeyMvDJjVdfjhGHL/msqqapHMG5jPVYh32A=
@@ -14,8 +8,8 @@ github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c h1:r0eP8znpjJiKZ
 github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c/go.mod h1:Rw5frKNwhtjt+nzSkqdoc1rK3FzZ572CrRpoqCFqD84=
 github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8vS6K3D0=
 github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
-github.com/alecthomas/kong v1.14.0 h1:gFgEUZWu2ZmZ+UhyZ1bDhuutbKN1nTtJTwh19Wsn21s=
-github.com/alecthomas/kong v1.14.0/go.mod h1:wrlbXem1CWqUV5Vbmss5ISYhsVPkBb1Yo7YKJghju2I=
+github.com/alecthomas/kong v1.15.0 h1:BVJstKbpO73zKpmIu+m/aLRrNmWwxXPIGTNin9VmLVI=
+github.com/alecthomas/kong v1.15.0/go.mod h1:wrlbXem1CWqUV5Vbmss5ISYhsVPkBb1Yo7YKJghju2I=
 github.com/alecthomas/repr v0.5.2 h1:SU73FTI9D1P5UNtvseffFSGmdNci/O6RsqzeXJtP0Qs=
 github.com/alecthomas/repr v0.5.2/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
 github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
@@ -24,8 +18,8 @@ github.com/aymanbagabas/go-udiff v0.3.1 h1:LV+qyBQ2pqe0u42ZsUEtPiCaUoqgA9gYRDs3v
 github.com/aymanbagabas/go-udiff v0.3.1/go.mod h1:G0fsKmG+P6ylD0r6N/KgQD/nWzgfnl8ZBcNLgcbrw8E=
 github.com/blacktop/go-dwarf v1.0.14 h1:OjmzfSgg/qAKckn2tWFebcgKgJ7HOqCj7bS+CiE1lrY=
 github.com/blacktop/go-dwarf v1.0.14/go.mod h1:4W2FKgSFYcZLDwnR7k+apv5i3nrau4NGl9N6VQ9DSTo=
-github.com/blacktop/go-macho v1.1.263 h1:wzcLdip1PD2UwOZ5liKijF4YlYbFFF7XdqjLp3VQ1d0=
-github.com/blacktop/go-macho v1.1.263/go.mod h1:Hc5E2Lvt/U1VT+jOxr1O5l/LNFJeMYK4eAmDfazTiGc=
+github.com/blacktop/go-macho v1.1.266 h1:F4O6JnPA4HDFpWehKQWzShjjY7Y/cywcgLqG5JQ84/I=
+github.com/blacktop/go-macho v1.1.266/go.mod h1:Hc5E2Lvt/U1VT+jOxr1O5l/LNFJeMYK4eAmDfazTiGc=
 github.com/charmbracelet/bubbles v1.0.0 h1:12J8/ak/uCZEMQ6KU7pcfwceyjLlWsDLAxB5fXonfvc=
 github.com/charmbracelet/bubbles v1.0.0/go.mod h1:9d/Zd5GdnauMI5ivUIVisuEm3ave1XwXtD1ckyV6r3E=
 github.com/charmbracelet/bubbletea v1.3.10 h1:otUDHWMMzQSB0Pkc87rm691KZ3SWa4KUlvF9nRvCICw=
@@ -61,8 +55,8 @@ github.com/go-json-experiment/json v0.0.0-20251027170946-4849db3c2f7e h1:Lf/gRko
 github.com/go-json-experiment/json v0.0.0-20251027170946-4849db3c2f7e/go.mod h1:uNVvRXArCGbZ508SxYYTC5v1JWoz2voff5pm25jU1Ok=
 github.com/hexops/gotextdiff v1.0.3 h1:gitA9+qJrrTCsiCl7+kh75nPqQt1cx4ZkudSTLoUqJM=
 github.com/hexops/gotextdiff v1.0.3/go.mod h1:pSWU5MAI3yDq+fZBTazCSJysOMbxWL1BSow5/V2vxeg=
-github.com/jedib0t/go-pretty/v6 v6.7.8 h1:BVYrDy5DPBA3Qn9ICT+PokP9cvCv1KaHv2i+Hc8sr5o=
-github.com/jedib0t/go-pretty/v6 v6.7.8/go.mod h1:YwC5CE4fJ1HFUDeivSV1r//AmANFHyqczZk+U6BDALU=
+github.com/jedib0t/go-pretty/v6 v6.7.9 h1:frarzQWmkZd97syT81+TH8INKPpzoxQnk+Mk5EIHSrM=
+github.com/jedib0t/go-pretty/v6 v6.7.9/go.mod h1:YwC5CE4fJ1HFUDeivSV1r//AmANFHyqczZk+U6BDALU=
 github.com/knadh/profiler v0.2.0 h1:jaY0xlQs8iaWxKdvGHOftaZnX7d8l7yrCGQPSecwnng=
 github.com/knadh/profiler v0.2.0/go.mod h1:LqNkAu++MfFkbEDA63AmRaIf6UkGrLXyZ5VQQdekZiI=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
