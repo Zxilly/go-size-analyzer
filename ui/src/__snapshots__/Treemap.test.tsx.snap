@@ -123,16 +123,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="38"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="10.5"
-        >
-          unicode
-        </text>
       </g>
       <g
         class="node"
@@ -351,16 +341,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="22"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="10.5"
-        >
-          internal/bytealg
-        </text>
       </g>
       <g
         class="node"
@@ -372,16 +352,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="60"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="10.5"
-        >
-          internal/reflectlite
-        </text>
       </g>
       <g
         class="node"
@@ -393,16 +363,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="61"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="10.5"
-        >
-          strconv
-        </text>
       </g>
       <g
         class="node"
@@ -422,7 +382,7 @@ exports[`treeMap > render snapshot 1`] = `
           x="13"
           y="10.5"
         >
-          internal/cpu
+          cpu
         </text>
       </g>
       <g
@@ -443,7 +403,7 @@ exports[`treeMap > render snapshot 1`] = `
           x="13"
           y="10.5"
         >
-          internal/abi
+          abi
         </text>
       </g>
       <g
@@ -572,16 +532,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="22"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="11"
-          y="7"
-        >
-          atomic
-        </text>
       </g>
       <g
         class="node"
@@ -615,16 +565,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="17"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="8.5"
-        >
-          internal/syscall
-        </text>
       </g>
       <g
         class="node"
@@ -644,7 +584,7 @@ exports[`treeMap > render snapshot 1`] = `
           x="29.5"
           y="10.5"
         >
-          internal/atomic
+          atomic
         </text>
       </g>
     </g>
@@ -666,8 +606,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="130"
-          y="43"
+          transform="scale(2.19)"
+          x="59.488560991915826"
+          y="19.676985558864466"
         >
           .symtab
         </text>
@@ -687,8 +628,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="130"
-          y="45"
+          transform="scale(2.19)"
+          x="59.488560991915826"
+          y="20.592194189509325"
         >
           .strtab
         </text>
@@ -785,8 +727,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="125.5"
-          y="116"
+          transform="scale(2.15)"
+          x="58.44988356608496"
+          y="54.02539038777574"
         >
           .rodata
         </text>
@@ -806,8 +749,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="130"
-          y="114"
+          transform="scale(1.83)"
+          x="71.10243002567181"
+          y="62.351361714819895"
         >
           .gopclntab
         </text>
@@ -833,16 +777,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="183"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#000"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="91.5"
-        >
-          .debug_ranges
-        </text>
       </g>
       <g
         class="node"
@@ -859,8 +793,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="111.5"
-          y="24.5"
+          transform="scale(1.55)"
+          x="72.13413431471493"
+          y="15.850101261977718"
         >
           .debug_frame
         </text>
@@ -880,8 +815,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="111.5"
-          y="69"
+          transform="scale(1.61)"
+          x="69.06317558744473"
+          y="42.738646776086874"
         >
           .debug_line
         </text>
@@ -901,8 +837,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="83.5"
-          y="94"
+          transform="scale(1.47)"
+          x="56.98440332426252"
+          y="64.15010673629554"
         >
           .debug_loc
         </text>
@@ -922,8 +859,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#000"
           font-size="0.8em"
           text-anchor="middle"
-          x="172"
-          y="94"
+          transform="scale(2.01)"
+          x="85.77748992467534"
+          y="46.878395656508616"
         >
           .debug_info
         </text>
@@ -1004,16 +942,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="23"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="11.5"
-          y="7"
-        >
-          &lt;autogenerated&gt;
-        </text>
       </g>
       <g
         class="node"
@@ -1025,16 +953,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="25"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="12.5"
-        >
-          type.go
-        </text>
       </g>
       <g
         class="node"
@@ -1057,16 +975,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="38"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="19"
-        >
-          itoa.go
-        </text>
       </g>
       <g
         class="node"
@@ -1089,16 +997,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="24"
           width="21"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="10.5"
-          y="12"
-        >
-          cpu.go
-        </text>
       </g>
       <g
         class="node"
@@ -1110,16 +1008,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="26"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="13"
-        >
-          cpu_x86.go
-        </text>
       </g>
       <g
         class="node"
@@ -1153,16 +1041,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="67"
           width="26"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13"
-          y="33.5"
-        >
-          type.go
-        </text>
       </g>
       <g
         class="node"
@@ -1295,16 +1173,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="13"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="6.5"
-          y="7"
-        >
-          once.go
-        </text>
       </g>
       <g
         class="node"
@@ -1316,16 +1184,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="21"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="10.5"
-          y="7"
-        >
-          mutex.go
-        </text>
       </g>
       <g
         class="node"
@@ -1392,16 +1250,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="18"
           width="13"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="6.5"
-          y="9"
-        >
-          syscall_unix.go
-        </text>
       </g>
       <g
         class="node"
@@ -1424,16 +1272,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="13"
           width="21"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="10.5"
-          y="6.5"
-        >
-          syscall_linux.go
-        </text>
       </g>
       <g
         class="node"
@@ -1456,16 +1294,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="13"
           width="39"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="19.5"
-          y="6.5"
-        >
-          env_unix.go
-        </text>
       </g>
       <g
         class="node"
@@ -1477,16 +1305,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="25"
           width="27"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="13.5"
-          y="12.5"
-        >
-          zsyscall_linux_amd64.go
-        </text>
       </g>
       <g
         class="node"
@@ -1547,8 +1365,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="23.5"
-          y="31.5"
+          transform="scale(0.86)"
+          x="27.222222222222218"
+          y="36.48936170212765"
         >
           type.go
         </text>
@@ -1568,8 +1387,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="30"
-          y="35.5"
+          transform="scale(0.96)"
+          x="31.11111111111111"
+          y="36.81481481481482"
         >
           value.go
         </text>
@@ -1661,16 +1481,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="40"
           width="14"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="7"
-          y="20"
-        >
-          sys_unix.go
-        </text>
       </g>
       <g
         class="node"
@@ -1682,16 +1492,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="40"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="20"
-        >
-          format_rfc3339.go
-        </text>
       </g>
       <g
         class="node"
@@ -1703,16 +1503,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="40"
           width="25"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="12.5"
-          y="20"
-        >
-          zoneinfo_unix.go
-        </text>
       </g>
       <g
         class="node"
@@ -1729,8 +1519,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="25.5"
-          y="20"
+          transform="scale(0.94)"
+          x="27.22222222222222"
+          y="21.350762527233115"
         >
           time.go
         </text>
@@ -1750,8 +1541,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="23"
-          y="66"
+          transform="scale(0.54)"
+          x="42.77777777777778"
+          y="122.75362318840581"
         >
           zoneinfo.go
         </text>
@@ -1771,8 +1563,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="32.5"
-          y="66"
+          transform="scale(0.52)"
+          x="62.22222222222222"
+          y="126.35897435897435"
         >
           zoneinfo_read.go
         </text>
@@ -1792,8 +1585,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="56"
-          y="56.5"
+          transform="scale(1.26)"
+          x="44.27188724235731"
+          y="44.66717194987836"
         >
           format.go
         </text>
@@ -2556,16 +2350,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="13"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="6.5"
-        >
-          pagetrace_off.go
-        </text>
       </g>
       <g
         class="node"
@@ -2577,16 +2361,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="7"
-        >
-          float.go
-        </text>
       </g>
       <g
         class="node"
@@ -2598,16 +2372,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="16"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="8"
-        >
-          exithook.go
-        </text>
       </g>
       <g
         class="node"
@@ -2619,16 +2383,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="16"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="8"
-        >
-          memclr_amd64.s
-        </text>
       </g>
       <g
         class="node"
@@ -2640,16 +2394,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="17"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="8.5"
-        >
-          mfixalloc.go
-        </text>
       </g>
       <g
         class="node"
@@ -2661,16 +2405,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="18"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="9"
-        >
-          cgocall.go
-        </text>
       </g>
       <g
         class="node"
@@ -2687,8 +2421,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="9.5"
-          y="9.5"
+          transform="scale(1.11)"
+          x="8.595864638818417"
+          y="8.595864638818417"
         >
           m0
         </text>
@@ -2703,16 +2438,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="19"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="9.5"
-        >
-          cgo_mmap.go
-        </text>
       </g>
       <g
         class="node"
@@ -2724,16 +2449,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="19"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="9.5"
-        >
-          zeroVal
-        </text>
       </g>
       <g
         class="node"
@@ -2745,16 +2460,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="19"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="9.5"
-        >
-          auxvreadbuf
-        </text>
       </g>
       <g
         class="node"
@@ -2766,16 +2471,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="19"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="9.5"
-        >
-          pinner.go
-        </text>
       </g>
       <g
         class="node"
@@ -2787,16 +2482,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="20"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="10"
-        >
-          unsafe.go
-        </text>
       </g>
       <g
         class="node"
@@ -2808,16 +2493,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="21"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="10.5"
-        >
-          arena.go
-        </text>
       </g>
       <g
         class="node"
@@ -2829,16 +2504,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="21"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="10.5"
-        >
-          mfinal.go
-        </text>
       </g>
       <g
         class="node"
@@ -2850,16 +2515,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="13"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="6.5"
-        >
-          rwmutex.go
-        </text>
       </g>
       <g
         class="node"
@@ -2871,16 +2526,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="13"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="6.5"
-        >
-          mbarrier.go
-        </text>
       </g>
       <g
         class="node"
@@ -2892,16 +2537,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="15"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="7.5"
-        >
-          mcheckmark.go
-        </text>
       </g>
       <g
         class="node"
@@ -2913,16 +2548,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="14"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="7"
-        >
-          security_unix.go
-        </text>
       </g>
       <g
         class="node"
@@ -2934,16 +2559,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="17"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="8.5"
-        >
-          netpoll.go
-        </text>
       </g>
       <g
         class="node"
@@ -2960,8 +2575,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="8"
+          transform="scale(0.51)"
+          x="31.111111111111107"
+          y="15.555555555555554"
         >
           stubs.go
         </text>
@@ -2976,16 +2592,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="17"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="8.5"
-        >
-          cpuprof.go
-        </text>
       </g>
       <g
         class="node"
@@ -2997,16 +2603,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="17"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="8.5"
-        >
-          lfstack.go
-        </text>
       </g>
       <g
         class="node"
@@ -3018,16 +2614,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="18"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="9"
-        >
-          duff_amd64.s
-        </text>
       </g>
       <g
         class="node"
@@ -3044,8 +2630,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="9"
+          transform="scale(0.51)"
+          x="31.111111111111107"
+          y="17.499999999999996"
         >
           sigtable
         </text>
@@ -3060,16 +2647,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="18"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="9"
-        >
-          symtabinl.go
-        </text>
       </g>
       <g
         class="node"
@@ -3086,8 +2663,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="9.5"
+          transform="scale(0.82)"
+          x="19.444444444444446"
+          y="11.54513888888889"
         >
           sched
         </text>
@@ -3102,16 +2680,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="20"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="10"
-        >
-          mstats.go
-        </text>
       </g>
       <g
         class="node"
@@ -3128,8 +2696,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="10.5"
+          transform="scale(0.69)"
+          x="23.333333333333332"
+          y="15.3125"
         >
           mem.go
         </text>
@@ -3144,16 +2713,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="20"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="10"
-        >
-          lockrank_off.go
-        </text>
       </g>
       <g
         class="node"
@@ -3165,16 +2724,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="21"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="10.5"
-        >
-          mwbbuf.go
-        </text>
       </g>
       <g
         class="node"
@@ -3186,16 +2735,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="21"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="10.5"
-        >
-          netpoll_epoll.go
-        </text>
       </g>
       <g
         class="node"
@@ -3207,16 +2746,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="21"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="10.5"
-        >
-          memmove_amd64.s
-        </text>
       </g>
       <g
         class="node"
@@ -3228,16 +2757,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="24"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="12"
-        >
-          staticuint64s
-        </text>
       </g>
       <g
         class="node"
@@ -3249,16 +2768,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="25"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="12.5"
-        >
-          hash64.go
-        </text>
       </g>
       <g
         class="node"
@@ -3270,16 +2779,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="26"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="13"
-        >
-          runtime2.go
-        </text>
       </g>
       <g
         class="node"
@@ -3291,16 +2790,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="27"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="13.5"
-        >
-          mgcstack.go
-        </text>
       </g>
       <g
         class="node"
@@ -3312,16 +2801,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="27"
           width="32"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="16"
-          y="13.5"
-        >
-          mpagecache.go
-        </text>
       </g>
       <g
         class="node"
@@ -3338,8 +2817,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="16"
-          y="14"
+          transform="scale(0.51)"
+          x="31.111111111111107"
+          y="27.222222222222218"
         >
           slice.go
         </text>
@@ -3359,8 +2839,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="10.5"
+          transform="scale(0.51)"
+          x="42.77777777777777"
+          y="20.416666666666664"
         >
           mcentral.go
         </text>
@@ -3375,16 +2856,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="22"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="11"
-        >
-          signal_amd64.go
-        </text>
       </g>
       <g
         class="node"
@@ -3396,16 +2867,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="22"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="11"
-        >
-          mem_linux.go
-        </text>
       </g>
       <g
         class="node"
@@ -3422,8 +2883,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="13.5"
+          transform="scale(0.51)"
+          x="42.77777777777777"
+          y="26.249999999999996"
         >
           stkframe.go
         </text>
@@ -3443,8 +2905,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="13.5"
+          transform="scale(0.57)"
+          x="38.888888888888886"
+          y="23.863636363636363"
         >
           preempt.go
         </text>
@@ -3459,16 +2922,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="29"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="14.5"
-        >
-          map_fast64.go
-        </text>
       </g>
       <g
         class="node"
@@ -3480,16 +2933,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="30"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="15"
-        >
-          debugcall.go
-        </text>
       </g>
       <g
         class="node"
@@ -3501,16 +2944,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="30"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="15"
-        >
-          lock_futex.go
-        </text>
       </g>
       <g
         class="node"
@@ -3527,8 +2960,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="15"
+          transform="scale(0.63)"
+          x="35"
+          y="23.863636363636363"
         >
           mcache.go
         </text>
@@ -3543,16 +2977,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="31"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="15.5"
-        >
-          mpagealloc_64bit.go
-        </text>
       </g>
       <g
         class="node"
@@ -3564,16 +2988,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="34"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="17"
-        >
-          map_fast32.go
-        </text>
       </g>
       <g
         class="node"
@@ -3585,16 +2999,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="34"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="17"
-        >
-          vdso_linux.go
-        </text>
       </g>
       <g
         class="node"
@@ -3606,16 +3010,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="35"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="17.5"
-        >
-          itabTableInit
-        </text>
       </g>
       <g
         class="node"
@@ -3632,8 +3026,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="18"
+          transform="scale(0.57)"
+          x="38.888888888888886"
+          y="31.818181818181817"
         >
           profbuf.go
         </text>
@@ -3648,16 +3043,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="37"
           width="44"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="22"
-          y="18.5"
-        >
-          signal_linux_amd64.go
-        </text>
       </g>
       <g
         class="node"
@@ -3674,8 +3059,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="19.5"
+          transform="scale(0.94)"
+          x="23.333333333333332"
+          y="20.681818181818183"
         >
           alg.go
         </text>
@@ -3695,8 +3081,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="15"
+          transform="scale(0.69)"
+          x="42.77777777777777"
+          y="21.75141242937853"
         >
           mspanset.go
         </text>
@@ -3716,8 +3103,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="16"
+          transform="scale(0.69)"
+          x="42.77777777777777"
+          y="23.201506591337097"
         >
           mgclimit.go
         </text>
@@ -3737,8 +3125,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="16.5"
+          transform="scale(1.04)"
+          x="28.338234870145943"
+          y="15.850199164657901"
         >
           sema.go
         </text>
@@ -3758,8 +3147,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="17.5"
+          transform="scale(0.69)"
+          x="42.77777777777777"
+          y="25.37664783427495"
         >
           runtime1.go
         </text>
@@ -3779,8 +3169,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="17.5"
+          transform="scale(0.95)"
+          x="31.111111111111107"
+          y="18.455743879472692"
         >
           print.go
         </text>
@@ -3800,8 +3191,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="19"
+          transform="scale(0.76)"
+          x="38.88888888888889"
+          y="25.04708097928437"
         >
           mgcwork.go
         </text>
@@ -3821,8 +3213,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="19"
+          transform="scale(0.95)"
+          x="31.111111111111107"
+          y="20.037664783427495"
         >
           iface.go
         </text>
@@ -3842,8 +3235,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="19.5"
+          transform="scale(0.84)"
+          x="35"
+          y="23.135593220338983"
         >
           string.go
         </text>
@@ -3863,8 +3257,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="20"
+          transform="scale(0.76)"
+          x="38.88888888888889"
+          y="26.365348399246706"
         >
           mranges.go
         </text>
@@ -3884,8 +3279,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="20.5"
+          transform="scale(0.54)"
+          x="54.444444444444436"
+          y="37.83427495291902"
         >
           map_faststr.go
         </text>
@@ -3905,8 +3301,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="21"
+          transform="scale(0.54)"
+          x="54.444444444444436"
+          y="38.75706214689265"
         >
           mpallocbits.go
         </text>
@@ -3921,16 +3318,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="42"
           width="59"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="29.5"
-          y="21"
-        >
-          sys_linux_amd64.s
-        </text>
       </g>
       <g
         class="node"
@@ -3942,16 +3329,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="74"
           width="34"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="17"
-          y="37"
-        >
-          &lt;autogenerated&gt;
-        </text>
       </g>
       <g
         class="node"
@@ -3968,8 +3345,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="19.5"
-          y="37"
+          transform="scale(0.63)"
+          x="31.11111111111111"
+          y="59.03133903133903"
         >
           error.go
         </text>
@@ -3989,8 +3367,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="19.5"
-          y="37"
+          transform="scale(0.72)"
+          x="27.22222222222222"
+          y="51.65242165242165"
         >
           chan.go
         </text>
@@ -4010,8 +3389,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="20.5"
-          y="37"
+          transform="scale(0.75)"
+          x="27.222222222222225"
+          y="49.13279132791328"
         >
           cpuprof
         </text>
@@ -4031,8 +3411,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="22"
-          y="37"
+          transform="scale(0.81)"
+          x="27.22222222222222"
+          y="45.782828282828284"
         >
           type.go
         </text>
@@ -4052,8 +3433,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="23.5"
-          y="37"
+          transform="scale(0.76)"
+          x="31.111111111111107"
+          y="48.98345153664302"
         >
           memstats
         </text>
@@ -4073,8 +3455,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="24.5"
-          y="37"
+          transform="scale(0.57)"
+          x="42.77777777777778"
+          y="64.6031746031746"
         >
           asm_amd64.s
         </text>
@@ -4094,8 +3477,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="25"
-          y="37"
+          transform="scale(0.58)"
+          x="42.77777777777778"
+          y="63.31111111111112"
         >
           os_linux.go
         </text>
@@ -4115,8 +3499,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="25.5"
-          y="37"
+          transform="scale(0.82)"
+          x="31.11111111111111"
+          y="45.14161220043573"
         >
           mprof.go
         </text>
@@ -4136,8 +3521,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="26.5"
-          y="37"
+          transform="scale(0.76)"
+          x="34.99999999999999"
+          y="48.867924528301884"
         >
           malloc.go
         </text>
@@ -4157,8 +3543,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="22"
+          transform="scale(1.29)"
+          x="35"
+          y="17.11111111111111"
         >
           time.go
         </text>
@@ -4178,8 +3565,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="22"
+          transform="scale(1.39)"
+          x="32.403703492039305"
+          y="15.841810596108104"
         >
           map.go
         </text>
@@ -4199,8 +3587,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="23.5"
+          transform="scale(1.03)"
+          x="43.87482193696061"
+          y="22.91240701152387"
         >
           mgcsweep.go
         </text>
@@ -4220,8 +3609,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="24"
+          transform="scale(1.03)"
+          x="43.87482193696061"
+          y="23.399905033045656"
         >
           mgcpacer.go
         </text>
@@ -4241,8 +3631,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="25"
+          transform="scale(0.83)"
+          x="54.44444444444444"
+          y="30.24691358024691"
         >
           signal_unix.go
         </text>
@@ -4262,8 +3653,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="28.5"
+          transform="scale(0.89)"
+          x="50.55555555555556"
+          y="32.01851851851852"
         >
           mpagealloc.go
         </text>
@@ -4283,8 +3675,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="31.5"
+          transform="scale(1.08)"
+          x="41.83300132670378"
+          y="29.283100928692644"
         >
           mbitmap.go
         </text>
@@ -4304,8 +3697,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="45"
-          y="32"
+          transform="scale(0.83)"
+          x="54.44444444444444"
+          y="38.71604938271605"
         >
           mgcscavenge.go
         </text>
@@ -4325,8 +3719,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="28.5"
-          y="51.5"
+          transform="scale(0.92)"
+          x="31.111111111111107"
+          y="56.21832358674463"
         >
           stack.go
         </text>
@@ -4346,8 +3741,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29"
-          y="51.5"
+          transform="scale(0.83)"
+          x="35"
+          y="62.155172413793096"
         >
           symtab.go
         </text>
@@ -4367,8 +3763,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="29.5"
-          y="51.5"
+          transform="scale(0.95)"
+          x="31.111111111111107"
+          y="54.31261770244821"
         >
           trace.go
         </text>
@@ -4388,8 +3785,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="30"
-          y="51.5"
+          transform="scale(1.13)"
+          x="26.457513110645905"
+          y="45.418730839942135"
         >
           mgc.go
         </text>
@@ -4409,8 +3807,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="30.5"
-          y="51.5"
+          transform="scale(0.98)"
+          x="31.11111111111111"
+          y="52.53187613843352"
         >
           semtable
         </text>
@@ -4430,8 +3829,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="32.5"
-          y="51.5"
+          transform="scale(0.84)"
+          x="38.888888888888886"
+          y="61.623931623931625"
         >
           mgcmark.go
         </text>
@@ -4451,8 +3851,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="76.5"
-          y="22.5"
+          transform="scale(1.57)"
+          x="48.78524367060187"
+          y="14.348601079588786"
         >
           panic.go
         </text>
@@ -4472,8 +3873,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="76.5"
-          y="25"
+          transform="scale(1.57)"
+          x="48.78524367060187"
+          y="15.942890088431984"
         >
           mheap.go
         </text>
@@ -4493,8 +3895,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="76.5"
-          y="26.5"
+          transform="scale(1.28)"
+          x="59.74947698515862"
+          y="20.69753124322488"
         >
           traceback.go
         </text>
@@ -4514,8 +3917,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="76.5"
-          y="84.5"
+          transform="scale(1.98)"
+          x="38.56812155135378"
+          y="42.601389164567244"
         >
           trace
         </text>
@@ -4535,8 +3939,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="48"
-          y="160"
+          transform="scale(1.33)"
+          x="36.14784456460256"
+          y="120.49281521534185"
         >
           proc.go
         </text>
@@ -4556,8 +3961,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="57"
-          y="160"
+          transform="scale(1.56)"
+          x="36.469165057620934"
+          y="102.36958612665526"
         >
           mheap_
         </text>
@@ -4583,16 +3989,6 @@ exports[`treeMap > render snapshot 1`] = `
           height="28"
           width="19"
         />
-        <text
-          dominant-baseline="middle"
-          fill="#fff"
-          font-size="0.8em"
-          text-anchor="middle"
-          x="9.5"
-          y="14"
-        >
-          format.go
-        </text>
       </g>
       <g
         class="node"
@@ -4609,8 +4005,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="13"
-          y="18"
+          transform="scale(0.67)"
+          x="19.444444444444443"
+          y="26.923076923076923"
         >
           fs.go
         </text>
@@ -4641,8 +4038,9 @@ exports[`treeMap > render snapshot 1`] = `
           fill="#fff"
           font-size="0.8em"
           text-anchor="middle"
-          x="27.5"
-          y="11"
+          transform="scale(0.88)"
+          x="31.11111111111111"
+          y="12.444444444444445"
         >
           types.go
         </text>

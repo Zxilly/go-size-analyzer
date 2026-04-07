@@ -1,7 +1,7 @@
-import memoize from "lodash.memoize";
 import * as React from "react";
-import { useCallback, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
+import { getScale } from "./tool/measureText.ts";
 
 export interface NodeProps {
   id: number;
@@ -18,29 +18,6 @@ export interface NodeProps {
   fontColor: string;
 }
 
-let textElement: SVGTextElement;
-
-(function init() {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.style.position = "absolute";
-  svg.style.visibility = "hidden";
-  document.body.appendChild(svg);
-  textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  textElement.setAttribute("font-size", "0.8em");
-  textElement.setAttribute("dominant-baseline", "middle");
-  textElement.setAttribute("text-anchor", "middle");
-  svg.appendChild(textElement);
-})();
-
-function measureText(text: string): [number, number] {
-  textElement.textContent = text;
-  const rect = textElement.getBoundingClientRect();
-
-  return [rect.width, rect.height];
-}
-
-const memoizedMeasureText = memoize(measureText);
-
 interface RenderAttributes {
   x: number;
   y: number;
@@ -54,61 +31,6 @@ function getTransform(scale: number): string | undefined {
   }
 
   return `scale(${scale.toFixed(2)})`;
-}
-
-const splitter = /[/\\]/;
-const verMatcher = /v\d+/;
-
-function getShortName(title: string): string {
-  const words = title.split(splitter);
-  const last = words[words.length - 1];
-
-  if (words.length >= 2 && verMatcher.test(last)) {
-    const split = title[title.length - last.length - 1];
-    return `${words[words.length - 2]}${split}${last}`;
-  }
-
-  return words[words.length - 1];
-}
-
-function getScaleInternal(
-  title: string,
-  width: number,
-  height: number,
-  hasChildren: boolean,
-  fallback: boolean = true,
-): [string, number] {
-  if (title === "") {
-    return ["", 0];
-  }
-
-  const [textWidth, textHeight] = memoizedMeasureText(title);
-
-  let scale: number;
-  if (hasChildren) {
-    scale = Math.min(
-      (width * 0.9) / textWidth,
-      Math.min(height, TOP_PADDING + PADDING) / textHeight,
-    );
-    scale = Math.min(1, scale);
-  }
-  else {
-    scale = Math.min(
-      (width * 0.9) / textWidth,
-      (height * 0.9) / textHeight,
-    );
-    if (scale > 1) {
-      scale = Math.sqrt(scale);
-    }
-    if (scale === Infinity) {
-      scale = 1;
-    }
-  }
-
-  if (scale < 0.7 && fallback) {
-    return getScaleInternal(getShortName(title), width, height, hasChildren, false);
-  }
-  return [title, scale];
 }
 
 export const Node: React.FC<NodeProps> = React.memo((
@@ -132,12 +54,8 @@ export const Node: React.FC<NodeProps> = React.memo((
   const width = x1 - x0;
   const height = y1 - y0;
 
-  const getScale = useCallback((title: string): [string, number] => {
-    return getScaleInternal(title, width, height, hasChildren);
-  }, [width, height, hasChildren]);
-
   const renderAttr = useMemo<RenderAttributes>(() => {
-    const [display, scale] = getScale(title);
+    const [display, scale] = getScale(title, width, height, hasChildren);
     if (hasChildren) {
       return {
         x: width / 2 / scale,
@@ -154,7 +72,7 @@ export const Node: React.FC<NodeProps> = React.memo((
         scale,
       };
     }
-  }, [getScale, title, hasChildren, width, height]);
+  }, [title, width, height, hasChildren]);
 
   return (
     <g
