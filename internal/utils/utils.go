@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 	"unique"
 
 	"golang.org/x/net/publicsuffix"
@@ -26,6 +27,9 @@ func GetImageBase(file *pe.File) uint64 {
 }
 
 func Deduplicate(s string) string {
+	if !utf8.ValidString(s) {
+		s = strings.ToValidUTF8(s, "\uFFFD")
+	}
 	return unique.Make(s).Value()
 }
 
