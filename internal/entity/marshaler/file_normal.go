@@ -1,15 +1,15 @@
 package marshaler
 
 import (
-	"github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func GetFileCompactMarshaler() *json.Marshalers {
-	return json.MarshalToFunc[entity.File](func(encoder *jsontext.Encoder, file entity.File) error {
+	return json.MarshalToFunc(func(encoder *jsontext.Encoder, file entity.File) error {
 		options := encoder.Options()
 		utils.Must(encoder.WriteToken(jsontext.BeginObject))
 

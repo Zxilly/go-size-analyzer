@@ -15,6 +15,7 @@ builds:
       - -X github.com/Zxilly/go-size-analyzer.buildDate={{.Date}}
     env:
       - CGO_ENABLED=0
+      - GOEXPERIMENT=jsonv2
     goos:
       - linux
       - darwin

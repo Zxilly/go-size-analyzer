@@ -13,6 +13,7 @@ permissions:
 
 env:
   GOTOOLCHAIN: "local"
+  GOEXPERIMENT: "jsonv2"
 
 jobs:
   analyze:

@@ -9,6 +9,7 @@ permissions: read-all
 
 env:
   GOTOOLCHAIN: "local"
+  GOEXPERIMENT: "jsonv2"
 
 jobs:
   build-ui:

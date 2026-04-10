@@ -100,7 +100,7 @@ formatters:
     gci:
       sections:
         - standard
-        - prefix(syscall/js,unique,iter)
+        - prefix(syscall/js,unique,iter,encoding/json/v2,encoding/json/jsontext)
         - default
         - localmodule
       custom-order: true
