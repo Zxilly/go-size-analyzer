@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"maps"
+	"strings"
 	"sync"
 
 	"github.com/ZxillyFork/gore"
@@ -90,6 +91,9 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 	}
 
 	for _, f := range gp.Functions {
+		if strings.HasPrefix(f.Name, "go:") {
+			continue
+		}
 		src, _, _ := pclntab.PCToLine(f.Offset)
 		sf := getFunction(f)
 		sf.Type = FuncTypeFunction

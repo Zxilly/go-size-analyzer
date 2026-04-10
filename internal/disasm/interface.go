@@ -3,6 +3,7 @@ package disasm
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"unicode/utf8"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -83,11 +84,9 @@ func (e *Extractor) Validate(addr, size uint64) bool {
 }
 
 func (e *Extractor) Extract(start, end uint64) []PossibleStr {
-	if start < e.textStart {
-		panic(fmt.Errorf("start address %#x is before text segment %#x", start, e.textStart))
-	}
-	if end > e.textEnd {
-		panic(fmt.Errorf("end address %#x is after text segment %#x", end, e.textEnd))
+	if start < e.textStart || end > e.textEnd || start > end {
+		slog.Debug("skipping function outside text section", "start", fmt.Sprintf("%#x", start), "end", fmt.Sprintf("%#x", end), "textStart", fmt.Sprintf("%#x", e.textStart), "textEnd", fmt.Sprintf("%#x", e.textEnd))
+		return nil
 	}
 
 	code := e.text[start-e.textStart : end-e.textStart]

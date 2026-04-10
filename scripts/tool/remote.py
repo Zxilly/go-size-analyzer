@@ -76,22 +76,26 @@ class IntegrationTest:
 
     def run_test(self, gsa: GSAInstance, log_typ: callable(TestType), timeout=240):
         threads = []
+        errors = []
 
         draw = not self.name.startswith("bin-")
 
         def run(pargs: list[str], typ: TestType):
-            figure_output = self.performance_figure_filepath(typ)
-            if not draw:
-                figure_output = None
+            try:
+                figure_output = self.performance_figure_filepath(typ)
+                if not draw:
+                    figure_output = None
 
-            gsa.run_with_figure(*pargs,
-                                output=self.output_filepath(typ),
-                                profiler_dir=self.profiler_dir(typ),
-                                figure_name=self.name,
-                                timeout=timeout,
-                                figure_output=figure_output)
+                gsa.run_with_figure(*pargs,
+                                    output=self.output_filepath(typ),
+                                    profiler_dir=self.profiler_dir(typ),
+                                    figure_name=self.name,
+                                    timeout=timeout,
+                                    figure_output=figure_output)
 
-            log_typ(typ)
+                log_typ(typ)
+            except Exception as e:
+                errors.append(e)
 
         if TestType.TEXT_TEST in self.type:
             threads.append(Thread(target=run, args=(["-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
@@ -126,6 +130,9 @@ class IntegrationTest:
             t.start()
         for t in threads:
             t.join()
+
+        if errors:
+            raise errors[0]
 
 
 class RemoteBinaryType(Enum):
