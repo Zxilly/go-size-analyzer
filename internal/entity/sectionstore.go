@@ -6,6 +6,13 @@ import (
 	"slices"
 )
 
+func fileBackedSize(s *Section) uint64 {
+	if s.FileSize == 0 {
+		return s.Size
+	}
+	return min(s.Size, s.FileSize)
+}
+
 type Store struct {
 	Sections          map[string]*Section
 	DataSectionsCache []AddrPos
@@ -87,13 +94,13 @@ func (s *Store) BuildCache() {
 		case SectionContentText:
 			s.TextSectionsCache = append(s.TextSectionsCache, AddrPos{
 				Addr: section.Addr,
-				Size: section.Size,
+				Size: fileBackedSize(section),
 				Type: AddrTypeText,
 			})
 		case SectionContentData:
 			s.DataSectionsCache = append(s.DataSectionsCache, AddrPos{
 				Addr: section.Addr,
-				Size: section.Size,
+				Size: fileBackedSize(section),
 				Type: AddrTypeData,
 			})
 		default:

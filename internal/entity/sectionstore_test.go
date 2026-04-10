@@ -129,32 +129,78 @@ func TestSectionStore_FindSection(t *testing.T) {
 // Large BSS symbols (e.g. var a [1<<25]byte) must not be attributed to any
 // package because they live only in memory and take no space in the binary.
 func TestOnlyInMemorySymbolNotCounted(t *testing.T) {
-	bssSection := &Section{
-		Name:         ".bss",
-		Size:         0x2000000, // 32 MB
-		Addr:         0x1000,
-		AddrEnd:      0x2001000,
-		OnlyInMemory: true,
-		ContentType:  SectionContentData,
-	}
-	store := &Store{
-		Sections: map[string]*Section{".bss": bssSection},
-	}
-	store.BuildCache()
+	// ELF case: BSS is a dedicated section with OnlyInMemory=true.
+	t.Run("ELF BSS section", func(t *testing.T) {
+		bssSection := &Section{
+			Name:         ".bss",
+			Size:         0x2000000, // 32 MB
+			Addr:         0x1000,
+			AddrEnd:      0x2001000,
+			OnlyInMemory: true,
+			ContentType:  SectionContentData,
+		}
+		store := &Store{
+			Sections: map[string]*Section{".bss": bssSection},
+		}
+		store.BuildCache()
 
-	ka := NewKnownAddr(store)
+		ka := NewKnownAddr(store)
+		sym := NewSymbol("main.a", 0x1000, 0x2000000, AddrTypeData)
+		pkg := NewPackage()
+		pkg.Name = "main"
 
-	sym := NewSymbol("main.a", 0x1000, 0x2000000, AddrTypeData)
-	pkg := NewPackage()
-	pkg.Name = "main"
+		if ap := ka.InsertSymbol(sym, pkg); ap != nil {
+			t.Errorf("InsertSymbol returned non-nil for a BSS (OnlyInMemory) symbol: %v", ap)
+		}
+		if store.IsData(0x1000, 0x100) {
+			t.Error("IsData() returned true for an address inside an OnlyInMemory section")
+		}
+	})
 
-	ap := ka.InsertSymbol(sym, pkg)
-	if ap != nil {
-		t.Errorf("expected InsertSymbol to return nil for a BSS symbol, got %v", ap)
-	}
+	// PE case: BSS is the tail of .data where VirtualSize >> FileSize (raw size).
+	// The 32 MB zero-initialized array lives in the virtual-only part of .data.
+	t.Run("PE .data section with BSS tail", func(t *testing.T) {
+		const (
+			baseAddr    = 0x14011a000
+			fileSize    = 0x6E00     // 28 KB raw data
+			virtualSize = 0x2000000  // 32 MB virtual (includes BSS)
+		)
+		dataSection := &Section{
+			Name:         ".data",
+			Size:         virtualSize,
+			FileSize:     fileSize,
+			Addr:         baseAddr,
+			AddrEnd:      baseAddr + virtualSize,
+			OnlyInMemory: false,
+			ContentType:  SectionContentData,
+		}
+		store := &Store{
+			Sections: map[string]*Section{".data": dataSection},
+		}
+		store.BuildCache()
 
-	// IsData must also return false for addresses inside an OnlyInMemory section.
-	if store.IsData(0x1000, 0x100) {
-		t.Error("IsData() returned true for an address inside an OnlyInMemory section")
-	}
+		ka := NewKnownAddr(store)
+		pkg := NewPackage()
+		pkg.Name = "main"
+
+		// Symbol inside the BSS tail (beyond FileSize) must not be counted.
+		bssAddr := uint64(baseAddr + fileSize + 0x100)
+		sym := NewSymbol("main.a", bssAddr, 0x2000000-fileSize-0x100, AddrTypeData)
+		if ap := ka.InsertSymbol(sym, pkg); ap != nil {
+			t.Errorf("InsertSymbol returned non-nil for a PE BSS symbol: %v", ap)
+		}
+		if store.IsData(bssAddr, 0x100) {
+			t.Error("IsData() returned true for a PE BSS address (beyond FileSize)")
+		}
+
+		// Symbol inside the file-backed part must still be counted.
+		fileAddr := uint64(baseAddr + 0x10)
+		symFile := NewSymbol("runtime.something", fileAddr, 0x10, AddrTypeData)
+		if ap := ka.InsertSymbol(symFile, pkg); ap == nil {
+			t.Error("InsertSymbol returned nil for a file-backed PE symbol")
+		}
+		if !store.IsData(fileAddr, 0x10) {
+			t.Error("IsData() returned false for a file-backed PE address")
+		}
+	})
 }
