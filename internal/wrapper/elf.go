@@ -45,6 +45,10 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 		return cmp.Compare(a.Value, b.Value)
 	})
 
+	return processElfSymbols(symbols, e.file.Sections, marker, goSCb)
+}
+
+func processElfSymbols(symbols []elf.Symbol, sections []*elf.Section, marker func(name string, addr uint64, size uint64, typ entity.AddrType), goSCb func(addr, size uint64)) error {
 	goStringBase := uint64(0)
 
 	for _, s := range symbols {
@@ -76,11 +80,14 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 		}
 
 		i := int(s.Section)
-		if i < 0 || i >= len(e.file.Sections) {
+		if i < 0 || i >= len(sections) {
 			// just ignore, example: we met go.go
 			continue
 		}
-		sect := e.file.Sections[i]
+		sect := sections[i]
+		if sect.Type == elf.SHT_NOBITS {
+			continue // bss section, skip
+		}
 		var typ entity.AddrType
 		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
 		case elf.SHF_ALLOC | elf.SHF_EXECINSTR:
