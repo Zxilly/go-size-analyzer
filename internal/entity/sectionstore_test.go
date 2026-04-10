@@ -92,15 +92,69 @@ func TestSectionStore_FindSection(t *testing.T) {
 			},
 			want: nil,
 		},
+		{
+			name: "FindSection ignores OnlyInMemory section",
+			fields: fields{
+				Sections: map[string]*Section{
+					".bss": {
+						OnlyInMemory: true,
+						ContentType:  SectionContentData,
+						Addr:         0x1000,
+						AddrEnd:      0x3000000,
+					},
+				},
+			},
+			args: args{
+				addr: 0x1000,
+				size: 0x100,
+			},
+			want: nil,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &Store{
 				Sections: tt.fields.Sections,
 			}
+			s.BuildCache()
 			if got := s.FindSection(tt.args.addr, tt.args.size); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("FindSection() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+// TestOnlyInMemorySymbolNotCounted is a regression test for
+// https://github.com/Zxilly/go-size-analyzer/issues/522.
+// Large BSS symbols (e.g. var a [1<<25]byte) must not be attributed to any
+// package because they live only in memory and take no space in the binary.
+func TestOnlyInMemorySymbolNotCounted(t *testing.T) {
+	bssSection := &Section{
+		Name:         ".bss",
+		Size:         0x2000000, // 32 MB
+		Addr:         0x1000,
+		AddrEnd:      0x2001000,
+		OnlyInMemory: true,
+		ContentType:  SectionContentData,
+	}
+	store := &Store{
+		Sections: map[string]*Section{".bss": bssSection},
+	}
+	store.BuildCache()
+
+	ka := NewKnownAddr(store)
+
+	sym := NewSymbol("main.a", 0x1000, 0x2000000, AddrTypeData)
+	pkg := NewPackage()
+	pkg.Name = "main"
+
+	ap := ka.InsertSymbol(sym, pkg)
+	if ap != nil {
+		t.Errorf("expected InsertSymbol to return nil for a BSS symbol, got %v", ap)
+	}
+
+	// IsData must also return false for addresses inside an OnlyInMemory section.
+	if store.IsData(0x1000, 0x100) {
+		t.Error("IsData() returned true for an address inside an OnlyInMemory section")
 	}
 }

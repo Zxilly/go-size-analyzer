@@ -79,7 +79,7 @@ func sortAddrPos(a []AddrPos) {
 
 func (s *Store) BuildCache() {
 	for _, section := range s.Sections {
-		if section.Debug {
+		if section.Debug || section.OnlyInMemory {
 			continue
 		}
 
@@ -104,10 +104,10 @@ func (s *Store) BuildCache() {
 	sortAddrPos(s.DataSectionsCache)
 	sortAddrPos(s.TextSectionsCache)
 
-	// build sorted section list for FindSection (exclude debug and other)
+	// build sorted section list for FindSection (exclude debug, only-in-memory and other)
 	s.sortedSections = make([]*Section, 0, len(s.Sections))
 	for _, section := range s.Sections {
-		if section.Debug || section.ContentType == SectionContentOther {
+		if section.Debug || section.OnlyInMemory || section.ContentType == SectionContentOther {
 			continue
 		}
 		s.sortedSections = append(s.sortedSections, section)
