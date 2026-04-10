@@ -146,7 +146,7 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 	// On PIE binaries, each pointer in the array is a fixup descriptor that
 	// must be resolved to the actual virtual address.
 	itabAddrs := make([]uint64, 0, numItabs)
-	for i := uint64(0); i < numItabs; i++ {
+	for i := range numItabs {
 		fileAddr := itabSection.Address + i*ptrSz
 		raw := readPtr(ptrData, i*ptrSz, ptrSize, order)
 		addr := md.ResolvePointer(raw, fileAddr)

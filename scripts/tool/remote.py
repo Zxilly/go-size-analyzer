@@ -76,7 +76,7 @@ class IntegrationTest:
 
     def run_test(self, gsa: GSAInstance, log_typ: callable(TestType), timeout=240):
         threads = []
-        errors = []
+        failures = []
 
         draw = not self.name.startswith("bin-")
 
@@ -95,7 +95,7 @@ class IntegrationTest:
 
                 log_typ(typ)
             except Exception as e:
-                errors.append(e)
+                failures.append(e)
 
         if TestType.TEXT_TEST in self.type:
             threads.append(Thread(target=run, args=(["-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
@@ -131,8 +131,11 @@ class IntegrationTest:
         for t in threads:
             t.join()
 
-        if errors:
-            raise errors[0]
+        if failures:
+            if len(failures) > 1:
+                log(f"{len(failures)} output formats failed; showing first error, others: "
+                    + ", ".join(type(e).__name__ + ": " + str(e)[:80] for e in failures[1:]))
+            raise failures[0]
 
 
 class RemoteBinaryType(Enum):

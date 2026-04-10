@@ -66,16 +66,20 @@ func TestNewExtractorNoExtractor(t *testing.T) {
 func TestExtractor_Extract(t *testing.T) {
 	t.Run("start before text", func(t *testing.T) {
 		extractor := Extractor{textStart: 0x100, textEnd: 0x200}
-		assert.Panics(t, func() {
-			extractor.Extract(0x50, 0x100)
-		})
+		result := extractor.Extract(0x50, 0x100)
+		assert.Nil(t, result)
 	})
 
 	t.Run("end after text", func(t *testing.T) {
 		extractor := Extractor{textStart: 0x100, textEnd: 0x200}
-		assert.Panics(t, func() {
-			extractor.Extract(0x150, 0x250)
-		})
+		result := extractor.Extract(0x150, 0x250)
+		assert.Nil(t, result)
+	})
+
+	t.Run("start after end", func(t *testing.T) {
+		extractor := Extractor{textStart: 0x100, textEnd: 0x200}
+		result := extractor.Extract(0x180, 0x150)
+		assert.Nil(t, result)
 	})
 }
 

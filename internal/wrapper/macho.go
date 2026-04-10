@@ -366,14 +366,14 @@ func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	if m.isMemOnly(addr, size) {
 		return nil, ErrAddrNotFound
 	}
+	if size == 0 {
+		return nil, nil
+	}
 	off, err := m.file.GetOffset(addr)
 	if err != nil {
 		return nil, ErrAddrNotFound
 	}
 	b := make([]byte, size)
-	if size == 0 {
-		return b, nil
-	}
 	_, err = m.file.ReadAt(b, int64(off))
 	return b, err
 }

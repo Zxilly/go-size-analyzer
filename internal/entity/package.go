@@ -186,9 +186,7 @@ func (p *Package) Merge(rp *Package) {
 	// prevent duplicate files
 	p.fileEnsureUnique()
 
-	for k, v := range rp.SubPackages {
-		p.SubPackages[k] = v
-	}
+	maps.Copy(p.SubPackages, rp.SubPackages)
 }
 
 func (p *Package) Functions(yield func(*Function) bool) {

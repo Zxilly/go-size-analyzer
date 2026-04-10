@@ -9,12 +9,74 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
 
+// relocEntry is a single R_*_RELATIVE relocation: the pointer at offset
+// should be replaced with addend (for RELA) or left as-is (addend==0, for REL).
+type relocEntry struct {
+	offset uint64 // virtual address where the pointer is stored
+	addend uint64 // resolved value to patch in (0 means use disk value)
+}
+
 type ElfWrapper struct {
-	file *elf.File
+	file      *elf.File
+	relocs    []relocEntry // sorted by offset; built lazily
+	relocOnce sync.Once
+}
+
+func (e *ElfWrapper) buildRelocs() {
+	e.relocOnce.Do(func() {
+		f := e.file
+		is32 := f.Class == elf.ELFCLASS32
+		order := f.ByteOrder
+
+		for _, s := range f.Sections {
+			if s.Type != elf.SHT_RELA {
+				continue
+			}
+			data, err := s.Data()
+			if err != nil {
+				continue
+			}
+			if is32 {
+				relTypeRelative := uint32(elf.R_386_RELATIVE)
+				for i := 0; i+12 <= len(data); i += 12 {
+					info := order.Uint32(data[i+4:])
+					if info == relTypeRelative {
+						e.relocs = append(e.relocs, relocEntry{
+							offset: uint64(order.Uint32(data[i:])),
+							addend: uint64(int64(int32(order.Uint32(data[i+8:])))),
+						})
+					}
+				}
+			} else {
+				var relTypeRelative uint32
+				switch f.Machine {
+				case elf.EM_X86_64:
+					relTypeRelative = uint32(elf.R_X86_64_RELATIVE)
+				case elf.EM_AARCH64:
+					relTypeRelative = uint32(elf.R_AARCH64_RELATIVE)
+				default:
+					continue
+				}
+				for i := 0; i+24 <= len(data); i += 24 {
+					info := order.Uint64(data[i+8:])
+					if uint32(info&0xffffffff) == relTypeRelative {
+						e.relocs = append(e.relocs, relocEntry{
+							offset: order.Uint64(data[i:]),
+							addend: order.Uint64(data[i+16:]),
+						})
+					}
+				}
+			}
+		}
+		slices.SortFunc(e.relocs, func(a, b relocEntry) int {
+			return cmp.Compare(a.offset, b.offset)
+		})
+	})
 }
 
 var _ RawFileWrapper = (*ElfWrapper)(nil)
@@ -155,20 +217,62 @@ func (e *ElfWrapper) LoadSections() *entity.Store {
 }
 
 func (e *ElfWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
+	if size == 0 {
+		return nil, nil
+	}
 	ef := e.file
 	for _, prog := range ef.Progs {
 		if prog.Type != elf.PT_LOAD {
 			continue
 		}
-		data := make([]byte, size)
 		if prog.Vaddr <= addr && addr+size-1 <= prog.Vaddr+prog.Filesz-1 {
+			data := make([]byte, size)
 			if _, err := prog.ReadAt(data, int64(addr-prog.Vaddr)); err != nil {
 				return nil, err
 			}
+			e.applyRelocations(data, addr)
 			return data, nil
 		}
 	}
 	return nil, ErrAddrNotFound
+}
+
+// applyRelocations patches pointer-sized fields in data (read from baseAddr)
+// with resolved PIE relocation addends from .rela.dyn.
+// Only R_*_RELATIVE entries are applied; non-pointer bytes are untouched.
+func (e *ElfWrapper) applyRelocations(data []byte, baseAddr uint64) {
+	e.buildRelocs()
+	if len(e.relocs) == 0 {
+		return
+	}
+
+	var ptrSize int
+	if e.file.Class == elf.ELFCLASS64 {
+		ptrSize = 8
+	} else {
+		ptrSize = 4
+	}
+	order := e.file.ByteOrder
+	end := baseAddr + uint64(len(data))
+
+	// Binary search for the first relocation entry >= baseAddr.
+	i, _ := slices.BinarySearchFunc(e.relocs, baseAddr, func(r relocEntry, target uint64) int {
+		return cmp.Compare(r.offset, target)
+	})
+	for ; i < len(e.relocs) && e.relocs[i].offset < end; i++ {
+		r := e.relocs[i]
+		if r.offset+uint64(ptrSize) > end {
+			break
+		}
+		off := r.offset - baseAddr
+		if r.addend != 0 {
+			if ptrSize == 8 {
+				order.PutUint64(data[off:], r.addend)
+			} else {
+				order.PutUint32(data[off:], uint32(r.addend))
+			}
+		}
+	}
 }
 
 func (e *ElfWrapper) Text() (textStart uint64, text []byte, err error) {

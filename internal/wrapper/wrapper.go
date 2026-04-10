@@ -29,7 +29,7 @@ type RawFileWrapper interface {
 func NewWrapper(file any) RawFileWrapper {
 	switch f := file.(type) {
 	case *elf.File:
-		return &ElfWrapper{f}
+		return &ElfWrapper{file: f}
 	case *pe.File:
 		return &PeWrapper{f, utils.GetImageBase(f)}
 	case *macho.File:

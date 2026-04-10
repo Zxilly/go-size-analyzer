@@ -94,8 +94,8 @@ func UglyGuess(s string) string {
 // the original character.
 // from src/cmd/internal/objabi/path.go
 func PrefixToPath(s string) (string, error) {
-	percent := strings.IndexByte(s, '%')
-	if percent == -1 {
+	found := strings.Contains(s, "%")
+	if !found {
 		return s, nil
 	}
 

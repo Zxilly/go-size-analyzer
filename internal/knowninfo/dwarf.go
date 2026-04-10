@@ -238,15 +238,13 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 
 	entryChan := make(chan item, 256)
 	processing := sync.WaitGroup{}
-	processing.Add(1)
-	go func() {
-		defer processing.Done()
+	processing.Go(func() {
 		for i := range entryChan {
 			if !dwarfutil.EntryShouldIgnore(i.entry) {
 				i.feeder(i.entry)
 			}
 		}
-	}()
+	})
 
 	var feeder EntryFeeder
 	var entry *dwarf.Entry
