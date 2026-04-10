@@ -25,5 +25,13 @@ type Section struct {
 	OnlyInMemory bool `json:"only_in_memory"`
 	Debug        bool `json:"debug"`
 
+	// VirtualSection marks a section that exists only as a virtual address
+	// space for analysis (e.g. Wasm linear memory). Unlike OnlyInMemory
+	// (BSS-like sections excluded from all caches), VirtualSection sections
+	// are included in the data/text address cache so that symbol address
+	// lookups work, but are excluded from file-size accounting and from
+	// FindSection results.
+	VirtualSection bool `json:"-"`
+
 	ContentType SectionContentType `json:"-"`
 }

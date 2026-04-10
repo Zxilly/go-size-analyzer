@@ -35,16 +35,6 @@ type VersionFlag struct {
 	Meq125 bool // Go 1.25+ changed wasm pclntab to store PC_F instead of full PC
 }
 
-// PclntabMeta holds addresses of pclntab sub-tables captured from the symbol table.
-type PclntabMeta struct {
-	FuncnametabAddr uint64
-	CutabAddr       uint64
-	FiletabAddr     uint64
-	PctabAddr       uint64
-	FunctabAddr     uint64
-	PclntabEnd      uint64 // runtime.epclntab
-}
-
 type KnownInfo struct {
 	Size      uint64
 	BuildInfo *gore.BuildInfo
@@ -63,9 +53,6 @@ type KnownInfo struct {
 	VersionFlag VersionFlag
 
 	HasDWARF bool
-
-	// PclntabSyms holds addresses of pclntab sub-tables captured from the symbol table.
-	PclntabSyms PclntabMeta
 }
 
 func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {

@@ -91,27 +91,6 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	pkg.AddSymbol(symbol, ap)
 }
 
-// CapturePclntabSymbolAddrs looks up known pclntab sub-table symbols by name
-// and stores their addresses for later use by pclntab metadata analysis.
-func (k *KnownInfo) CapturePclntabSymbolAddrs() {
-	lookup := func(name string) uint64 {
-		sym, err := k.Gore.GetSymbol(name)
-		if err != nil {
-			return 0
-		}
-		return sym.Value
-	}
-
-	k.PclntabSyms = PclntabMeta{
-		FuncnametabAddr: lookup("runtime.funcnametab"),
-		CutabAddr:       lookup("runtime.cutab"),
-		FiletabAddr:     lookup("runtime.filetab"),
-		PctabAddr:       lookup("runtime.pctab"),
-		FunctabAddr:     lookup("runtime.functab"),
-		PclntabEnd:      lookup("runtime.epclntab"),
-	}
-}
-
 func (k *KnownInfo) AnalyzeSymbol(store bool) error {
 	slog.Info("Analyzing symbols...")
 

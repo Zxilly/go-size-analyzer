@@ -15,14 +15,12 @@ import (
 // AnalyzeTypes extracts type descriptors from the binary's moduledata and
 // attributes them as data symbols to the appropriate packages.
 // It also resolves itab (interface table) entries.
-// Failures are non-fatal: errors are logged and nil is returned.
 func (k *KnownInfo) AnalyzeTypes() error {
 	slog.Info("Analyzing type descriptors...")
 
 	md, err := k.Gore.Moduledata()
 	if err != nil {
-		slog.Warn("Failed to get moduledata for type analysis", "err", err)
-		return nil
+		return fmt.Errorf("type analysis moduledata: %w", err)
 	}
 
 	typesSection := md.Types()
@@ -31,8 +29,7 @@ func (k *KnownInfo) AnalyzeTypes() error {
 
 	types, err := k.Gore.GetTypes()
 	if err != nil {
-		slog.Warn("Failed to get types", "err", err)
-		return nil
+		return fmt.Errorf("type analysis get types: %w", err)
 	}
 
 	if len(types) == 0 {
@@ -111,7 +108,7 @@ func (k *KnownInfo) AnalyzeTypes() error {
 	)
 
 	if err := k.analyzeItabs(md, typeAddrCache); err != nil {
-		slog.Warn("Failed to analyze itabs", "err", err)
+		return fmt.Errorf("type analysis itabs: %w", err)
 	}
 
 	return nil

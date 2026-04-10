@@ -32,3 +32,10 @@ func TestAnalyzePclntabMetaProducesResults(t *testing.T) {
 	// pclntab_meta analyzer should have run
 	assert.Contains(t, r.Analyzers, entity.AnalyzerPclntabMeta)
 }
+
+func TestAnalyzePclntabMetaPropagatesModuledataErrors(t *testing.T) {
+	k := buildKnownInfoWithVersion(t, "go1.2")
+	err := k.AnalyzePclntabMeta()
+	require.Error(t, err)
+	require.ErrorContains(t, err, "moduledata")
+}

@@ -48,10 +48,6 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
 	}
 
-	analyzers := []entity.Analyzer{
-		entity.AnalyzerPclntab,
-	}
-
 	isWasm := file.FileInfo.Arch == "wasm"
 
 	if isWasm {
@@ -64,120 +60,25 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	slog.Info("Found build info")
 	utils.WaitDebugger("Found build info")
 
-	err = k.LoadSectionMap()
-	if err != nil {
+	if err = k.LoadSectionMap(); err != nil {
 		return nil, err
 	}
 
 	k.KnownAddr = entity.NewKnownAddr(k.Sects)
 
-	err = k.LoadGoreInfo(file, isWasm)
-	if err != nil {
+	if err = k.LoadGoreInfo(file, isWasm); err != nil {
 		return nil, err
 	}
 
-	dwarfOk := false
-	// fixme: add wasm dwarf support
-	if !options.SkipDwarf && !isWasm {
-		slog.Info("Parsing DWARF...")
-		dwarfOk = k.TryLoadDwarf()
-
-		if !dwarfOk {
-			slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
-		} else {
-			analyzers = append(analyzers, entity.AnalyzerDwarf)
-			slog.Info("Parsed DWARF")
-		}
-	}
-
-	// DWARF can still add new package, so we defer this
-	k.Deps.FinishLoad(options.Imports)
-	utils.WaitDebugger("DWARF and deps done")
-
-	// we force a gc here, since the gore file is no longer used
-	debug.FreeOSMemory()
-	utils.WaitDebugger("After force gc")
-
-	// fixme: add data symbol support to go gc
-	if !isWasm {
-		record := !options.SkipSymbol
-		err = k.AnalyzeSymbol(record)
-		if err != nil {
-			if !errors.Is(err, wrapper.ErrNoSymbolTable) {
-				return nil, err
-			}
-			slog.Warn("No symbol table found, this can lead to inaccurate results")
-		}
-		if record {
-			analyzers = append(analyzers, entity.AnalyzerSymbol)
-		}
-		utils.WaitDebugger("Symbol done")
-	}
-
-	// Capture pclntab symbol addresses (requires symbol table, not available for wasm)
-	if !isWasm {
-		k.CapturePclntabSymbolAddrs()
-	}
-
-	if err = k.AnalyzeTypes(); err != nil {
-		slog.Warn("Type analysis failed", "err", err)
-	} else {
-		analyzers = append(analyzers, entity.AnalyzerTyp)
-	}
-
-	if err = k.AnalyzePclntabMeta(); err != nil {
-		slog.Warn("pclntab meta analysis failed", "err", err)
-	} else {
-		analyzers = append(analyzers, entity.AnalyzerPclntabMeta)
-	}
-
-	if !options.SkipDisasm && !isWasm {
-		if k.GoStringSymbol == nil {
-			slog.Info("no go:string.* symbol found, false-positive rates may rise")
-		}
-
-		err = k.Disasm()
-		if err != nil {
-			return nil, err
-		}
-		analyzers = append(analyzers, entity.AnalyzerDisasm)
-	}
-
-	// All analyzers done, release per-package caches
-	k.Deps.ClearCaches()
-
-	// we have collected everything, now we can calculate the size
-
-	if !isWasm {
-		// first, merge all results to coverage
-		err = k.CollectCoverage()
-		if err != nil {
-			return nil, err
-		}
-
-		// for sections
-		err = k.CalculateSectionSize()
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// for packages
-	k.CalculatePackageSize()
-
 	var sections []*entity.Section
-	if !isWasm {
-		sections = utils.Collect(maps.Values(k.Sects.Sections))
+	var analyzers []entity.Analyzer
+	if isWasm {
+		sections, analyzers, err = analyzeWasm(k, options)
 	} else {
-		codeSectUsed := uint64(0)
-		_ = k.Deps.Trie.Walk(func(_ string, pkg *entity.Package) error {
-			for f := range pkg.Functions {
-				codeSectUsed += f.CodeSize
-			}
-			return nil
-		})
-
-		sections = k.Wrapper.(*wrapper.WasmWrapper).GetSections(codeSectUsed)
+		sections, analyzers, err = analyzeNative(k, options)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	slices.SortFunc(sections, func(a, b *entity.Section) int {
@@ -195,4 +96,136 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		Sections:  sections,
 		Analyzers: analyzers,
 	}, nil
+}
+
+// runOptionalAnalyzer runs fn and appends tag to analyzers on success.
+// If fn returns ErrNoGoVersionFound the error is logged and skipped.
+func runOptionalAnalyzer(
+	fn func() error,
+	tag entity.Analyzer,
+	analyzers *[]entity.Analyzer,
+	warnMsg string,
+) error {
+	if err := fn(); err != nil {
+		if errors.Is(err, gore.ErrNoGoVersionFound) {
+			slog.Warn(warnMsg, "err", err)
+			return nil
+		}
+		return err
+	}
+	*analyzers = append(*analyzers, tag)
+	return nil
+}
+
+func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []entity.Analyzer, error) {
+	// Gore file is fully consumed after LoadGoreInfo for wasm (no DWARF step).
+	debug.FreeOSMemory()
+	utils.WaitDebugger("After force gc")
+
+	analyzers := []entity.Analyzer{entity.AnalyzerPclntab}
+
+	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers,
+		"Type analysis skipped: Go version not available in binary"); err != nil {
+		return nil, nil, err
+	}
+	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers,
+		"Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
+		return nil, nil, err
+	}
+
+	// All analyzers done; materialize the package tree.
+	k.Deps.FinishLoad(options.Imports)
+	utils.WaitDebugger("All analyzers and deps done")
+	k.Deps.ClearCaches()
+
+	k.CalculatePackageSize()
+
+	wasmWrapper := k.Wrapper.(*wrapper.WasmWrapper)
+	codeSectUsed := wasmCodeSectUsed(k)
+	dataSectUsed := wasmWrapper.ComputeDataSectUsed(k.KnownAddr.SymbolAddrSpace)
+	sections := wasmWrapper.GetSections(codeSectUsed, dataSectUsed)
+
+	return sections, analyzers, nil
+}
+
+func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []entity.Analyzer, error) {
+	analyzers := []entity.Analyzer{entity.AnalyzerPclntab}
+
+	// fixme: add wasm dwarf support
+	if !options.SkipDwarf {
+		slog.Info("Parsing DWARF...")
+		if k.TryLoadDwarf() {
+			analyzers = append(analyzers, entity.AnalyzerDwarf)
+			slog.Info("Parsed DWARF")
+		} else {
+			slog.Warn("DWARF parsing failed, fallback to symbol and disasm")
+		}
+	}
+
+	// Gore file is fully consumed after DWARF parsing.
+	debug.FreeOSMemory()
+	utils.WaitDebugger("After force gc")
+
+	// fixme: add data symbol support to go gc
+	record := !options.SkipSymbol
+	if err := k.AnalyzeSymbol(record); err != nil {
+		if !errors.Is(err, wrapper.ErrNoSymbolTable) {
+			return nil, nil, err
+		}
+		slog.Warn("No symbol table found, this can lead to inaccurate results")
+	}
+	if record {
+		analyzers = append(analyzers, entity.AnalyzerSymbol)
+	}
+	utils.WaitDebugger("Symbol done")
+
+	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers,
+		"Type analysis skipped: Go version not available in binary"); err != nil {
+		return nil, nil, err
+	}
+	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers,
+		"Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
+		return nil, nil, err
+	}
+
+	if !options.SkipDisasm {
+		if k.GoStringSymbol == nil {
+			slog.Info("no go:string.* symbol found, false-positive rates may rise")
+		}
+
+		if err := k.Disasm(); err != nil {
+			return nil, nil, err
+		}
+		analyzers = append(analyzers, entity.AnalyzerDisasm)
+	}
+
+	// DWARF, symbol, type, pclntab-meta, and disasm analyzers can all create
+	// new packages, so materialize the package tree only after they have all completed.
+	k.Deps.FinishLoad(options.Imports)
+	utils.WaitDebugger("All analyzers and deps done")
+	k.Deps.ClearCaches()
+
+	if err := k.CollectCoverage(); err != nil {
+		return nil, nil, err
+	}
+	if err := k.CalculateSectionSize(); err != nil {
+		return nil, nil, err
+	}
+	k.CalculatePackageSize()
+
+	sections := utils.Collect(maps.Values(k.Sects.Sections))
+	return sections, analyzers, nil
+}
+
+// wasmCodeSectUsed sums the code size of all functions across all packages,
+// used to compute KnownSize for the Wasm code section.
+func wasmCodeSectUsed(k *knowninfo.KnownInfo) uint64 {
+	total := uint64(0)
+	_ = k.Deps.Trie.Walk(func(_ string, pkg *entity.Package) error {
+		for f := range pkg.Functions {
+			total += f.CodeSize
+		}
+		return nil
+	})
+	return total
 }

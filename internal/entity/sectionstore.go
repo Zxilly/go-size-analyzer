@@ -6,7 +6,15 @@ import (
 	"slices"
 )
 
+// fileBackedSize returns the number of bytes this section occupies in the
+// address cache. For virtual sections (no file backing) the full virtual size
+// is returned so that the entire address range is queryable. For file-backed
+// sections, the on-disk byte count (FileSize) caps the range to exclude
+// zero-initialized tails (e.g. PE .data BSS portion).
 func fileBackedSize(s *Section) uint64 {
+	if s.VirtualSection {
+		return s.Size
+	}
 	if s.FileSize == 0 {
 		return s.Size
 	}
@@ -50,6 +58,9 @@ func searchSorted[T any](slice []T, addr uint64, getStart func(T) uint64, contai
 	return -1
 }
 
+// FindSection returns the file-backed section containing the given address range.
+// VirtualSection sections (e.g. Wasm linear memory) are excluded — use IsData/IsText
+// for address-space membership queries that include virtual sections.
 func (s *Store) FindSection(addr, size uint64) *Section {
 	idx := searchSorted(s.sortedSections, addr,
 		func(sect *Section) uint64 { return sect.Addr },
@@ -65,7 +76,7 @@ func (s *Store) FindSection(addr, size uint64) *Section {
 func (s *Store) AssertSize(size uint64) error {
 	sectionsSize := uint64(0)
 	for _, section := range s.Sections {
-		if section.OnlyInMemory {
+		if section.OnlyInMemory || section.VirtualSection {
 			continue
 		}
 		sectionsSize += section.FileSize
@@ -111,10 +122,11 @@ func (s *Store) BuildCache() {
 	sortAddrPos(s.DataSectionsCache)
 	sortAddrPos(s.TextSectionsCache)
 
-	// build sorted section list for FindSection (exclude debug, only-in-memory and other)
+	// build sorted section list for FindSection
+	// Exclude debug, only-in-memory, virtual (no file backing), and other sections.
 	s.sortedSections = make([]*Section, 0, len(s.Sections))
 	for _, section := range s.Sections {
-		if section.Debug || section.OnlyInMemory || section.ContentType == SectionContentOther {
+		if section.Debug || section.OnlyInMemory || section.VirtualSection || section.ContentType == SectionContentOther {
 			continue
 		}
 		s.sortedSections = append(s.sortedSections, section)
