@@ -178,7 +178,9 @@ class GSAInstance:
             dump_output_on_error()
             raise subprocess.CalledProcessError(proc.returncode, self.binary)
 
-        if figure_output is not None and timestamps[-1] > 2:
+        # Skip the figure when the process finished faster than a single
+        # sampling interval (no data) or ran too briefly to plot meaningfully.
+        if figure_output is not None and timestamps and timestamps[-1] > 2:
             pic = draw_usage(figure_name, cpu_percentages, memory_usage_mb, timestamps)
             with open(figure_output, "w", encoding="utf-8") as f:
                 f.write(pic)
