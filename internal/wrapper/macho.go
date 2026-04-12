@@ -285,7 +285,7 @@ func machoSectionType(s *types.Section) entity.SectionContentType {
 	switch {
 	case s.Name == "__text":
 		return entity.SectionContentText
-	case strings.HasSuffix(s.Name, "bss") || strings.HasSuffix(s.Name, "data"):
+	case strings.HasSuffix(s.Name, "bss") || strings.Contains(s.Name, "data"):
 		return entity.SectionContentData
 	default:
 		return entity.SectionContentOther

@@ -163,7 +163,11 @@ func elfSectionType(s *elf.Section) entity.SectionContentType {
 	switch {
 	case s.Name == ".text":
 		return entity.SectionContentText
-	case strings.HasSuffix(s.Name, "bss") || strings.HasSuffix(s.Name, "data"):
+	// Contains "data" covers .data, .rodata, .noptrdata and PIE's
+	// .data.rel.ro / .data.rel.ro.local — all hold runtime-visible data
+	// (type descriptors, string literals, etc.) that symbol analysis
+	// legitimately indexes into.
+	case strings.HasSuffix(s.Name, "bss") || strings.Contains(s.Name, "data"):
 		return entity.SectionContentData
 	default:
 		return entity.SectionContentOther

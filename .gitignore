@@ -18,6 +18,7 @@ venv/
 results/
 covdata/
 temp/
+tmp/
 
 *.profile
 default.pgo
