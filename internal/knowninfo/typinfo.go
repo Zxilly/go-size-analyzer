@@ -129,14 +129,25 @@ func (k *KnownInfo) resolveTypePackage(pkgPath string) *entity.Package {
 
 // attributeTypeAuxRanges records every type-referenced byte span (names,
 // method/field/imethod arrays, funcType arg arrays, shared package paths)
-// reported by the gore parser as a data symbol under the owner type's package.
-// Spans falling outside the moduledata types region are dropped because
-// k.KnownAddr only tracks that region for type data.
+// reported by the gore parser.
+//
+// Each range is registered for package-size coverage individually (keeps
+// attribution precise down to the byte), but the visible Symbols list gets
+// a single aggregated entry per owner type — big binaries otherwise emit
+// 100k+ tiny records that balloon JSON output and analysis time.
+// Spans outside the moduledata types region are dropped because k.KnownAddr
+// only tracks that region for type data.
 func (k *KnownInfo) attributeTypeAuxRanges(typesEnd uint64) (int, error) {
 	ranges, err := k.Gore.GetTypeAuxRanges()
 	if err != nil {
 		return 0, fmt.Errorf("type analysis aux ranges: %w", err)
 	}
+
+	type ownerKey struct {
+		owner *gore.GoType
+		pkg   *entity.Package
+	}
+	summaries := make(map[ownerKey]*entity.Symbol)
 
 	var attributed int
 	for _, r := range ranges {
@@ -150,17 +161,36 @@ func (k *KnownInfo) attributeTypeAuxRanges(typesEnd uint64) (int, error) {
 		}
 		pkg := k.resolveTypePackage(ownerPath)
 
-		symName := auxSymbolName(r)
-		sym := entity.NewSymbol(symName, r.Addr, r.Size, entity.AddrTypeData)
-
+		sym := entity.NewSymbol(auxSymbolName(r), r.Addr, r.Size, entity.AddrTypeData)
 		ap := k.KnownAddr.InsertSymbol(sym, pkg)
 		if ap == nil {
 			continue
 		}
-		pkg.AddSymbol(sym, ap)
+		pkg.AddSymbolCoverage(ap)
 		attributed++
+
+		key := ownerKey{owner: r.Owner, pkg: pkg}
+		if existing, ok := summaries[key]; ok {
+			existing.Size += r.Size
+		} else {
+			summaries[key] = entity.NewSymbol(auxSummaryName(r), r.Addr, r.Size, entity.AddrTypeData)
+		}
+	}
+
+	for key, sym := range summaries {
+		key.pkg.Symbols = append(key.pkg.Symbols, sym)
 	}
 	return attributed, nil
+}
+
+// auxSummaryName labels the aggregated per-owner display symbol. Individual
+// ranges still carry their specific kind in auxSymbolName, but the visible
+// summary collapses them under one owner-keyed name.
+func auxSummaryName(r gore.TypeAuxRange) string {
+	if r.Owner != nil && r.Owner.Name != "" {
+		return fmt.Sprintf("type.aux:%s", r.Owner.Name)
+	}
+	return "type.aux:shared"
 }
 
 func auxSymbolName(r gore.TypeAuxRange) string {

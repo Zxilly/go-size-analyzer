@@ -257,6 +257,14 @@ func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 	p.Symbols = append(p.Symbols, symbol)
 }
 
+// AddSymbolCoverage registers the address range for package-size accounting
+// without appending to the visible Symbols list. Use when many tiny ranges
+// should share a single aggregated display symbol that the caller emits
+// separately via AddSymbol.
+func (p *Package) AddSymbolCoverage(ap *Addr) {
+	p.symbolAddrSpace.Insert(ap)
+}
+
 func (p *Package) ClearCache() {
 	p.filesCache = nil
 	p.funcsCache = nil
