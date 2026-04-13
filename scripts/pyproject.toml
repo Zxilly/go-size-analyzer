@@ -6,10 +6,10 @@ description = "Scripts for GSA"
 requires-python = ">=3.13"
 dependencies = [
     "markdown-strings>=3.4.0",
-    "matplotlib>=3.10.0",
-    "psutil>=7.0.0",
-    "requests>=2.32.3",
-    "tqdm>=4.67.1",
+    "matplotlib>=3.10.8",
+    "psutil>=7.2.2",
+    "requests>=2.33.1",
+    "tqdm>=4.67.3",
 ]
 
 [dependency-groups]
