@@ -53,11 +53,11 @@ func Diff(writer io.Writer, options Options) error {
 	diff := newDiffResult(newResult, oldResult)
 
 	switch options.Format {
-	case "json":
+	case printer.FormatJSON:
 		return printer.JSON(&diff, writer, &printer.JSONOption{
 			Indent: nil,
 		})
-	case "text":
+	case printer.FormatText:
 		return text(&diff, writer)
 	default:
 		return fmt.Errorf("format %s is not supported in diff mode", options.Format)

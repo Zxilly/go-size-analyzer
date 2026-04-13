@@ -4,7 +4,6 @@ import os.path
 import tarfile
 import zipfile
 from enum import Flag, Enum, auto
-from threading import Thread
 from typing import Callable
 from urllib.parse import urlparse
 
@@ -56,16 +55,18 @@ class IntegrationTest:
         ensure_dir(dir_path)
         return dir_path
 
-    def profiler_dir(self, typ: TestType):
-        dir_path = os.path.join(self.typed_dir(typ), "profiler")
+    def run_profiler_dir(self):
+        dir_path = os.path.join(self.base_dir, "profiler")
         ensure_dir(dir_path)
         return dir_path
 
-    def output_filepath(self, typ: TestType):
-        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.output.txt")
+    def run_log_filepath(self):
+        ensure_dir(self.base_dir)
+        return os.path.join(self.base_dir, f"{self.name}.output.txt")
 
-    def performance_figure_filepath(self, typ: TestType):
-        return os.path.join(self.typed_dir(typ), f"{self.name}.{get_flag_str(typ)}.graph.svg")
+    def run_figure_filepath(self):
+        ensure_dir(self.base_dir)
+        return os.path.join(self.base_dir, f"{self.name}.graph.svg")
 
     def generated_filepath(self, typ: TestType):
         ext = get_flag_str(typ)
@@ -74,68 +75,24 @@ class IntegrationTest:
 
         return os.path.join(self.typed_dir(typ), f"{self.name}.{ext}")
 
-    def run_test(self, gsa: GSAInstance, log_typ: callable(TestType), timeout=240):
-        threads = []
-        failures = []
+    def run_test(self, gsa: GSAInstance, timeout=240):
+        pargs: list[str] = ["--verbose", "--indent", "2"]
+        has_output = False
+        for t in (TestType.TEXT_TEST, TestType.JSON_TEST, TestType.HTML_TEST, TestType.SVG_TEST):
+            if t in self.type:
+                has_output = True
+                pargs += ["-o", f"{get_flag_str(t)}={self.generated_filepath(t)}"]
+        if not has_output:
+            return
+        pargs.append(self.path)
 
         draw = not self.name.startswith("bin-")
-
-        def run(pargs: list[str], typ: TestType):
-            try:
-                figure_output = self.performance_figure_filepath(typ)
-                if not draw:
-                    figure_output = None
-
-                gsa.run_with_figure(*pargs,
-                                    output=self.output_filepath(typ),
-                                    profiler_dir=self.profiler_dir(typ),
-                                    figure_name=self.name,
-                                    timeout=timeout,
-                                    figure_output=figure_output)
-
-                log_typ(typ)
-            except Exception as e:
-                failures.append(e)
-
-        if TestType.TEXT_TEST in self.type:
-            threads.append(Thread(target=run, args=(["-f", "text", "--verbose", self.path], TestType.TEXT_TEST)))
-
-        if TestType.JSON_TEST in self.type:
-            threads.append(
-                Thread(target=run,
-                       args=(["-f", "json",
-                              "--verbose",
-                              "--indent", "2",
-                              self.path,
-                              "-o", self.generated_filepath(TestType.JSON_TEST)],
-                             TestType.JSON_TEST)))
-
-        if TestType.HTML_TEST in self.type:
-            threads.append(
-                Thread(target=run,
-                       args=(["-f", "html",
-                              self.path,
-                              "-o", self.generated_filepath(TestType.HTML_TEST)],
-                             TestType.HTML_TEST)))
-
-        if TestType.SVG_TEST in self.type:
-            threads.append(
-                Thread(target=run,
-                       args=(["-f", "svg",
-                              self.path,
-                              "-o", self.generated_filepath(TestType.SVG_TEST)],
-                             TestType.SVG_TEST)))
-
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
-
-        if failures:
-            if len(failures) > 1:
-                log(f"{len(failures)} output formats failed; showing first error, others: "
-                    + ", ".join(type(e).__name__ + ": " + str(e)[:80] for e in failures[1:]))
-            raise failures[0]
+        gsa.run_with_figure(*pargs,
+                            output=self.run_log_filepath(),
+                            profiler_dir=self.run_profiler_dir(),
+                            figure_name=self.name,
+                            timeout=timeout,
+                            figure_output=self.run_figure_filepath() if draw else None)
 
 
 class RemoteBinaryType(Enum):

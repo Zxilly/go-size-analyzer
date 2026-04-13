@@ -14,7 +14,7 @@ import (
 
 var Options struct {
 	Verbose bool   `help:"Verbose output"`
-	Format  string `short:"f" enum:"text,json,html,svg" default:"text" help:"Output format, possible values: ${enum}"`
+	Format  *string `short:"f" enum:"text,json,html,svg" help:"Output format: text|json|html|svg. If omitted, inferred from -o extension (.txt/.json/.html/.svg); otherwise text."`
 
 	NoDisasm bool `help:"Skip disassembly pass"`
 	NoSymbol bool `help:"Skip symbol pass"`
@@ -42,7 +42,7 @@ var Options struct {
 
 	Imports bool `long:"imports" help:"Try analyze package imports from source" group:"imports"`
 
-	Output string `short:"o" help:"Write to file"`
+	Output []string `short:"o" help:"Write to file. Either a single path (format inferred from extension or from -f; -f conflicting with extension is an error), or one or more FORMAT=PATH pairs to emit multiple formats from a single run, e.g. -o json=a.json -o svg=a.svg. Use '-' as PATH for stdout (at most once)."`
 
 	Version kong.VersionFlag `help:"Show version"`
 

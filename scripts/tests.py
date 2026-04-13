@@ -12,7 +12,7 @@ from tool.gsa import build_gsa, GSAInstance
 from tool.html import assert_html_valid
 from tool.junit import generate_junit
 from tool.merge import merge_covdata
-from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test, TestType, get_flag_str
+from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, init_dirs, write_github_summary, \
     require_go, get_covdata_unit_dir
 
@@ -171,11 +171,7 @@ def run_integration_tests(typ: str, entry: GSAInstance):
 
         try:
             base = time.time()
-
-            def report_typ(rtyp: TestType):
-                log(f"{head} {get_flag_str(rtyp)} passed in {format_time(time.time() - base)}.")
-
-            target.run_test(entry, report_typ, timeout=timeout)
+            target.run_test(entry, timeout=timeout)
             log(f"{head} passed in {format_time(time.time() - base)}.")
         except Exception as e:
             log(f"{head} failed:")
