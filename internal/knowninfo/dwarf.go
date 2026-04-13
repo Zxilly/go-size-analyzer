@@ -17,23 +17,28 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
-func safeGetEntryVal[T any](entry *dwarf.Entry, attr dwarf.Attr, name string) (T, bool) {
+func safeGetEntryVal[T any](entry *dwarf.Entry, attr dwarf.Attr, name string, quiet bool) (T, bool) {
 	v, ok := entry.Val(attr).(T)
 	if !ok {
-		slog.Debug(fmt.Sprintf("Failed to load DWARF %s: %s", name, dwarfutil.EntryPrettyPrint(entry)))
+		if !quiet {
+			slog.Debug(fmt.Sprintf("Failed to load DWARF %s: %s", name, dwarfutil.EntryPrettyPrint(entry)))
+		}
 		return *new(T), false
 	}
 	return v, true
 }
 
-func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int) {
-	insts, ok := safeGetEntryVal[[]byte](entry, dwarf.AttrLocation, "location attribute")
+func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int, isGo bool) {
+	insts, ok := safeGetEntryVal[[]byte](entry, dwarf.AttrLocation, "location attribute", !isGo)
 	if !ok {
 		return
 	}
 
 	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{}, insts, ptrSize, nil)
 	if err != nil {
+		if !isGo {
+			return
+		}
 		level := slog.LevelDebug
 		if !errors.Is(err, op.ErrMemoryReadUnavailable) {
 			level = slog.LevelWarn
@@ -50,13 +55,17 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 
 	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, uint64(addr), k.Wrapper.ReadAddr)
 	if err != nil {
-		slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
+		if isGo {
+			slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
+		}
 		return
 	}
 
-	entryName, ok := safeGetEntryVal[string](entry, dwarf.AttrName, "variable name")
+	entryName, ok := safeGetEntryVal[string](entry, dwarf.AttrName, "variable name", !isGo)
 	if !ok {
-		slog.Debug(fmt.Sprintf("Failed to load DWARF var name: %s", dwarfutil.EntryPrettyPrint(entry)))
+		if isGo {
+			slog.Debug(fmt.Sprintf("Failed to load DWARF var name: %s", dwarfutil.EntryPrettyPrint(entry)))
+		}
 		return
 	}
 
@@ -100,21 +109,25 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	pkg *entity.Package,
 	readFileName func(entry *dwarf.Entry) string,
 ) {
-	subEntryName, ok := safeGetEntryVal[string](subEntry, dwarf.AttrName, "function name")
+	subEntryName, ok := safeGetEntryVal[string](subEntry, dwarf.AttrName, "function name", !isGo)
 	if !ok {
 		return
 	}
 
 	ranges, err := d.Ranges(subEntry)
 	if err != nil {
-		slog.Debug(fmt.Sprintf("Failed to load DWARF function size: %v", err))
+		if isGo {
+			slog.Debug(fmt.Sprintf("Failed to load DWARF function size: %v", err))
+		}
 		return
 	}
 
 	if len(ranges) == 0 {
 		// fixme: maybe compiler optimize it?
 		// example: sqlite3 simpleDestroy
-		slog.Debug(fmt.Sprintf("Failed to load DWARF function size, no range: %s", subEntryName))
+		if isGo {
+			slog.Debug(fmt.Sprintf("Failed to load DWARF function size, no range: %s", subEntryName))
+		}
 		return
 	}
 
@@ -150,12 +163,12 @@ func (k *KnownInfo) AddDwarfSubProgram(
 }
 
 func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity.Package {
-	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language")
+	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language", false)
 	if !ok {
 		return nil
 	}
 
-	cuName, ok := safeGetEntryVal[string](cuEntry, dwarf.AttrName, "compile unit name")
+	cuName, ok := safeGetEntryVal[string](cuEntry, dwarf.AttrName, "compile unit name", false)
 	if !ok {
 		return nil
 	}
@@ -195,7 +208,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 type EntryFeeder func(e *dwarf.Entry)
 
 func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entry, ptrSize int) (EntryFeeder, bool) {
-	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language")
+	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language", false)
 	if !ok {
 		return nil, false
 	}
@@ -207,12 +220,14 @@ func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entr
 
 	readFileName := dwarfutil.EntryFileReader(cuEntry, d)
 
+	isGo := cuLang == dwarfutil.DwLangGo
+
 	return func(e *dwarf.Entry) {
 		switch e.Tag {
 		case dwarf.TagSubprogram:
-			k.AddDwarfSubProgram(cuLang == dwarfutil.DwLangGo, d, e, pkg, readFileName)
+			k.AddDwarfSubProgram(isGo, d, e, pkg, readFileName)
 		case dwarf.TagVariable:
-			k.AddDwarfVariable(e, d, pkg, ptrSize)
+			k.AddDwarfVariable(e, d, pkg, ptrSize, isGo)
 		default:
 		}
 	}, true

@@ -10,7 +10,7 @@ import (
 func TestSafeGetEntryValReturnsValueOnSuccess(t *testing.T) {
 	entry := &dwarf.Entry{}
 
-	value, ok := safeGetEntryVal[int](entry, dwarf.Attr(1), "test attribute")
+	value, ok := safeGetEntryVal[int](entry, dwarf.Attr(1), "test attribute", false)
 	assert.False(t, ok)
 	assert.Zero(t, value)
 }
