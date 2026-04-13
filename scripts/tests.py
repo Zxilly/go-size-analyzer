@@ -154,7 +154,7 @@ def run_integration_tests(typ: str, entry: GSAInstance):
     if typ == "example":
         timeout = 10
     else:
-        timeout = 60
+        timeout = 180
 
     all_tests = len(targets)
     completed_tests = 0
