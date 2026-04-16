@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"math/bits"
 
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
@@ -152,13 +153,16 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 
 	// read file struct for each
 	fileStructSize := uint64(ptrSize)*2*2 + 16
-	readSize := filesLen * fileStructSize
+	readSize, overflow := bits.Mul64(filesLen, fileStructSize)
+	if overflow != 0 {
+		return nil, fmt.Errorf("embed.FS files length overflow: %d entries of %d bytes", filesLen, fileStructSize)
+	}
 	data, err = readMemory(filesAddr, readSize)
 	if err != nil {
 		return nil, err
 	}
 
-	contents := make([]Content, 0, filesLen*3) // for name, data, hash
+	contents := make([]Content, 0, filesLen*3) // name, data, hash; fileStructSize >= 3 bounds filesLen
 	for i := range filesLen {
 		offset := int64(i * fileStructSize)
 

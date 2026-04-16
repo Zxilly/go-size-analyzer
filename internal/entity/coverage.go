@@ -122,32 +122,37 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 
 	cover := make(AddrCoverage, 0)
 	for _, curCov := range dirty {
-		if len(cover) == 0 {
-			cover = append(cover, curCov)
-			continue
-		}
+		// Re-loop after dropping a tainted last so curCov is re-compared with
+		// the newly exposed predecessor.
+		for {
+			if len(cover) == 0 {
+				cover = append(cover, curCov)
+				break
+			}
 
-		last := cover[len(cover)-1]
-		lastPos := last.Pos
-		curPos := curCov.Pos
+			last := cover[len(cover)-1]
+			lastPos := last.Pos
+			curPos := curCov.Pos
 
-		if curPos.Addr < lastPos.Addr+lastPos.Size {
-			// merge
+			if curPos.Addr >= lastPos.Addr+lastPos.Size {
+				cover = append(cover, &CoveragePart{
+					Pos:   curCov.Pos,
+					Addrs: curCov.Addrs,
+				})
+				break
+			}
+
 			if lastPos.Type != curCov.Pos.Type {
-				processed := false
-				// if any is disasm, throw it
 				if last.HasDisasm() {
 					cover = cover[:len(cover)-1]
-					processed = true
+					if curCov.HasDisasm() {
+						break
+					}
+					continue
 				}
 				if curCov.HasDisasm() {
-					continue
+					break
 				}
-				if processed {
-					cover = append(cover, curCov)
-					continue
-				}
-
 				return nil, &ErrAddrCoverageConflict{
 					Addr: curCov.Pos.Addr,
 					Pos1: last,
@@ -160,11 +165,7 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 				lastPos.Size = curEnd - lastPos.Addr
 				last.Addrs = append(last.Addrs, curCov.Addrs...)
 			}
-		} else {
-			cover = append(cover, &CoveragePart{
-				Pos:   curCov.Pos,
-				Addrs: curCov.Addrs,
-			})
+			break
 		}
 	}
 

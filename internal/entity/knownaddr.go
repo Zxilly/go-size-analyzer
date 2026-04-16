@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"cmp"
 	"fmt"
 	"log/slog"
 	"slices"
@@ -112,7 +113,9 @@ func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package) *Addr {
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
+	// SymbolCovHas binary-searches; the slice must be sorted.
 	f.SymbolCoverage = f.SymbolAddrSpace.ToDirtyCoverage()
+	slices.SortFunc(f.SymbolCoverage, compareCoveragePart)
 }
 
 func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
@@ -120,20 +123,20 @@ func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
 		return "", false
 	}
 
-	c, ok := slices.BinarySearchFunc(f.SymbolCoverage, &CoveragePart{Pos: &AddrPos{Addr: entry}}, func(cur *CoveragePart, target *CoveragePart) int {
-		if cur.Pos.Addr+cur.Pos.Size <= target.Pos.Addr {
-			return -1
-		}
-		if cur.Pos.Addr >= target.Pos.Addr+size {
-			return 1
-		}
-		return 0
+	end := entry + size
+	// Symbols are non-overlapping and sorted, so only the immediate predecessor
+	// of the first entry with Addr >= end can overlap [entry, end).
+	idx, _ := slices.BinarySearchFunc(f.SymbolCoverage, end, func(cur *CoveragePart, target uint64) int {
+		return cmp.Compare(cur.Pos.Addr, target)
 	})
-	if !ok {
-		return "", false
+	if idx > 0 {
+		prev := f.SymbolCoverage[idx-1]
+		if prev.Pos.Addr+prev.Pos.Size > entry {
+			return prev.Pos.Type, true
+		}
 	}
 
-	return f.SymbolCoverage[c].Pos.Type, ok
+	return "", false
 }
 
 func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
@@ -148,14 +151,14 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
 		SourceType: AddrSourceDisasm,
 	}
 
-	// symbol coverage check
-	// this exists since the linker can merge some constant
+	// Linker may place non-data values (function pointers in type descriptors,
+	// itabs, etc.) whose symbols overlap disasm candidates — drop as false
+	// positives rather than treating them as real strings.
 	typ, ok := f.SymbolCovHas(entry, size)
 	if ok {
 		if typ != AddrTypeData {
-			panic(fmt.Errorf("symbol %x size %x conflict with %s", entry, size, typ))
+			slog.Debug(fmt.Sprintf("disasm addr %x size %x overlaps symbol of type %s, dropped", entry, size, typ))
 		}
-		// symbol is more accurate
 		return
 	}
 

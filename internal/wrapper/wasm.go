@@ -32,7 +32,14 @@ func (w *WasmWrapper) GetFunctionSize(idx uint64, meq125 bool) uint64 {
 	if !meq125 {
 		idx = idx >> 16
 	}
-	idx = idx - funcValueOffset
+	// malformed pclntab entry
+	if idx < funcValueOffset {
+		return 0
+	}
+	idx -= funcValueOffset
+	if idx >= uint64(len(w.module.CodeSection)) {
+		return 0
+	}
 
 	return uint64(len(w.module.CodeSection[idx].Body))
 }

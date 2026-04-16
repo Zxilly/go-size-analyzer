@@ -115,11 +115,12 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 			continue
 		}
 		if goStringBase != 0 {
+			// go:string.* has no size; approximate by gap to the next symbol.
 			goSCb(goStringBase, s.Value-goStringBase)
+			goStringBase = 0
 			if marker == nil {
 				return nil
 			}
-			continue
 		}
 
 		if marker == nil {

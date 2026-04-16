@@ -131,8 +131,12 @@ func (k *KnownInfo) AddDwarfSubProgram(
 		return
 	}
 
+	// Functions may be split across non-contiguous ranges (PGO, inlining).
 	addr := ranges[0][0]
-	size := ranges[0][1] - ranges[0][0]
+	var size uint64
+	for _, r := range ranges {
+		size += r[1] - r[0]
+	}
 
 	typ := entity.FuncTypeFunction
 	receiverName := ""
@@ -158,7 +162,9 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	added := pkg.AddFuncIfNotExists(filename, fn)
 
 	if added {
-		k.KnownAddr.InsertTextFromDWARF(addr, size, fn)
+		for _, r := range ranges {
+			k.KnownAddr.InsertTextFromDWARF(r[0], r[1]-r[0], fn)
+		}
 	}
 }
 
