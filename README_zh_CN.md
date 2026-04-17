@@ -21,24 +21,30 @@
 
 ### [下载最新二进制文件](https://github.com/Zxilly/go-size-analyzer/releases)
 
-### MacOS / Linux 通过 Homebrew 安装：
+### MacOS / Linux 通过 Homebrew 安装
 
 使用 [Homebrew](https://brew.sh/)
+
 ```
 brew install go-size-analyzer
 ```
 
-### Windows：
+### Windows
 
 使用 [scoop](https://scoop.sh/)
+
 ```
 scoop install go-size-analyzer
 ```
 
-### Go 安装：
+### Go 安装
+
 ```
-go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
+GOEXPERIMENT=jsonv2 go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 ```
+
+> [!NOTE]
+> 项目依赖 `encoding/json/v2` 包，从源码构建时需要 Go 1.25+ 并启用 `GOEXPERIMENT=jsonv2`。
 
 ## 使用
 
@@ -47,7 +53,7 @@ go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 #### Web mode
 
 ```bash
-$ gsa --web golang-compiled-binary
+gsa --web golang-compiled-binary
 ```
 
 将在 8080 端口启动一个 web 服务器，您可以在浏览器中查看结果。
@@ -57,7 +63,7 @@ $ gsa --web golang-compiled-binary
 > [!NOTE]
 > 由于浏览器的限制，wasm 版本比原生版本慢得多。
 > 通常分析相同二进制文件需要 10 倍的时间。
-> 
+>
 > 仅建议用于分析小型应用程序（大小小于 30 MB）
 
 网页将如下所示：
@@ -69,7 +75,7 @@ $ gsa --web golang-compiled-binary
 #### 终端用户界面
 
 ```bash
-$ gsa --tui golang-compiled-binary
+gsa --tui golang-compiled-binary
 ```
 
 [![asciicast](https://asciinema.org/a/670664.svg)](https://asciinema.org/a/670664)
@@ -169,7 +175,7 @@ $ gsa bin-linux-1.21-amd64 bin-linux-1.22-amd64
 #### Svg 模式
 
 ```bash
-$ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
+gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ```
 
 ![image](./assets/example.svg)

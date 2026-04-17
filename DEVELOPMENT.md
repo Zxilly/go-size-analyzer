@@ -6,6 +6,16 @@ An overview of the tools and scripts used in the project.
 
 The project currently runs with the `Go Toolchain`. Use any Go version that supports it.
 
+### GOEXPERIMENT
+
+The project uses `encoding/json/v2`, so `GOEXPERIMENT=jsonv2` must be set when building,
+testing, or linting the Go code. CI workflows and `.goreleaser.yaml` already set this
+environment variable; local development should export it as well:
+
+```bash
+export GOEXPERIMENT=jsonv2
+```
+
 The project has some build tags that can be used to build the project with different configurations.
 
 ### Build Tags

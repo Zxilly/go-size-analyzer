@@ -23,24 +23,31 @@ A simple tool to analyze the size of a Go compiled binary.
 
 ### [Download the latest binary](https://github.com/Zxilly/go-size-analyzer/releases)
 
-### MacOS / Linux via Homebrew:
+### MacOS / Linux via Homebrew
 
 Using [Homebrew](https://brew.sh/)
+
 ```
 brew install go-size-analyzer
 ```
 
-### Windows:
+### Windows
 
 Using [scoop](https://scoop.sh/)
+
 ```
 scoop install go-size-analyzer
 ```
 
-### Go Install:
+### Go Install
+
 ```
-go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
+GOEXPERIMENT=jsonv2 go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 ```
+
+> [!NOTE]
+> The project relies on the `encoding/json/v2` package, which requires Go 1.25+ with
+> `GOEXPERIMENT=jsonv2` enabled when building from source.
 
 ## Usage
 
@@ -49,7 +56,7 @@ go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 #### Web mode
 
 ```bash
-$ gsa --web golang-compiled-binary
+gsa --web golang-compiled-binary
 ```
 
 Will start a web server on port 8080, you can view the result in your browser.
@@ -59,7 +66,7 @@ Or you can use the WebAssembly version in the browser: [GSA Treemap](https://gsa
 > [!NOTE]  
 > Due to the limitation of the browser, the WebAssembly version is much slower than the native version.
 > Normally costs 10x time to analyze the same binary.
-> 
+>
 > Only recommended for analysing small applications (less than 30 MB in size)
 
 The web page will look like this:
@@ -71,12 +78,12 @@ You can click to expand the package to see the details.
 #### Terminal UI
 
 ```bash
-$ gsa --tui golang-compiled-binary
+gsa --tui golang-compiled-binary
 ```
 
 [![asciicast](https://asciinema.org/a/670664.svg)](https://asciinema.org/a/670664)
 
-#### Text mode 
+#### Text mode
 
 ```bash
 $ gsa docker-compose-linux-x86_64
@@ -171,7 +178,7 @@ $ gsa bin-linux-1.21-amd64 bin-linux-1.22-amd64
 #### Svg Mode
 
 ```bash
-$ gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
+gsa cockroach-darwin-amd64 -f svg -o data.svg --hide-sections
 ```
 
 ![image](./assets/example.svg)
