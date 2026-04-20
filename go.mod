@@ -8,7 +8,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c
 	github.com/alecthomas/kong v1.15.0
-	github.com/blacktop/go-macho v1.1.266
+	github.com/blacktop/go-macho v1.1.271
 	github.com/charmbracelet/bubbles v1.0.0
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
@@ -23,12 +23,12 @@ require (
 	github.com/nikolaydubina/treemap v1.2.5
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/puzpuzpuz/xsync/v4 v4.4.0
+	github.com/puzpuzpuz/xsync/v4 v4.5.0
 	github.com/samber/lo v1.53.0
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/arch v0.25.0
+	golang.org/x/arch v0.26.0
 	golang.org/x/exp v0.0.0-20260212183809-81e46e3db34a
-	golang.org/x/net v0.52.0
+	golang.org/x/net v0.53.0
 	golang.org/x/sync v0.20.0
 )
 
@@ -55,8 +55,8 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.35.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/text v0.36.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
