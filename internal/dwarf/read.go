@@ -153,7 +153,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 
 	// read file struct for each
 	fileStructSize := uint64(ptrSize)*2*2 + 16
-	readSize, overflow := bits.Mul64(filesLen, fileStructSize)
+	overflow, readSize := bits.Mul64(filesLen, fileStructSize)
 	if overflow != 0 {
 		return nil, fmt.Errorf("embed.FS files length overflow: %d entries of %d bytes", filesLen, fileStructSize)
 	}
