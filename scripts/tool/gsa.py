@@ -8,7 +8,7 @@ from typing import Callable
 
 import psutil
 
-from .matplotlib import draw_usage
+from .usage_graph import render_usage_graph
 from .utils import log, require_go, get_new_temp_binary, get_project_root, get_covdata_integration_dir
 
 
@@ -126,8 +126,8 @@ class GSAInstance:
 
                 return exit_code
 
-    def run_with_figure(self, *args, output: str, profiler_dir: str, timeout: int, figure_name: str,
-                        figure_output: str = None):
+    def run_with_graph(self, *args, output: str, profiler_dir: str, timeout: int, graph_name: str,
+                       graph_output: str = None):
         cpu_percentages = []
         memory_usage_mb = []
         timestamps = []
@@ -140,7 +140,7 @@ class GSAInstance:
 
         def dump_output_on_error():
             if os.path.exists(output):
-                log(f"GSA run_with_figure failed, output from {output}:")
+                log(f"GSA run_with_graph failed, output from {output}:")
                 with open(output, "r", encoding="utf-8") as f:
                     print(f.read(), flush=True)
 
@@ -152,7 +152,8 @@ class GSAInstance:
                 text=True,
                 env=self.getenv(profiler_dir),
                 encoding="utf-8") as proc:
-            Thread(target=collect_stdout, args=(proc,)).start()
+            output_thread = Thread(target=collect_stdout, args=(proc,))
+            output_thread.start()
 
             try:
                 ps_process = psutil.Process(proc.pid)
@@ -163,24 +164,26 @@ class GSAInstance:
                     if elapsed_time > timeout:
                         raise TimeoutError(f"Process timed out after {timeout} seconds.")
 
-                    if figure_output is not None:
+                    if graph_output is not None:
                         cpu_percentages.append(percent)
                         memory_usage_mb.append(mem)
                         timestamps.append(elapsed_time)
             except TimeoutError as e:
                 proc.kill()
+                proc.wait()
+                output_thread.join()
                 dump_output_on_error()
                 raise e
             except psutil.NoSuchProcess:
                 pass
 
+            output_thread.join()
+
         if proc.returncode != 0:
             dump_output_on_error()
             raise subprocess.CalledProcessError(proc.returncode, self.binary)
 
-        # Skip the figure when the process finished faster than a single
-        # sampling interval (no data) or ran too briefly to plot meaningfully.
-        if figure_output is not None and timestamps and timestamps[-1] > 2:
-            pic = draw_usage(figure_name, cpu_percentages, memory_usage_mb, timestamps)
-            with open(figure_output, "w", encoding="utf-8") as f:
-                f.write(pic)
+        if graph_output is not None and timestamps and timestamps[-1] > 2:
+            graph = render_usage_graph(graph_name, cpu_percentages, memory_usage_mb, timestamps)
+            with open(graph_output, "w", encoding="utf-8") as f:
+                f.write(graph)

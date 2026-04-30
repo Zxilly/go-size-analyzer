@@ -1,6 +1,5 @@
 import os
 
-import requests
 from markdown_strings import header, code_block
 
 from tool.utils import get_project_root, write_github_summary, details
@@ -48,25 +47,13 @@ def filter_output(f: str) -> str:
     return "".join(ret)
 
 
-def generate_image_url(p: str) -> str:
-    with open(p, "r", encoding="utf-8") as f:
-        data = f.read()
-
-    resp = requests.post("https://bin2image.zxilly.dev", data=data, headers={"X-Optimize-Svg": "true"})
-    resp.raise_for_status()
-
-    return resp.text
-
-
-is_ci = os.getenv("CI", False)
-
 if __name__ == '__main__':
     results = os.path.join(get_project_root(), "results")
 
     if not os.path.exists(results):
         raise FileNotFoundError(f"Directory {results} does not exist")
 
-    graphs = ""
+    graphs = []
 
     for root, dirs, files in os.walk(results):
         for file in files:
@@ -77,11 +64,13 @@ if __name__ == '__main__':
                     write_github_summary(details(code_block(filter_output(output_file_path))) + '\n')
                     break
 
-            if file.endswith(".graph.svg"):
-                image_url = generate_image_url(str(os.path.join(root, file)))
-                graphs += header(f"Graph for {file}", header_level=4) + '\n'
-                graphs += f'<img src="{image_url}" alt="{file}" width="900" />' + '\n\n'
+            if file.endswith(".graph.txt"):
+                graph_file_path = str(os.path.join(root, file))
+                with open(graph_file_path, "r", encoding="utf-8") as f:
+                    graph = f.read()
+
+                graphs.append(header(f"Graph for {file}", header_level=4) + '\n' + code_block(graph, "text"))
 
     if graphs:
         write_github_summary(header("Graphs", header_level=3) + '\n')
-        write_github_summary(details(graphs) + '\n')
+        write_github_summary(details("\n\n".join(graphs)) + '\n', fallback=False)

@@ -64,9 +64,9 @@ class IntegrationTest:
         ensure_dir(self.base_dir)
         return os.path.join(self.base_dir, f"{self.name}.output.txt")
 
-    def run_figure_filepath(self):
+    def run_graph_filepath(self):
         ensure_dir(self.base_dir)
-        return os.path.join(self.base_dir, f"{self.name}.graph.svg")
+        return os.path.join(self.base_dir, f"{self.name}.graph.txt")
 
     def generated_filepath(self, typ: TestType):
         ext = get_flag_str(typ)
@@ -87,12 +87,12 @@ class IntegrationTest:
         pargs.append(self.path)
 
         draw = not self.name.startswith("bin-")
-        gsa.run_with_figure(*pargs,
-                            output=self.run_log_filepath(),
-                            profiler_dir=self.run_profiler_dir(),
-                            figure_name=self.name,
-                            timeout=timeout,
-                            figure_output=self.run_figure_filepath() if draw else None)
+        gsa.run_with_graph(*pargs,
+                           output=self.run_log_filepath(),
+                           profiler_dir=self.run_profiler_dir(),
+                           graph_name=self.name,
+                           timeout=timeout,
+                           graph_output=self.run_graph_filepath() if draw else None)
 
 
 class RemoteBinaryType(Enum):
