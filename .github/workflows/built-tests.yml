@@ -119,6 +119,7 @@ jobs:
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         if: ${{ !cancelled() }}
         with:
+          report_type: coverage
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ matrix.test-type }}.profile,covdata/unit/normal.out,covdata/unit/embed.out,covdata/unit/wasm.out
@@ -128,8 +129,10 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && matrix.test-type == 'unit' }}
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1.2.1
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
+          report_type: test_results
+          disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           name: ${{ matrix.os }} unit tests
           flags: ${{ matrix.os }}-unit
@@ -210,6 +213,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
+          report_type: coverage
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ui
           name: Web UI tests
@@ -218,8 +222,10 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1.2.1
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
+          report_type: test_results
+          disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           name: Web UI tests
           flags: ui
