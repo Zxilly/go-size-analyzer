@@ -15,7 +15,7 @@ require (
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20260209194814-eeb2896ac759
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/dustin/go-humanize v1.0.1
-	github.com/go-delve/delve v1.26.2
+	github.com/go-delve/delve v1.26.3
 	github.com/jedib0t/go-pretty/v6 v6.7.10
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
