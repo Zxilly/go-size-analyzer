@@ -3,6 +3,7 @@ package tui
 import (
 	"cmp"
 	"slices"
+	"time"
 
 	"charm.land/bubbles/v2/help"
 	"charm.land/bubbles/v2/key"
@@ -26,13 +27,17 @@ type mainModel struct {
 
 	fileName string
 
-	leftTable   table.Model
+	leftTable   hoverTable
 	rightDetail detailModel
 	help        help.Model
 
-	focus focusState
+	focus    focusState
+	helpMode helpMode
 
-	parents []table.Model
+	parents []hoverTable
+
+	lastClickAt  time.Time
+	lastClickRow int
 }
 
 func (m mainModel) currentSelection() *wrapper {
@@ -50,7 +55,7 @@ func (m mainModel) currentList() wrappers {
 	return m.current.children()
 }
 
-func (m mainModel) getKeyMap() help.KeyMap {
+func (m mainModel) keyboardBindings() ([]key.Binding, [][]key.Binding) {
 	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Help, DefaultKeyMap.Exit}
 	if m.currentSelection().hasChildren() {
 		mainKeys = append(mainKeys, DefaultKeyMap.Enter)
@@ -67,10 +72,18 @@ func (m mainModel) getKeyMap() help.KeyMap {
 		focusKeys = m.rightDetail.KeyMap()
 	}
 
-	return DynamicKeyMap{
-		Short: append(mainKeys, focusKeys...),
-		Long:  [][]key.Binding{mainKeys, focusKeys},
+	return append(mainKeys, focusKeys...), [][]key.Binding{mainKeys, focusKeys}
+}
+
+func (m mainModel) getKeyMap() help.KeyMap {
+	short, long := m.keyboardBindings()
+	if m.helpMode == helpModeMouse {
+		// Mouse short bar still carries the keyboard essentials so the
+		// user never loses sight of how to quit or open help.
+		short = append(append([]key.Binding{}, mouseShortList...),
+			DefaultKeyMap.Help, DefaultKeyMap.Exit)
 	}
+	return DynamicKeyMap{Short: short, Long: long}
 }
 
 func (m mainModel) nextFocus() focusState {
@@ -100,12 +113,15 @@ func buildRootItems(r *result.Result) wrappers {
 	return ret
 }
 
-func newLeftTable(width int, rows []table.Row) table.Model {
-	return table.New(
-		table.WithColumns(getTableColumnsForTableWidth(width)),
-		table.WithRows(rows),
-		table.WithFocused(true),
-	)
+func newLeftTable(width int, rows []table.Row) hoverTable {
+	return hoverTable{
+		Model: table.New(
+			table.WithColumns(getTableColumnsForTableWidth(width)),
+			table.WithRows(rows),
+			table.WithFocused(true),
+		),
+		hoverRow: -1,
+	}
 }
 
 func newMainModel(r *result.Result, width, height int) mainModel {

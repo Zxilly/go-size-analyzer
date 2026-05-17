@@ -15,8 +15,8 @@ const (
 )
 
 var (
-	scrollbarTrackStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	scrollbarThumbStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("69"))
+	scrollbarTrackStyle = lipgloss.NewStyle().Foreground(colorScrollbarBg)
+	scrollbarThumbStyle = lipgloss.NewStyle().Foreground(colorBorder)
 )
 
 type scrollbarState struct {

@@ -32,6 +32,15 @@ type tableInternal struct {
 	end      int
 }
 
+// hoverTable carries the embedded table.Model together with the row index
+// currently under the mouse (-1 = none). Helpers that rebuild the table
+// window take *hoverTable so they can read hover natively, removing the
+// need for a package-level state mirror.
+type hoverTable struct {
+	table.Model
+	hoverRow int
+}
+
 func tableInternals(t *table.Model) *tableInternal {
 	if unsafe.Sizeof(*t) != unsafe.Sizeof(tableInternal{}) {
 		panic("bubbles table.Model layout changed")
@@ -50,7 +59,7 @@ func clampInt(n, lo, hi int) int {
 	return min(max(n, lo), hi)
 }
 
-func renderTableRow(p *tableInternal, r int) string {
+func renderTableRow(p *tableInternal, r, hoverRow int) string {
 	cells := make([]string, 0, len(p.cols))
 	for i, value := range p.rows[r] {
 		if i >= len(p.cols) || p.cols[i].Width <= 0 {
@@ -66,16 +75,19 @@ func renderTableRow(p *tableInternal, r int) string {
 	if r == p.cursor {
 		return p.styles.Selected.Render(row)
 	}
+	if r == hoverRow {
+		return hoverRowStyle.Render(row)
+	}
 	return row
 }
 
-func setTableWindow(p *tableInternal, start, end, yOffset int) {
+func setTableWindow(p *tableInternal, start, end, yOffset, hoverRow int) {
 	p.start = clampInt(start, 0, len(p.rows))
 	p.end = clampInt(end, p.start, len(p.rows))
 
 	renderedRows := make([]string, 0, p.end-p.start)
 	for i := p.start; i < p.end; i++ {
-		renderedRows = append(renderedRows, renderTableRow(p, i))
+		renderedRows = append(renderedRows, renderTableRow(p, i, hoverRow))
 	}
 	p.viewport.SetContent(lipgloss.JoinVertical(lipgloss.Left, renderedRows...))
 
@@ -93,29 +105,29 @@ func tableWindowForTop(p *tableInternal, top int) (start, end, yOffset int) {
 
 // tableSetStyles updates row styling without calling table.SetStyles, whose
 // UpdateViewport call would re-anchor the window around the cursor.
-func tableSetStyles(t *table.Model, styles table.Styles) {
-	p := tableInternals(t)
+func tableSetStyles(h *hoverTable, styles table.Styles) {
+	p := tableInternals(&h.Model)
 	yOffset := p.viewport.YOffset()
 	p.styles = styles
-	setTableWindow(p, p.start, p.end, yOffset)
+	setTableWindow(p, p.start, p.end, yOffset, h.hoverRow)
 }
 
 // tableSelectAt sets the cursor to absRow while keeping the row currently at
 // the top of the visible area pinned in place. SetCursor alone re-anchors the
 // rendered window around the new cursor, which visually shifts the display —
 // callers want a click to just highlight, not scroll.
-func tableSelectAt(t *table.Model, absRow int) {
-	tableMoveTo(t, absRow)
+func tableSelectAt(h *hoverTable, absRow int) {
+	tableMoveTo(h, absRow)
 }
 
-func tableMoveTo(t *table.Model, absRow int) {
-	p := tableInternals(t)
+func tableMoveTo(h *hoverTable, absRow int) {
+	p := tableInternals(&h.Model)
 	height := p.viewport.Height()
 	if height <= 0 || len(p.rows) == 0 {
 		return
 	}
 
-	oldTop := firstVisibleRow(*t)
+	oldTop := firstVisibleRow(h.Model)
 	newCursor := clampInt(absRow, 0, len(p.rows)-1)
 	newTop := oldTop
 	if newCursor < newTop {
@@ -127,33 +139,33 @@ func tableMoveTo(t *table.Model, absRow int) {
 
 	p.cursor = newCursor
 	start, end, yOffset := tableWindowForTop(p, newTop)
-	setTableWindow(p, start, end, yOffset)
+	setTableWindow(p, start, end, yOffset, h.hoverRow)
 }
 
-func tableMoveBy(t *table.Model, delta int) {
-	p := tableInternals(t)
-	tableMoveTo(t, p.cursor+delta)
+func tableMoveBy(h *hoverTable, delta int) {
+	p := tableInternals(&h.Model)
+	tableMoveTo(h, p.cursor+delta)
 }
 
-func tableHandleKey(t *table.Model, msg tea.KeyPressMsg) bool {
-	p := tableInternals(t)
+func tableHandleKey(h *hoverTable, msg tea.KeyPressMsg) bool {
+	p := tableInternals(&h.Model)
 	switch {
 	case key.Matches(msg, p.KeyMap.LineUp):
-		tableMoveBy(t, -1)
+		tableMoveBy(h, -1)
 	case key.Matches(msg, p.KeyMap.LineDown):
-		tableMoveBy(t, 1)
+		tableMoveBy(h, 1)
 	case key.Matches(msg, p.KeyMap.PageUp):
-		tableMoveBy(t, -p.viewport.Height())
+		tableMoveBy(h, -p.viewport.Height())
 	case key.Matches(msg, p.KeyMap.PageDown):
-		tableMoveBy(t, p.viewport.Height())
+		tableMoveBy(h, p.viewport.Height())
 	case key.Matches(msg, p.KeyMap.HalfPageUp):
-		tableMoveBy(t, -max(p.viewport.Height()/2, 1))
+		tableMoveBy(h, -max(p.viewport.Height()/2, 1))
 	case key.Matches(msg, p.KeyMap.HalfPageDown):
-		tableMoveBy(t, max(p.viewport.Height()/2, 1))
+		tableMoveBy(h, max(p.viewport.Height()/2, 1))
 	case key.Matches(msg, p.KeyMap.GotoTop):
-		tableMoveTo(t, 0)
+		tableMoveTo(h, 0)
 	case key.Matches(msg, p.KeyMap.GotoBottom):
-		tableMoveTo(t, len(p.rows)-1)
+		tableMoveTo(h, len(p.rows)-1)
 	default:
 		return false
 	}
@@ -163,18 +175,18 @@ func tableHandleKey(t *table.Model, msg tea.KeyPressMsg) bool {
 // tableScrollBy scrolls the visible window by delta rows without changing the
 // selected row. This lets users inspect rows around the current selection
 // without implicitly selecting another package.
-func tableScrollBy(t *table.Model, delta int) {
-	tableScrollTo(t, firstVisibleRow(*t)+delta)
+func tableScrollBy(h *hoverTable, delta int) {
+	tableScrollTo(h, firstVisibleRow(h.Model)+delta)
 }
 
-func tableScrollTo(t *table.Model, top int) {
-	p := tableInternals(t)
+func tableScrollTo(h *hoverTable, top int) {
+	p := tableInternals(&h.Model)
 	height := p.viewport.Height()
 	if height <= 0 {
 		return
 	}
 	if len(p.rows) == 0 {
-		setTableWindow(p, 0, 0, 0)
+		setTableWindow(p, 0, 0, 0, h.hoverRow)
 		return
 	}
 
@@ -185,5 +197,5 @@ func tableScrollTo(t *table.Model, top int) {
 	// near the top, that leaves no off-screen rows for the viewport to scroll
 	// into, so rebuild the rendered window around the desired top row.
 	start, end, yOffset := tableWindowForTop(p, top)
-	setTableWindow(p, start, end, yOffset)
+	setTableWindow(p, start, end, yOffset, h.hoverRow)
 }

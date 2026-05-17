@@ -16,7 +16,7 @@ func (m mainModel) reconcileLayout() mainModel {
 		return m
 	}
 
-	leftTop := firstVisibleRow(m.leftTable)
+	leftTop := firstVisibleRow(m.leftTable.Model)
 	if next.leftTable.w != m.layout.leftTable.w {
 		m.leftTable.SetWidth(next.leftTable.w)
 		m.leftTable.SetColumns(getTableColumnsForTableWidth(next.leftTable.w))

@@ -1,5 +1,7 @@
 package tui
 
+import "charm.land/lipgloss/v2"
+
 type rect struct {
 	x int
 	y int
@@ -29,6 +31,9 @@ type tuiLayout struct {
 
 	leftScrollbar  rect
 	rightScrollbar rect
+
+	helpDialog      rect
+	helpDialogClose rect
 }
 
 const (
@@ -36,7 +41,15 @@ const (
 	minTerminalHeight = 20
 	titleHeight       = 1
 	tableHeaderHeight = 1
+
+	helpDialogWidth    = 60
+	helpDialogHeight   = 12
+	helpDialogCloseLabel = "[ × ]"
 )
+
+// helpDialogCloseW is the rendered cell width of helpDialogCloseLabel. `×`
+// is ambiguous-width in Unicode; defer to lipgloss instead of hard-coding 5.
+var helpDialogCloseW = lipgloss.Width(helpDialogCloseLabel)
 
 func computeLayout(width, height, helpHeight int) tuiLayout {
 	helpHeight = clampInt(helpHeight, 0, max(height-titleHeight, 0))
@@ -91,6 +104,21 @@ func computeLayout(width, height, helpHeight int) tuiLayout {
 		h: rightDetail.h,
 	}
 
+	dialogW := min(helpDialogWidth, max(width-4, 0))
+	dialogH := min(helpDialogHeight, max(height-4, 0))
+	dialog := rect{
+		x: (width - dialogW) / 2,
+		y: (height - dialogH) / 2,
+		w: dialogW,
+		h: dialogH,
+	}
+	dialogClose := rect{
+		x: dialog.x + dialog.w - helpDialogCloseW - 1,
+		y: dialog.y,
+		w: helpDialogCloseW,
+		h: 1,
+	}
+
 	return tuiLayout{
 		screen: rect{x: 0, y: 0, w: width, h: height},
 		title:  title,
@@ -109,5 +137,8 @@ func computeLayout(width, height, helpHeight int) tuiLayout {
 
 		leftScrollbar:  leftScrollbar,
 		rightScrollbar: rightScrollbar,
+
+		helpDialog:      dialog,
+		helpDialogClose: dialogClose,
 	}
 }

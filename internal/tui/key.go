@@ -37,6 +37,34 @@ var DefaultKeyMap = KeyMapTyp{
 	),
 }
 
+// mouseBindings reuses key.Binding for display only — the Key field is the
+// mouse action label, never matched against any input. help.Model only
+// renders Help().Key and Help().Desc, so empty WithKeys is harmless.
+//
+// mouseAllBindings is ordered so the short bar is a prefix of the full list.
+var (
+	mouseBindings = struct {
+		LeftClick, DoubleClick, RightClick, Wheel, DragScroll key.Binding
+	}{
+		LeftClick:   key.NewBinding(key.WithHelp("left click", "select / focus")),
+		DoubleClick: key.NewBinding(key.WithHelp("double click", "explore")),
+		RightClick:  key.NewBinding(key.WithHelp("right click", "go back")),
+		Wheel:       key.NewBinding(key.WithHelp("wheel", "scroll")),
+		DragScroll:  key.NewBinding(key.WithHelp("drag scrollbar", "scroll viewport")),
+	}
+
+	mouseAllBindings = []key.Binding{
+		mouseBindings.LeftClick,
+		mouseBindings.DoubleClick,
+		mouseBindings.RightClick,
+		mouseBindings.Wheel,
+		mouseBindings.DragScroll,
+	}
+
+	mouseShortList = mouseAllBindings[:4]
+	mouseFullList  = mouseAllBindings
+)
+
 var _ help.KeyMap = (*DynamicKeyMap)(nil)
 
 type DynamicKeyMap struct {

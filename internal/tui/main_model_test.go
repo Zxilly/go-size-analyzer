@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 	"unsafe"
 
 	tea "charm.land/bubbletea/v2"
-	"charm.land/lipgloss/v2"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
@@ -90,11 +90,10 @@ func TestNewMainModelUsesChildSelectionStyle(t *testing.T) {
 		t.Fatal("test setup expected initial selection to have children")
 	}
 
-	p := (*tableInternal)(unsafe.Pointer(&m.leftTable))
+	p := (*tableInternal)(unsafe.Pointer(&m.leftTable.Model))
 	got := p.styles.Selected.GetForeground()
-	want := lipgloss.Color("36")
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("initial selected foreground=%#v want %#v", got, want)
+	if !reflect.DeepEqual(got, colorSelected) {
+		t.Fatalf("initial selected foreground=%#v want %#v", got, colorSelected)
 	}
 }
 
@@ -127,17 +126,17 @@ func TestMouseWheelOnlyRoutesInsideContent(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 80), 120, 40)
 
 	m, _ = handleMouseWheelEvent(m, tea.MouseWheelMsg{X: 1, Y: m.layout.title.y, Button: tea.MouseWheelDown})
-	if got := firstVisibleRow(m.leftTable); got != 0 {
+	if got := firstVisibleRow(m.leftTable.Model); got != 0 {
 		t.Fatalf("firstVisibleRow after title wheel=%d want 0", got)
 	}
 
 	m, _ = handleMouseWheelEvent(m, tea.MouseWheelMsg{X: 1, Y: m.layout.help.y, Button: tea.MouseWheelDown})
-	if got := firstVisibleRow(m.leftTable); got != 0 {
+	if got := firstVisibleRow(m.leftTable.Model); got != 0 {
 		t.Fatalf("firstVisibleRow after help wheel=%d want 0", got)
 	}
 
 	m, _ = handleMouseWheelEvent(m, tea.MouseWheelMsg{X: 1, Y: m.layout.leftContent.y, Button: tea.MouseWheelDown})
-	if got := firstVisibleRow(m.leftTable); got == 0 {
+	if got := firstVisibleRow(m.leftTable.Model); got == 0 {
 		t.Fatalf("firstVisibleRow after content wheel=%d want non-zero", got)
 	}
 }
@@ -204,11 +203,11 @@ func TestLeftScrollbarDragScrollsTable(t *testing.T) {
 		Y:      bar.y + bar.h - 1,
 		Button: tea.MouseLeft,
 	})
-	if got := firstVisibleRow(m.leftTable); got == 0 {
+	if got := firstVisibleRow(m.leftTable.Model); got == 0 {
 		t.Fatalf("firstVisibleRow after dragging left scrollbar=%d want non-zero", got)
 	}
 	cursor := m.leftTable.Cursor()
-	top := firstVisibleRow(m.leftTable)
+	top := firstVisibleRow(m.leftTable.Model)
 	if cursor >= top && cursor < top+m.leftTable.Height() {
 		t.Fatalf("cursor=%d unexpectedly visible in [%d, %d)", cursor, top, top+m.leftTable.Height())
 	}
@@ -225,11 +224,11 @@ func TestLeftScrollbarDragScrollsTable(t *testing.T) {
 func TestWindowResizePreservesLeftScrollWithOffscreenSelection(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 80), 120, 40)
 	tableScrollBy(&m.leftTable, 20)
-	top := firstVisibleRow(m.leftTable)
+	top := firstVisibleRow(m.leftTable.Model)
 
 	m, _ = handleWindowSizeEvent(m, 100, 35)
 
-	if got := firstVisibleRow(m.leftTable); got != top {
+	if got := firstVisibleRow(m.leftTable.Model); got != top {
 		t.Fatalf("firstVisibleRow after resize=%d want %d", got, top)
 	}
 	if got := m.currentSelection().Title(); got != "pkg-00" {
@@ -237,10 +236,294 @@ func TestWindowResizePreservesLeftScrollWithOffscreenSelection(t *testing.T) {
 	}
 }
 
+func TestDoubleClickOnRowEntersChildren(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	if !m.currentSelection().hasChildren() {
+		t.Fatal("test setup expected initial selection to have children")
+	}
+	parentTitle := m.currentSelection().Title()
+
+	data := m.layout.leftData
+	click := tea.MouseClickMsg{X: data.x, Y: data.y, Button: tea.MouseLeft}
+
+	m, _ = handleMouseClickEvent(m, click)
+	if m.current != nil {
+		t.Fatalf("entered children after single click; current=%q", m.current.Title())
+	}
+
+	m, _ = handleMouseClickEvent(m, click)
+	if m.current == nil {
+		t.Fatal("did not enter children after double click")
+	}
+	if got := m.current.Title(); got != parentTitle {
+		t.Fatalf("entered=%q want %q", got, parentTitle)
+	}
+}
+
+func TestSlowSecondClickDoesNotEnterChildren(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+
+	current := time.Unix(0, 0)
+	restore := nowFunc
+	nowFunc = func() time.Time { return current }
+	defer func() { nowFunc = restore }()
+
+	data := m.layout.leftData
+	click := tea.MouseClickMsg{X: data.x, Y: data.y, Button: tea.MouseLeft}
+
+	m, _ = handleMouseClickEvent(m, click)
+	current = current.Add(doubleClickThreshold + time.Millisecond)
+	m, _ = handleMouseClickEvent(m, click)
+
+	if m.current != nil {
+		t.Fatalf("entered children after slow second click; current=%q", m.current.Title())
+	}
+}
+
+func TestMouseMotionUpdatesHoverRow(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 80), 120, 40)
+	if m.leftTable.hoverRow != -1 {
+		t.Fatalf("initial hoverRow=%d want -1", m.leftTable.hoverRow)
+	}
+
+	data := m.layout.leftData
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y + 4})
+	if m.leftTable.hoverRow != 4 {
+		t.Fatalf("hoverRow after motion over row 4=%d want 4", m.leftTable.hoverRow)
+	}
+
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y - 1})
+	if m.leftTable.hoverRow != -1 {
+		t.Fatalf("hoverRow after motion outside data=%d want -1", m.leftTable.hoverRow)
+	}
+}
+
+func TestMouseMotionDuringDragIgnoresHover(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 80), 120, 40)
+	bar := m.layout.leftScrollbar
+
+	m, _ = handleMouseClickEvent(m, tea.MouseClickMsg{X: bar.x, Y: bar.y, Button: tea.MouseLeft})
+	if m.drag.target != scrollbarDragLeft {
+		t.Fatalf("drag target after scrollbar click=%d want left", m.drag.target)
+	}
+
+	data := m.layout.leftData
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y + 3, Button: tea.MouseLeft})
+	if m.leftTable.hoverRow != -1 {
+		t.Fatalf("hoverRow during drag=%d want -1", m.leftTable.hoverRow)
+	}
+}
+
+func TestWheelScrollRecomputesHoverRow(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 80), 120, 40)
+	data := m.layout.leftData
+
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y + 3})
+	if m.leftTable.hoverRow != 3 {
+		t.Fatalf("hoverRow before wheel=%d want 3", m.leftTable.hoverRow)
+	}
+
+	m, _ = handleMouseWheelEvent(m, tea.MouseWheelMsg{
+		X: data.x + 2, Y: data.y + 3, Button: tea.MouseWheelDown,
+	})
+	want := firstVisibleRow(m.leftTable.Model) + 3
+	if m.leftTable.hoverRow != want {
+		t.Fatalf("hoverRow after wheel down=%d want %d", m.leftTable.hoverRow, want)
+	}
+}
+
+func TestWheelScrollOverEmptyAreaClearsHoverRow(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	data := m.layout.leftData
+
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y})
+	if m.leftTable.hoverRow != 0 {
+		t.Fatalf("hoverRow before wheel=%d want 0", m.leftTable.hoverRow)
+	}
+
+	// Wheel inside leftContent but at a Y past the last row — recompute
+	// should land outside any real row and clear the hover.
+	m, _ = handleMouseWheelEvent(m, tea.MouseWheelMsg{
+		X: data.x + 2, Y: data.y + 10, Button: tea.MouseWheelDown,
+	})
+	if m.leftTable.hoverRow != -1 {
+		t.Fatalf("hoverRow over empty area after wheel=%d want -1", m.leftTable.hoverRow)
+	}
+}
+
+func TestRightClickGoesBack(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	data := m.layout.leftData
+
+	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
+	m = next.(mainModel)
+	if m.current == nil {
+		t.Fatal("test setup expected to be inside a child level after Enter")
+	}
+
+	m, _ = handleMouseClickEvent(m, tea.MouseClickMsg{
+		X: data.x, Y: data.y + 1, Button: tea.MouseRight,
+	})
+	if m.current != nil {
+		t.Fatalf("current after right-click=%q want nil (back to root)", m.current.Title())
+	}
+}
+
+func TestRightClickOutsideLeftPaneIsIgnored(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
+	m = next.(mainModel)
+	parentTitle := m.current.Title()
+
+	right := m.layout.rightContent
+	m, _ = handleMouseClickEvent(m, tea.MouseClickMsg{
+		X: right.x, Y: right.y, Button: tea.MouseRight,
+	})
+	if m.current == nil || m.current.Title() != parentTitle {
+		t.Fatalf("right-click on right pane should not navigate; current=%v", m.current)
+	}
+}
+
+func TestEnterClearsHoverRow(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	data := m.layout.leftData
+
+	m, _ = handleMouseMotionEvent(m, tea.MouseMotionMsg{X: data.x + 2, Y: data.y})
+	if m.leftTable.hoverRow != 0 {
+		t.Fatalf("hoverRow before enter=%d want 0", m.leftTable.hoverRow)
+	}
+
+	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
+	m = next.(mainModel)
+	if m.leftTable.hoverRow != -1 {
+		t.Fatalf("hoverRow after enter=%d want -1", m.leftTable.hoverRow)
+	}
+}
+
+func TestHelpModeSwitchesWithInputKind(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	if m.helpMode != helpModeKeyboard {
+		t.Fatalf("initial helpMode=%d want keyboard", m.helpMode)
+	}
+
+	data := m.layout.leftData
+	next, _ := m.Update(tea.MouseClickMsg{X: data.x, Y: data.y, Button: tea.MouseLeft})
+	m = next.(mainModel)
+	if m.helpMode != helpModeMouse {
+		t.Fatalf("helpMode after click=%d want mouse", m.helpMode)
+	}
+
+	next, _ = m.Update(tea.MouseMotionMsg{X: data.x + 4, Y: data.y + 1})
+	m = next.(mainModel)
+	if m.helpMode != helpModeMouse {
+		t.Fatalf("helpMode after motion=%d want mouse (motion must not flip)", m.helpMode)
+	}
+
+	next, _ = m.Update(tea.KeyPressMsg{Code: tea.KeyTab})
+	m = next.(mainModel)
+	if m.helpMode != helpModeKeyboard {
+		t.Fatalf("helpMode after key=%d want keyboard", m.helpMode)
+	}
+}
+
+func openHelpDialog(t *testing.T, m mainModel) mainModel {
+	t.Helper()
+	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
+	m = next.(mainModel)
+	if !m.help.ShowAll {
+		t.Fatalf("expected dialog open after ?")
+	}
+	return m
+}
+
+func TestHelpDialogClosesByQuestionMark(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	m = openHelpDialog(t, m)
+	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
+	m = next.(mainModel)
+	if m.help.ShowAll {
+		t.Fatal("dialog should close on second ?")
+	}
+}
+
+func TestHelpDialogClosesByEsc(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	m = openHelpDialog(t, m)
+	next, _ := m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
+	m = next.(mainModel)
+	if m.help.ShowAll {
+		t.Fatal("dialog should close on Esc")
+	}
+}
+
+func TestHelpDialogClosesByRightClick(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	m = openHelpDialog(t, m)
+	dlg := m.layout.helpDialog
+	next, _ := m.Update(tea.MouseClickMsg{X: dlg.x + 1, Y: dlg.y + 1, Button: tea.MouseRight})
+	m = next.(mainModel)
+	if m.help.ShowAll {
+		t.Fatal("dialog should close on right-click")
+	}
+}
+
+func TestHelpDialogClosesByCloseButton(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	m = openHelpDialog(t, m)
+	btn := m.layout.helpDialogClose
+	next, _ := m.Update(tea.MouseClickMsg{X: btn.x, Y: btn.y, Button: tea.MouseLeft})
+	m = next.(mainModel)
+	if m.help.ShowAll {
+		t.Fatal("dialog should close when clicking close button")
+	}
+}
+
+func TestHelpDialogClosesByClickOutside(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
+	m = openHelpDialog(t, m)
+	// Click well outside the dialog box.
+	next, _ := m.Update(tea.MouseClickMsg{X: 0, Y: 0, Button: tea.MouseLeft})
+	m = next.(mainModel)
+	if m.help.ShowAll {
+		t.Fatal("dialog should close on click outside")
+	}
+}
+
+func TestHelpDialogSwallowsOtherInput(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	m = openHelpDialog(t, m)
+	dlg := m.layout.helpDialog
+
+	// Left-click inside the dialog body (not on close) must NOT navigate.
+	bodyX, bodyY := dlg.x+dlg.w/2, dlg.y+dlg.h/2
+	next, _ := m.Update(tea.MouseClickMsg{X: bodyX, Y: bodyY, Button: tea.MouseLeft})
+	m = next.(mainModel)
+	if !m.help.ShowAll {
+		t.Fatal("click inside dialog body should not close it")
+	}
+
+	// Wheel must be swallowed: cursor / scroll state unchanged.
+	cursorBefore := m.leftTable.Cursor()
+	topBefore := firstVisibleRow(m.leftTable.Model)
+	next, _ = m.Update(tea.MouseWheelMsg{X: bodyX, Y: bodyY, Button: tea.MouseWheelDown})
+	m = next.(mainModel)
+	if m.leftTable.Cursor() != cursorBefore || firstVisibleRow(m.leftTable.Model) != topBefore {
+		t.Fatal("wheel inside dialog should not scroll the table")
+	}
+
+	// Random key (e.g. Tab) is swallowed: focus must not toggle.
+	focusBefore := m.focus
+	next, _ = m.Update(tea.KeyPressMsg{Code: tea.KeyTab})
+	m = next.(mainModel)
+	if m.focus != focusBefore {
+		t.Fatal("Tab while dialog open should not switch focus")
+	}
+}
+
 func TestBackRestoresParentScrollWithOffscreenSelection(t *testing.T) {
 	m := newMainModel(testResultWithScrollableParent(80), 120, 40)
 	tableScrollBy(&m.leftTable, 20)
-	top := firstVisibleRow(m.leftTable)
+	top := firstVisibleRow(m.leftTable.Model)
 
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
 	m = next.(mainModel)
@@ -250,7 +533,7 @@ func TestBackRestoresParentScrollWithOffscreenSelection(t *testing.T) {
 
 	next, _ = handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyBackspace})
 	m = next.(mainModel)
-	if got := firstVisibleRow(m.leftTable); got != top {
+	if got := firstVisibleRow(m.leftTable.Model); got != top {
 		t.Fatalf("firstVisibleRow after back=%d want %d", got, top)
 	}
 	if got := m.currentSelection().Title(); got != "parent" {

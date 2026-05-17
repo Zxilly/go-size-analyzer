@@ -6,11 +6,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 	"github.com/Zxilly/go-size-analyzer/internal/test/testutils"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func getTestBinBasePath(t *testing.T) string {
@@ -75,11 +75,11 @@ func GetTestResult(t *testing.T) *result.Result {
 
 	path := GetTestBinPath(t)
 
-	f, err := mmap.Open(path)
+	f, err := utils.OpenBinary(path)
 	require.NoError(t, err)
-	defer func(f *mmap.ReaderAt) {
+	defer func() {
 		require.NoError(t, f.Close())
-	}(f)
+	}()
 
 	r, err := internal.Analyze(path, f, uint64(f.Len()), internal.Options{
 		SkipDwarf:  false,

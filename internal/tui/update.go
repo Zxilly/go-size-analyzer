@@ -1,10 +1,16 @@
 package tui
 
 import (
+	"time"
+
 	"charm.land/bubbles/v2/key"
-	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 )
+
+const doubleClickThreshold = 500 * time.Millisecond
+
+// nowFunc is overridable in tests.
+var nowFunc = time.Now
 
 func (m mainModel) pushParent() mainModel {
 	m.parents = append(m.parents, m.leftTable)
@@ -14,10 +20,40 @@ func (m mainModel) pushParent() mainModel {
 func (m mainModel) popParent() mainModel {
 	last := len(m.parents) - 1
 	m.leftTable = m.parents[last]
-	m.parents[last] = table.Model{}
+	m.parents[last] = hoverTable{}
 	m.parents = m.parents[:last]
 	m.layout = tuiLayout{}
 	return m
+}
+
+func (m mainModel) clearHover() mainModel {
+	m.leftTable.hoverRow = -1
+	return m
+}
+
+func (m mainModel) enterSelection() mainModel {
+	if m.focus != focusedMain {
+		return m
+	}
+	if !m.currentSelection().hasChildren() {
+		return m
+	}
+	m = m.pushParent()
+	m.current = m.currentSelection()
+	m.leftTable = newLeftTable(m.width, m.current.children().ToRows())
+	m.layout = tuiLayout{}
+	m = m.clearHover()
+	return m.reconcile()
+}
+
+func (m mainModel) goBack() mainModel {
+	if m.current == nil {
+		return m
+	}
+	m.current = m.current.parent
+	m = m.popParent()
+	m = m.clearHover()
+	return m.reconcile()
 }
 
 func handleKeyEvent(m mainModel, msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
@@ -27,25 +63,15 @@ func handleKeyEvent(m mainModel, msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		m = m.reconcile()
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Backward):
-		if m.current != nil && m.focus == focusedMain {
-			m.current = m.current.parent
-			m = m.popParent()
-			m = m.reconcile()
+		if m.focus == focusedMain {
+			m = m.goBack()
 		}
 		return m, nil
 	case key.Matches(msg, DefaultKeyMap.Enter):
 		if m.focus != focusedMain {
 			break
 		}
-		if !m.currentSelection().hasChildren() {
-			return m, nil
-		}
-		m = m.pushParent()
-		m.current = m.currentSelection()
-		m.leftTable = newLeftTable(m.width, m.current.children().ToRows())
-		m.layout = tuiLayout{}
-		m = m.reconcile()
-		return m, nil
+		return m.enterSelection(), nil
 	case key.Matches(msg, DefaultKeyMap.Help):
 		m.help.ShowAll = !m.help.ShowAll
 		m = m.reconcile()
@@ -62,7 +88,7 @@ func handleKeyEvent(m mainModel, msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 			m = m.reconcile()
 			return m, nil
 		}
-		m.leftTable, cmd = m.leftTable.Update(msg)
+		m.leftTable.Model, cmd = m.leftTable.Update(msg)
 		m = m.reconcile()
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
@@ -95,6 +121,11 @@ func handleMouseWheelEvent(m mainModel, msg tea.MouseWheelMsg) (mainModel, tea.C
 		case tea.MouseWheelDown:
 			tableScrollBy(&m.leftTable, wheelScrollLines)
 		}
+		// The pointer hasn't moved but the row under it has, since the
+		// visible window shifted. Recompute hover from msg.X/msg.Y so the
+		// highlight follows the data the user is now pointing at instead
+		// of staying on the old row index.
+		m.leftTable.hoverRow = m.hoverRowAt(msg.X, msg.Y)
 		m = m.reconcile()
 		return m, nil
 	case focusedDetail:
@@ -120,7 +151,7 @@ func (m mainModel) dragScrollbarTo(y int) mainModel {
 	var bar rect
 	switch m.drag.target {
 	case scrollbarDragLeft:
-		metrics = tableScrollbarMetrics(m.leftTable)
+		metrics = tableScrollbarMetrics(m.leftTable.Model)
 		bar = m.layout.leftScrollbar
 	case scrollbarDragRight:
 		metrics = detailScrollbarMetrics(m.rightDetail)
@@ -147,6 +178,13 @@ func (m mainModel) dragScrollbarTo(y int) mainModel {
 }
 
 func handleMouseClickEvent(m mainModel, msg tea.MouseClickMsg) (mainModel, tea.Cmd) {
+	if msg.Button == tea.MouseRight {
+		if m.layout.leftContent.contains(msg.X, msg.Y) {
+			m.focus = focusedMain
+			return m.goBack(), nil
+		}
+		return m, nil
+	}
 	if msg.Button != tea.MouseLeft {
 		return m, nil
 	}
@@ -154,7 +192,7 @@ func handleMouseClickEvent(m mainModel, msg tea.MouseClickMsg) (mainModel, tea.C
 	switch {
 	case m.layout.leftScrollbar.contains(msg.X, msg.Y):
 		m.focus = focusedMain
-		m = m.startScrollbarDrag(scrollbarDragLeft, m.layout.leftScrollbar, tableScrollbarMetrics(m.leftTable), msg.Y)
+		m = m.startScrollbarDrag(scrollbarDragLeft, m.layout.leftScrollbar, tableScrollbarMetrics(m.leftTable.Model), msg.Y)
 		return m, nil
 	case m.layout.rightScrollbar.contains(msg.X, msg.Y):
 		m.focus = focusedDetail
@@ -176,7 +214,7 @@ func handleMouseClickEvent(m mainModel, msg tea.MouseClickMsg) (mainModel, tea.C
 	}
 
 	rowInVisible := msg.Y - m.layout.leftData.y
-	absRow := firstVisibleRow(m.leftTable) + rowInVisible
+	absRow := firstVisibleRow(m.leftTable.Model) + rowInVisible
 	rows := m.currentList()
 	if absRow < 0 || absRow >= len(rows) {
 		m = m.reconcile()
@@ -184,16 +222,50 @@ func handleMouseClickEvent(m mainModel, msg tea.MouseClickMsg) (mainModel, tea.C
 	}
 
 	tableSelectAt(&m.leftTable, absRow)
+
+	now := nowFunc()
+	if !m.lastClickAt.IsZero() &&
+		m.lastClickRow == absRow &&
+		now.Sub(m.lastClickAt) <= doubleClickThreshold {
+		m.lastClickAt = time.Time{}
+		return m.enterSelection(), nil
+	}
+	m.lastClickAt = now
+	m.lastClickRow = absRow
+
 	m = m.reconcile()
 	return m, nil
 }
 
 func handleMouseMotionEvent(m mainModel, msg tea.MouseMotionMsg) (mainModel, tea.Cmd) {
-	if m.drag.target == scrollbarDragNone {
+	if m.drag.target != scrollbarDragNone {
+		m = m.dragScrollbarTo(msg.Y)
 		return m, nil
 	}
-	m = m.dragScrollbarTo(msg.Y)
-	return m, nil
+	return m.updateHover(msg.X, msg.Y), nil
+}
+
+// hoverRowAt returns -1 outside leftData or past the last row.
+func (m mainModel) hoverRowAt(x, y int) int {
+	if !m.layout.leftData.contains(x, y) {
+		return -1
+	}
+	absRow := firstVisibleRow(m.leftTable.Model) + (y - m.layout.leftData.y)
+	if absRow < 0 || absRow >= len(m.currentList()) {
+		return -1
+	}
+	return absRow
+}
+
+// updateHover skips reconcile when the row didn't change so we don't redraw
+// the whole table viewport on every motion event.
+func (m mainModel) updateHover(x, y int) mainModel {
+	row := m.hoverRowAt(x, y)
+	if row == m.leftTable.hoverRow {
+		return m
+	}
+	m.leftTable.hoverRow = row
+	return m.reconcile()
 }
 
 func handleMouseReleaseEvent(m mainModel, _ tea.MouseReleaseMsg) (mainModel, tea.Cmd) {
@@ -209,12 +281,65 @@ func handleWindowSizeEvent(m mainModel, width, height int) (mainModel, tea.Cmd) 
 	m.width = width
 	m.height = height
 	m.drag = scrollbarDrag{}
+	m = m.clearHover()
 	m = m.reconcile()
 
 	return m, tea.ClearScreen
 }
 
+func (m mainModel) closeHelpDialog() mainModel {
+	m.help.ShowAll = false
+	return m.reconcile()
+}
+
+// handleHelpDialogInput intercepts input while the dialog is modal. Returns
+// (next, true) when the event was consumed; (m, false) to fall through.
+func handleHelpDialogInput(m mainModel, msg tea.Msg) (mainModel, bool) {
+	if !m.help.ShowAll {
+		return m, false
+	}
+	switch msg := msg.(type) {
+	case tea.KeyPressMsg:
+		if key.Matches(msg, DefaultKeyMap.Help) || key.Matches(msg, DefaultKeyMap.Backward) {
+			return m.closeHelpDialog(), true
+		}
+		return m, true // swallow other keys
+	case tea.MouseClickMsg:
+		if msg.Button == tea.MouseRight {
+			return m.closeHelpDialog(), true
+		}
+		if msg.Button == tea.MouseLeft {
+			if m.layout.helpDialogClose.contains(msg.X, msg.Y) ||
+				!m.layout.helpDialog.contains(msg.X, msg.Y) {
+				return m.closeHelpDialog(), true
+			}
+		}
+		return m, true // click inside dialog body, ignore
+	case tea.MouseWheelMsg, tea.MouseMotionMsg, tea.MouseReleaseMsg:
+		return m, true
+	}
+	return m, false
+}
+
+// applyHelpMode bumps helpMode based on the kind of input event so the
+// compact bar matches the modality the user just used. Hover/release/etc.
+// don't flip it — only intentional key or mouse actions.
+func (m mainModel) applyHelpMode(msg tea.Msg) mainModel {
+	switch msg.(type) {
+	case tea.KeyPressMsg:
+		m.helpMode = helpModeKeyboard
+	case tea.MouseClickMsg, tea.MouseWheelMsg:
+		m.helpMode = helpModeMouse
+	}
+	return m
+}
+
 func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	m = m.applyHelpMode(msg)
+	if next, consumed := handleHelpDialogInput(m, msg); consumed {
+		return next, nil
+	}
+
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		return handleWindowSizeEvent(m, msg.Width, msg.Height)

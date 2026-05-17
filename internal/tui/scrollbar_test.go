@@ -123,7 +123,7 @@ func TestTableScrollbarViewIncludesHeaderSpacer(t *testing.T) {
 	tbl := newTestTable(50, 10)
 	tableScrollBy(&tbl, 40)
 
-	got := ansi.Strip(tableScrollbarView(tbl))
+	got := ansi.Strip(tableScrollbarView(tbl.Model))
 	lines := strings.Split(got, "\n")
 	if len(lines) != tbl.Height()+1 {
 		t.Fatalf("table scrollbar height=%d want %d", len(lines), tbl.Height()+1)
