@@ -77,13 +77,20 @@ func (m mainModel) keyboardBindings() ([]key.Binding, [][]key.Binding) {
 
 func (m mainModel) getKeyMap() help.KeyMap {
 	short, long := m.keyboardBindings()
+	long = append(long, mouseFullList)
 	if m.helpMode == helpModeMouse {
-		// Mouse short bar still carries the keyboard essentials so the
-		// user never loses sight of how to quit or open help.
-		short = append(append([]key.Binding{}, mouseShortList...),
-			DefaultKeyMap.Help, DefaultKeyMap.Exit)
+		short = mouseShortHelp()
 	}
 	return DynamicKeyMap{Short: short, Long: long}
+}
+
+// mouseShortHelp keeps the keyboard essentials (help, exit) appended after
+// the mouse bindings so the user never loses sight of how to quit or open
+// help while interacting via mouse.
+func mouseShortHelp() []key.Binding {
+	bindings := make([]key.Binding, 0, len(mouseShortList)+2)
+	bindings = append(bindings, mouseShortList...)
+	return append(bindings, DefaultKeyMap.Help, DefaultKeyMap.Exit)
 }
 
 func (m mainModel) nextFocus() focusState {

@@ -48,6 +48,8 @@ func tableInternals(t *table.Model) *tableInternal {
 	return (*tableInternal)(unsafe.Pointer(t))
 }
 
+var hoverRowStyle = lipgloss.NewStyle().Background(colorHoverBg)
+
 // firstVisibleRow returns the absolute index of the row currently rendered at
 // the top of the table's data area.
 func firstVisibleRow(t table.Model) int {
@@ -72,6 +74,9 @@ func renderTableRow(p *tableInternal, r, hoverRow int) string {
 	}
 
 	row := lipgloss.JoinHorizontal(lipgloss.Top, cells...)
+	if r == p.cursor && r == hoverRow {
+		return p.styles.Selected.Background(colorHoverBg).Render(row)
+	}
 	if r == p.cursor {
 		return p.styles.Selected.Render(row)
 	}

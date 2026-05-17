@@ -3,11 +3,13 @@ package tui
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 	"unsafe"
 
 	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
@@ -426,97 +428,84 @@ func TestHelpModeSwitchesWithInputKind(t *testing.T) {
 	}
 }
 
-func openHelpDialog(t *testing.T, m mainModel) mainModel {
+func openFullHelp(t *testing.T, m mainModel) mainModel {
 	t.Helper()
 	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
 	m = next.(mainModel)
 	if !m.help.ShowAll {
-		t.Fatalf("expected dialog open after ?")
+		t.Fatalf("expected full help open after ?")
 	}
 	return m
 }
 
-func TestHelpDialogClosesByQuestionMark(t *testing.T) {
+func TestFullHelpTogglesByQuestionMark(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
-	m = openHelpDialog(t, m)
+	m = openFullHelp(t, m)
 	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
 	m = next.(mainModel)
 	if m.help.ShowAll {
-		t.Fatal("dialog should close on second ?")
+		t.Fatal("full help should close on second ?")
 	}
 }
 
-func TestHelpDialogClosesByEsc(t *testing.T) {
+func TestFullHelpRendersOnlyInBottomHelpBar(t *testing.T) {
+	m := newMainModel(testResultWithPackages("pkg", 3), 260, 40)
+	m = openFullHelp(t, m)
+
+	helpBar := ansi.Strip(m.renderHelpBar())
+	if !strings.Contains(helpBar, "toggle help") ||
+		!strings.Contains(helpBar, "go to end") ||
+		!strings.Contains(helpBar, "left click") {
+		t.Fatalf("bottom full help should include expanded keyboard and mouse bindings:\n%s", helpBar)
+	}
+
+	content := ansi.Strip(m.renderContent())
+	if strings.Contains(content, "╭") || strings.Contains(content, "Close:") {
+		t.Fatalf("full help should not render an overlay panel:\n%s", content)
+	}
+}
+
+func TestFullHelpDoesNotCloseByEsc(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
-	m = openHelpDialog(t, m)
+	m = openFullHelp(t, m)
 	next, _ := m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
 	m = next.(mainModel)
-	if m.help.ShowAll {
-		t.Fatal("dialog should close on Esc")
-	}
-}
-
-func TestHelpDialogClosesByRightClick(t *testing.T) {
-	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
-	m = openHelpDialog(t, m)
-	dlg := m.layout.helpDialog
-	next, _ := m.Update(tea.MouseClickMsg{X: dlg.x + 1, Y: dlg.y + 1, Button: tea.MouseRight})
-	m = next.(mainModel)
-	if m.help.ShowAll {
-		t.Fatal("dialog should close on right-click")
-	}
-}
-
-func TestHelpDialogClosesByCloseButton(t *testing.T) {
-	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
-	m = openHelpDialog(t, m)
-	btn := m.layout.helpDialogClose
-	next, _ := m.Update(tea.MouseClickMsg{X: btn.x, Y: btn.y, Button: tea.MouseLeft})
-	m = next.(mainModel)
-	if m.help.ShowAll {
-		t.Fatal("dialog should close when clicking close button")
-	}
-}
-
-func TestHelpDialogClosesByClickOutside(t *testing.T) {
-	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
-	m = openHelpDialog(t, m)
-	// Click well outside the dialog box.
-	next, _ := m.Update(tea.MouseClickMsg{X: 0, Y: 0, Button: tea.MouseLeft})
-	m = next.(mainModel)
-	if m.help.ShowAll {
-		t.Fatal("dialog should close on click outside")
-	}
-}
-
-func TestHelpDialogSwallowsOtherInput(t *testing.T) {
-	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
-	m = openHelpDialog(t, m)
-	dlg := m.layout.helpDialog
-
-	// Left-click inside the dialog body (not on close) must NOT navigate.
-	bodyX, bodyY := dlg.x+dlg.w/2, dlg.y+dlg.h/2
-	next, _ := m.Update(tea.MouseClickMsg{X: bodyX, Y: bodyY, Button: tea.MouseLeft})
-	m = next.(mainModel)
 	if !m.help.ShowAll {
-		t.Fatal("click inside dialog body should not close it")
+		t.Fatal("full help should stay open on Esc; only ? toggles it")
 	}
+}
 
-	// Wheel must be swallowed: cursor / scroll state unchanged.
-	cursorBefore := m.leftTable.Cursor()
-	topBefore := firstVisibleRow(m.leftTable.Model)
-	next, _ = m.Update(tea.MouseWheelMsg{X: bodyX, Y: bodyY, Button: tea.MouseWheelDown})
+func TestFullHelpDoesNotSwallowInput(t *testing.T) {
+	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
+	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
 	m = next.(mainModel)
-	if m.leftTable.Cursor() != cursorBefore || firstVisibleRow(m.leftTable.Model) != topBefore {
-		t.Fatal("wheel inside dialog should not scroll the table")
+	if m.current == nil {
+		t.Fatal("test setup expected to be inside a child level after Enter")
+	}
+	m = openFullHelp(t, m)
+
+	data := m.layout.leftData
+	next, _ = m.Update(tea.MouseClickMsg{
+		X:      data.x,
+		Y:      data.y + 1,
+		Button: tea.MouseRight,
+	})
+	m = next.(mainModel)
+	if m.current != nil {
+		t.Fatalf("right-click while full help is open should go back; current=%q", m.current.Title())
+	}
+	if !m.help.ShowAll {
+		t.Fatal("right-click should not close bottom full help")
 	}
 
-	// Random key (e.g. Tab) is swallowed: focus must not toggle.
 	focusBefore := m.focus
 	next, _ = m.Update(tea.KeyPressMsg{Code: tea.KeyTab})
 	m = next.(mainModel)
-	if m.focus != focusBefore {
-		t.Fatal("Tab while dialog open should not switch focus")
+	if m.focus == focusBefore {
+		t.Fatal("Tab while full help is open should still switch focus")
+	}
+	if !m.help.ShowAll {
+		t.Fatal("Tab should not close bottom full help")
 	}
 }
 

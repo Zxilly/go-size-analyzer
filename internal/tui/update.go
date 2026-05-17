@@ -287,40 +287,6 @@ func handleWindowSizeEvent(m mainModel, width, height int) (mainModel, tea.Cmd) 
 	return m, tea.ClearScreen
 }
 
-func (m mainModel) closeHelpDialog() mainModel {
-	m.help.ShowAll = false
-	return m.reconcile()
-}
-
-// handleHelpDialogInput intercepts input while the dialog is modal. Returns
-// (next, true) when the event was consumed; (m, false) to fall through.
-func handleHelpDialogInput(m mainModel, msg tea.Msg) (mainModel, bool) {
-	if !m.help.ShowAll {
-		return m, false
-	}
-	switch msg := msg.(type) {
-	case tea.KeyPressMsg:
-		if key.Matches(msg, DefaultKeyMap.Help) || key.Matches(msg, DefaultKeyMap.Backward) {
-			return m.closeHelpDialog(), true
-		}
-		return m, true // swallow other keys
-	case tea.MouseClickMsg:
-		if msg.Button == tea.MouseRight {
-			return m.closeHelpDialog(), true
-		}
-		if msg.Button == tea.MouseLeft {
-			if m.layout.helpDialogClose.contains(msg.X, msg.Y) ||
-				!m.layout.helpDialog.contains(msg.X, msg.Y) {
-				return m.closeHelpDialog(), true
-			}
-		}
-		return m, true // click inside dialog body, ignore
-	case tea.MouseWheelMsg, tea.MouseMotionMsg, tea.MouseReleaseMsg:
-		return m, true
-	}
-	return m, false
-}
-
 // applyHelpMode bumps helpMode based on the kind of input event so the
 // compact bar matches the modality the user just used. Hover/release/etc.
 // don't flip it — only intentional key or mouse actions.
@@ -336,9 +302,6 @@ func (m mainModel) applyHelpMode(msg tea.Msg) mainModel {
 
 func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	m = m.applyHelpMode(msg)
-	if next, consumed := handleHelpDialogInput(m, msg); consumed {
-		return next, nil
-	}
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:

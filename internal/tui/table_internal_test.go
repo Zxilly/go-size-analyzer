@@ -180,6 +180,22 @@ func TestTableSetStylesPreservesTop(t *testing.T) {
 	}
 }
 
+func TestRenderTableRowCombinesSelectedAndHoverStyles(t *testing.T) {
+	tbl := newTestTable(2, 10)
+	p := tableInternals(&tbl.Model)
+	p.styles.Selected = p.styles.Selected.Foreground(colorSelected)
+
+	p.cursor = 1
+	bareRow := renderTableRow(p, 0, -1)
+
+	p.cursor = 0
+	got := renderTableRow(p, 0, 0)
+	want := p.styles.Selected.Background(colorHoverBg).Render(bareRow)
+	if got != want {
+		t.Fatalf("selected hover row style mismatch:\ngot  %q\nwant %q", got, want)
+	}
+}
+
 func TestTableHandleKeyIgnoresUnrelatedKey(t *testing.T) {
 	tbl := newTestTable(50, 10)
 
