@@ -1,15 +1,16 @@
 package tui
 
 import (
-	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/table"
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/table"
 )
 
 type KeyMapTyp struct {
 	Switch   key.Binding
 	Backward key.Binding
 	Enter    key.Binding
+	Help     key.Binding
 	Exit     key.Binding
 }
 
@@ -25,6 +26,10 @@ var DefaultKeyMap = KeyMapTyp{
 	Enter: key.NewBinding(
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "explore"),
+	),
+	Help: key.NewBinding(
+		key.WithKeys("?"),
+		key.WithHelp("?", "toggle help"),
 	),
 	Exit: key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),

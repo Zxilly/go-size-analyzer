@@ -3,12 +3,11 @@ package tui
 import (
 	"cmp"
 	"slices"
-	"sync"
 
-	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/table"
-	tea "github.com/charmbracelet/bubbletea"
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/table"
+	tea "charm.land/bubbletea/v2"
 
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
@@ -18,6 +17,8 @@ var _ tea.Model = (*mainModel)(nil)
 type mainModel struct {
 	width  int
 	height int
+	layout tuiLayout
+	drag   scrollbarDrag
 
 	baseItems wrappers
 
@@ -50,7 +51,7 @@ func (m mainModel) currentList() wrappers {
 }
 
 func (m mainModel) getKeyMap() help.KeyMap {
-	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Exit}
+	mainKeys := []key.Binding{DefaultKeyMap.Switch, DefaultKeyMap.Help, DefaultKeyMap.Exit}
 	if m.currentSelection().hasChildren() {
 		mainKeys = append(mainKeys, DefaultKeyMap.Enter)
 	}
@@ -58,22 +59,18 @@ func (m mainModel) getKeyMap() help.KeyMap {
 		mainKeys = append(mainKeys, DefaultKeyMap.Backward)
 	}
 
-	ret := DynamicKeyMap{
-		Short: mainKeys,
-		Long:  [][]key.Binding{mainKeys},
-	}
-
+	var focusKeys []key.Binding
 	switch m.focus {
 	case focusedMain:
-		ret.Short = append(ret.Short, tableKeyMap()...)
-		ret.Long = append(ret.Long, tableKeyMap())
+		focusKeys = tableKeyMap()
 	case focusedDetail:
-		ret.Short = append(ret.Short, m.rightDetail.KeyMap()...)
-		ret.Long = append(ret.Long, m.rightDetail.KeyMap())
-	default:
+		focusKeys = m.rightDetail.KeyMap()
 	}
 
-	return ret
+	return DynamicKeyMap{
+		Short: append(mainKeys, focusKeys...),
+		Long:  [][]key.Binding{mainKeys, focusKeys},
+	}
 }
 
 func (m mainModel) nextFocus() focusState {
@@ -87,34 +84,25 @@ func (m mainModel) nextFocus() focusState {
 	}
 }
 
-var (
-	rootCache     wrappers
-	rootCacheOnce = &sync.Once{}
-)
-
 func buildRootItems(r *result.Result) wrappers {
-	rootCacheOnce.Do(func() {
-		ret := make([]wrapper, 0)
-		for _, p := range r.Packages {
-			ret = append(ret, newWrapper(p))
-		}
-		for _, s := range r.Sections {
-			ret = append(ret, newWrapper(s))
-		}
+	ret := make([]wrapper, 0)
+	for _, p := range r.Packages {
+		ret = append(ret, newWrapper(p))
+	}
+	for _, s := range r.Sections {
+		ret = append(ret, newWrapper(s))
+	}
 
-		slices.SortFunc(ret, func(a, b wrapper) int {
-			return -cmp.Compare(a.size(), b.size())
-		})
-
-		rootCache = ret
+	slices.SortFunc(ret, func(a, b wrapper) int {
+		return -cmp.Compare(a.size(), b.size())
 	})
 
-	return rootCache
+	return ret
 }
 
 func newLeftTable(width int, rows []table.Row) table.Model {
 	return table.New(
-		table.WithColumns(getTableColumns(width)),
+		table.WithColumns(getTableColumnsForTableWidth(width)),
 		table.WithRows(rows),
 		table.WithFocused(true),
 	)
@@ -124,29 +112,23 @@ func newMainModel(r *result.Result, width, height int) mainModel {
 	baseItems := buildRootItems(r)
 
 	m := mainModel{
-		baseItems: baseItems,
-		current:   nil,
-		fileName:  r.Name,
-
-		rightDetail: newDetailModel(0, 0),
-		leftTable:   newLeftTable(0, baseItems.ToRows()),
+		baseItems:   baseItems,
+		fileName:    r.Name,
+		rightDetail: newDetailModel(),
+		leftTable:   newLeftTable(width, baseItems.ToRows()),
 		help:        help.New(),
-
-		focus: focusedMain,
-
-		parents: make([]table.Model, 0),
-
-		width:  width,
-		height: height,
+		focus:       focusedMain,
 	}
 
-	m.rightDetail.viewPort.SetContent(m.currentSelection().Description())
+	m.width = width
+	m.height = height
+	m = m.reconcile()
 
 	return m
 }
 
 func (mainModel) Init() tea.Cmd {
-	return nil
+	return tea.RequestBackgroundColor
 }
 
 func (m mainModel) title() string {

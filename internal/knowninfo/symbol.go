@@ -62,9 +62,17 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 	var pkg *entity.Package
 	pkgName := k.ExtractPackageFromSymbol(name)
 
+	// gosym returns empty packageName for any "go:" / "type:" prefixed
+	// compiler-generated symbol (per cmd/compile/internal/base/link.go's
+	// ReservedImports). Route them to dedicated virtual packages so they
+	// don't get lumped into CGO.
 	switch {
 	case strings.HasPrefix(name, "type:.namedata.") || strings.HasPrefix(name, "type:.importpath."):
 		pkg = k.getOrCreateVirtualPackage("runtime/types", entity.PackageTypeGenerated)
+	case strings.HasPrefix(name, "go:itab."):
+		pkg = k.getOrCreateVirtualPackage("runtime/itabs", entity.PackageTypeGenerated)
+	case strings.HasPrefix(name, "go:") || strings.HasPrefix(name, "type:"):
+		pkg = k.getOrCreateVirtualPackage("runtime/generated", entity.PackageTypeGenerated)
 	case pkgName == "" || strings.HasPrefix(name, "x_cgo"):
 		pkg = k.getOrCreateVirtualPackage("CGO", entity.PackageTypeCGO)
 	case pkgName == "$f64" || pkgName == "$f32":

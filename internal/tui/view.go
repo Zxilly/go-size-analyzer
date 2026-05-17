@@ -3,8 +3,9 @@ package tui
 import (
 	"fmt"
 
-	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/table"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/muesli/reflow/wordwrap"
 )
 
@@ -18,11 +19,19 @@ func getTableStyle(hasChildren bool) table.Styles {
 	return s
 }
 
-func (m mainModel) View() string {
-	if m.width < 70 || m.height < 20 {
+func (m mainModel) View() tea.View {
+	v := tea.NewView(m.renderContent())
+	v.AltScreen = true
+	v.MouseMode = tea.MouseModeCellMotion
+	return v
+}
+
+func (m mainModel) renderContent() string {
+	if m.width < minTerminalWidth || m.height < minTerminalHeight {
 		return wordwrap.String(
 			fmt.Sprintf("Your terminal window is too small. "+
-				"Please make it at least 70x20 and try again. Current size: %d x %d", m.width, m.height),
+				"Please make it at least %dx%d and try again. Current size: %d x %d",
+				minTerminalWidth, minTerminalHeight, m.width, m.height),
 			m.width)
 	}
 
@@ -33,23 +42,23 @@ func (m mainModel) View() string {
 		Align(lipgloss.Center).
 		Render(m.title())
 
-	m.leftTable.SetStyles(getTableStyle(m.currentSelection().hasChildren()))
-	// Render the left table
-	left := m.leftTable.View()
+	// SetStyles intentionally lives in reconcileSelection, not here: bubbles'
+	// SetStyles calls UpdateViewport which re-anchors start/end around the
+	// cursor and would wipe any wheel-scroll state on the very next render.
+	left := tableViewWithScrollbar(m.leftTable)
 
-	// Render the right detail
-	right := m.rightDetail.View()
+	right := detailViewWithScrollbar(m.rightDetail)
 
-	borderStyle := baseStyle.Width(m.width / 2)
+	borderStyle := baseStyle
 	disabledBorderStyle := borderStyle.BorderForeground(lipgloss.Color("241"))
 
 	switch m.focus {
 	case focusedMain:
-		left = borderStyle.Render(left)
-		right = disabledBorderStyle.Render(right)
+		left = borderStyle.Width(m.layout.leftPane.w).Render(left)
+		right = disabledBorderStyle.Width(m.layout.rightPane.w).Render(right)
 	case focusedDetail:
-		left = disabledBorderStyle.Render(left)
-		right = borderStyle.Render(right)
+		left = disabledBorderStyle.Width(m.layout.leftPane.w).Render(left)
+		right = borderStyle.Width(m.layout.rightPane.w).Render(right)
 	default:
 	}
 
