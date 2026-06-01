@@ -11,7 +11,7 @@ require (
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c
 	github.com/alecthomas/kong v1.15.0
-	github.com/blacktop/go-macho v1.1.272
+	github.com/blacktop/go-macho v1.1.273
 	github.com/charmbracelet/colorprofile v0.4.3
 	github.com/charmbracelet/glamour v1.0.0
 	github.com/charmbracelet/x/ansi v0.11.7
@@ -30,7 +30,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/arch v0.27.0
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
-	golang.org/x/net v0.54.0
+	golang.org/x/net v0.55.0
 	golang.org/x/sync v0.20.0
 )
 
@@ -65,7 +65,7 @@ require (
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/yuin/goldmark v1.8.2 // indirect
 	github.com/yuin/goldmark-emoji v1.0.6 // indirect
-	golang.org/x/sys v0.44.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
 	golang.org/x/term v0.43.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
