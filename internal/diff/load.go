@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"encoding/json/v2"
-	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
@@ -65,22 +64,21 @@ func Diff(writer io.Writer, options Options) error {
 }
 
 func autoLoadFile(name string, options internal.Options) (*commonResult, error) {
-	reader, err := mmap.Open(name)
+	reader, err := utils.OpenBinary(name)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("open %s: %w", name, err)
 	}
-	defer func(reader *mmap.ReaderAt) {
-		err = reader.Close()
-		if err != nil {
+	defer func() {
+		if err := reader.Close(); err != nil {
 			slog.Warn("failed to close file", "error", err)
 		}
-	}(reader)
+	}()
 
 	r := new(commonResult)
 	if utils.DetectJSON(reader) {
 		err = json.UnmarshalRead(utils.NewReaderAtAdapter(reader), r)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode json %s: %w", name, err)
 		}
 
 		return r, nil
@@ -92,7 +90,7 @@ func autoLoadFile(name string, options internal.Options) (*commonResult, error) 
 		uint64(reader.Len()),
 		options)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("analyze %s: %w", name, err)
 	}
 
 	return fromResult(fullResult), nil

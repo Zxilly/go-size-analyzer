@@ -7,58 +7,46 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/x/exp/teatest"
-	"github.com/muesli/termenv"
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/colorprofile"
+	"github.com/charmbracelet/x/exp/teatest/v2"
 
 	"github.com/Zxilly/go-size-analyzer/internal/test"
 )
 
-func init() {
-	lipgloss.SetColorProfile(termenv.Ascii)
+func sendKey(tm *teatest.TestModel, code rune) {
+	tm.Send(tea.KeyPressMsg{Code: code})
+}
+
+func sendKeyN(tm *teatest.TestModel, code rune, n int) {
+	for range n {
+		sendKey(tm, code)
+	}
 }
 
 func TestFullOutput(t *testing.T) {
 	m := newMainModel(test.GetTestResult(t), 300, 100)
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(300, 100))
+	tm := teatest.NewTestModel(t, m,
+		teatest.WithInitialTermSize(300, 100),
+		teatest.WithProgramOptions(tea.WithColorProfile(colorprofile.Ascii)),
+	)
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte("runtime"))
 	}, teatest.WithCheckInterval(time.Millisecond*200), teatest.WithDuration(time.Second*10))
 
 	// test scroll
-	tm.Send(tea.MouseMsg{
-		Action: tea.MouseActionPress,
-		Button: tea.MouseButtonWheelDown,
-	})
-
-	tm.Send(tea.MouseMsg{
-		Action: tea.MouseActionPress,
-		Button: tea.MouseButtonWheelUp,
-	})
+	tm.Send(tea.MouseWheelMsg{Button: tea.MouseWheelDown})
+	tm.Send(tea.MouseWheelMsg{Button: tea.MouseWheelUp})
 
 	// test detail
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyTab,
-	})
-
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyDown,
-	})
-	tm.Send(tea.MouseMsg{
-		Action: tea.MouseActionPress,
-		Button: tea.MouseButtonWheelUp,
-	})
+	sendKey(tm, tea.KeyTab)
+	sendKey(tm, tea.KeyDown)
+	tm.Send(tea.MouseWheelMsg{Button: tea.MouseWheelUp})
 
 	// switch back
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyTab,
-	})
-
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyEnter,
-	})
+	sendKey(tm, tea.KeyTab)
+	sendKey(tm, tea.KeyEnter)
 
 	// resize window
 	tm.Send(tea.WindowSizeMsg{
@@ -71,45 +59,24 @@ func TestFullOutput(t *testing.T) {
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
 	// enter proc.go
-	for range 4 {
-		tm.Send(tea.KeyMsg{
-			Type: tea.KeyDown,
-		})
-	}
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyEnter,
-	})
+	sendKeyN(tm, tea.KeyDown, 4)
+	sendKey(tm, tea.KeyEnter)
 
 	// list all
-	for range 20 {
-		tm.Send(tea.KeyMsg{
-			Type: tea.KeyDown,
-		})
-	}
+	sendKeyN(tm, tea.KeyDown, 20)
 
 	// back to runtime
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyBackspace,
-	})
-
-	for range 20 {
-		tm.Send(tea.KeyMsg{
-			Type: tea.KeyDown,
-		})
-	}
+	sendKey(tm, tea.KeyBackspace)
+	sendKeyN(tm, tea.KeyDown, 20)
 
 	// back to root
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyBackspace,
-	})
+	sendKey(tm, tea.KeyBackspace)
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
 		return bytes.Contains(bts, []byte(".gopclntab"))
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
-	tm.Send(tea.KeyMsg{
-		Type: tea.KeyCtrlC,
-	})
+	tm.Send(tea.KeyPressMsg{Code: 'c', Mod: tea.ModCtrl})
 
 	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*3))
 }

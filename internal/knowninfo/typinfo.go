@@ -124,6 +124,7 @@ func (k *KnownInfo) resolveTypePackage(pkgPath string) *entity.Package {
 	if pkgPath != "" {
 		return k.resolvePackage(pkgPath, entity.PackageTypeUnknown)
 	}
+
 	return k.getOrCreateVirtualPackage("runtime/types", entity.PackageTypeGenerated)
 }
 

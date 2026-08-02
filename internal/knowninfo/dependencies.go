@@ -2,6 +2,7 @@ package knowninfo
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
 	"runtime/debug"
 
@@ -120,8 +121,20 @@ func (m *Dependencies) ClearCaches() {
 	})
 }
 
+func fallbackPackageName(typ entity.PackageType) string {
+	return fmt.Sprintf("<unnamed:%s>", typ)
+}
+
 func (m *Dependencies) AddFromPclntab(gp *gore.Package, typ entity.PackageType, pclntab *gosym.Table, isWasm bool) {
 	name := utils.UglyGuess(gp.Name)
+	if name == "" {
+		// gore occasionally emits unnamed packages — typically assembly
+		// fragments or other compiler-generated code with no Go-level owner.
+		// Without a placeholder these all collide on the empty trie key and
+		// produce confusing UI (no name) and broken symbol labels like
+		// "pclntab:ftab[]".
+		name = fallbackPackageName(typ)
+	}
 
 	var w *wrapper.WasmWrapper
 	if isWasm {

@@ -7,17 +7,17 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/test"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
 func TestAnalyzePclntabMetaProducesResults(t *testing.T) {
 	path := test.GetTestBinPath(t)
 
-	f, err := mmap.Open(path)
+	f, err := utils.OpenBinary(path)
 	require.NoError(t, err)
 	defer func() { require.NoError(t, f.Close()) }()
 

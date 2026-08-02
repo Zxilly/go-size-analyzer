@@ -14,7 +14,6 @@ import (
 
 	"github.com/charmbracelet/x/term"
 	"github.com/pkg/browser"
-	"golang.org/x/exp/mmap"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
@@ -236,9 +235,9 @@ func entry() error {
 		specs = []outputSpec{{format: printer.FormatHTML, writer: webBuf}}
 	}
 
-	reader, err := mmap.Open(Options.Binary)
+	reader, err := utils.OpenBinary(Options.Binary)
 	if err != nil {
-		return err
+		return fmt.Errorf("open binary %s: %w", Options.Binary, err)
 	}
 
 	r, err := internal.Analyze(Options.Binary,
@@ -246,11 +245,11 @@ func entry() error {
 		uint64(reader.Len()),
 		options)
 	if err != nil {
-		return err
+		return fmt.Errorf("analyze %s: %w", Options.Binary, err)
 	}
 
 	if err := reader.Close(); err != nil {
-		return err
+		return fmt.Errorf("close %s: %w", Options.Binary, err)
 	}
 
 	if Options.Tui {

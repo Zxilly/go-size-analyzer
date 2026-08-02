@@ -7,11 +7,11 @@ import (
 
 	"github.com/ZxillyFork/gore"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"github.com/Zxilly/go-size-analyzer/internal/test"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
@@ -24,7 +24,7 @@ func buildKnownInfoWithVersion(t *testing.T, version string) *knowninfo.KnownInf
 	t.Helper()
 	path := test.GetTestBinPath(t)
 
-	f, err := mmap.Open(path)
+	f, err := utils.OpenBinary(path)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, f.Close()) })
 

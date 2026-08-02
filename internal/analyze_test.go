@@ -9,9 +9,9 @@ import (
 
 	"github.com/ZxillyFork/gore"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/mmap"
 
 	"github.com/Zxilly/go-size-analyzer/internal/test/testutils"
+	"github.com/Zxilly/go-size-analyzer/internal/utils"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
@@ -40,11 +40,10 @@ func GetCurrentRunningBinary(t *testing.T) string {
 func TestAnalyzeImports(t *testing.T) {
 	bin := GetCurrentRunningBinary(t)
 
-	f, err := mmap.Open(bin)
+	f, err := utils.OpenBinary(bin)
 	require.NoError(t, err)
 	defer func() {
-		err = f.Close()
-		require.NoError(t, err)
+		require.NoError(t, f.Close())
 	}()
 
 	result, err := Analyze(bin, f, uint64(f.Len()), Options{

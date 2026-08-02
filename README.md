@@ -81,7 +81,7 @@ You can click to expand the package to see the details.
 gsa --tui golang-compiled-binary
 ```
 
-[![asciicast](https://asciinema.org/a/670664.svg)](https://asciinema.org/a/670664)
+[![asciicast](https://asciinema.org/a/1074190.svg)](https://asciinema.org/a/1074190)
 
 #### Text mode
 

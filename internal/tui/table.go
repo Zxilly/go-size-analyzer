@@ -1,16 +1,21 @@
 package tui
 
-import "github.com/charmbracelet/bubbles/table"
+import "charm.land/bubbles/v2/table"
 
-func getTableColumns(width int) []table.Column {
+func getTableColumnsForTableWidth(tableWidth int) []table.Column {
+	styles := table.DefaultStyles()
+	cellFrameWidth := styles.Cell.GetHorizontalFrameSize() * 2
+	contentWidth := max(tableWidth-cellFrameWidth, 0)
+	sizeWidth := min(rowWidthSize, contentWidth)
+
 	return []table.Column{
 		{
 			Title: "Name",
-			Width: width/2 - rowWidthSize - 6, // fixme: why 6 is ok here?
+			Width: max(contentWidth-sizeWidth, 0),
 		},
 		{
 			Title: "Size",
-			Width: rowWidthSize,
+			Width: sizeWidth,
 		},
 	}
 }

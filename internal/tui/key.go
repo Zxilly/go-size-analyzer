@@ -1,15 +1,16 @@
 package tui
 
 import (
-	"github.com/charmbracelet/bubbles/help"
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/table"
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/table"
 )
 
 type KeyMapTyp struct {
 	Switch   key.Binding
 	Backward key.Binding
 	Enter    key.Binding
+	Help     key.Binding
 	Exit     key.Binding
 }
 
@@ -26,11 +27,51 @@ var DefaultKeyMap = KeyMapTyp{
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "explore"),
 	),
+	Help: key.NewBinding(
+		key.WithKeys("?"),
+		key.WithHelp("?", "toggle help"),
+	),
 	Exit: key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),
 		key.WithHelp("q/ctrl+c", "exit"),
 	),
 }
+
+// displayBinding reuses key.Binding for help text that is never matched
+// against keyboard input. WithKeys is still required because help.Model skips
+// bindings that key.Binding considers disabled.
+func displayBinding(label, desc string) key.Binding {
+	return key.NewBinding(
+		key.WithKeys(label),
+		key.WithHelp(label, desc),
+	)
+}
+
+// mouseBindings reuses key.Binding for display only: the Key field is the
+// mouse action label, never matched against keyboard input.
+var (
+	mouseBindings = struct {
+		LeftClick, DoubleClick, RightClick, Wheel, DragScroll key.Binding
+	}{
+		LeftClick:   displayBinding("left click", "select / focus"),
+		DoubleClick: displayBinding("double click", "explore"),
+		RightClick:  displayBinding("right click", "go back"),
+		Wheel:       displayBinding("wheel", "scroll"),
+		DragScroll:  displayBinding("drag scrollbar", "scroll viewport"),
+	}
+
+	// mouseAllBindings is ordered so the short bar is a prefix of the full list.
+	mouseAllBindings = []key.Binding{
+		mouseBindings.LeftClick,
+		mouseBindings.DoubleClick,
+		mouseBindings.RightClick,
+		mouseBindings.Wheel,
+		mouseBindings.DragScroll,
+	}
+
+	mouseShortList = mouseAllBindings[:4]
+	mouseFullList  = mouseAllBindings
+)
 
 var _ help.KeyMap = (*DynamicKeyMap)(nil)
 
