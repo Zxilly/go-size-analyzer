@@ -55,7 +55,7 @@
     "jsdom": "^29.1.1",
     "sass": "^1.102.0",
     "terser": "^5.49.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vite": "^8.1.5",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.3.3",
@@ -68,6 +68,8 @@
       }
     },
     "overrides": {
+      "brace-expansion@1.1.16": "1.1.18",
+      "brace-expansion@2.1.2": "2.1.4",
       "micromatch": "4.0.8"
     }
   }
