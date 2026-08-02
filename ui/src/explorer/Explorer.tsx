@@ -19,12 +19,12 @@ type ModalState = {
 const LogViewer: React.FC<{ log: string }> = ({ log }) => {
   return (
     <Box
-      style={{
+      sx={{
         maxHeight: "50vh",
         minHeight: "10vh",
         overflowY: "auto",
+        fontFamily: "monospace",
       }}
-      fontFamily="monospace"
       component="pre"
     >
       {log}

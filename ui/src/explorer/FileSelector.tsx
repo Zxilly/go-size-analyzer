@@ -74,7 +74,14 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
           <Button onClick={handleContinue}>Continue</Button>
         </DialogActions>
       </Dialog>
-      <Box display="flex" flexDirection="column" alignItems="center" height="100%">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
         <Box
           {...getRootProps()}
           sx={{
