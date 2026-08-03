@@ -23,8 +23,8 @@
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-dropzone": "^19.1.1",
     "react-use": "^17.6.1",
     "valibot": "^1.4.2"
