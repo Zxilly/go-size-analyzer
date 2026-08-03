@@ -4,8 +4,8 @@ go 1.26.0
 
 require (
 	charm.land/bubbles/v2 v2.1.1
-	charm.land/bubbletea/v2 v2.0.7
-	charm.land/lipgloss/v2 v2.0.4
+	charm.land/bubbletea/v2 v2.0.8
+	charm.land/lipgloss/v2 v2.0.5
 	github.com/ZxillyFork/gore v0.0.0-20260517104207-c177b8d9fc9c
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
@@ -19,7 +19,7 @@ require (
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-delve/delve v1.27.0
-	github.com/jedib0t/go-pretty/v6 v6.8.2
+	github.com/jedib0t/go-pretty/v6 v6.8.3
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/nikolaydubina/treemap v1.2.5
@@ -41,7 +41,7 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/blacktop/go-dwarf v1.0.14 // indirect
 	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834 // indirect
-	github.com/charmbracelet/ultraviolet v0.0.0-20260525132238-948f4557a654 // indirect
+	github.com/charmbracelet/ultraviolet v0.0.0-20260703014108-f5a850f9c2b7 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.15 // indirect
 	github.com/charmbracelet/x/exp/golden v0.0.0-20260517005351-920740d613be // indirect
 	github.com/charmbracelet/x/exp/slice v0.0.0-20260517005351-920740d613be // indirect
