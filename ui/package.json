@@ -55,7 +55,7 @@
     "jsdom": "^30.0.1",
     "sass": "^1.102.0",
     "terser": "^5.49.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vite": "^8.1.5",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-singlefile": "^2.3.3",
