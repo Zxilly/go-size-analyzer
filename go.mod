@@ -6,7 +6,7 @@ require (
 	charm.land/bubbles/v2 v2.1.1
 	charm.land/bubbletea/v2 v2.0.8
 	charm.land/lipgloss/v2 v2.0.5
-	github.com/ZxillyFork/gore v0.0.0-20260517104207-c177b8d9fc9c
+	github.com/ZxillyFork/gore v0.0.0-20260708092438-7895e61dd909
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c
@@ -28,7 +28,7 @@ require (
 	github.com/puzpuzpuz/xsync/v4 v4.5.0
 	github.com/samber/lo v1.53.0
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/arch v0.27.0
+	golang.org/x/arch v0.29.0
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
 	golang.org/x/net v0.57.0
 	golang.org/x/sync v0.22.0
