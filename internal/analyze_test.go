@@ -14,6 +14,7 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
+	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 )
 
 func FuzzAnalyze(f *testing.F) {
@@ -98,6 +99,11 @@ func TestAnalyzeWASMPclntabFullyAttributed(t *testing.T) {
 
 	require.Contains(t, result.Analyzers, entity.AnalyzerPclntabMeta)
 	require.Equal(t, md.PCLNTab().Length, sumSymbolSizesWithPrefix(result.Packages, "pclntab:"))
+}
+
+func TestAnalyzeWasmRejectsUnexpectedWrapper(t *testing.T) {
+	_, _, err := analyzeWasm(&knowninfo.KnownInfo{}, Options{})
+	require.EqualError(t, err, "expected WebAssembly wrapper, got <nil>")
 }
 
 func countSymbols(pkgs entity.PackageMap) int {
