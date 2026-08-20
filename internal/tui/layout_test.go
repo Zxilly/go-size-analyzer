@@ -43,9 +43,9 @@ func TestComputeLayoutUsesMeasuredRegions(t *testing.T) {
 func TestRectContains(t *testing.T) {
 	r := rect{x: 10, y: 3, w: 5, h: 4}
 	if !r.contains(10, 3) || !r.contains(14, 6) {
-		t.Fatalf("rect should include top-left and bottom-right inner cells")
+		t.Fatal("rect should include top-left and bottom-right inner cells")
 	}
 	if r.contains(15, 6) || r.contains(14, 7) {
-		t.Fatalf("rect should exclude right and bottom edges")
+		t.Fatal("rect should exclude right and bottom edges")
 	}
 }

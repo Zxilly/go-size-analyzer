@@ -274,6 +274,7 @@ func TestWasmGetSectionsMarksDebugSectionsAsKnown(t *testing.T) {
 			codeSect = section
 		case "custom_.debug_info":
 			debugSect = section
+		default:
 		}
 	}
 
