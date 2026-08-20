@@ -15,6 +15,15 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
+func requireMainModel(t *testing.T, model tea.Model) mainModel {
+	t.Helper()
+	m, ok := model.(mainModel)
+	if !ok {
+		t.Fatalf("expected mainModel, got %T", model)
+	}
+	return m
+}
+
 func testResultWithPackages(prefix string, count int) *result.Result {
 	pkgs := make(entity.PackageMap, count)
 	for i := range count {
@@ -150,7 +159,7 @@ func TestEnterOnLeafSelectionDoesNotChangeFocus(t *testing.T) {
 	}
 
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 
 	if m.focus != focusedMain {
 		t.Fatalf("focus after leaf enter=%d want focusedMain", m.focus)
@@ -358,7 +367,7 @@ func TestRightClickGoesBack(t *testing.T) {
 	data := m.layout.leftData
 
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.current == nil {
 		t.Fatal("test setup expected to be inside a child level after Enter")
 	}
@@ -374,7 +383,7 @@ func TestRightClickGoesBack(t *testing.T) {
 func TestRightClickOutsideLeftPaneIsIgnored(t *testing.T) {
 	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	parentTitle := m.current.Title()
 
 	right := m.layout.rightContent
@@ -396,7 +405,7 @@ func TestEnterClearsHoverRow(t *testing.T) {
 	}
 
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.leftTable.hoverRow != -1 {
 		t.Fatalf("hoverRow after enter=%d want -1", m.leftTable.hoverRow)
 	}
@@ -410,19 +419,19 @@ func TestHelpModeSwitchesWithInputKind(t *testing.T) {
 
 	data := m.layout.leftData
 	next, _ := m.Update(tea.MouseClickMsg{X: data.x, Y: data.y, Button: tea.MouseLeft})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.helpMode != helpModeMouse {
 		t.Fatalf("helpMode after click=%d want mouse", m.helpMode)
 	}
 
 	next, _ = m.Update(tea.MouseMotionMsg{X: data.x + 4, Y: data.y + 1})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.helpMode != helpModeMouse {
 		t.Fatalf("helpMode after motion=%d want mouse (motion must not flip)", m.helpMode)
 	}
 
 	next, _ = m.Update(tea.KeyPressMsg{Code: tea.KeyTab})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.helpMode != helpModeKeyboard {
 		t.Fatalf("helpMode after key=%d want keyboard", m.helpMode)
 	}
@@ -431,9 +440,9 @@ func TestHelpModeSwitchesWithInputKind(t *testing.T) {
 func openFullHelp(t *testing.T, m mainModel) mainModel {
 	t.Helper()
 	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if !m.help.ShowAll {
-		t.Fatalf("expected full help open after ?")
+		t.Fatal("expected full help open after ?")
 	}
 	return m
 }
@@ -442,7 +451,7 @@ func TestFullHelpTogglesByQuestionMark(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
 	m = openFullHelp(t, m)
 	next, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.help.ShowAll {
 		t.Fatal("full help should close on second ?")
 	}
@@ -469,7 +478,7 @@ func TestFullHelpDoesNotCloseByEsc(t *testing.T) {
 	m := newMainModel(testResultWithPackages("pkg", 3), 120, 40)
 	m = openFullHelp(t, m)
 	next, _ := m.Update(tea.KeyPressMsg{Code: tea.KeyEscape})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if !m.help.ShowAll {
 		t.Fatal("full help should stay open on Esc; only ? toggles it")
 	}
@@ -478,7 +487,7 @@ func TestFullHelpDoesNotCloseByEsc(t *testing.T) {
 func TestFullHelpDoesNotSwallowInput(t *testing.T) {
 	m := newMainModel(testResultWithScrollableParent(0), 120, 40)
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.current == nil {
 		t.Fatal("test setup expected to be inside a child level after Enter")
 	}
@@ -490,7 +499,7 @@ func TestFullHelpDoesNotSwallowInput(t *testing.T) {
 		Y:      data.y + 1,
 		Button: tea.MouseRight,
 	})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.current != nil {
 		t.Fatalf("right-click while full help is open should go back; current=%q", m.current.Title())
 	}
@@ -500,7 +509,7 @@ func TestFullHelpDoesNotSwallowInput(t *testing.T) {
 
 	focusBefore := m.focus
 	next, _ = m.Update(tea.KeyPressMsg{Code: tea.KeyTab})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if m.focus == focusBefore {
 		t.Fatal("Tab while full help is open should still switch focus")
 	}
@@ -515,13 +524,13 @@ func TestBackRestoresParentScrollWithOffscreenSelection(t *testing.T) {
 	top := firstVisibleRow(m.leftTable.Model)
 
 	next, _ := handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyEnter})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if got := m.title(); got != "parent" {
 		t.Fatalf("title after enter=%q want parent", got)
 	}
 
 	next, _ = handleKeyEvent(m, tea.KeyPressMsg{Code: tea.KeyBackspace})
-	m = next.(mainModel)
+	m = requireMainModel(t, next)
 	if got := firstVisibleRow(m.leftTable.Model); got != top {
 		t.Fatalf("firstVisibleRow after back=%d want %d", got, top)
 	}

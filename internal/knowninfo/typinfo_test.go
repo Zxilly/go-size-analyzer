@@ -43,7 +43,7 @@ func TestAnalyzeTypesProducesResults(t *testing.T) {
 	for _, s := range r.Sections {
 		totalKnown += s.KnownSize
 	}
-	assert.Greater(t, totalKnown, uint64(0))
+	assert.Positive(t, totalKnown)
 }
 
 func TestAnalyzeTypesPropagatesModuledataErrors(t *testing.T) {

@@ -76,7 +76,7 @@ func TestAnalyzeWASM(t *testing.T) {
 	require.NotNil(t, result.Packages["main"])
 	require.Contains(t, result.Analyzers, entity.AnalyzerTyp)
 	require.Contains(t, result.Analyzers, entity.AnalyzerPclntabMeta)
-	require.Greater(t, countSymbols(result.Packages), 0)
+	require.Positive(t, countSymbols(result.Packages))
 
 	for _, section := range result.Sections {
 		require.Falsef(t, section.OnlyInMemory, "section %s should be file-backed in wasm output", section.Name)
