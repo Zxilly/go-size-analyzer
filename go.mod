@@ -6,7 +6,7 @@ require (
 	charm.land/bubbles/v2 v2.1.1
 	charm.land/bubbletea/v2 v2.0.8
 	charm.land/lipgloss/v2 v2.0.5
-	github.com/ZxillyFork/gore v0.0.0-20260820040355-947d2e8d4492
+	github.com/ZxillyFork/gore v0.0.0-20260820051727-3d783a5724e5
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.16.0
