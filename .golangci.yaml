@@ -69,6 +69,8 @@ linters:
           disabled: true
         - name: max-public-structs
           disabled: true
+        - name: package-naming
+          disabled: true
         - name: function-result-limit
           disabled: true
         - name: function-length

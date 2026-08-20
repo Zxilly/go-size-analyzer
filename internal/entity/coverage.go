@@ -94,7 +94,10 @@ func kWayMerge(coves []AddrCoverage) AddrCoverage {
 	result := make(AddrCoverage, 0, totalSize)
 
 	for h.Len() > 0 {
-		item := heap.Pop(h).(mergeHeapItem)
+		item, ok := heap.Pop(h).(mergeHeapItem)
+		if !ok {
+			panic("merge heap returned an unexpected item type")
+		}
 		result = append(result, item.cov[item.idx])
 		item.idx++
 		if item.idx < len(item.cov) {

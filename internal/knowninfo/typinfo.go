@@ -352,6 +352,7 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 			symName = fmt.Sprintf("itab:%s,%s", interType.Name, goType.Name)
 		case goType != nil:
 			symName = fmt.Sprintf("itab:%s", goType.Name)
+		default:
 		}
 
 		sym := entity.NewSymbol(symName, itabAddr, itabSize, entity.AddrTypeData)
