@@ -1,15 +1,14 @@
 module github.com/Zxilly/go-size-analyzer
 
-go 1.26.0
+go 1.26.1
 
 require (
 	charm.land/bubbles/v2 v2.1.1
 	charm.land/bubbletea/v2 v2.0.8
 	charm.land/lipgloss/v2 v2.0.5
-	github.com/ZxillyFork/gore v0.0.0-20260708092438-7895e61dd909
+	github.com/ZxillyFork/gore v0.0.0-20260820033116-cbff21943633
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
-	github.com/ZxillyFork/wazero v0.0.0-20260213135451-912d95480a5c
 	github.com/alecthomas/kong v1.16.0
 	github.com/blacktop/go-macho v1.1.282
 	github.com/charmbracelet/colorprofile v0.4.3
@@ -18,6 +17,7 @@ require (
 	github.com/charmbracelet/x/exp/teatest/v2 v2.0.0-20260517005351-920740d613be
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/dustin/go-humanize v1.0.1
+	github.com/eliben/watgo v0.8.0
 	github.com/go-delve/delve v1.27.0
 	github.com/jedib0t/go-pretty/v6 v6.8.3
 	github.com/knadh/profiler v0.2.0

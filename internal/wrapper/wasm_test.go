@@ -1,15 +1,43 @@
 package wrapper
 
 import (
+	"bytes"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ZxillyFork/wazero/notinternal/wasm"
+	"github.com/eliben/watgo/wasmir"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
+
+func TestWasmLoadRawPreservesSectionAndFunctionSizes(t *testing.T) {
+	wasmBytes := []byte{
+		0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
+		// A custom .debug_info section with two payload bytes.
+		0x00, 0x0e, 0x0b, '.', 'd', 'e', 'b', 'u', 'g', '_', 'i', 'n', 'f', 'o', 0xaa, 0xbb,
+		// One function: one local group (two i32s), then i32.const 0; end.
+		0x0a, 0x08, 0x01, 0x06, 0x01, 0x02, 0x7f, 0x41, 0x00, 0x0b,
+	}
+
+	w := &WasmWrapper{}
+	require.NoError(t, w.LoadRaw(bytes.NewReader(wasmBytes), uint64(len(wasmBytes))))
+
+	assert.Equal(t, uint64(3), w.GetFunctionSize(funcValueOffset, true))
+	assert.Equal(t, wasmSection{offset: 8, size: 16}, w.sections[".debug_info"])
+	assert.Equal(t, wasmSection{offset: 24, size: 10}, w.sections["code"])
+
+	sections := w.GetSections(3, 0)
+	for _, section := range sections {
+		if section.Name == ".debug_info" {
+			assert.True(t, section.Debug)
+			assert.Equal(t, section.FileSize, section.KnownSize)
+			return
+		}
+	}
+	t.Fatal(".debug_info section not found")
+}
 
 func TestWasmLoadSectionsMemoryDataIsVirtual(t *testing.T) {
 	w := &WasmWrapper{
@@ -38,16 +66,14 @@ func TestWasmLoadSectionsMemoryDataIsVirtual(t *testing.T) {
 
 func TestWasmGetSectionsMarksDebugSectionsAsKnown(t *testing.T) {
 	w := &WasmWrapper{
-		module: &wasm.Module{
-			Sections: map[string]*wasm.GenericSection{
-				"code": {
-					Offset: 128,
-					Size:   256,
-				},
-				"custom_.debug_info": {
-					Offset: 512,
-					Size:   64,
-				},
+		sections: map[string]wasmSection{
+			"code": {
+				offset: 128,
+				size:   256,
+			},
+			"custom_.debug_info": {
+				offset: 512,
+				size:   64,
 			},
 		},
 	}
@@ -80,19 +106,14 @@ func TestWasmGetSectionsDataKnownSize(t *testing.T) {
 	// DataSection: one active segment at offset 0x100, size 256.
 	// Symbol covers [0x120, 0x140) (32 bytes, fully inside segment).
 	// Expected dataSectUsed = 32.
-	offsetExpr := wasm.ConstantExpression{
-		Opcode: wasm.OpcodeI32Const,
-		Data:   []byte{0x80, 0x02}, // leb128 i32 = 256 = 0x100
-	}
+	offsetExpr := []wasmir.Instruction{{Kind: wasmir.InstrI32Const, I32Const: 0x100}}
 	w := &WasmWrapper{
-		module: &wasm.Module{
-			Sections: map[string]*wasm.GenericSection{
-				"data": {Offset: 8, Size: 256},
-			},
-			DataSection: []wasm.DataSegment{
-				{OffsetExpression: offsetExpr, Init: make([]byte, 256)},
+		module: &wasmir.Module{
+			Data: []wasmir.DataSegment{
+				{Mode: wasmir.DataSegmentModeActive, OffsetExpr: offsetExpr, Init: make([]byte, 256)},
 			},
 		},
+		sections: map[string]wasmSection{"data": {offset: 8, size: 256}},
 	}
 
 	symbols := entity.AddrSpace{}
@@ -119,14 +140,11 @@ func TestWasmGetSectionsDataKnownSize(t *testing.T) {
 func TestWasmComputeDataSectUsedExcludesZeroInit(t *testing.T) {
 	// Segment covers [0x100, 0x200). Symbol at [0x50, 0x80) is outside
 	// any segment (zero-initialized pages) — must not be counted.
-	offsetExpr := wasm.ConstantExpression{
-		Opcode: wasm.OpcodeI32Const,
-		Data:   []byte{0x80, 0x02}, // 256 = 0x100
-	}
+	offsetExpr := []wasmir.Instruction{{Kind: wasmir.InstrI32Const, I32Const: 0x100}}
 	w := &WasmWrapper{
-		module: &wasm.Module{
-			DataSection: []wasm.DataSegment{
-				{OffsetExpression: offsetExpr, Init: make([]byte, 256)},
+		module: &wasmir.Module{
+			Data: []wasmir.DataSegment{
+				{Mode: wasmir.DataSegmentModeActive, OffsetExpr: offsetExpr, Init: make([]byte, 256)},
 			},
 		},
 	}
@@ -146,14 +164,11 @@ func TestWasmComputeDataSectUsedExcludesZeroInit(t *testing.T) {
 }
 
 func TestWasmComputeDataSectUsedMergesOverlappingSymbols(t *testing.T) {
-	offsetExpr := wasm.ConstantExpression{
-		Opcode: wasm.OpcodeI32Const,
-		Data:   []byte{0x80, 0x02}, // 256 = 0x100
-	}
+	offsetExpr := []wasmir.Instruction{{Kind: wasmir.InstrI32Const, I32Const: 0x100}}
 	w := &WasmWrapper{
-		module: &wasm.Module{
-			DataSection: []wasm.DataSegment{
-				{OffsetExpression: offsetExpr, Init: make([]byte, 256)},
+		module: &wasmir.Module{
+			Data: []wasmir.DataSegment{
+				{Mode: wasmir.DataSegmentModeActive, OffsetExpr: offsetExpr, Init: make([]byte, 256)},
 			},
 		},
 	}
