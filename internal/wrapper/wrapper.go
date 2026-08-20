@@ -35,7 +35,7 @@ func NewWrapper(file any) RawFileWrapper {
 	case *macho.File:
 		return NewMachoWrapper(f)
 	case gore.WasmInfo:
-		return &WasmWrapper{f.Mod, f.Memory}
+		return &WasmWrapper{module: f.Module, memory: f.Memory}
 	}
 	return nil
 }

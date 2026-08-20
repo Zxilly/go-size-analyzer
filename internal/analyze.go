@@ -40,12 +40,19 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	slog.Info("Finding build info...")
 
+	rawWrapper := wrapper.NewWrapper(file.GetParsedFile())
+	if wasmWrapper, ok := rawWrapper.(*wrapper.WasmWrapper); ok {
+		if err = wasmWrapper.LoadRaw(reader, size); err != nil {
+			return nil, err
+		}
+	}
+
 	k := &knowninfo.KnownInfo{
 		Size:      size,
 		BuildInfo: file.BuildInfo,
 
 		Gore:    file,
-		Wrapper: wrapper.NewWrapper(file.GetParsedFile()),
+		Wrapper: rawWrapper,
 	}
 
 	isWasm := file.FileInfo.Arch == "wasm"
