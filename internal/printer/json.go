@@ -3,12 +3,11 @@
 package printer
 
 import (
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"io"
 	"log/slog"
 	"strings"
-
-	"encoding/json/v2"
-	"encoding/json/jsontext"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
 )

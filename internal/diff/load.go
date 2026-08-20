@@ -1,12 +1,11 @@
 package diff
 
 import (
+	"encoding/json/v2"
 	"fmt"
 	"io"
 	"log/slog"
 	"strings"
-
-	"encoding/json/v2"
 
 	"github.com/Zxilly/go-size-analyzer/internal"
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
