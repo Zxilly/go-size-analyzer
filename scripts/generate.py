@@ -128,7 +128,7 @@ def generate_vitess() -> list[RemoteBinary]:
 
 
 def generate_example() -> list[RemoteBinary]:
-    versions = ["1.24", "1.25", "1.26"]
+    versions = ["1.25", "1.26", "1.27"]
     oses = ["linux", "windows", "darwin"]
     pies = ["-pie", ""]
     cgos = ["-cgo", ""]
@@ -160,9 +160,10 @@ def generate_example() -> list[RemoteBinary]:
         )
 
     # wasm binaries
+    wasm_platforms = ["js", "wasip1"]
     wasm_strips = ["-strip", "-stripdwarf", ""]
-    for v, s in itertools.product(versions, wasm_strips):
-        name = f"bin-js-{v}-wasm{s}"
+    for v, platform, s in itertools.product(versions, wasm_platforms, wasm_strips):
+        name = f"bin-{platform}-{v}-wasm{s}"
         url = get_example_download_url(name)
 
         if url is None:
