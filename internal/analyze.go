@@ -3,6 +3,7 @@ package internal
 import (
 	"cmp"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"maps"
@@ -125,6 +126,11 @@ func runOptionalAnalyzer(
 }
 
 func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []entity.Analyzer, error) {
+	wasmWrapper, ok := k.Wrapper.(*wrapper.WasmWrapper)
+	if !ok {
+		return nil, nil, fmt.Errorf("expected WebAssembly wrapper, got %T", k.Wrapper)
+	}
+
 	// Gore file is fully consumed after LoadGoreInfo for wasm (no DWARF step).
 	debug.FreeOSMemory()
 	utils.WaitDebugger("After force gc")
@@ -147,7 +153,6 @@ func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []
 
 	k.CalculatePackageSize()
 
-	wasmWrapper := k.Wrapper.(*wrapper.WasmWrapper)
 	codeSectUsed := wasmCodeSectUsed(k)
 	dataSectUsed := wasmWrapper.ComputeDataSectUsed(k.KnownAddr.SymbolAddrSpace)
 	sections := wasmWrapper.GetSections(codeSectUsed, dataSectUsed)
