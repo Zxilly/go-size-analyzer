@@ -55,7 +55,7 @@ func (w *WasmWrapper) GetFunctionSize(idx uint64, meq125 bool) uint64 {
 
 func readWasmUint32(r io.ByteReader) (uint32, uint64, error) {
 	var value uint32
-	for i := 0; i < 5; i++ {
+	for i := 0; ; i++ {
 		b, err := r.ReadByte()
 		if err != nil {
 			return 0, uint64(i), err
@@ -68,7 +68,6 @@ func readWasmUint32(r io.ByteReader) (uint32, uint64, error) {
 			return value, uint64(i + 1), nil
 		}
 	}
-	return 0, 5, errors.New("invalid WebAssembly uint32 LEB128")
 }
 
 func wasmSectionName(id byte) string {
