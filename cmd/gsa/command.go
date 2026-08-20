@@ -13,7 +13,7 @@ import (
 )
 
 var Options struct {
-	Verbose bool   `help:"Verbose output"`
+	Verbose bool    `help:"Verbose output"`
 	Format  *string `short:"f" enum:"text,json,html,svg" help:"Output format: text|json|html|svg. If omitted, inferred from -o extension (.txt/.json/.html/.svg); otherwise text."`
 
 	NoDisasm bool `help:"Skip disassembly pass"`

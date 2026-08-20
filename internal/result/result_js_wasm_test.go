@@ -7,11 +7,11 @@ import (
 	"compress/gzip"
 	_ "embed"
 	"encoding/gob"
+	"encoding/json/v2"
 	"os"
 	"syscall/js"
 	"testing"
 
-	"encoding/json/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 

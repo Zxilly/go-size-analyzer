@@ -162,8 +162,8 @@ func TestOnlyInMemorySymbolNotCounted(t *testing.T) {
 	t.Run("PE .data section with BSS tail", func(t *testing.T) {
 		const (
 			baseAddr    = 0x14011a000
-			fileSize    = 0x6E00     // 28 KB raw data
-			virtualSize = 0x2000000  // 32 MB virtual (includes BSS)
+			fileSize    = 0x6E00    // 28 KB raw data
+			virtualSize = 0x2000000 // 32 MB virtual (includes BSS)
 		)
 		dataSection := &Section{
 			Name:         ".data",
