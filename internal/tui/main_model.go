@@ -70,6 +70,7 @@ func (m mainModel) keyboardBindings() ([]key.Binding, [][]key.Binding) {
 		focusKeys = tableKeyMap()
 	case focusedDetail:
 		focusKeys = m.rightDetail.KeyMap()
+	default:
 	}
 
 	return append(mainKeys, focusKeys...), [][]key.Binding{mainKeys, focusKeys}

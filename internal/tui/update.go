@@ -93,6 +93,7 @@ func handleKeyEvent(m mainModel, msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 	case focusedDetail:
 		m.rightDetail, cmd = m.rightDetail.Update(msg)
 		m = m.reconcile()
+	default:
 	}
 
 	return m, cmd
@@ -120,6 +121,7 @@ func handleMouseWheelEvent(m mainModel, msg tea.MouseWheelMsg) (mainModel, tea.C
 			tableScrollBy(&m.leftTable, -wheelScrollLines)
 		case tea.MouseWheelDown:
 			tableScrollBy(&m.leftTable, wheelScrollLines)
+		default:
 		}
 		// The pointer hasn't moved but the row under it has, since the
 		// visible window shifted. Recompute hover from msg.X/msg.Y so the
@@ -172,6 +174,7 @@ func (m mainModel) dragScrollbarTo(y int) mainModel {
 	case scrollbarDragRight:
 		m.rightDetail.viewPort.SetYOffset(offset)
 		m.focus = focusedDetail
+	default:
 	}
 	m = m.reconcile()
 	return m
@@ -296,6 +299,7 @@ func (m mainModel) applyHelpMode(msg tea.Msg) mainModel {
 		m.helpMode = helpModeKeyboard
 	case tea.MouseClickMsg, tea.MouseWheelMsg:
 		m.helpMode = helpModeMouse
+	default:
 	}
 	return m
 }

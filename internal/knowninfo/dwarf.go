@@ -189,11 +189,9 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 			pkg.Name = cuName
 		}
 		typ := entity.PackageTypeVendor
-		if cuName == "main" {
-			typ = entity.PackageTypeMain
-		} else if gore.IsStandardLibrary(cuName) {
+		if gore.IsStandardLibrary(cuName) && cuName != "main" {
 			typ = entity.PackageTypeStd
-		} else if k.isMainModulePackage(cuName) {
+		} else if cuName == "main" || k.isMainModulePackage(cuName) {
 			typ = entity.PackageTypeMain
 		}
 		pkg.Type = typ
