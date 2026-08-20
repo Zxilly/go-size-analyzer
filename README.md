@@ -42,12 +42,12 @@ scoop install go-size-analyzer
 ### Go Install
 
 ```
-GOEXPERIMENT=jsonv2 go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
+go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 ```
 
 > [!NOTE]
-> The project relies on the `encoding/json/v2` package, which requires Go 1.25+ with
-> `GOEXPERIMENT=jsonv2` enabled when building from source.
+> Building from source requires Go 1.27 or later because the project uses
+> `encoding/json/v2`.
 
 ## Usage
 
