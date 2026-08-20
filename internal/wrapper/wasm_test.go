@@ -2,6 +2,9 @@ package wrapper
 
 import (
 	"bytes"
+	"errors"
+	"io"
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,6 +14,190 @@ import (
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 )
+
+const wasmHeader = "\x00asm\x01\x00\x00\x00"
+
+func rawWasm(parts ...[]byte) []byte {
+	data := []byte(wasmHeader)
+	for _, part := range parts {
+		data = append(data, part...)
+	}
+	return data
+}
+
+func rawWasmSection(id byte, payload []byte) []byte {
+	if len(payload) >= 0x80 {
+		panic("test payload is too large")
+	}
+	return append([]byte{id, byte(len(payload))}, payload...)
+}
+
+type failingReaderAt struct {
+	data []byte
+	err  error
+}
+
+func (r failingReaderAt) ReadAt(p []byte, off int64) (int, error) {
+	if off >= int64(len(r.data)) {
+		return 0, r.err
+	}
+	n := copy(p, r.data[off:])
+	if n < len(p) {
+		return n, r.err
+	}
+	return n, nil
+}
+
+func TestWasmLoadRawRejectsMalformedModuleEnvelope(t *testing.T) {
+	forcedReadError := errors.New("forced read failure")
+	truncatedSection := rawWasm([]byte{0x01, 0x02, 0x00})
+
+	tests := []struct {
+		name    string
+		reader  io.ReaderAt
+		size    uint64
+		wantErr string
+	}{
+		{
+			name:    "file size overflows SectionReader",
+			reader:  bytes.NewReader(nil),
+			size:    math.MaxInt64 + 1,
+			wantErr: "WebAssembly file is too large",
+		},
+		{
+			name:    "truncated header",
+			reader:  bytes.NewReader([]byte(wasmHeader[:4])),
+			size:    4,
+			wantErr: "read WebAssembly header",
+		},
+		{
+			name:    "invalid header",
+			reader:  bytes.NewReader(make([]byte, len(wasmHeader))),
+			size:    uint64(len(wasmHeader)),
+			wantErr: "invalid WebAssembly header",
+		},
+		{
+			name:    "missing section id",
+			reader:  bytes.NewReader([]byte(wasmHeader)),
+			size:    uint64(len(wasmHeader) + 1),
+			wantErr: "read WebAssembly section id",
+		},
+		{
+			name: "overflowing section size",
+			reader: bytes.NewReader(rawWasm([]byte{
+				0x01, 0x80, 0x80, 0x80, 0x80, 0x10,
+			})),
+			size:    uint64(len(wasmHeader) + 6),
+			wantErr: "WebAssembly uint32 LEB128 overflow",
+		},
+		{
+			name:    "section exceeds declared file size",
+			reader:  bytes.NewReader(rawWasm([]byte{0x01, 0x02, 0x00})),
+			size:    uint64(len(wasmHeader) + 3),
+			wantErr: "WebAssembly section exceeds file size",
+		},
+		{
+			name:    "section payload read fails",
+			reader:  failingReaderAt{data: truncatedSection, err: forcedReadError},
+			size:    uint64(len(truncatedSection) + 1),
+			wantErr: forcedReadError.Error(),
+		},
+		{
+			name:    "section payload is truncated",
+			reader:  bytes.NewReader(truncatedSection),
+			size:    uint64(len(truncatedSection) + 1),
+			wantErr: `WebAssembly section "type" is truncated`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := &WasmWrapper{}
+			err := w.LoadRaw(tt.reader, tt.size)
+			require.ErrorContains(t, err, tt.wantErr)
+		})
+	}
+}
+
+func TestWasmLoadRawRejectsMalformedSectionPayloads(t *testing.T) {
+	tests := []struct {
+		name    string
+		section []byte
+		wantErr string
+	}{
+		{
+			name:    "custom section name length is truncated",
+			section: rawWasmSection(0, []byte{0x80}),
+			wantErr: "read WebAssembly section",
+		},
+		{
+			name:    "custom section name is truncated",
+			section: rawWasmSection(0, []byte{0x02, 'a'}),
+			wantErr: "unexpected EOF",
+		},
+		{
+			name:    "code function count is truncated",
+			section: rawWasmSection(10, []byte{0x80}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+		{
+			name:    "function body size is truncated",
+			section: rawWasmSection(10, []byte{0x01, 0x80}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+		{
+			name:    "local group count is truncated",
+			section: rawWasmSection(10, []byte{0x01, 0x01, 0x80}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+		{
+			name:    "local count is truncated",
+			section: rawWasmSection(10, []byte{0x01, 0x02, 0x01, 0x80}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+		{
+			name:    "local type is missing",
+			section: rawWasmSection(10, []byte{0x01, 0x02, 0x01, 0x00}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+		{
+			name:    "locals exceed function body",
+			section: rawWasmSection(10, []byte{0x01, 0x01, 0x01, 0x00, 0x7f}),
+			wantErr: "WebAssembly function locals exceed body size",
+		},
+		{
+			name:    "function instructions are truncated",
+			section: rawWasmSection(10, []byte{0x01, 0x02, 0x00}),
+			wantErr: `read WebAssembly section "code"`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			wasmBytes := rawWasm(tt.section)
+			w := &WasmWrapper{}
+			err := w.LoadRaw(bytes.NewReader(wasmBytes), uint64(len(wasmBytes)))
+			require.ErrorContains(t, err, tt.wantErr)
+		})
+	}
+}
+
+func TestWasmLoadRawRecordsKnownSectionNames(t *testing.T) {
+	wasmBytes := rawWasm(
+		rawWasmSection(8, nil),
+		rawWasmSection(12, nil),
+		rawWasmSection(13, nil),
+	)
+	w := &WasmWrapper{}
+	require.NoError(t, w.LoadRaw(bytes.NewReader(wasmBytes), uint64(len(wasmBytes))))
+
+	sections := w.GetSections(0, 0)
+	names := make([]string, 0, len(sections))
+	for _, section := range sections {
+		names = append(names, section.Name)
+	}
+	assert.ElementsMatch(t, []string{"start", "data_count", "tag"}, names)
+}
 
 func TestWasmLoadRawPreservesSectionAndFunctionSizes(t *testing.T) {
 	wasmBytes := []byte{
