@@ -7,11 +7,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"runtime/pprof"
 	"time"
 
 	"github.com/knadh/profiler"
 
+	"github.com/Zxilly/go-size-analyzer/internal/profilerconfig"
 	"github.com/Zxilly/go-size-analyzer/internal/utils"
 )
 
@@ -23,7 +25,7 @@ func main() {
 		panic("OUTPUT_DIR environment variable is not set")
 	}
 
-	targets := []int{profiler.Cpu, profiler.Mutex, profiler.Goroutine, profiler.Block, profiler.ThreadCreate, profiler.Trace}
+	targets := profilerconfig.Targets(runtime.GOOS)
 
 	p := profiler.New(
 		profiler.Conf{
