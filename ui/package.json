@@ -25,7 +25,7 @@
     "d3-scale": "^4.0.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-dropzone": "^20.0.0",
+    "react-dropzone": "^20.1.1",
     "react-use": "^17.6.1",
     "valibot": "^1.4.2"
   },
