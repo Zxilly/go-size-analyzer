@@ -179,6 +179,11 @@ func (k *KnownInfo) AddDwarfSubProgram(
 		Receiver: receiverName,
 		PclnSize: entity.NewEmptyPclnSymbolSize(),
 	}
+	if len(ranges) > 1 {
+		for _, r := range ranges {
+			fn.Ranges = append(fn.Ranges, entity.AddrPos{Addr: r[0], Size: r[1] - r[0], Type: entity.AddrTypeText})
+		}
+	}
 	fn.Init()
 
 	added := pkg.AddFuncIfNotExists(filename, fn)
@@ -209,6 +214,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 		if pkg == nil {
 			pkg = entity.NewPackage()
 			pkg.Name = cuName
+			k.Deps.Trie.Put(cuName, pkg)
 		}
 		typ := entity.PackageTypeVendor
 		if gore.IsStandardLibrary(cuName) && cuName != "main" {

@@ -131,22 +131,6 @@ func EntryShouldIgnore(entry *dwarf.Entry) bool {
 		}
 	}
 
-	externalAny := entry.Val(dwarf.AttrExternal)
-	if externalAny != nil {
-		external, ok := externalAny.(bool)
-		if !ok {
-			slog.Debug(fmt.Sprintf("Failed to load DWARF function as dwarf.AttrExternal type unexpected %T: %s", externalAny, EntryPrettyPrint(entry)))
-			return true
-		}
-
-		if external {
-			if entry.Tag == dwarf.TagSubprogram {
-				// external function doesn't exist in this entry
-				return true
-			}
-		}
-	}
-
 	return false
 }
 

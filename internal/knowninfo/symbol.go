@@ -54,9 +54,16 @@ func (k *KnownInfo) resolvePackage(pkgPath string, fallbackType entity.PackageTy
 }
 
 func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrType) {
-	if typ != entity.AddrTypeData {
-		// todo: support text symbols, cross check with pclntab
+	if typ != entity.AddrTypeData && typ != entity.AddrTypeText {
 		return
+	}
+	if typ == entity.AddrTypeText {
+		if !k.Sects.IsText(addr, size) || size == 0 {
+			return
+		}
+		if _, exists := k.KnownAddr.TextAddrSpace.Get(addr); exists {
+			return
+		}
 	}
 
 	var pkg *entity.Package
@@ -84,10 +91,17 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 			// try longest prefix match as fallback
 			pkg, ok = k.Deps.GetPackageByPrefixMatch(pkgName)
 			if !ok {
-				slog.Debug("package not found", "name", pkgName, "symbol", name, "type", typ)
-				return
+				pkg = k.getOrCreateVirtualPackage(pkgName, entity.PackageTypeUnknown)
 			}
 		}
+	}
+	if typ == entity.AddrTypeText {
+		fn := &entity.Function{Name: name, Addr: addr, CodeSize: size, Type: entity.FuncTypeFunction, PclnSize: entity.NewEmptyPclnSymbolSize()}
+		fn.Init()
+		if pkg.AddFuncIfNotExists("<symbols>", fn) {
+			k.KnownAddr.InsertTextFromSymbol(addr, size, fn)
+		}
+		return
 	}
 
 	symbol := entity.NewSymbol(name, addr, size, typ)

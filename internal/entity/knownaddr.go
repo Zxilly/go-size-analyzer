@@ -72,6 +72,11 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function)
 	f.cancelIfSectionTypeMismatch(&cur, f.TextAddrSpace)
 }
 
+func (f *KnownAddr) InsertTextFromSymbol(entry, size uint64, fn *Function) {
+	cur := &Addr{AddrPos: &AddrPos{Addr: entry, Size: size, Type: AddrTypeText}, Pkg: fn.pkg, Function: fn, SourceType: AddrSourceSymbol}
+	f.cancelIfSectionTypeMismatch(cur, f.TextAddrSpace)
+}
+
 func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{

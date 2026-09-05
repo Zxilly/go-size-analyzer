@@ -148,7 +148,7 @@ func (e *ElfWrapper) LoadSymbols(marker func(name string, addr uint64, size uint
 		switch sect.Flags & (elf.SHF_WRITE | elf.SHF_ALLOC | elf.SHF_EXECINSTR) {
 		case elf.SHF_ALLOC | elf.SHF_EXECINSTR:
 			typ = entity.AddrTypeText
-		case elf.SHF_ALLOC:
+		case elf.SHF_ALLOC, elf.SHF_ALLOC | elf.SHF_WRITE:
 			typ = entity.AddrTypeData
 		default:
 			continue // wtf?

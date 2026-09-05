@@ -65,15 +65,16 @@ func (k *KnownInfo) Disasm() error {
 
 	for fn := range k.Deps.Functions {
 		eg.Go(func() error {
-			candidates := e.Extract(fn.Addr, fn.Addr+fn.CodeSize)
-
-			lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
-				resultChan <- result{
-					addr: p.Addr,
-					size: p.Size,
-					fn:   fn,
-				}
-			})
+			for region := range fn.CodeRegions {
+				candidates := e.Extract(region.Addr, region.Addr+region.Size)
+				lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
+					resultChan <- result{
+						addr: p.Addr,
+						size: p.Size,
+						fn:   fn,
+					}
+				})
+			}
 
 			return nil
 		})
