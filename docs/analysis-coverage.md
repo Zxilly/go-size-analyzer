@@ -1,97 +1,97 @@
-# Expanding binary analysis coverage
+# 扩大二进制分析覆盖率的方案
 
-This document concerns attribution of on-disk binary bytes. The observations below were collected on 2026-09-05, after repairing package coverage mutation, function identity, ELF pclntab attribution, DWARF byte order, and standalone section display.
+本文讨论磁盘上二进制文件的字节归属。以下数据采集于 2026-09-05，当时已修复包覆盖范围被修改、函数身份误判、ELF pclntab 归属、DWARF 字节序和独立段显示等问题。
 
-## Measure distinct outcomes
+## 区分统计口径
 
-The analyzer should report three separate quantities:
+分析器应分别报告以下三类字节：
 
-1. **Attributed bytes:** unique file ranges assigned to packages, functions, symbols, or shared runtime data.
-2. **Recognized standalone bytes:** understood structures such as DWARF, symbol tables, relocation tables, and binary headers that have not been assigned to packages.
-3. **Unclassified bytes:** remaining file ranges without an explanation.
+1. **已归属字节：** 已分配给包、函数、符号或共享运行时数据的唯一文件区间。
+2. **已识别的独立结构字节：** 已知其含义、但尚未分配给包的结构，例如 DWARF、符号表、重定位表和二进制文件头。
+3. **未分类字节：** 尚无解释的剩余文件区间。
 
-`Section.KnownSize` currently represents bytes attributed elsewhere. Marking a debug section fully known without assigning its bytes to a package made it disappear from every presentation that subtracts KnownSize. Recognized standalone sections now retain their own area.
+`Section.KnownSize` 当前表示已经归属到其他对象的字节数。此前将整个调试段标为 known，却没有把这些字节归属到包，导致它在所有扣除 KnownSize 的展示中消失。修复后，已识别的独立段会保留自己的面积。
 
-Package sizes may include shared ranges. Their sum is not a unique coverage measurement. The treemap normalizes shared package areas while reserving the exact area of standalone sections and file headers; original symbol sizes remain available in tooltips. That presentation rule does not establish exclusive ownership of shared bytes.
+包大小可能包含共享区间，因此不能直接相加得到去重后的覆盖量。Treemap 会归一化共享包的面积，同时为独立段和文件头保留准确的面积；提示信息仍展示原始符号大小。这种展示规则并不等于已经确定共享字节的独占归属。
 
-## Measurements
+## 实测结果
 
-Values are bytes. "Attributed" is the current sum of section KnownSize values, which still includes estimated pclntab accounting; it is not yet a precise interval-based coverage metric.
+下表单位均为字节。“当前已归属字节”是各段 KnownSize 的总和，其中仍包含 pclntab 的估算值，尚不能作为精确的字节区间覆盖指标。
 
-| Sample | Go version | File bytes | Current attributed bytes | Remaining regions worth investigating |
+| 样本 | Go 版本 | 文件字节数 | 当前已归属字节 | 值得继续分析的剩余区域 |
 |---|---|---:|---:|---|
-| docker-compose-linux-x86_64 | 1.21.11 | 63,083,225 | 50,407,268 | .rodata 4,060,962; .noptrdata 599,472; .data 197,936 |
-| analysis-server-linux | 1.22.1 | 60,725,080 | 46,589,675 | .rodata 1,626,570; .text 946,454 |
-| bin-js-1.27-wasm | 1.27 | 2,644,952 | 1,968,736 | data 586,092; name 67,652; code 14,563 |
-| bin-wasip1-1.27-wasm | 1.27 | 2,554,276 | 1,899,637 | data 567,361; name 65,560; code 14,075 |
-| Local PE fixture with a global string | 1.27 | 2,506,752 | 1,585,300 | .data 44,730; investigate inferred symbol boundaries and shared type metadata |
+| docker-compose-linux-x86_64 | 1.21.11 | 63,083,225 | 50,407,268 | .rodata 4,060,962；.noptrdata 599,472；.data 197,936 |
+| analysis-server-linux | 1.22.1 | 60,725,080 | 46,589,675 | .rodata 1,626,570；.text 946,454 |
+| bin-js-1.27-wasm | 1.27 | 2,644,952 | 1,968,736 | data 586,092；name 67,652；code 14,563 |
+| bin-wasip1-1.27-wasm | 1.27 | 2,554,276 | 1,899,637 | data 567,361；name 65,560；code 14,075 |
+| 含全局字符串的本地 PE 测试样本 | 1.27 | 2,506,752 | 1,585,300 | .data 44,730；需检查推断的符号边界及共享类型元数据 |
 
-Docker Compose additionally contains 5,548,161 bytes of `.strtab` and 2,120,280 bytes of `.symtab`. The analysis-server sample contains 7,122,432 bytes of DWARF. These are recognized standalone structures, not unexplained payloads.
+Docker Compose 另外包含 5,548,161 字节 `.strtab` 和 2,120,280 字节 `.symtab`。analysis-server 样本包含 7,122,432 字节 DWARF。这些区域属于已识别的独立结构。
 
-The sum of package sizes for Docker Compose is 56,568,151 bytes, exceeding the section attribution sum by 6,160,883 bytes. This is direct evidence that a package-sum percentage would overstate unique coverage.
+Docker Compose 各包大小之和为 56,568,151 字节，比各段已归属字节之和多出 6,160,883 字节。这直接说明：用包大小之和计算覆盖率会高估去重后的覆盖量。
 
-## Recommended sequence
+## 建议实施顺序
 
-### 1. Establish a file-range accounting ledger
+### 1. 建立文件字节区间台账
 
-Use half-open file-offset intervals as the accounting unit, retaining analyzer provenance and one or more owners. Convert virtual addresses through the actual file mappings. For WASM, retain encoded section/function/data-segment offsets alongside linear-memory addresses.
+以文件偏移的左闭右开区间作为计量单位，保留分析器来源以及一个或多个归属对象。虚拟地址必须通过实际文件映射转换。对于 WASM，应同时保留编码后的段、函数和数据段偏移，以及线性内存地址。
 
-Keep package-local coverage separate from immutable global coverage. Compute unique covered bytes by interval union and distinguish shared bytes from exclusive ownership. Expose unclassified intervals per section with reasons such as missing symbols, unsupported architecture, unsupported location expression, or unmapped data.
+包内覆盖范围与不可变的全局覆盖范围应分开维护。通过区间并集计算唯一覆盖字节，并区分共享与独占归属。按段暴露未分类区间，同时记录原因，例如缺少符号、不支持的架构、不支持的位置表达式或未映射的数据。
 
-Pclntab particularly needs this: `PclnSymbolSize` currently adds per-function names and PC-data sizes, which can reference shared bytes, and section accounting clamps overestimates. Extend the gosym/gore integration to expose actual byte ranges before advertising an exact coverage percentage.
+pclntab 尤其需要这种处理：`PclnSymbolSize` 当前累加每个函数的名称及 PC 数据大小，但多个函数可能引用共享字节，段计量随后又会截断过大的估算值。应先扩展 gosym/gore 集成，使其提供实际字节区间，再对外报告精确覆盖率。
 
-Acceptance criteria:
+验收标准：
 
-- Every counted interval is within a file-backed range; BSS and virtual memory are excluded.
-- Attributed, recognized standalone, and unclassified intervals partition the physical file without overlap.
-- Analyzer execution order and repeated runs do not change byte totals.
-- Shared symbols and type auxiliary records do not increase global unique coverage twice.
+- 所有计入的区间均有文件字节作为支撑，排除 BSS 和仅存在于虚拟内存中的区域。
+- 已归属、已识别独立结构和未分类区间共同覆盖整个物理文件，三者互不重叠。
+- 分析器执行顺序及重复运行不改变字节总数。
+- 共享符号和类型辅助记录不会被重复计入全局唯一覆盖量。
 
-### 2. Recover available ELF writable-data symbols
+### 2. 利用现成的 ELF 可写数据符号
 
-`ElfWrapper.LoadSymbols` currently recognizes read-only allocated data but skips `SHF_ALLOC | SHF_WRITE`. Supporting bounded, file-backed writable symbols can recover global variables even when DWARF was removed but the symbol table remains.
+`ElfWrapper.LoadSymbols` 当前识别已分配的只读数据，但会跳过 `SHF_ALLOC | SHF_WRITE`。支持边界明确且有文件内容的可写符号，可以在移除了 DWARF、但仍保留符号表的二进制中恢复全局变量归属。
 
-A direct symbol-table scan of Docker Compose found:
+直接扫描 Docker Compose 符号表得到：
 
-| Section | Symbols | Union of symbol ranges |
+| 段 | 符号数量 | 符号区间并集大小 |
 |---|---:|---:|
 | .data | 2,188 | 60,209 B |
 | .noptrdata | 952 | 307,761 B |
 
-The approximately 368 KB total is a candidate range, not a promised incremental gain: intersect it with the ledger's current gaps first. Exclude BSS and linker boundary markers. Handle packages containing only data, including Go DWARF compilation units that currently create a Package without inserting it into the dependency trie.
+合计约 368 KB 是候选范围，实际新增覆盖量需要先与台账中的未覆盖区间求交集。应排除 BSS 和链接器边界标记，并处理只有数据的包。其中包括当前仅创建 Package、却未将其插入依赖前缀树的 Go DWARF 编译单元。
 
-### 3. Recover external C/C++ definitions
+### 3. 恢复外部 C/C++ 函数定义
 
-`EntryShouldIgnore` treats `DW_AT_external` on a subprogram as grounds to skip it. External linkage can describe a real definition with address ranges; `DW_AT_declaration` and missing ranges should be handled separately.
+`EntryShouldIgnore` 当前会因为子程序带有 `DW_AT_external` 而跳过它。外部链接属性也可以描述具有实际地址范围的函数定义；应分别判断 `DW_AT_declaration` 和地址范围是否缺失。
 
-The analysis-server DWARF contains 357 non-Go external definitions whose ranges union to 55,479 bytes inside `.text`. This is a bounded opportunity within the 946,454-byte text remainder. Further coverage can come from ordinary ELF function symbols for code absent from Go pclntab, including binaries without DWARF.
+analysis-server 的 DWARF 中有 357 个非 Go 外部定义，它们在 `.text` 内的区间并集为 55,479 字节。这是 946,454 字节未归属代码中的一个明确候选范围。对于不在 Go pclntab 中的代码，还可以利用普通 ELF 函数符号恢复归属，包括没有 DWARF 的二进制。
 
-Preserve non-contiguous function ranges rather than disassembling `[first address, first address + sum of sizes)`. Validate against C/C++ fixtures with external definitions, declarations, aliases, and split functions.
+应保留函数的不连续地址区间，不能按 `[首地址, 首地址 + 各区间大小之和)` 进行反汇编。需要使用包含外部定义、声明、别名及拆分函数的 C/C++ 样本验证。
 
-### 4. Add validated string and static-data extraction
+### 4. 扩展经过校验的字符串和静态数据提取
 
-The native disassembler currently implements amd64 RIP-relative LEA followed by an immediate length. Negative RIP displacements are now sign-extended correctly. Additional useful patterns are:
+原生反汇编器目前实现了 amd64 的 RIP 相对 LEA 指令与后续立即数长度的匹配，RIP 负位移现已正确进行符号扩展。还可以支持以下模式：
 
-- AMD64 loads of a static string header: a pointer and length from adjacent storage, followed through the applicable relocation mapping.
-- ARM64 ADRP/ADD or literal loads combined with an immediate length, using register tracking within a bounded basic block.
-- Static string and byte-slice headers identified by DWARF or type/relocation information.
+- AMD64 静态字符串头加载：从相邻存储位置取得指针和长度，并应用对应的重定位映射。
+- ARM64 的 ADRP/ADD 或字面量加载与立即数长度组合，在有界基本块内跟踪寄存器。
+- 通过 DWARF、类型或重定位信息识别的静态字符串头和字节切片头。
 
-Require a file-backed data range, a bounded length, and evidence of a matching pointer/length pair. UTF-8 validity alone is insufficient; machine words and other metadata can resemble strings. Record heuristic provenance and measure false positives as well as recovered bytes.
+识别结果必须落在有文件内容的数据区间内，长度有界，并有证据表明指针与长度构成有效配对。仅校验 UTF-8 不足以确认字符串，因为机器字和其他元数据也可能符合条件。应记录启发式判断的来源，同时测量新增覆盖字节与误报率。
 
-The multi-megabyte `.rodata` remainders make this more promising than optimizations that merely relabel metadata sections.
+现有样本中仍有数 MB 的 `.rodata` 未归属，因此这一方向值得优先研究。
 
-### 5. Expand WASM attribution using semantic and encoded information
+### 5. 结合语义与编码信息扩大 WASM 归属范围
 
-The largest remaining WASM region is the data section. Explore statically recoverable data references in watgo IR and global pointer/length records, then intersect them with actual active data segments. Do not count zero-initialized memory as file bytes.
+WASM 中最大的剩余区域是数据段。可以研究 watgo IR 中可静态恢复的数据引用，以及全局指针和长度记录，再将结果与实际的活动数据段求交集。零初始化内存不能计为文件字节。
 
-For code, distinguish function instructions from local declarations, body-length encodings, section counts, imported functions, and generated wrappers. The current 14–15 KB code remainder provides a small, measurable target. The 65–68 KB name sections can be recognized immediately and optionally attributed using function indices.
+对于代码，需要区分函数指令、局部变量声明、函数体长度编码、段内计数、导入函数和生成的包装函数。当前约 14–15 KB 的代码段余量是一个较小且可测量的目标。约 65–68 KB 的 name 段可以直接识别，也可以进一步按函数索引归属。
 
-Preserve multiple custom sections with identical names when introducing a physical ledger; the current name-keyed section map is not sufficient to represent every valid WASM file.
+引入物理文件台账时，应保留名称相同的多个自定义段；当前以名称为键的段映射无法完整表示所有合法 WASM 文件。
 
-## Validation and performance
+## 验证与性能
 
-Use fixtures spanning ELF, PE, Mach-O, js/wasm, wasip1/wasm, stripped and DWARF-only-stripped builds, PIE, CGO, and both byte orders. For each new analyzer, compare unique new intervals against the pre-existing uncovered intervals and check that known zero-initialized memory stays excluded.
+测试样本应覆盖 ELF、PE、Mach-O、js/wasm、wasip1/wasm，完整剥离和仅移除 DWARF 的构建，PIE、CGO，以及大小端架构。每个新分析器都应将新增区间去重，并与此前的未覆盖区间比较，同时确认已知的零初始化内存仍被排除。
 
-Keep speed measurements separate from attribution changes. The fixed-window amd64 extractor was compared against the previous full-instruction-slice implementation on 75,714 functions, producing identical 37,696 candidate records. The retained `BenchmarkExtractBinaryFunctions` uses a real Go ELF fixture; three local runs reduced allocation from about 71.0 MB/op to 1.73 MB/op while retaining 1,279 candidates/op. The local median extraction time changed from about 34.1 ms/op to 20.9 ms/op.
+性能测量应与归属规则变化分开进行。固定窗口 amd64 提取器已与此前保存全部指令切片的实现逐项比较：75,714 个函数产生的 37,696 条候选记录完全一致。保留的 `BenchmarkExtractBinaryFunctions` 使用真实 Go ELF 样本；三次本地运行中，分配量从约 71.0 MB/op 降至 1.73 MB/op，候选数量保持 1,279 条/op。本地提取耗时中位数从约 34.1 ms/op 降至 20.9 ms/op。
 
-Prioritize the accounting ledger and writable-data/C-definition improvements, then implement architecture and WASM extraction. Avoid claiming 100% coverage by marking entire recognizable sections as package-attributed.
+建议优先完成字节区间台账、可写数据符号和 C/C++ 定义归属，再扩展架构及 WASM 提取能力。覆盖率应建立在真实字节归属上，不能通过把整个可识别段标为已归属来宣称 100% 覆盖。
