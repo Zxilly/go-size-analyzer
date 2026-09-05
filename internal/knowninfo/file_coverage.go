@@ -99,13 +99,13 @@ func addFileHeaders(ledger *entity.FileLedger, r io.ReaderAt, size uint64) error
 			order = binary.BigEndian
 		}
 		var ph, sh uint64
-		var eh, pent, pn, sent, sn uint16
+		var eh, pent, programCount, sent, sn uint16
 		if h[4] == 2 && n >= 64 {
 			ph = order.Uint64(h[32:])
 			sh = order.Uint64(h[40:])
 			eh = order.Uint16(h[52:])
 			pent = order.Uint16(h[54:])
-			pn = order.Uint16(h[56:])
+			programCount = order.Uint16(h[56:])
 			sent = order.Uint16(h[58:])
 			sn = order.Uint16(h[60:])
 		} else {
@@ -113,14 +113,14 @@ func addFileHeaders(ledger *entity.FileLedger, r io.ReaderAt, size uint64) error
 			sh = uint64(order.Uint32(h[32:]))
 			eh = order.Uint16(h[40:])
 			pent = order.Uint16(h[42:])
-			pn = order.Uint16(h[44:])
+			programCount = order.Uint16(h[44:])
 			sent = order.Uint16(h[46:])
 			sn = order.Uint16(h[48:])
 		}
 		if err := add(0, uint64(eh), "elf-header"); err != nil {
 			return err
 		}
-		if err := add(ph, uint64(pent)*uint64(pn), "elf-program-headers"); err != nil {
+		if err := add(ph, uint64(pent)*uint64(programCount), "elf-program-headers"); err != nil {
 			return err
 		}
 		return add(sh, uint64(sent)*uint64(sn), "elf-section-headers")
