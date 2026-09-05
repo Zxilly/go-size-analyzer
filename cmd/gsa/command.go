@@ -50,7 +50,7 @@ var Options struct {
 	DiffTarget string `arg:"" name:"diff file" optional:"" help:"New binary file or result json file to compare, optional" type:"existingfile"`
 }
 
-func init() {
+func parseCommandLine() {
 	kong.Parse(&Options,
 		kong.Name("gsa"),
 		kong.Description("A tool for determining the extent to "+

@@ -28,7 +28,9 @@ import (
 type outputSpec struct {
 	format string
 	writer io.Writer
-	closer io.Closer
+	path   string
+	file   *os.File
+	temp   string
 }
 
 func inferFormatFromPath(path string) string {
@@ -56,11 +58,10 @@ func resolveSingleOutput(path string) (outputSpec, error) {
 	} else {
 		format = printer.FormatText
 	}
-	w, c, err := openPath(path)
-	if err != nil {
-		return outputSpec{}, err
+	if inferred := inferFormatFromPath(path); Options.Format != nil && inferred != "" && inferred != format {
+		return outputSpec{}, fmt.Errorf("format %s conflicts with output extension %s", format, filepath.Ext(path))
 	}
-	return outputSpec{format: format, writer: w, closer: c}, nil
+	return outputSpec{format: format, path: path}, nil
 }
 
 func parseOutputs() ([]outputSpec, error) {
@@ -129,30 +130,9 @@ func parseOutputs() ([]outputSpec, error) {
 			continue
 		}
 
-		w, c, err := openPath(path)
-		if err != nil {
-			closeAll(specs)
-			return nil, err
-		}
-		specs = append(specs, outputSpec{format: format, writer: w, closer: c})
+		specs = append(specs, outputSpec{format: format, path: path})
 	}
 	return specs, nil
-}
-
-func openPath(path string) (io.Writer, io.Closer, error) {
-	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return nil, nil, err
-	}
-	return f, f, nil
-}
-
-func closeAll(specs []outputSpec) {
-	for _, s := range specs {
-		if s.closer != nil {
-			_ = s.closer.Close()
-		}
-	}
 }
 
 func renderOne(spec outputSpec, r *result.Result, common printer.CommonOption) error {
@@ -181,6 +161,11 @@ func renderOne(spec outputSpec, r *result.Result, common printer.CommonOption) e
 }
 
 func entry() error {
+	parseCommandLine()
+	return run()
+}
+
+func run() error {
 	options := internal.Options{
 		SkipSymbol: Options.NoSymbol,
 		SkipDisasm: Options.NoDisasm,
@@ -188,46 +173,16 @@ func entry() error {
 		Imports:    Options.Imports,
 	}
 
-	if Options.DiffTarget != "" {
-		for _, o := range Options.Output {
-			if strings.Contains(o, "=") {
-				return errors.New("diff mode does not accept FORMAT=PATH -o values")
-			}
-		}
-		if len(Options.Output) > 1 {
-			return errors.New("diff mode accepts at most one -o path")
-		}
-		writer := io.Writer(utils.SyncStdout)
-		format := printer.FormatText
-		if Options.Format != nil {
-			format = *Options.Format
-		}
-		if len(Options.Output) == 1 {
-			spec, err := resolveSingleOutput(Options.Output[0])
-			if err != nil {
-				return err
-			}
-			defer spec.closer.Close()
-			writer = spec.writer
-			format = spec.format
-		}
-		return diff.Diff(writer, diff.Options{
-			Options:   options,
-			OldTarget: Options.Binary,
-			NewTarget: Options.DiffTarget,
-			Format:    format,
-			Indent:    Options.Indent,
-		})
-	}
-
 	specs, err := parseOutputs()
 	if err != nil {
 		return err
 	}
-	defer closeAll(specs)
 
 	var webBuf *bytes.Buffer
 	if Options.Web {
+		if len(Options.Output) > 0 {
+			return errors.New("--web does not write report files")
+		}
 		if len(specs) != 1 {
 			return errors.New("--web is not compatible with multi-format -o")
 		}
@@ -235,6 +190,25 @@ func entry() error {
 		specs = []outputSpec{{format: printer.FormatHTML, writer: webBuf}}
 	}
 
+	if Options.Tui && len(Options.Output) > 0 {
+		return errors.New("--tui does not write report files")
+	}
+	if Options.DiffTarget != "" && specs[0].format != printer.FormatJSON && specs[0].format != printer.FormatText {
+		return errors.New("diff mode only supports text and json output")
+	}
+	if err := prepareOutputs(specs); err != nil {
+		return err
+	}
+	defer closeAll(specs)
+	if Options.DiffTarget != "" {
+		if err := diff.Diff(specs[0].writer, diff.Options{
+			Options: options, OldTarget: Options.Binary, NewTarget: Options.DiffTarget,
+			Format: specs[0].format, Indent: Options.Indent,
+		}); err != nil {
+			return err
+		}
+		return commitOutputs(specs)
+	}
 	reader, err := utils.OpenBinary(Options.Binary)
 	if err != nil {
 		return fmt.Errorf("open binary %s: %w", Options.Binary, err)
@@ -245,6 +219,7 @@ func entry() error {
 		uint64(reader.Len()),
 		options)
 	if err != nil {
+		_ = reader.Close()
 		return fmt.Errorf("analyze %s: %w", Options.Binary, err)
 	}
 
@@ -280,6 +255,9 @@ func entry() error {
 		}
 	}
 
+	if err := commitOutputs(specs); err != nil {
+		return err
+	}
 	slog.Info("Printing done")
 
 	if Options.Web {
