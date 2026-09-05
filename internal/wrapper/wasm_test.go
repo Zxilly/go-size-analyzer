@@ -219,7 +219,7 @@ func TestWasmLoadRawPreservesSectionAndFunctionSizes(t *testing.T) {
 	for _, section := range sections {
 		if section.Name == ".debug_info" {
 			assert.True(t, section.Debug)
-			assert.Equal(t, section.FileSize, section.KnownSize)
+			assert.Zero(t, section.KnownSize)
 			return
 		}
 	}
@@ -251,7 +251,7 @@ func TestWasmLoadSectionsMemoryDataIsVirtual(t *testing.T) {
 	assert.Nil(t, store.FindSection(0x100, 0x20))
 }
 
-func TestWasmGetSectionsMarksDebugSectionsAsKnown(t *testing.T) {
+func TestWasmGetSectionsKeepsDebugSectionsVisible(t *testing.T) {
 	w := &WasmWrapper{
 		sections: map[string]wasmSection{
 			"code": {
@@ -285,7 +285,7 @@ func TestWasmGetSectionsMarksDebugSectionsAsKnown(t *testing.T) {
 
 	require.NotNil(t, debugSect)
 	assert.True(t, debugSect.Debug)
-	assert.Equal(t, debugSect.Size, debugSect.KnownSize)
+	assert.Zero(t, debugSect.KnownSize)
 	assert.False(t, debugSect.OnlyInMemory)
 	assert.False(t, debugSect.VirtualSection)
 }

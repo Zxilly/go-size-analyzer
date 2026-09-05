@@ -64,7 +64,7 @@ func Text(r *result.Result, writer io.Writer, options *CommonOption) error {
 
 	if !options.HideSections {
 		sections := lo.Filter(r.Sections, func(s *entity.Section, _ int) bool {
-			return s.Size > s.KnownSize && s.Size != s.KnownSize && !s.OnlyInMemory
+			return s.FileSize > s.KnownSize && !s.OnlyInMemory
 		})
 		for _, s := range sections {
 			unknownSize := s.FileSize - s.KnownSize

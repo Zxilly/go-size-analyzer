@@ -14,6 +14,8 @@ type Section struct {
 	Size     uint64 `json:"size"`
 	FileSize uint64 `json:"file_size"`
 
+	// Bytes attributed to packages/functions; the remainder is displayed as
+	// this section's own size, even when its format (e.g. DWARF) is recognized.
 	KnownSize uint64 `json:"known_size"`
 
 	Offset uint64 `json:"offset"`

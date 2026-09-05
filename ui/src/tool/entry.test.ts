@@ -34,6 +34,25 @@ describe("entry", () => {
     expect(() => i.getURLSafeName()).toThrow();
   });
 
+  it("keeps debug and linker metadata visible in older reports", () => {
+    const source = getTestResult();
+    const section = source.sections[0];
+    const entry = createEntry({
+      ...source,
+      size: 1200,
+      packages: {},
+      sections: [
+        { ...section, name: "__debug_info", debug: true, file_size: 1000, known_size: 1000 },
+        { ...section, name: ".symtab", debug: false, file_size: 200, known_size: 200 },
+      ],
+    });
+    const children = entry.getChildren();
+    expect(children.find(c => c.getURLSafeName() === "debug-sections")?.getSize()).toBe(1000);
+    expect(children.find(c => c.getURLSafeName() === "metadata-sections")?.getSize()).toBe(200);
+    expect(children.reduce((size, c) => size + c.getSize(), 0)).toBe(1200);
+    expect(children.some(c => c.getType() === "unknown")).toBe(false);
+  });
+
   describe("disasmImp", () => {
     it("getName returns expected name", () => {
       const disasm = new DisasmImpl("TestDisasm", 1024);

@@ -397,8 +397,6 @@ func (w *WasmWrapper) GetSections(codeSectUsed, dataSectUsed uint64) []*entity.S
 				knownSize = fileSize
 				slog.Warn("known data size is greater than data section size")
 			}
-		} else if isDebug {
-			knownSize = fileSize
 		}
 
 		ret = append(ret, &entity.Section{

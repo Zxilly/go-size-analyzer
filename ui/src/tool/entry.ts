@@ -62,7 +62,12 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
   }
 
   getSize(): number {
-    return this.data.file_size - this.data.known_size;
+    // Older reports marked these sections fully known without assigning
+    // their bytes to packages. Keep their standalone area visible as well.
+    if (this.data.debug || isDebugSection(this.data.name) || isLinkerMetadataSection(this.data.name)) {
+      return this.data.file_size;
+    }
+    return Math.max(0, this.data.file_size - this.data.known_size);
   }
 
   toString(): string {
@@ -351,7 +356,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
 
     for (const section of data.sections) {
       const s = new SectionImpl(section);
-      if (isDebugSection(section.name)) {
+      if (section.debug || isDebugSection(section.name)) {
         debugSectChildren.push(s);
       }
       else if (isLinkerMetadataSection(section.name)) {
