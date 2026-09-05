@@ -73,7 +73,9 @@ var x86Patterns = []x86Pattern{
 			if firstMem.Base != x86asm.RIP {
 				return nil
 			}
-			absAddr := first.pc + uint64(firstInst.Len) + uint64(firstMem.Disp)
+			// RIP-relative addressing sign-extends the encoded 32-bit displacement.
+			disp := int64(int32(firstMem.Disp))
+			absAddr := first.pc + uint64(firstInst.Len) + uint64(disp)
 
 			second := insts[1]
 			imm, ok := x86GetMovImm(second.inst)
