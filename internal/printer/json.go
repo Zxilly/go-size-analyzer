@@ -13,8 +13,9 @@ import (
 )
 
 type JSONOption struct {
-	Indent     *int
-	HideDetail bool
+	Indent        *int
+	HideDetail    bool
+	EscapeForHTML bool
 }
 
 func JSON(r any, writer io.Writer, options *JSONOption) error {
@@ -23,6 +24,7 @@ func JSON(r any, writer io.Writer, options *JSONOption) error {
 	jsonOptions := []json.Options{
 		json.DefaultOptionsV2(),
 		json.Deterministic(true),
+		jsontext.EscapeForHTML(options.EscapeForHTML),
 	}
 	if options.Indent != nil {
 		jsonOptions = append(jsonOptions, jsontext.WithIndent(strings.Repeat(" ", *options.Indent)))

@@ -25,7 +25,7 @@ func HTML(r *result.Result, writer io.Writer) error {
 		return err
 	}
 
-	err = JSON(r, writer, &JSONOption{HideDetail: true})
+	err = JSON(r, writer, &JSONOption{HideDetail: true, EscapeForHTML: true})
 	if err != nil {
 		return err
 	}
