@@ -153,6 +153,10 @@ func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []
 	}
 
 	// All analyzers done; materialize the package tree.
+	if !options.SkipDisasm {
+		k.AnalyzeWasmStrings()
+		analyzers = append(analyzers, entity.AnalyzerDisasm)
+	}
 	k.Deps.FinishLoad(options.Imports)
 	utils.WaitDebugger("All analyzers and deps done")
 	k.Deps.ClearCaches()

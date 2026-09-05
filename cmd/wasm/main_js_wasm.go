@@ -24,7 +24,7 @@ func analyze(_ js.Value, args []js.Value) any {
 	reader := bytes.NewReader(data)
 
 	result, err := internal.Analyze(name, reader, uint64(length), internal.Options{
-		SkipDisasm: true,
+		SkipDisasm: !bytes.HasPrefix(data, []byte{0, 'a', 's', 'm'}),
 	})
 	if err != nil {
 		slog.Error(fmt.Sprintf("Error: %v\n", err))
