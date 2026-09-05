@@ -33,6 +33,7 @@ func ptrSizeAndOrder(goarch string) (int, binary.ByteOrder) {
 
 type VersionFlag struct {
 	Leq118 bool
+	Meq118 bool // Go 1.18+ uses uint32 functab fields on all architectures
 	Meq120 bool
 	Meq125 bool // Go 1.25+ changed wasm pclntab to store PC_F instead of full PC
 }
@@ -80,12 +81,14 @@ func UpdateVersionFlag(f *gore.GoFile) VersionFlag {
 		// if we can't get build info, we assume it's go1.20 plus
 		return VersionFlag{
 			Leq118: false,
+			Meq118: true,
 			Meq120: true,
 		}
 	}
 
 	return VersionFlag{
 		Leq118: gore.GoVersionCompare(ver.Name, "go1.18.10") <= 0,
+		Meq118: gore.GoVersionCompare(ver.Name, "go1.18rc1") >= 0,
 		Meq120: gore.GoVersionCompare(ver.Name, "go1.20rc1") >= 0,
 		Meq125: gore.GoVersionCompare(ver.Name, "go1.25rc1") >= 0,
 	}

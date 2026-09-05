@@ -1,8 +1,11 @@
 package knowninfo
 
 import (
+	"cmp"
 	"fmt"
 	"log/slog"
+	"math"
+	"slices"
 
 	"github.com/ZxillyFork/gore"
 
@@ -41,6 +44,8 @@ func (k *KnownInfo) attributeRangeByFunctionCount(prefix string, addr, length ui
 		slog.Warn("No functions found for pclntab attribution", "prefix", prefix)
 		return 0
 	}
+	// Stable ownership and rounding of the final bytes, independent of trie order.
+	slices.SortFunc(packages, func(a, b pkgCount) int { return cmp.Compare(a.name, b.name) })
 
 	var offset uint64
 	var attributed uint64
@@ -145,7 +150,17 @@ func (k *KnownInfo) AnalyzePclntabMeta() error {
 	// Attribute ftab region proportionally.
 	ftab := md.FuncTab()
 	if ftab.Address > 0 && ftab.Length > 0 {
-		k.attributeFtab(ftab.Address, ftab.Length)
+		ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
+		fieldSize := uint64(ptrSize)
+		if k.VersionFlag.Meq118 {
+			fieldSize = 4
+		}
+		if ftab.Length > math.MaxUint64/2/fieldSize {
+			return fmt.Errorf("functab length overflow: %d", ftab.Length)
+		}
+		// Moduledata stores the number of entries, including the sentinel.
+		// Each function has a PC and an offset; the sentinel has only a PC.
+		k.attributeFtab(ftab.Address, (ftab.Length*2-1)*fieldSize)
 	} else {
 		slog.Warn("FuncTab region not available")
 	}
