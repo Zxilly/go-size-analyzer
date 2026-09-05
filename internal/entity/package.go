@@ -43,7 +43,7 @@ type Package struct {
 	ImportedBy []string `json:"importedBy,omitempty"`
 
 	filesCache map[string]*File
-	funcsCache map[string]*Function
+	funcsCache map[uint64]*Function
 
 	loaded bool // mean it comes from gore
 
@@ -60,7 +60,7 @@ func NewPackage() *Package {
 
 		symbolAddrSpace: AddrSpace{},
 		filesCache:      make(map[string]*File),
-		funcsCache:      make(map[string]*Function),
+		funcsCache:      make(map[uint64]*Function),
 	}
 	p.coverageGetter = sync.OnceValue(p.buildPackageCoverage)
 	return p
@@ -97,60 +97,41 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 		src, _, _ := pclntab.PCToLine(f.Offset)
 		sf := getFunction(f)
 		sf.Type = FuncTypeFunction
-		p.addFunction(src, sf)
+		p.AddFuncIfNotExists(src, sf)
 	}
 	for _, mf := range gp.Methods {
 		src, _, _ := pclntab.PCToLine(mf.Offset)
 		sf := getFunction(mf.Function)
 		sf.Type = FuncTypeMethod
 		sf.Receiver = utils.Deduplicate(mf.Receiver)
-		p.addFunction(src, sf)
+		p.AddFuncIfNotExists(src, sf)
 	}
 
 	return p
 }
 
 func (p *Package) fileEnsureUnique() {
-	fileSeen := make(map[string]*File)
-
-	for _, f := range p.Files {
-		if old, ok := fileSeen[f.FilePath]; ok {
-			funcSeen := make(map[string]*Function)
-			for _, fn := range old.Functions {
-				funcSeen[fn.Name] = fn
-			}
-
-			for _, fn := range f.Functions {
-				if _, ok := funcSeen[fn.Name]; !ok {
-					old.Functions = append(old.Functions, fn)
-				}
-			}
-		} else {
-			fileSeen[f.FilePath] = f
-		}
-	}
-
-	p.Files = utils.Collect(maps.Values(fileSeen))
-	p.filesCache = fileSeen
-
-	p.funcsCache = make(map[string]*Function)
-	for _, f := range p.Files {
-		for _, fn := range f.Functions {
-			p.funcsCache[fn.Name] = fn
+	files := p.Files
+	p.Files = nil
+	p.filesCache = make(map[string]*File)
+	p.funcsCache = make(map[uint64]*Function)
+	for _, file := range files {
+		for _, fn := range file.Functions {
+			p.AddFuncIfNotExists(file.FilePath, fn)
 		}
 	}
 }
-
 func (p *Package) addFunction(path string, fn *Function) {
+	fn.pkg = p
 	file := p.getOrInitFile(path)
 	file.Functions = append(file.Functions, fn)
-	p.funcsCache[fn.Name] = fn
+	p.funcsCache[fn.Addr] = fn
 }
 
 func (p *Package) AddFuncIfNotExists(path string, fn *Function) bool {
-	if _, ok := p.funcsCache[fn.Name]; !ok {
+	if _, ok := p.funcsCache[fn.Addr]; !ok {
 		p.addFunction(path, fn)
-		p.funcsCache[fn.Name] = fn
+		p.funcsCache[fn.Addr] = fn
 		return true
 	}
 	return false
