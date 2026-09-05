@@ -111,7 +111,7 @@ func extractArm64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 				s.result[PossibleStr{Addr: addr + 16, Header: true}] = struct{}{}
 			}
 		case bits&0xffc00000 == 0xf9000000: // STR Xt, [Xn,#imm]
-			if !(barrierEnd > pc && rn == 25) {
+			if barrierEnd <= pc || rn != 25 {
 				s.store(rn, int64((bits>>10)&0xfff)*8, s.get(rd))
 			}
 		case bits&0xffc00000 == 0xa9000000: // STP Xt1, Xt2, [Xn,#imm]

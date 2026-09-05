@@ -281,7 +281,7 @@ func (k *KnownInfo) loadExactPclnRanges() error {
 	}
 	mapSizes := map[uint64]uint64{}
 	p.stackMap = func(value, cell uint64) (entity.AddrPos, bool) {
-		addr := value
+		var addr uint64
 		if p.version >= 118 {
 			base := md.GoFuncValue()
 			if value == 0xffffffff || base == 0 || value > ^uint64(0)-base {

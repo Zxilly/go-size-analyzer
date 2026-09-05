@@ -31,9 +31,12 @@ type wordTracker struct {
 	constantPointers bool
 }
 
-func newWordTracker() wordTracker               { return wordTracker{result: make(map[PossibleStr]struct{})} }
-func (s *wordTracker) reset()                   { s.regs = [32]trackedWord{}; s.stores = [16]memoryWord{} }
+func newWordTracker() wordTracker { return wordTracker{result: make(map[PossibleStr]struct{})} }
+
+func (s *wordTracker) reset() { s.regs = [32]trackedWord{}; s.stores = [16]memoryWord{} }
+
 func (s *wordTracker) valid(w trackedWord) bool { return w.kind != wordUnknown && s.clock-w.age <= 12 }
+
 func (s *wordTracker) get(r int) trackedWord {
 	if r < 0 || r >= len(s.regs) || !s.valid(s.regs[r]) {
 		return trackedWord{}

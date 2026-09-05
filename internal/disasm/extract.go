@@ -112,7 +112,7 @@ func extractAmd64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 				s.set(dst, w)
 				s.registers(amd64ABI[:])
 			} else if mem, ok := inst.Args[0].(x86asm.Mem); ok && inst.DataSize == 64 && mem.Index == 0 {
-				if !(barrierEnd > pc && mem.Base == x86asm.R11) {
+				if barrierEnd <= pc || mem.Base != x86asm.R11 {
 					s.store(x86Register(mem.Base), mem.Disp, w)
 				}
 			} else if _, ok := inst.Args[0].(x86asm.Reg); ok {

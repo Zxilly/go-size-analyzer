@@ -302,6 +302,7 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 			if entry.Tag == dwarf.TagSubprogram {
 				r.SkipChildren()
 			}
+		default:
 		}
 	}
 	k.HasDWARF = true

@@ -19,8 +19,8 @@ func TestOutputFailuresPreserveFiles(t *testing.T) {
 			input, output := filepath.Join(dir, "input.bin"), filepath.Join(dir, "report.json")
 			const original = "recoverable input"
 			const report = "previous report"
-			require.NoError(t, os.WriteFile(input, []byte(original), 0600))
-			require.NoError(t, os.WriteFile(output, []byte(report), 0600))
+			require.NoError(t, os.WriteFile(input, []byte(original), 0o600))
+			require.NoError(t, os.WriteFile(output, []byte(report), 0o600))
 			Options.Binary = input
 			Options.Output = []string{output}
 			switch mode {
@@ -46,6 +46,7 @@ func TestOutputFailuresPreserveFiles(t *testing.T) {
 				Options.Web = true
 			case "tui-output":
 				Options.Tui = true
+			default:
 			}
 			require.Error(t, run())
 			data, err := os.ReadFile(input)
@@ -80,8 +81,8 @@ func TestDiffReplacesReportAfterSuccess(t *testing.T) {
 	dir := t.TempDir()
 	input, output := filepath.Join(dir, "input.json"), filepath.Join(dir, "report.json")
 	const data = `{"name":"example","size":20,"packages":{},"sections":[]}`
-	require.NoError(t, os.WriteFile(input, []byte(data), 0600))
-	require.NoError(t, os.WriteFile(output, []byte("old report"), 0600))
+	require.NoError(t, os.WriteFile(input, []byte(data), 0o600))
+	require.NoError(t, os.WriteFile(output, []byte("old report"), 0o600))
 	Options.Binary = input
 	Options.DiffTarget = input
 	Options.Output = []string{output}
@@ -91,7 +92,7 @@ func TestDiffReplacesReportAfterSuccess(t *testing.T) {
 	require.Contains(t, string(result), `"old_name":"example"`)
 	original, err := os.ReadFile(input)
 	require.NoError(t, err)
-	require.Equal(t, data, string(original))
+	require.Equal(t, []byte(data), original)
 	temps, err := filepath.Glob(filepath.Join(dir, ".gsa-*"))
 	require.NoError(t, err)
 	require.Empty(t, temps)
