@@ -2,6 +2,7 @@ package wrapper
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -16,6 +17,42 @@ func TestWasmRawMappingsPreserveDuplicateCustomSections(t *testing.T) {
 	require.Contains(t, w.sections, "x")
 	require.Contains(t, w.sections, "x#2")
 	require.Equal(t, []entity.FileMapping{{Addr: 32, FileRange: entity.FileRange{Offset: 24, Size: 3}}}, w.FileAddressMappings())
+}
+
+func TestWasmMappingsMatchMemoryInitializationOrder(t *testing.T) {
+	w := &WasmWrapper{}
+	expected := make([]uint64, 40)
+	for i, span := range [][2]uint64{{20, 10}, {4, 3}, {10, 10}, {2, 5}, {6, 18}, {0, 1}, {25, 8}} {
+		m := entity.FileMapping{Addr: span[0], FileRange: entity.FileRange{Offset: uint64(i+1) * 100, Size: span[1]}}
+		w.addFileMapping(m)
+		for j := uint64(0); j < m.Size; j++ {
+			expected[m.Addr+j] = m.Offset + j
+		}
+	}
+	actual := make([]uint64, len(expected))
+	var previousEnd uint64
+	for _, m := range w.FileAddressMappings() {
+		require.GreaterOrEqual(t, m.Addr, previousEnd)
+		previousEnd = m.Addr + m.Size
+		for j := uint64(0); j < m.Size; j++ {
+			actual[m.Addr+j] = m.Offset + j
+		}
+	}
+	require.Equal(t, expected, actual)
+}
+
+func BenchmarkWasmRawLayout(b *testing.B) {
+	data, err := os.ReadFile("../../scripts/bins/bin-js-1.27-wasm")
+	if err != nil {
+		b.Skipf("benchmark fixture unavailable: %v", err)
+	}
+	b.ReportAllocs()
+	for b.Loop() {
+		w := &WasmWrapper{}
+		if err := w.LoadRaw(bytes.NewReader(data), uint64(len(data))); err != nil {
+			b.Fatal(err)
+		}
+	}
 }
 
 func TestWasmLaterDataSegmentsReplaceAddressMappings(t *testing.T) {

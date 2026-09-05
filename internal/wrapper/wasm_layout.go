@@ -162,26 +162,34 @@ func (w *WasmWrapper) addFileMapping(m entity.FileMapping) {
 		w.fileMappings = append(w.fileMappings, m)
 		return
 	}
-	// Later active segments overwrite earlier memory. Only the surviving
-	// portions map references back to their actual on-disk storage.
-	updated := make([]entity.FileMapping, 0, len(w.fileMappings)+1)
-	for _, old := range w.fileMappings {
-		end := old.Addr + old.Size
-		if end <= m.Addr || old.Addr >= m.Addr+m.Size {
-			updated = append(updated, old)
-			continue
+	// Replace only the intersecting interval. Rebuilding and sorting the full
+	// slice per segment allocates gigabytes for Go's sparse WASM data sections.
+	lo, _ := slices.BinarySearchFunc(w.fileMappings, m.Addr, func(old entity.FileMapping, addr uint64) int {
+		if old.Addr+old.Size <= addr {
+			return -1
 		}
-		if old.Addr < m.Addr {
-			updated = append(updated, entity.FileMapping{Addr: old.Addr, FileRange: entity.FileRange{Offset: old.Offset, Size: m.Addr - old.Addr}})
-		}
-		if end > m.Addr+m.Size {
-			start := m.Addr + m.Size
-			updated = append(updated, entity.FileMapping{Addr: start, FileRange: entity.FileRange{Offset: old.Offset + start - old.Addr, Size: end - start}})
-		}
+		return 1
+	})
+	end := m.Addr + m.Size
+	hi, _ := slices.BinarySearchFunc(w.fileMappings, end, func(old entity.FileMapping, addr uint64) int {
+		return cmp.Compare(old.Addr, addr)
+	})
+	var replacement [3]entity.FileMapping
+	parts := replacement[:0]
+	if lo < hi && w.fileMappings[lo].Addr < m.Addr {
+		left := w.fileMappings[lo]
+		left.Size = m.Addr - left.Addr
+		parts = append(parts, left)
 	}
-	updated = append(updated, m)
-	slices.SortFunc(updated, func(a, b entity.FileMapping) int { return cmp.Compare(a.Addr, b.Addr) })
-	w.fileMappings = updated
+	parts = append(parts, m)
+	if lo < hi && w.fileMappings[hi-1].Addr+w.fileMappings[hi-1].Size > end {
+		right := w.fileMappings[hi-1]
+		right.Size -= end - right.Addr
+		right.Offset += end - right.Addr
+		right.Addr = end
+		parts = append(parts, right)
+	}
+	w.fileMappings = slices.Replace(w.fileMappings, lo, hi, parts...)
 }
 func (w *WasmWrapper) FileAddressMappings() []entity.FileMapping { return w.fileMappings }
 

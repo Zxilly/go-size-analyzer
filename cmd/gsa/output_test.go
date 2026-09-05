@@ -92,7 +92,7 @@ func TestDiffReplacesReportAfterSuccess(t *testing.T) {
 	require.Contains(t, string(result), `"old_name":"example"`)
 	original, err := os.ReadFile(input)
 	require.NoError(t, err)
-	require.Equal(t, []byte(data), original)
+	require.Equal(t, []byte(data), original) //nolint:testifylint // Verify byte-for-byte preservation of the input file.
 	temps, err := filepath.Glob(filepath.Join(dir, ".gsa-*"))
 	require.NoError(t, err)
 	require.Empty(t, temps)
