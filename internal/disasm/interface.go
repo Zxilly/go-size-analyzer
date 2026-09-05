@@ -1,6 +1,7 @@
 package disasm
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -11,8 +12,10 @@ import (
 )
 
 type PossibleStr struct {
-	Addr uint64
-	Size uint64
+	Addr     uint64
+	Size     uint64
+	Header   bool
+	TypeAddr uint64
 }
 
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
@@ -28,6 +31,7 @@ type Extractor struct {
 	goarch     string        // GOARCH string
 	validators []validator   // validators for possible strings
 	extractor  extractorFunc // disassembler function for goarch
+	dataCheck  func(addr, size uint64) bool
 }
 
 var ErrArchNotSupported = errors.New("unsupported GOARCH")
@@ -59,6 +63,7 @@ func NewExtractor(rawFile wrapper.RawFileWrapper,
 		textEnd:   textStart + uint64(len(text)),
 		goarch:    goarch,
 		extractor: extractFunc,
+		dataCheck: sectCheck,
 	}
 
 	var validators []validator
@@ -75,6 +80,9 @@ func NewExtractor(rawFile wrapper.RawFileWrapper,
 }
 
 func (e *Extractor) Validate(addr, size uint64) bool {
+	if size == 0 || size > e.size || addr+size < addr {
+		return false
+	}
 	for _, v := range e.validators {
 		if !v(addr, size) {
 			return false
@@ -91,7 +99,32 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 
 	code := e.text[start-e.textStart : end-e.textStart]
 
-	return e.extractor(code, start)
+	candidates := e.extractor(code, start)
+	out := candidates[:0]
+	for _, candidate := range candidates {
+		if candidate.Header {
+			if e.dataCheck != nil && !e.dataCheck(candidate.Addr, 16) {
+				continue
+			}
+			if candidate.TypeAddr != 0 {
+				// internal/abi.Type: Size_, PtrBytes and Kind_ for a string.
+				if e.dataCheck != nil && !e.dataCheck(candidate.TypeAddr, 24) {
+					continue
+				}
+				typ, err := e.raw.ReadAddr(candidate.TypeAddr, 24)
+				if err != nil || len(typ) != 24 || binary.LittleEndian.Uint64(typ) != 16 || binary.LittleEndian.Uint64(typ[8:]) != 8 || typ[23]&31 != 24 {
+					continue
+				}
+			}
+			header, err := e.raw.ReadAddr(candidate.Addr, 16)
+			if err != nil || len(header) != 16 {
+				continue
+			}
+			candidate = PossibleStr{Addr: binary.LittleEndian.Uint64(header), Size: binary.LittleEndian.Uint64(header[8:])}
+		}
+		out = append(out, candidate)
+	}
+	return out
 }
 
 func (e *Extractor) checkAddrString(addr, size uint64) bool {

@@ -168,7 +168,7 @@ func elfSectionType(s *elf.Section) entity.SectionContentType {
 	// .data.rel.ro / .data.rel.ro.local — all hold runtime-visible data
 	// (type descriptors, string literals, etc.) that symbol analysis
 	// legitimately indexes into.
-	case s.Name == ".gopclntab" || strings.HasSuffix(s.Name, "bss") || strings.Contains(s.Name, "data"):
+	case s.Name == ".gopclntab" || strings.HasPrefix(s.Name, ".go.") || strings.HasSuffix(s.Name, "bss") || strings.Contains(s.Name, "data"):
 		return entity.SectionContentData
 	default:
 		return entity.SectionContentOther
