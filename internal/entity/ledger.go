@@ -24,6 +24,7 @@ type FileRegion struct {
 }
 
 type FileCoverage struct {
+	Notes        []string          `json:"notes,omitempty"`
 	Attributed   uint64            `json:"attributed"`
 	Recognized   uint64            `json:"recognized"`
 	Unclassified uint64            `json:"unclassified"`

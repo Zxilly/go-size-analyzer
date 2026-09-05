@@ -8,6 +8,13 @@ func (c *FileCoverage) MarshalJavaScript() any {
 		sources[source] = size
 	}
 	result := map[string]any{"attributed": c.Attributed, "recognized": c.Recognized, "unclassified": c.Unclassified, "shared": c.Shared, "by_source": sources}
+	if len(c.Notes) > 0 {
+		notes := make([]any, len(c.Notes))
+		for i, note := range c.Notes {
+			notes[i] = note
+		}
+		result["notes"] = notes
+	}
 	if len(c.Regions) > 0 {
 		regions := make([]any, 0, len(c.Regions))
 		for _, r := range c.Regions {

@@ -28,7 +28,7 @@ func (k *KnownInfo) Disasm() error {
 	if err != nil {
 		if errors.Is(err, disasm.ErrArchNotSupported) {
 			slog.Warn("Disassembler not supported on this architecture")
-			return nil
+			return err
 		}
 		return err
 	}

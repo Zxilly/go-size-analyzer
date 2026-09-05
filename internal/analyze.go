@@ -13,6 +13,7 @@ import (
 
 	"github.com/ZxillyFork/gore"
 
+	"github.com/Zxilly/go-size-analyzer/internal/disasm"
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/knowninfo"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
@@ -101,6 +102,17 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	coverage, err := k.BuildFileCoverage(reader, sections, options.CoverageDetails)
 	if err != nil {
 		return nil, err
+	}
+	if options.SkipDisasm {
+		coverage.Notes = append(coverage.Notes, "Instruction analysis disabled by option")
+	} else if !slices.Contains(analyzers, entity.AnalyzerDisasm) {
+		coverage.Notes = append(coverage.Notes, "Instruction analysis unavailable for "+k.Wrapper.GoArch())
+	}
+	if !isWasm && !options.SkipDwarf && !slices.Contains(analyzers, entity.AnalyzerDwarf) {
+		coverage.Notes = append(coverage.Notes, "DWARF information unavailable")
+	}
+	if !isWasm && !options.SkipSymbol && !slices.Contains(analyzers, entity.AnalyzerSymbol) {
+		coverage.Notes = append(coverage.Notes, "Native symbol table unavailable")
 	}
 	return &result.Result{
 		Coverage:  coverage,
@@ -202,8 +214,7 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 			return nil, nil, err
 		}
 		slog.Warn("No symbol table found, this can lead to inaccurate results")
-	}
-	if record {
+	} else if record {
 		analyzers = append(analyzers, entity.AnalyzerSymbol)
 	}
 	utils.WaitDebugger("Symbol done")
@@ -226,9 +237,12 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 		}
 
 		if err := k.Disasm(); err != nil {
-			return nil, nil, err
+			if !errors.Is(err, disasm.ErrArchNotSupported) {
+				return nil, nil, err
+			}
+		} else {
+			analyzers = append(analyzers, entity.AnalyzerDisasm)
 		}
-		analyzers = append(analyzers, entity.AnalyzerDisasm)
 	}
 
 	// DWARF, symbol, type, pclntab-meta, and disasm analyzers can all create
