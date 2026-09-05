@@ -136,6 +136,11 @@ func TestWasmLoadRawRejectsMalformedSectionPayloads(t *testing.T) {
 			wantErr: "unexpected EOF",
 		},
 		{
+			name:    "custom name allocation is bounded by its section",
+			section: rawWasmSection(0, []byte{0xff, 0xff, 0xff, 0xff, 0x0f}),
+			wantErr: "unexpected EOF",
+		},
+		{
 			name:    "code function count is truncated",
 			section: rawWasmSection(10, []byte{0x80}),
 			wantErr: `read WebAssembly section "code"`,

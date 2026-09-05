@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/ZxillyFork/gore"
@@ -155,19 +154,6 @@ func countSymbols(pkgs entity.PackageMap) int {
 	for _, pkg := range pkgs {
 		total += len(pkg.Symbols)
 		total += countSymbols(pkg.SubPackages)
-	}
-	return total
-}
-
-func sumSymbolSizesWithPrefix(pkgs entity.PackageMap, prefix string) uint64 {
-	total := uint64(0)
-	for _, pkg := range pkgs {
-		for _, sym := range pkg.Symbols {
-			if strings.HasPrefix(sym.Name, prefix) {
-				total += sym.Size
-			}
-		}
-		total += sumSymbolSizesWithPrefix(pkg.SubPackages, prefix)
 	}
 	return total
 }

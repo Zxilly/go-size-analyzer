@@ -109,57 +109,19 @@ func wasmSectionName(id byte) string {
 	}
 }
 
-func readCustomSectionName(r *bufio.Reader) (string, error) {
-	nameSize, _, err := readWasmUint32(r)
+func readCustomSectionName(r *bufio.Reader, payloadSize uint64) (string, error) {
+	nameSize, sizeBytes, err := readWasmUint32(r)
 	if err != nil {
 		return "", err
+	}
+	if sizeBytes > payloadSize || uint64(nameSize) > payloadSize-sizeBytes {
+		return "", io.ErrUnexpectedEOF
 	}
 	name := make([]byte, nameSize)
 	if _, err = io.ReadFull(r, name); err != nil {
 		return "", err
 	}
 	return string(name), nil
-}
-
-func readCodeFunctionSizes(r *bufio.Reader) ([]uint64, error) {
-	count, _, err := readWasmUint32(r)
-	if err != nil {
-		return nil, err
-	}
-
-	sizes := make([]uint64, 0, count)
-	for range count {
-		bodySize, _, err := readWasmUint32(r)
-		if err != nil {
-			return nil, err
-		}
-
-		localGroupCount, localBytes, err := readWasmUint32(r)
-		if err != nil {
-			return nil, err
-		}
-		for range localGroupCount {
-			_, n, err := readWasmUint32(r)
-			if err != nil {
-				return nil, err
-			}
-			localBytes += n
-			if _, err = r.ReadByte(); err != nil {
-				return nil, err
-			}
-			localBytes++
-		}
-		if localBytes > uint64(bodySize) {
-			return nil, errors.New("WebAssembly function locals exceed body size")
-		}
-
-		instructionSize := uint64(bodySize) - localBytes
-		if _, err = io.CopyN(io.Discard, r, int64(instructionSize)); err != nil {
-			return nil, err
-		}
-		sizes = append(sizes, instructionSize)
-	}
-	return sizes, nil
 }
 
 // LoadRaw records file-backed section boundaries and encoded function sizes.
@@ -209,7 +171,7 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 		sectionReader := bufio.NewReader(limited)
 		switch sectionID {
 		case 0:
-			name, err = readCustomSectionName(sectionReader)
+			name, err = readCustomSectionName(sectionReader, uint64(payloadSize))
 			if err == nil {
 				consumed := uint64(payloadSize) - uint64(limited.N) - uint64(sectionReader.Buffered())
 				w.fileMetadata = append(w.fileMetadata, entity.FileRange{Offset: offset, Size: consumed})
