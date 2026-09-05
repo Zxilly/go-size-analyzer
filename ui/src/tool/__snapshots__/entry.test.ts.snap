@@ -21,6 +21,7 @@ exports[`entry > match 4`] = `
   "Generated Packages Size",
   "Std Packages Size",
   "Main Packages Size",
+  "Unknown",
 ]
 `;
 
@@ -10164,6 +10165,22 @@ exports[`entry > match 3120`] = `
 Size:    16 B
 Address: 0x4a85c8
 Type:    data"
+`;
+
+exports[`entry > match 3121`] = `"Unknown"`;
+
+exports[`entry > match 3122`] = `"unknown"`;
+
+exports[`entry > match 3123`] = `12956`;
+
+exports[`entry > match 3124`] = `[]`;
+
+exports[`entry > match 3125`] = `
+"Size: 12.65 KB
+
+The unknown part in the binary.
+Can be ELF Header, Program Header, align offset...
+We just don't know."
 `;
 
 exports[`entry > unknownImpl > toString includes size and unknown part description 1`] = `

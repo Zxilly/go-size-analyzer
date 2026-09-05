@@ -417,7 +417,8 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
     }
     children.push(...typedPackagesChildren);
 
-    const leftSize = data.size - children.reduce((acc, child) => acc + child.getSize(), 0);
+    const headers = Math.max(0, data.size - data.sections.reduce((sum, section) => sum + section.file_size, 0));
+    const leftSize = Math.max(headers, data.size - children.reduce((acc, child) => acc + child.getSize(), 0));
     if (leftSize > 0) {
       children.push(new UnknownImpl(leftSize));
     }

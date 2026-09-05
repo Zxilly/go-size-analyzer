@@ -1,7 +1,7 @@
 import type { HierarchyNode } from "d3-hierarchy";
 import type { Entry } from "./tool/entry.ts";
 import { group } from "d3-array";
-import { hierarchy, treemap, treemapSquarify } from "d3-hierarchy";
+import { treemap, treemapSquarify } from "d3-hierarchy";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTitle, useWindowSize } from "react-use";
@@ -9,6 +9,7 @@ import { Node } from "./Node.tsx";
 import createRainbowColor from "./tool/color.ts";
 import { PADDING, TOP_PADDING } from "./tool/const.ts";
 import { shallowCopy } from "./tool/copy.ts";
+import { buildHierarchy } from "./tool/hierarchy.ts";
 import { trimPrefix } from "./tool/utils.ts";
 import { Tooltip } from "./Tooltip.tsx";
 import "./style.scss";
@@ -27,14 +28,7 @@ function TreeMap({ entry }: TreeMapProps) {
   const { width, height } = useWindowSize();
 
   const rawHierarchy = useMemo(() => {
-    return hierarchy(entry, e => e.getChildren())
-      .sum((e) => {
-        if (e.getChildren().length === 0) {
-          return e.getSize();
-        }
-        return 0;
-      })
-      .sort((a, b) => a.data.getSize() - b.data.getSize());
+    return buildHierarchy(entry);
   }, [entry]);
 
   const rawHierarchyID = useMemo(() => {
@@ -199,11 +193,11 @@ function TreeMap({ entry }: TreeMapProps) {
       return (
         <g className="layer" key={key}>
           {values.map((node) => {
-            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
-
             if (node.x1 - node.x0 < 2 || node.y1 - node.y0 < 2) {
               return null;
             }
+
+            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
 
             return (
               <Node
