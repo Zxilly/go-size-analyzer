@@ -1,9 +1,11 @@
 package knowninfo
 
 import (
+	"cmp"
 	"encoding/binary"
 	"errors"
 	"io"
+	"slices"
 	"strings"
 
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
@@ -57,7 +59,23 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 			if addr.Size == 0 || addr.Addr+addr.Size < addr.Addr {
 				continue
 			}
-			for _, m := range mappings {
+			candidates := mappings
+			if isWasm {
+				// WASM mappings are ordered and disjoint. Seek to the first
+				// intersecting segment instead of scanning every sparse segment
+				// for every function's metadata reference.
+				start, _ := slices.BinarySearchFunc(mappings, addr.Addr, func(m entity.FileMapping, address uint64) int {
+					if m.Addr+m.Size <= address {
+						return -1
+					}
+					return 1
+				})
+				end, _ := slices.BinarySearchFunc(mappings, addr.Addr+addr.Size, func(m entity.FileMapping, address uint64) int {
+					return cmp.Compare(m.Addr, address)
+				})
+				candidates = mappings[start:end]
+			}
+			for _, m := range candidates {
 				lo, hi := max(addr.Addr, m.Addr), min(addr.Addr+addr.Size, m.Addr+m.Size)
 				if lo >= hi {
 					continue

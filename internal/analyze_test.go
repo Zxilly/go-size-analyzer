@@ -86,6 +86,24 @@ func TestAnalyzeWASM(t *testing.T) {
 	}
 }
 
+func BenchmarkAnalyzeWasm(b *testing.B) {
+	for _, version := range []string{"1.25", "1.27"} {
+		b.Run(version, func(b *testing.B) {
+			path := "../scripts/bins/bin-js-" + version + "-wasm"
+			data, err := os.ReadFile(path)
+			if err != nil {
+				b.Skipf("benchmark fixture unavailable: %v", err)
+			}
+			b.ReportAllocs()
+			for b.Loop() {
+				if _, err := Analyze(path, bytes.NewReader(data), uint64(len(data)), Options{}); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
 func assertFileCoverage(t *testing.T, r *analysisresult.Result) {
 	t.Helper()
 	require.NotNil(t, r.Coverage)

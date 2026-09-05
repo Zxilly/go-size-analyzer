@@ -221,6 +221,14 @@ func (w *WasmWrapper) FileDataIntervals(ranges []entity.AddrPos) uint64 {
 func (w *WasmWrapper) mappedDataSize(count int, at func(int) entity.AddrPos) uint64 {
 	var size uint64
 	i, j := 0, 0
+	if count > 0 {
+		j, _ = slices.BinarySearchFunc(w.fileMappings, at(0).Addr, func(m entity.FileMapping, addr uint64) int {
+			if m.Addr+m.Size <= addr {
+				return -1
+			}
+			return 1
+		})
+	}
 	for i < count && j < len(w.fileMappings) {
 		r, m := at(i), w.fileMappings[j]
 		end, mend := r.Addr+r.Size, m.Addr+m.Size
@@ -229,7 +237,13 @@ func (w *WasmWrapper) mappedDataSize(count int, at func(int) entity.AddrPos) uin
 			continue
 		}
 		if mend <= r.Addr {
-			j++
+			advance, _ := slices.BinarySearchFunc(w.fileMappings[j+1:], r.Addr, func(m entity.FileMapping, addr uint64) int {
+				if m.Addr+m.Size <= addr {
+					return -1
+				}
+				return 1
+			})
+			j += advance + 1
 			continue
 		}
 		size += min(end, mend) - max(r.Addr, m.Addr)
