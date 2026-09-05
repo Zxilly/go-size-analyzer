@@ -110,6 +110,7 @@ func kWayMerge(coves []AddrCoverage) AddrCoverage {
 
 // MergeAndCleanCoverage merge multiple AddrCoverage
 func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
+	coves = slices.Clone(coves)
 	// Sort each individual coverage that isn't already sorted,
 	// then use k-way merge for efficient merging
 	for i, cov := range coves {
@@ -129,7 +130,7 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 		// the newly exposed predecessor.
 		for {
 			if len(cover) == 0 {
-				cover = append(cover, curCov)
+				cover = append(cover, cloneCoveragePart(curCov))
 				break
 			}
 
@@ -138,10 +139,7 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 			curPos := curCov.Pos
 
 			if curPos.Addr >= lastPos.Addr+lastPos.Size {
-				cover = append(cover, &CoveragePart{
-					Pos:   curCov.Pos,
-					Addrs: curCov.Addrs,
-				})
+				cover = append(cover, cloneCoveragePart(curCov))
 				break
 			}
 
@@ -173,4 +171,10 @@ func MergeAndCleanCoverage(coves []AddrCoverage) (AddrCoverage, error) {
 	}
 
 	return cover, nil
+}
+
+// Merged ranges must not alias per-package caches or the original addresses.
+func cloneCoveragePart(part *CoveragePart) *CoveragePart {
+	pos := *part.Pos
+	return &CoveragePart{Pos: &pos, Addrs: slices.Clone(part.Addrs)}
 }
