@@ -29,8 +29,8 @@ func main() { println(Message, len(Blob)); data, _ := Files.ReadFile("payload.tx
 `
 	const payload = "embedded data byte-order regression"
 	dir := t.TempDir()
-	require.NoError(t, os.WriteFile(filepath.Join(dir, "main.go"), []byte(source), 0600))
-	require.NoError(t, os.WriteFile(filepath.Join(dir, "payload.txt"), []byte(payload), 0600))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "main.go"), []byte(source), 0o600))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "payload.txt"), []byte(payload), 0o600))
 	for _, arch := range []string{"amd64", "s390x"} {
 		t.Run(arch, func(t *testing.T) {
 			path := filepath.Join(dir, arch)

@@ -121,6 +121,7 @@ func (p *Package) fileEnsureUnique() {
 		}
 	}
 }
+
 func (p *Package) addFunction(path string, fn *Function) {
 	fn.pkg = p
 	file := p.getOrInitFile(path)
