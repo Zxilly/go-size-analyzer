@@ -30,9 +30,18 @@ func ripAddress(mem x86asm.Mem, pc uint64, n int) (uint64, bool) {
 }
 
 func extractAmd64(code []byte, pc uint64) []PossibleStr {
+	return extractAmd64WithBarriers(code, pc, nil)
+}
+
+func extractAmd64WithBarriers(code []byte, pc uint64, calls barrierCalls) []PossibleStr {
 	s := newWordTracker()
+	var barrierEnd uint64
 	for len(code) > 0 {
 		s.clock++
+		if pc == barrierEnd {
+			s.endBarrier(11)
+			barrierEnd = 0
+		}
 		inst, err := x86asm.Decode(code, 64)
 		if err != nil || inst.Len == 0 || inst.Op == 0 {
 			s.reset()
@@ -44,8 +53,21 @@ func extractAmd64(code []byte, pc uint64) []PossibleStr {
 		w := trackedWord{}
 		switch inst.Op {
 		case x86asm.NOP, x86asm.CMP, x86asm.TEST:
-		case x86asm.CALL, x86asm.JMP, x86asm.RET, x86asm.PUSH, x86asm.POP, x86asm.XCHG:
-			s.reset()
+		case x86asm.CALL:
+			rel, ok := inst.Args[0].(x86asm.Rel)
+			if barrierEnd > pc && ok && calls[pc+uint64(inst.Len)+uint64(rel)] {
+				s.regs = [32]trackedWord{}
+			} else {
+				s.reset()
+			}
+		case x86asm.JE, x86asm.JNE:
+			rel, ok := inst.Args[0].(x86asm.Rel)
+			if ok && rel > 0 && int64(rel) <= int64(len(code)-inst.Len) && x86BarrierBlock(code[inst.Len:inst.Len+int(rel)], pc+uint64(inst.Len), calls) {
+				s.beginBarrier()
+				barrierEnd = pc + uint64(inst.Len) + uint64(rel)
+			} else {
+				s.reset()
+			}
 		case x86asm.MOVUPS, x86asm.MOVUPD, x86asm.MOVDQU, x86asm.MOVDQA, x86asm.MOVAPS:
 			// Static aggregate copies can carry an entire string header in XMM.
 			if mem, ok := inst.Args[1].(x86asm.Mem); ok && mem.Index == 0 {
@@ -77,12 +99,24 @@ func extractAmd64(code []byte, pc uint64) []PossibleStr {
 				if addr, ok := ripAddress(src, pc, inst.Len); ok && inst.DataSize == 64 {
 					w = trackedWord{kind: wordLoad, value: addr}
 				}
+			default:
 			}
 			if dst >= 0 {
+				if inst.DataSize == 32 {
+					if w.kind == wordLoad {
+						w = trackedWord{}
+					} else {
+						w.value = uint64(uint32(w.value))
+					}
+				}
 				s.set(dst, w)
 				s.registers(amd64ABI[:])
 			} else if mem, ok := inst.Args[0].(x86asm.Mem); ok && inst.DataSize == 64 && mem.Index == 0 {
-				s.store(x86Register(mem.Base), mem.Disp, w)
+				if !(barrierEnd > pc && mem.Base == x86asm.R11) {
+					s.store(x86Register(mem.Base), mem.Disp, w)
+				}
+			} else if _, ok := inst.Args[0].(x86asm.Reg); ok {
+				s.reset()
 			}
 		case x86asm.ADD, x86asm.SUB, x86asm.AND, x86asm.OR, x86asm.XOR, x86asm.SHL, x86asm.SHR, x86asm.SAR, x86asm.INC, x86asm.DEC:
 			// Conditional branches, calls and instructions with implicit writes form

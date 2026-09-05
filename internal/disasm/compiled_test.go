@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/Zxilly/go-size-analyzer/internal/disasm"
@@ -16,6 +17,7 @@ import (
 
 const stringProgram = `package main
 var Global="gsa_global_header_56789"
+var Assigned string
 //go:noinline
 func literal() string { return "gsa_literal_value_12345" }
 //go:noinline
@@ -30,7 +32,9 @@ func boxed() any { return "gsa_boxed_value_PQRST" }
 func consume(p *[2]string) { println(p[0],p[1]) }
 //go:noinline
 func stack() { a:=[2]string{"gsa_stack_one_UVWXY","gsa_stack_two_ZABCD"};consume(&a) }
-func main(){println(literal(),global(),boxed());arguments();stack()}
+//go:noinline
+func assign(p *string) { *p="gsa_assigned_value_KLMNO" }
+func main(){println(literal(),global(),boxed());arguments();stack();assign(&Assigned);println(Assigned)}
 `
 
 func TestCompilerGeneratedStringRepresentations(t *testing.T) {
@@ -57,13 +61,22 @@ func TestCompilerGeneratedStringRepresentations(t *testing.T) {
 			require.NoError(t, err)
 			syms, err := f.Symbols()
 			require.NoError(t, err)
+			var barriers []uint64
+			for _, sym := range syms {
+				suffix := strings.TrimPrefix(sym.Name, "runtime.gcWriteBarrier")
+				if len(suffix) == 1 && suffix[0] >= '1' && suffix[0] <= '8' {
+					barriers = append(barriers, sym.Value)
+				}
+			}
+			extractor.SetWriteBarrierCalls(barriers)
 			wanted := map[string][]string{
 				"main.literal": {"gsa_literal_value_12345"}, "main.global": {"gsa_global_header_56789"},
 				"main.boxed": {"gsa_boxed_value_PQRST"}, "main.arguments": {"gsa_first_arg_ABCDE", "gsa_second_arg_FGHIJ"},
-				"main.stack": {"gsa_stack_one_UVWXY", "gsa_stack_two_ZABCD"},
+				"main.stack":  {"gsa_stack_one_UVWXY", "gsa_stack_two_ZABCD"},
+				"main.assign": {"gsa_assigned_value_KLMNO"},
 			}
 			for _, sym := range syms {
-				strings, ok := wanted[sym.Name]
+				expectedStrings, ok := wanted[sym.Name]
 				if !ok {
 					continue
 				}
@@ -76,7 +89,7 @@ func TestCompilerGeneratedStringRepresentations(t *testing.T) {
 					require.NoError(t, err)
 					found[string(data)] = true
 				}
-				for _, text := range strings {
+				for _, text := range expectedStrings {
 					require.True(t, found[text], "%s did not recover %q: %v", sym.Name, text, found)
 				}
 				delete(wanted, sym.Name)

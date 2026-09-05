@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log/slog"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/samber/lo"
@@ -30,6 +31,16 @@ func (k *KnownInfo) Disasm() error {
 			return nil
 		}
 		return err
+	}
+	if runtimePkg, ok := k.Deps.GetPackage("runtime"); ok {
+		var calls []uint64
+		for fn := range runtimePkg.Functions {
+			suffix := strings.TrimPrefix(fn.Name, "gcWriteBarrier")
+			if len(suffix) == 1 && suffix[0] >= '1' && suffix[0] <= '8' {
+				calls = append(calls, fn.Addr)
+			}
+		}
+		e.SetWriteBarrierCalls(calls)
 	}
 
 	type result struct {

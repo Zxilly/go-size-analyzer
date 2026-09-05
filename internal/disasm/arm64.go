@@ -20,9 +20,18 @@ func armConstant(arg arm64asm.Arg) (uint64, bool) {
 }
 
 func extractArm64(code []byte, pc uint64) []PossibleStr {
+	return extractArm64WithBarriers(code, pc, nil)
+}
+
+func extractArm64WithBarriers(code []byte, pc uint64, calls barrierCalls) []PossibleStr {
 	s := newWordTracker()
+	var barrierEnd uint64
 	for len(code) >= 4 {
 		s.clock++
+		if pc == barrierEnd {
+			s.endBarrier(25)
+			barrierEnd = 0
+		}
 		bits := binary.LittleEndian.Uint32(code)
 		rd, rn := int(bits&31), int((bits>>5)&31)
 		op, err := arm64asm.Decode(code[:4])
@@ -33,6 +42,21 @@ func extractArm64(code []byte, pc uint64) []PossibleStr {
 			continue
 		}
 		switch {
+		case bits&0x7f000000 == 0x34000000: // CBZ skipping a bounded write-barrier block
+			distance := signExtend((bits>>5)&0x7ffff, 19) * 4
+			if distance > 4 && distance <= int64(len(code)) && armBarrierBlock(code[4:distance], pc+4, calls) {
+				s.beginBarrier()
+				barrierEnd = pc + uint64(distance)
+			} else {
+				s.reset()
+			}
+		case bits&0xfc000000 == 0x94000000:
+			target := pc + uint64(signExtend(bits&0x3ffffff, 26)*4)
+			if barrierEnd > pc && calls[target] {
+				s.regs = [32]trackedWord{}
+			} else {
+				s.reset()
+			}
 		case bits&0x9f000000 == 0x90000000: // ADRP
 			offset := signExtend(((bits>>5)&0x7ffff)<<2|((bits>>29)&3), 21) << 12
 			s.set(rd, trackedWord{kind: wordAddress, value: (pc &^ 0xfff) + uint64(offset)})
@@ -54,6 +78,8 @@ func extractArm64(code []byte, pc uint64) []PossibleStr {
 			if w.kind == wordConstant {
 				shift := ((bits >> 21) & 3) * 16
 				w.value = w.value&^(uint64(0xffff)<<shift) | uint64((bits>>5)&0xffff)<<shift
+			} else {
+				w = trackedWord{}
 			}
 			s.set(rd, w)
 		case bits&0xffc00000 == 0xf9400000: // LDR Xt, [Xn,#imm]
@@ -64,6 +90,8 @@ func extractArm64(code []byte, pc uint64) []PossibleStr {
 				w = trackedWord{}
 			}
 			s.set(rd, w)
+		case bits&0xffc00000 == 0xb9400000: // LDR Wt does not alter stored object fields.
+			s.set(rd, trackedWord{})
 		case bits&0xffc00000 == 0xa9400000: // LDP Xt1, Xt2, [Xn,#imm]
 			base := s.get(rn)
 			w := trackedWord{}
@@ -83,12 +111,21 @@ func extractArm64(code []byte, pc uint64) []PossibleStr {
 				s.result[PossibleStr{Addr: addr + 16, Header: true}] = struct{}{}
 			}
 		case bits&0xffc00000 == 0xf9000000: // STR Xt, [Xn,#imm]
-			s.store(rn, int64((bits>>10)&0xfff)*8, s.get(rd))
+			if !(barrierEnd > pc && rn == 25) {
+				s.store(rn, int64((bits>>10)&0xfff)*8, s.get(rd))
+			}
 		case bits&0xffc00000 == 0xa9000000: // STP Xt1, Xt2, [Xn,#imm]
 			offset := signExtend((bits>>15)&127, 7) * 8
 			s.store(rn, offset, s.get(rd))
 			s.store(rn, offset+8, s.get(int((bits>>10)&31)))
 		case op.Op == arm64asm.MOV || op.Op == arm64asm.ORR:
+			if op.Op == arm64asm.ORR {
+				r, ok := op.Args[1].(arm64asm.Reg)
+				if !ok || (r != arm64asm.XZR && r != arm64asm.WZR) {
+					s.set(rd, trackedWord{})
+					break
+				}
+			}
 			w := trackedWord{}
 			for _, arg := range op.Args[1:] {
 				if n, ok := armConstant(arg); ok {
