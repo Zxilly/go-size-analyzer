@@ -3,7 +3,6 @@
 package knowninfo_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/ZxillyFork/gore"
@@ -41,11 +40,28 @@ func TestAnalyzePclntabMetaProducesResults(t *testing.T) {
 	table, err := gf.PCLNTab()
 	require.NoError(t, err)
 	var ftabBytes uint64
+	var gcMaps uint64
+	md, err := gf.Moduledata()
+	require.NoError(t, err)
+	start := md.FuncTab().Address
+	end := start + (uint64(len(table.Funcs))*2+1)*4
+	ranges := map[[2]uint64]bool{}
 	var sum func(entity.PackageMap)
 	sum = func(packages entity.PackageMap) {
 		for _, pkg := range packages {
+			for fn := range pkg.Functions {
+				gcMaps += fn.PclnSize.GCMaps
+				for _, r := range fn.PclnRanges {
+					if r.Addr >= start && r.Addr+r.Size <= end {
+						ranges[[2]uint64{r.Addr, r.Size}] = true
+					}
+				}
+				if fn.Source == entity.AddrSourceGoPclntab {
+					require.NotEmpty(t, fn.PclnRanges)
+				}
+			}
 			for _, sym := range pkg.Symbols {
-				if strings.HasPrefix(sym.Name, "pclntab:ftab[") {
+				if sym.Name == "pclntab:ftab-sentinel" {
 					ftabBytes += sym.Size
 				}
 			}
@@ -53,8 +69,12 @@ func TestAnalyzePclntabMetaProducesResults(t *testing.T) {
 		}
 	}
 	sum(r.Packages)
+	for r := range ranges {
+		ftabBytes += r[1]
+	}
 	// The Go 1.21 fixture stores two uint32 fields per function and a final PC.
 	require.Equal(t, (uint64(len(table.Funcs))*2+1)*4, ftabBytes)
+	require.Positive(t, gcMaps, "compiler stack-map references should be followed")
 }
 
 func TestAnalyzePclntabMetaPropagatesModuledataErrors(t *testing.T) {

@@ -167,10 +167,11 @@ func entry() error {
 
 func run() error {
 	options := internal.Options{
-		SkipSymbol: Options.NoSymbol,
-		SkipDisasm: Options.NoDisasm,
-		SkipDwarf:  Options.NoDwarf,
-		Imports:    Options.Imports,
+		CoverageDetails: Options.CoverageDetails,
+		SkipSymbol:      Options.NoSymbol,
+		SkipDisasm:      Options.NoDisasm,
+		SkipDwarf:       Options.NoDwarf,
+		Imports:         Options.Imports,
 	}
 
 	specs, err := parseOutputs()

@@ -80,6 +80,8 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 		}
 
 		return &Function{
+			Wasm:     isWasm,
+			Source:   AddrSourceGoPclntab,
 			Name:     utils.Deduplicate(f.Name),
 			Addr:     f.Offset,
 			CodeSize: getCodeSize(f),
@@ -205,10 +207,11 @@ func (p *Package) GetPackageCoverage() AddrCoverage {
 }
 
 func (p *Package) buildPackageCoverage() AddrCoverage {
-	disasmcov := p.GetDisasmAddrSpace().ToDirtyCoverage()
-	symbolcov := p.symbolAddrSpace.ToDirtyCoverage()
-
-	covs := []AddrCoverage{disasmcov, symbolcov}
+	var own AddrCoverage
+	for addr := range p.OwnAddresses {
+		own = append(own, &CoveragePart{Pos: addr.AddrPos, Addrs: []*Addr{addr}})
+	}
+	covs := []AddrCoverage{own}
 
 	for _, sp := range p.SubPackages {
 		covs = append(covs, sp.GetPackageCoverage())
@@ -223,11 +226,51 @@ func (p *Package) buildPackageCoverage() AddrCoverage {
 }
 
 func (p *Package) AssignPackageSize() {
-	pkgSize := p.GetFunctionSizeRecursive()
+	pkgSize := uint64(0)
+	var wasmSize func(*Package)
+	wasmSize = func(pkg *Package) {
+		for fn := range pkg.Functions {
+			if fn.Wasm {
+				pkgSize += fn.CodeSize
+			}
+		}
+		for _, sub := range pkg.SubPackages {
+			wasmSize(sub)
+		}
+	}
+	wasmSize(p)
 	for _, cp := range p.GetPackageCoverage() {
 		pkgSize += cp.Pos.Size
 	}
 	p.Size = pkgSize
+}
+
+// OwnAddresses preserves unmerged evidence for global file accounting.
+func (p *Package) OwnAddresses(yield func(*Addr) bool) {
+	for _, addr := range p.symbolAddrSpace {
+		if !yield(addr) {
+			return
+		}
+	}
+	for fn := range p.Functions {
+		for _, addr := range fn.disasm {
+			if !yield(addr) {
+				return
+			}
+		}
+		if !fn.Wasm {
+			for r := range fn.CodeRegions {
+				if !yield(&Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeText}, Pkg: p, Function: fn, SourceType: fn.Source}) {
+					return
+				}
+			}
+		}
+		for _, r := range fn.PclnRanges {
+			if !yield(&Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeData}, Pkg: p, Function: fn, SourceType: AddrSourceGoPclntab}) {
+				return
+			}
+		}
+	}
 }
 
 func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
@@ -245,6 +288,14 @@ func (p *Package) AddSymbol(symbol *Symbol, ap *Addr) {
 // separately via AddSymbol.
 func (p *Package) AddSymbolCoverage(ap *Addr) {
 	p.symbolAddrSpace.Insert(ap)
+}
+
+func (p *Package) SymbolAddresses(yield func(*Addr) bool) {
+	for _, addr := range p.symbolAddrSpace {
+		if !yield(addr) {
+			return
+		}
+	}
 }
 
 func (p *Package) ClearCache() {

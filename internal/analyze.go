@@ -21,9 +21,10 @@ import (
 )
 
 type Options struct {
-	SkipSymbol bool
-	SkipDisasm bool
-	SkipDwarf  bool
+	CoverageDetails bool
+	SkipSymbol      bool
+	SkipDisasm      bool
+	SkipDwarf       bool
 
 	Imports bool
 }
@@ -97,7 +98,12 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 
 	utils.WaitDebugger("Analyze done")
 
+	coverage, err := k.BuildFileCoverage(reader, sections, options.CoverageDetails)
+	if err != nil {
+		return nil, err
+	}
 	return &result.Result{
+		Coverage:  coverage,
 		Name:      filepath.Base(name),
 		Size:      k.Size,
 		Packages:  k.Deps.TopPkgs,
@@ -154,7 +160,14 @@ func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []
 	k.CalculatePackageSize()
 
 	codeSectUsed := wasmCodeSectUsed(k)
-	dataSectUsed := wasmWrapper.ComputeDataSectUsed(k.KnownAddr.SymbolAddrSpace)
+	if err := k.CollectCoverage(); err != nil {
+		return nil, nil, err
+	}
+	dataSpace := make(entity.AddrSpace, len(k.Coverage))
+	for _, part := range k.Coverage {
+		dataSpace.Insert(&entity.Addr{AddrPos: part.Pos})
+	}
+	dataSectUsed := wasmWrapper.ComputeDataSectUsed(dataSpace)
 	sections := wasmWrapper.GetSections(codeSectUsed, dataSectUsed)
 
 	return sections, analyzers, nil
@@ -200,6 +213,9 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 		return nil, nil, err
 	}
 
+	if !options.SkipSymbol || !options.SkipDwarf {
+		k.AnalyzeStaticHeaders()
+	}
 	if !options.SkipDisasm {
 		if k.GoStringSymbol == nil {
 			slog.Info("no go:string.* symbol found, false-positive rates may rise")
@@ -232,12 +248,18 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 // wasmCodeSectUsed sums the code size of all functions across all packages,
 // used to compute KnownSize for the Wasm code section.
 func wasmCodeSectUsed(k *knowninfo.KnownInfo) uint64 {
-	total := uint64(0)
+	w, ok := k.Wrapper.(*wrapper.WasmWrapper)
+	if !ok {
+		return 0
+	}
+	var ranges []entity.FileRange
 	_ = k.Deps.Trie.Walk(func(_ string, pkg *entity.Package) error {
 		for f := range pkg.Functions {
-			total += f.CodeSize
+			if r, ok := w.FunctionFileRange(f.Addr, k.VersionFlag.Meq125); ok {
+				ranges = append(ranges, r)
+			}
 		}
 		return nil
 	})
-	return total
+	return entity.UnionFileSize(ranges)
 }

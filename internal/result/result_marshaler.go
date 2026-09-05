@@ -14,11 +14,15 @@ func (r *Result) MarshalJavaScript() any {
 
 	packages := r.Packages.MarshalJavaScript()
 
-	return map[string]any{
+	value := map[string]any{
 		"name":      r.Name,
 		"size":      r.Size,
 		"packages":  packages,
 		"sections":  sections,
 		"analyzers": analyzers,
 	}
+	if r.Coverage != nil {
+		value["coverage"] = r.Coverage.MarshalJavaScript()
+	}
+	return value
 }

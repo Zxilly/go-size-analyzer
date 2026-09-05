@@ -16,6 +16,7 @@ type PossibleStr struct {
 	Size     uint64
 	Header   bool
 	TypeAddr uint64
+	Copy     bool
 }
 
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
@@ -55,28 +56,31 @@ func NewExtractor(rawFile wrapper.RawFileWrapper,
 		return nil, fmt.Errorf("%w %s", ErrArchNotSupported, goarch)
 	}
 
-	extractor := &Extractor{
-		raw:       rawFile,
-		size:      size,
-		text:      text,
-		textStart: textStart,
-		textEnd:   textStart + uint64(len(text)),
-		goarch:    goarch,
-		extractor: extractFunc,
-		dataCheck: sectCheck,
-	}
+	extractor := NewDataExtractor(rawFile, size, sectCheck, goStringSym)
+	extractor.text = text
+	extractor.textStart = textStart
+	extractor.textEnd = textStart + uint64(len(text))
+	extractor.goarch = goarch
+	extractor.extractor = extractFunc
+	return extractor, nil
+}
 
+func NewDataExtractor(raw wrapper.RawFileWrapper, size uint64, sectCheck func(uint64, uint64) bool, goStringSym *entity.AddrPos) *Extractor {
+	extractor := &Extractor{raw: raw, size: size, dataCheck: sectCheck}
 	var validators []validator
 	if goStringSym != nil {
 		validators = append(validators, func(addr, size uint64) bool {
 			return goStringSym.Addr <= addr && addr+size <= goStringSym.Addr+goStringSym.Size
 		})
 	} else {
-		validators = append(validators, sectCheck, extractor.checkAddrString)
+		if sectCheck != nil {
+			validators = append(validators, sectCheck)
+		}
+		validators = append(validators, extractor.checkAddrString)
 	}
 
 	extractor.validators = validators
-	return extractor, nil
+	return extractor
 }
 
 func (e *Extractor) Validate(addr, size uint64) bool {
@@ -91,6 +95,13 @@ func (e *Extractor) Validate(addr, size uint64) bool {
 	return true
 }
 
+func (e *Extractor) ValidateReference(p PossibleStr) bool {
+	if !p.Copy {
+		return e.Validate(p.Addr, p.Size)
+	}
+	return p.Size > 0 && p.Size <= e.size && p.Addr+p.Size >= p.Addr && e.dataCheck != nil && e.dataCheck(p.Addr, p.Size)
+}
+
 func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 	if start < e.textStart || end > e.textEnd || start > end {
 		slog.Debug("skipping function outside text section", "start", fmt.Sprintf("%#x", start), "end", fmt.Sprintf("%#x", end), "textStart", fmt.Sprintf("%#x", e.textStart), "textEnd", fmt.Sprintf("%#x", e.textEnd))
@@ -99,7 +110,10 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 
 	code := e.text[start-e.textStart : end-e.textStart]
 
-	candidates := e.extractor(code, start)
+	return e.Resolve(e.extractor(code, start))
+}
+
+func (e *Extractor) Resolve(candidates []PossibleStr) []PossibleStr {
 	out := candidates[:0]
 	for _, candidate := range candidates {
 		if candidate.Header {
@@ -120,7 +134,11 @@ func (e *Extractor) Extract(start, end uint64) []PossibleStr {
 			if err != nil || len(header) != 16 {
 				continue
 			}
-			candidate = PossibleStr{Addr: binary.LittleEndian.Uint64(header), Size: binary.LittleEndian.Uint64(header[8:])}
+			addr := binary.LittleEndian.Uint64(header)
+			if macho, ok := e.raw.(*wrapper.MachoWrapper); ok {
+				addr = macho.SlidePointer(addr)
+			}
+			candidate = PossibleStr{Addr: addr, Size: binary.LittleEndian.Uint64(header[8:])}
 		}
 		out = append(out, candidate)
 	}

@@ -172,6 +172,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	filename := readFileName(subEntry)
 
 	fn := &entity.Function{
+		Source:   entity.AddrSourceDwarf,
 		Name:     subEntryName,
 		Addr:     addr,
 		CodeSize: size,

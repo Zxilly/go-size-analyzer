@@ -18,7 +18,7 @@ func (f *File) FullSize() uint64 {
 func (f *File) PclnSize() uint64 {
 	size := uint64(0)
 	for _, fn := range f.Functions {
-		size += fn.PclnSize.Size()
+		size += fn.PclnBytes()
 	}
 	return size
 }

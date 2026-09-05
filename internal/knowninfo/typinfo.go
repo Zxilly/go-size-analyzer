@@ -90,7 +90,7 @@ func (k *KnownInfo) AnalyzeTypes() error {
 		symName := fmt.Sprintf("type:%s", t.Name)
 		sym := entity.NewSymbol(symName, t.Addr, size, entity.AddrTypeData)
 
-		ap := k.KnownAddr.InsertSymbol(sym, pkg)
+		ap := k.KnownAddr.InsertSymbol(sym, pkg, entity.AddrSourceTyp)
 		if ap == nil {
 			continue
 		}
@@ -163,7 +163,7 @@ func (k *KnownInfo) attributeTypeAuxRanges(typesEnd uint64) (int, error) {
 		pkg := k.resolveTypePackage(ownerPath)
 
 		sym := entity.NewSymbol(auxSymbolName(r), r.Addr, r.Size, entity.AddrTypeData)
-		ap := k.KnownAddr.InsertSymbol(sym, pkg)
+		ap := k.KnownAddr.InsertSymbol(sym, pkg, entity.AddrSourceTyp)
 		if ap == nil {
 			continue
 		}
@@ -356,7 +356,7 @@ func (k *KnownInfo) analyzeItabs(md gore.Moduledata, typeAddrCache map[uint64]*g
 		}
 
 		sym := entity.NewSymbol(symName, itabAddr, itabSize, entity.AddrTypeData)
-		ap := k.KnownAddr.InsertSymbol(sym, pkg)
+		ap := k.KnownAddr.InsertSymbol(sym, pkg, entity.AddrSourceTyp)
 		if ap == nil {
 			continue
 		}

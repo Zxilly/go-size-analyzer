@@ -30,11 +30,17 @@ func TestWritableSymbolsWithoutDWARF(t *testing.T) {
 	require.NoError(t, err)
 	pkg := findPackageByName(r.Packages, "main")
 	require.NotNil(t, pkg)
+	foundHeader, foundData := false, false
 	for _, sym := range pkg.Symbols {
 		if sym.Name == "main.Global" {
 			require.Equal(t, uint64(16), sym.Size)
-			return
+			foundHeader = true
+		}
+		if sym.Name == "main.Global.data" {
+			require.Equal(t, uint64(len("writable symbol regression")), sym.Size)
+			foundData = true
 		}
 	}
-	t.Fatal("writable global omitted from the symbol-only analysis")
+	require.True(t, foundHeader, "writable global omitted from the symbol-only analysis")
+	require.True(t, foundData, "static payload should be recovered without DWARF or disassembly")
 }

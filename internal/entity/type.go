@@ -11,9 +11,11 @@ const (
 type AddrSourceType = string
 
 const (
-	AddrSourceGoPclntab AddrSourceType = "pclntab"
-	AddrSourceSymbol    AddrSourceType = "symbol"
-	AddrSourceDisasm    AddrSourceType = "disasm"
-	AddrSourceDwarf     AddrSourceType = "dwarf"
-	AddrSourceTyp       AddrSourceType = "type"
+	AddrSourceGoPclntab    AddrSourceType = "pclntab"
+	AddrSourceSymbol       AddrSourceType = "symbol"
+	AddrSourceDisasm       AddrSourceType = "disasm"
+	AddrSourceDwarf        AddrSourceType = "dwarf"
+	AddrSourceTyp          AddrSourceType = "type"
+	AddrSourceStaticCopy   AddrSourceType = "static_copy"
+	AddrSourceStaticHeader AddrSourceType = "static_header"
 )

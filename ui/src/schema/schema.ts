@@ -63,6 +63,9 @@ export const PackageSchema: GenericSchema<PackageRef> = object({
 export type Package = InferInput<typeof PackageSchema>;
 
 export const ResultSchema = object({
+	coverage: optional(object({
+		attributed: number(), recognized: number(), unclassified: number(), shared: number(), by_source: record(string(),number()),
+	})),
   name: string(),
   size: number(),
   packages: record(string(), PackageSchema),

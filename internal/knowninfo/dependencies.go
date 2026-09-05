@@ -45,7 +45,9 @@ func (m *Dependencies) GetPackage(name string) (*entity.Package, bool) {
 func (m *Dependencies) GetPackageByPrefixMatch(name string) (*entity.Package, bool) {
 	var best *entity.Package
 	_ = m.Trie.WalkPath(name, func(_ string, p *entity.Package) error {
-		best = p
+		if p.Name != "" {
+			best = p
+		}
 		return nil
 	})
 	if best == nil {
@@ -67,6 +69,9 @@ func (m *Dependencies) Functions(yield func(*entity.Function) bool) {
 
 func (m *Dependencies) AddModules(mods []*debug.Module, typ entity.PackageType) {
 	for _, mod := range mods {
+		if mod.Path == "" {
+			continue
+		}
 		old := m.Trie.Get(mod.Path)
 		if old != nil {
 			continue
@@ -210,7 +215,7 @@ func (k *KnownInfo) LoadPackages(f *gore.GoFile, isWasm bool) error {
 		pkgs.AddFromPclntab(p, entity.PackageTypeUnknown, pclntab, isWasm)
 	}
 
-	if k.BuildInfo != nil {
+	if k.BuildInfo != nil && k.BuildInfo.ModInfo != nil {
 		pkgs.AddModules(k.BuildInfo.ModInfo.Deps, entity.PackageTypeVendor)
 		pkgs.AddModules([]*debug.Module{&k.BuildInfo.ModInfo.Main}, entity.PackageTypeMain)
 	}

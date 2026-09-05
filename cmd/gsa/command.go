@@ -24,8 +24,9 @@ var Options struct {
 	HideMain     bool `help:"Hide main package" group:"text"`
 	HideStd      bool `help:"Hide standard library" group:"text"`
 
-	Indent  *int `help:"Indentation for json output" group:"json"`
-	Compact bool `help:"Hide function details, replacement with size" group:"json"`
+	Indent          *int `help:"Indentation for json output" group:"json"`
+	Compact         bool `help:"Hide function details, replacement with size" group:"json"`
+	CoverageDetails bool `help:"Include physical file ranges, owners, and analyzer provenance in JSON coverage" group:"json"`
 
 	Width       int `help:"Width of the svg treemap" default:"1028" group:"svg"`
 	Height      int `help:"Height of the svg treemap" default:"640" group:"svg"`

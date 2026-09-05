@@ -4,6 +4,8 @@ import "github.com/ZxillyFork/gosym"
 
 // PclnSymbolSize represents a pcln symbol sizes
 type PclnSymbolSize struct {
+	GCMaps   uint64         `json:"gc_maps,omitzero"`
+	Ftab     uint64         `json:"ftab,omitzero"`
 	Name     uint64         `json:"name"`     // the function name size
 	PCFile   uint64         `json:"pcfile"`   // the file name tab size
 	PCSP     uint64         `json:"pcsp"`     // the pc to stack pointer table size
@@ -15,6 +17,8 @@ type PclnSymbolSize struct {
 
 func (p *PclnSymbolSize) Size() uint64 {
 	var size uint64
+	size += p.Ftab
+	size += p.GCMaps
 	size += p.Name
 	size += p.PCFile
 	size += p.PCSP

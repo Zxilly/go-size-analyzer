@@ -4,6 +4,7 @@ import (
 	"debug/dwarf"
 	"testing"
 
+	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -14,6 +15,14 @@ func TestSafeGetEntryValReturnsValueOnSuccess(t *testing.T) {
 	value, ok := safeGetEntryVal[int](entry, dwarf.Attr(1), "test attribute", false)
 	assert.False(t, ok)
 	assert.Zero(t, value)
+}
+
+func TestEmptyModuleCannotOwnUnrelatedPackages(t *testing.T) {
+	k := &KnownInfo{}
+	k.Deps = NewDependencies(k)
+	k.Deps.Trie.Put("", entity.NewPackage())
+	_, ok := k.Deps.GetPackageByPrefixMatch("example.com/dataonly")
+	require.False(t, ok)
 }
 
 func TestDwarfOnlyPackageIsRegistered(t *testing.T) {

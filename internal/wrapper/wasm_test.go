@@ -212,8 +212,11 @@ func TestWasmLoadRawPreservesSectionAndFunctionSizes(t *testing.T) {
 	require.NoError(t, w.LoadRaw(bytes.NewReader(wasmBytes), uint64(len(wasmBytes))))
 
 	assert.Equal(t, uint64(3), w.GetFunctionSize(funcValueOffset, true))
-	assert.Equal(t, wasmSection{offset: 8, size: 16}, w.sections[".debug_info"])
-	assert.Equal(t, wasmSection{offset: 24, size: 10}, w.sections["code"])
+	assert.Equal(t, wasmSection{offset: 8, size: 16, parsed: true, originalName: ".debug_info"}, w.sections[".debug_info"])
+	assert.Equal(t, wasmSection{offset: 24, size: 10, kind: 10, parsed: true, originalName: "code"}, w.sections["code"])
+	code, ok := w.FunctionFileRange(funcValueOffset, true)
+	require.True(t, ok)
+	assert.Equal(t, entity.FileRange{Offset: 31, Size: 3}, code)
 
 	sections := w.GetSections(3, 0)
 	for _, section := range sections {

@@ -21,15 +21,21 @@ import (
 )
 
 type WasmWrapper struct {
-	module        *wasmir.Module
-	memory        []byte
-	sections      map[string]wasmSection
-	functionSizes []uint64
+	module         *wasmir.Module
+	memory         []byte
+	sections       map[string]wasmSection
+	functionSizes  []uint64
+	functionRanges []entity.FileRange
+	fileMappings   []entity.FileMapping
+	fileMetadata   []entity.FileRange
 }
 
 type wasmSection struct {
-	offset uint64
-	size   uint64
+	offset       uint64
+	size         uint64
+	kind         byte
+	parsed       bool
+	originalName string
 }
 
 var _ RawFileWrapper = (*WasmWrapper)(nil)
@@ -176,6 +182,9 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 
 	w.sections = make(map[string]wasmSection)
 	w.functionSizes = nil
+	w.functionRanges = nil
+	w.fileMappings = nil
+	w.fileMetadata = nil
 	offset := uint64(len(header))
 	for offset < size {
 		sectionOffset := offset
@@ -195,13 +204,20 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 		}
 
 		name := wasmSectionName(sectionID)
+		w.fileMetadata = append(w.fileMetadata, entity.FileRange{Offset: sectionOffset, Size: offset - sectionOffset})
 		limited := &io.LimitedReader{R: r, N: int64(payloadSize)}
 		sectionReader := bufio.NewReader(limited)
 		switch sectionID {
 		case 0:
 			name, err = readCustomSectionName(sectionReader)
+			if err == nil {
+				consumed := uint64(payloadSize) - uint64(limited.N) - uint64(sectionReader.Buffered())
+				w.fileMetadata = append(w.fileMetadata, entity.FileRange{Offset: offset, Size: consumed})
+			}
 		case 10:
-			w.functionSizes, err = readCodeFunctionSizes(sectionReader)
+			w.functionSizes, w.functionRanges, err = w.readCodeLayout(sectionReader, offset)
+		case 11:
+			err = w.readDataLayout(sectionReader, offset)
 		default:
 		}
 		if err != nil {
@@ -215,7 +231,15 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 		}
 
 		offset += uint64(payloadSize)
+		originalName := name
+		for duplicate := 2; ; duplicate++ {
+			if _, exists := w.sections[name]; !exists {
+				break
+			}
+			name = fmt.Sprintf("%s#%d", originalName, duplicate)
+		}
 		w.sections[name] = wasmSection{
+			kind: sectionID, parsed: true, originalName: originalName,
 			offset: sectionOffset,
 			size:   offset - sectionOffset,
 		}
@@ -383,14 +407,14 @@ func (w *WasmWrapper) GetSections(codeSectUsed, dataSectUsed uint64) []*entity.S
 		knownSize := uint64(0)
 		isDebug := strings.HasPrefix(name, ".debug") || strings.HasPrefix(name, "custom_.debug")
 		fileSize := sect.size
-		if name == "code" {
+		if sect.kind == 10 || (!sect.parsed && name == "code") {
 			if codeSectUsed <= fileSize {
 				knownSize = codeSectUsed
 			} else {
 				knownSize = fileSize
 				slog.Warn("known code size is greater than code section size")
 			}
-		} else if name == "data" {
+		} else if sect.kind == 11 || (!sect.parsed && name == "data") {
 			if dataSectUsed <= fileSize {
 				knownSize = dataSectUsed
 			} else {

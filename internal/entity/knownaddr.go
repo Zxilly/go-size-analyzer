@@ -77,7 +77,7 @@ func (f *KnownAddr) InsertTextFromSymbol(entry, size uint64, fn *Function) {
 	f.cancelIfSectionTypeMismatch(cur, f.TextAddrSpace)
 }
 
-func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
+func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, sources ...AddrSourceType) *Addr {
 	cur := &Addr{
 		AddrPos: &AddrPos{
 			Addr: symbol.Addr,
@@ -90,6 +90,9 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package) *Addr {
 		SourceType: AddrSourceSymbol,
 	}
 
+	if len(sources) > 0 {
+		cur.SourceType = sources[0]
+	}
 	ok := f.cancelIfSectionTypeMismatch(cur, f.SymbolAddrSpace)
 	if !ok {
 		return nil
@@ -144,7 +147,7 @@ func (f *KnownAddr) SymbolCovHas(entry uint64, size uint64) (AddrType, bool) {
 	return "", false
 }
 
-func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
+func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, sources ...AddrSourceType) {
 	cur := Addr{
 		AddrPos: &AddrPos{
 			Addr: entry,
@@ -157,10 +160,13 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function) {
 	}
 
 	// Linker may place non-data values (function pointers in type descriptors,
+	if len(sources) > 0 {
+		cur.SourceType = sources[0]
+	}
 	// itabs, etc.) whose symbols overlap disasm candidates — drop as false
 	// positives rather than treating them as real strings.
 	typ, ok := f.SymbolCovHas(entry, size)
-	if ok {
+	if ok && (typ != AddrTypeData || cur.SourceType != AddrSourceStaticCopy) {
 		if typ != AddrTypeData {
 			slog.Debug(fmt.Sprintf("disasm addr %x size %x overlaps symbol of type %s, dropped", entry, size, typ))
 		}

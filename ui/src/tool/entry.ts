@@ -445,6 +445,12 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
       align.add("Analyzer:", this.data.analyzers.join(", "));
     }
     align.add("Size:", formatBytes(this.data.size));
+	if (this.data.coverage) {
+		align.add("Attributed:", formatBytes(this.data.coverage.attributed))
+			.add("Standalone metadata:", formatBytes(this.data.coverage.recognized))
+			.add("Unclassified:", formatBytes(this.data.coverage.unclassified))
+			.add("Shared bytes:", formatBytes(this.data.coverage.shared));
+	}
     return align.toString();
   }
 
