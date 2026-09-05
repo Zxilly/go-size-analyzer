@@ -3,10 +3,10 @@ package knowninfo
 import (
 	"context"
 	"debug/dwarf"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"log/slog"
-	"sync"
 
 	"github.com/ZxillyFork/gore"
 	"github.com/ZxillyFork/gosym"
@@ -28,13 +28,33 @@ func safeGetEntryVal[T any](entry *dwarf.Entry, attr dwarf.Attr, name string, qu
 	return v, true
 }
 
+// Go emits a single DW_OP_addr for global variables. Delve's general
+// expression interpreter decodes that operand as little-endian, regardless
+// of DwarfRegisters.ByteOrder, so read this common case directly.
+func staticVariableAddress(insts []byte, ptrSize int, order binary.ByteOrder) (uint64, error) {
+	if len(insts) == 1+ptrSize && insts[0] == byte(op.DW_OP_addr) {
+		switch ptrSize {
+		case 4:
+			return uint64(order.Uint32(insts[1:])), nil
+		case 8:
+			return order.Uint64(insts[1:]), nil
+		}
+	}
+	if order != binary.LittleEndian {
+		return 0, errors.New("unsupported big-endian DWARF location expression")
+	}
+	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{ByteOrder: order}, insts, ptrSize, nil)
+	return uint64(addr), err
+}
+
 func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *entity.Package, ptrSize int, isGo bool) {
 	insts, ok := safeGetEntryVal[[]byte](entry, dwarf.AttrLocation, "location attribute", !isGo)
 	if !ok {
 		return
 	}
 
-	addr, _, err := op.ExecuteStackProgram(op.DwarfRegisters{}, insts, ptrSize, nil)
+	_, order := ptrSizeAndOrder(k.Wrapper.GoArch())
+	addr, err := staticVariableAddress(insts, ptrSize, order)
 	if err != nil {
 		if !isGo {
 			return
@@ -53,7 +73,9 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return
 	}
 
-	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, uint64(addr), k.Wrapper.ReadAddr)
+	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, addr, dwarfutil.MemoryReader{
+		Read: k.Wrapper.ReadAddr, ByteOrder: order,
+	})
 	if err != nil {
 		if isGo {
 			slog.Warn(fmt.Sprintf("Failed to load DWARF var %s: %v", dwarfutil.EntryPrettyPrint(entry), err))
@@ -69,7 +91,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 		return
 	}
 
-	symbol := entity.NewSymbol(entryName, uint64(addr), typSize, entity.AddrTypeData)
+	symbol := entity.NewSymbol(entryName, addr, typSize, entity.AddrTypeData)
 
 	ap := k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 	if ap == nil {
@@ -246,34 +268,19 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 
 	ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
 
-	k.HasDWARF = true
-
+	// debug/dwarf.Data lazily caches unit and type information. Resolving
+	// types concurrently with the main reader races on those shared caches.
 	r := d.Reader()
-
-	type item struct {
-		feeder EntryFeeder
-		entry  *dwarf.Entry
-	}
-
-	entryChan := make(chan item, 256)
-	processing := sync.WaitGroup{}
-	processing.Go(func() {
-		for i := range entryChan {
-			if !dwarfutil.EntryShouldIgnore(i.entry) {
-				i.feeder(i.entry)
-			}
-		}
-	})
-
 	var feeder EntryFeeder
-	var entry *dwarf.Entry
-
-	for entry, err = r.Next(); entry != nil; entry, err = r.Next() {
+	for {
+		entry, err := r.Next()
 		if err != nil {
-			slog.Warn(fmt.Sprintf("Failed to load DWARF: %v", err))
+			slog.Warn("Failed to load DWARF", "error", err)
 			return false
 		}
-
+		if entry == nil {
+			break
+		}
 		switch entry.Tag {
 		case dwarf.TagCompileUnit:
 			var ok bool
@@ -281,23 +288,15 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 			if !ok {
 				r.SkipChildren()
 			}
-		case dwarf.TagSubprogram:
-			entryChan <- item{
-				feeder: feeder,
-				entry:  entry,
+		case dwarf.TagSubprogram, dwarf.TagVariable:
+			if feeder != nil && !dwarfutil.EntryShouldIgnore(entry) {
+				feeder(entry)
 			}
-			r.SkipChildren()
-		case dwarf.TagVariable:
-			entryChan <- item{
-				feeder: feeder,
-				entry:  entry,
+			if entry.Tag == dwarf.TagSubprogram {
+				r.SkipChildren()
 			}
-		default:
 		}
 	}
-
-	close(entryChan)
-	processing.Wait()
-
+	k.HasDWARF = true
 	return true
 }

@@ -11,29 +11,33 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
-func readUintTo64(data []byte) uint64 {
+func readUintTo64(data []byte, order binary.ByteOrder) uint64 {
 	switch len(data) {
 	case 4:
-		return uint64(binary.LittleEndian.Uint32(data))
+		return uint64(order.Uint32(data))
 	case 8:
-		return binary.LittleEndian.Uint64(data)
+		return order.Uint64(data)
 	default:
 		panic(fmt.Errorf("unexpected size: %d", len(data)))
 	}
 }
 
-func readIntTo64(data []byte) int64 {
+func readIntTo64(data []byte, order binary.ByteOrder) int64 {
 	switch len(data) {
 	case 4:
-		return int64(binary.LittleEndian.Uint32(data))
+		return int64(order.Uint32(data))
 	case 8:
-		return int64(binary.LittleEndian.Uint64(data))
+		return int64(order.Uint64(data))
 	default:
 		panic(fmt.Errorf("unexpected size: %d", len(data)))
 	}
 }
 
-type MemoryReader func(addr, size uint64) ([]byte, error)
+// MemoryReader decodes values in the analyzed binary's byte order.
+type MemoryReader struct {
+	Read      func(addr, size uint64) ([]byte, error)
+	ByteOrder binary.ByteOrder
+}
 
 func readString(structTyp *dwarf.StructType, typAddr uint64, readMemory MemoryReader) (addr uint64, size uint64, err error) {
 	err = checkField(structTyp, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"})
@@ -46,7 +50,7 @@ func readString(structTyp *dwarf.StructType, typAddr uint64, readMemory MemoryRe
 
 	readSize := structTyp.Size()
 
-	data, err := readMemory(typAddr, uint64(readSize))
+	data, err := readMemory.Read(typAddr, uint64(readSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -57,8 +61,8 @@ func readString(structTyp *dwarf.StructType, typAddr uint64, readMemory MemoryRe
 	}
 
 	// read ptr
-	ptr := readUintTo64(data[:ptrSize])
-	strLen := readIntTo64(data[lenOffset:])
+	ptr := readUintTo64(data[:ptrSize], readMemory.ByteOrder)
+	strLen := readIntTo64(data[lenOffset:], readMemory.ByteOrder)
 
 	return ptr, uint64(strLen), nil
 }
@@ -77,7 +81,7 @@ func readSlice(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader, m
 
 	readSize := typ.Size()
 
-	data, err := readMemory(typAddr, uint64(readSize))
+	data, err := readMemory.Read(typAddr, uint64(readSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -88,9 +92,9 @@ func readSlice(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader, m
 	}
 
 	// read ptr
-	ptr := readUintTo64(data[:ptrSize])
-	dataLen := readUintTo64(data[lenOffset : lenOffset+lenSize])
-	dataCap := readUintTo64(data[capOffset : capOffset+capSize])
+	ptr := readUintTo64(data[:ptrSize], readMemory.ByteOrder)
+	dataLen := readUintTo64(data[lenOffset:lenOffset+lenSize], readMemory.ByteOrder)
+	dataCap := readUintTo64(data[capOffset:capOffset+capSize], readMemory.ByteOrder)
 
 	if dataLen != dataCap {
 		return 0, 0, fmt.Errorf("byte slice len(%d) != cap(%d)", dataLen, dataCap)
@@ -107,7 +111,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 
 	// read ptr
 	ptrSize := typ.Field[0].Type.Size()
-	data, err := readMemory(typAddr, uint64(ptrSize))
+	data, err := readMemory.Read(typAddr, uint64(ptrSize))
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -117,7 +121,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		return nil, err
 	}
 
-	ptr := readUintTo64(data)
+	ptr := readUintTo64(data, readMemory.ByteOrder)
 
 	filesPtrType, ok := typ.Field[0].Type.(*dwarf.PtrType)
 	if !ok {
@@ -157,7 +161,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	if overflow != 0 {
 		return nil, fmt.Errorf("embed.FS files length overflow: %d entries of %d bytes", filesLen, fileStructSize)
 	}
-	data, err = readMemory(filesAddr, readSize)
+	data, err = readMemory.Read(filesAddr, readSize)
 	if err != nil {
 		return nil, err
 	}
@@ -166,17 +170,17 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	for i := range filesLen {
 		offset := int64(i * fileStructSize)
 
-		nameAddr := readUintTo64(data[offset : offset+ptrSize])
-		nameLen := readUintTo64(data[offset+ptrSize : offset+ptrSize*2])
+		nameAddr := readUintTo64(data[offset:offset+ptrSize], readMemory.ByteOrder)
+		nameLen := readUintTo64(data[offset+ptrSize:offset+ptrSize*2], readMemory.ByteOrder)
 
-		nameData, err := readMemory(nameAddr, nameLen)
+		nameData, err := readMemory.Read(nameAddr, nameLen)
 		if err != nil {
 			return nil, err
 		}
 		name := utils.Deduplicate(fmt.Sprintf("embed:%s", string(nameData)))
 
-		dataAddr := readUintTo64(data[offset+ptrSize*2 : offset+ptrSize*3])
-		dataLen := readUintTo64(data[offset+ptrSize*3 : offset+ptrSize*4])
+		dataAddr := readUintTo64(data[offset+ptrSize*2:offset+ptrSize*3], readMemory.ByteOrder)
+		dataLen := readUintTo64(data[offset+ptrSize*3:offset+ptrSize*4], readMemory.ByteOrder)
 
 		hashAddr := filesAddr + uint64(offset+ptrSize*4)
 		hashLen := uint64(16)
