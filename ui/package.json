@@ -14,20 +14,20 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@chenglou/pretext": "^0.0.8",
+    "@chenglou/pretext": "^0.0.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.3.1",
-    "@mui/material": "^9.3.1",
+    "@mui/icons-material": "^9.4.0",
+    "@mui/material": "^9.4.0",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "react-dropzone": "^20.1.1",
     "react-use": "^17.6.1",
-    "valibot": "^1.4.2"
+    "valibot": "^1.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.2.0",
@@ -44,8 +44,8 @@
     "@types/d3-scale": "^4.0.9",
     "@types/golang-wasm-exec": "^1.15.2",
     "@types/node": "^26.2.0",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.0",
     "@vitest/coverage-istanbul": "^4.1.11",
     "eslint": "^10.9.0",
