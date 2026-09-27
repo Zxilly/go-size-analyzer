@@ -18,7 +18,7 @@ require (
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/dustin/go-humanize v1.1.0
 	github.com/eliben/watgo v0.8.0
-	github.com/go-delve/delve v1.27.0
+	github.com/go-delve/delve v1.27.2
 	github.com/jedib0t/go-pretty/v6 v6.8.3
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
@@ -28,7 +28,7 @@ require (
 	github.com/puzpuzpuz/xsync/v4 v4.5.0
 	github.com/samber/lo v1.53.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/arch v0.27.0
+	golang.org/x/arch v0.31.1-0.20260922213335-ab53fe6c43b6
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
 	golang.org/x/net v0.59.0
 	golang.org/x/sync v0.23.0
