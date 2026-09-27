@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": [
-      "@testing-library/jest-dom",
+      "@testing-library/jest-dom/vitest",
       "@types/golang-wasm-exec",
       "vite/client",
       "node"
