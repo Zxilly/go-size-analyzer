@@ -171,7 +171,10 @@ def run_integration_tests(typ: str, entry: GSAInstance):
 
         try:
             base = time.time()
-            target.run_test(entry, timeout=timeout)
+            # Coverage-instrumented analysis of 256+ MiB binaries can exceed
+            # three minutes on slower runners, even while making progress.
+            target_timeout = 300 if typ == "real" and os.path.getsize(target.path) >= 256 * 1024 * 1024 else timeout
+            target.run_test(entry, timeout=target_timeout)
             log(f"{head} passed in {format_time(time.time() - base)}.")
         except Exception as e:
             log(f"{head} failed:")
