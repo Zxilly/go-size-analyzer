@@ -7,6 +7,7 @@ import { createEntry } from "../tool/entry.ts";
 import TreeMap from "../TreeMap.tsx";
 import { GsaInstance } from "../worker/helper.ts";
 import { FileSelector } from "./FileSelector.tsx";
+import { useBoundedLog } from "./useBoundedLog.ts";
 
 type ModalState = {
   isOpen: false;
@@ -33,13 +34,10 @@ const LogViewer: React.FC<{ log: string }> = ({ log }) => {
 };
 
 export const Explorer: React.FC = () => {
-  const [log, setLog] = React.useState<string>("");
+  const { log, appendLog } = useBoundedLog();
 
   const { value: analyzer, loading, error: loadError } = useAsync(async () => {
-    return GsaInstance.create((line) => {
-      setLog(prev => `${prev + line}\n`);
-      console.info(line);
-    });
+    return GsaInstance.create(appendLog);
   });
 
   const [file, setFile] = React.useState<File | null>(null);

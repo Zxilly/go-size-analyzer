@@ -14,7 +14,7 @@ import (
 )
 
 func analyze(_ js.Value, args []js.Value) any {
-	utils.InitLogger(slog.LevelDebug)
+	utils.InitLogger(slog.LevelInfo)
 
 	name := args[0].String()
 	length := args[1].Length()

@@ -1,4 +1,8 @@
+import { MAX_LOG_LENGTH } from "./logLimit.ts";
+const truncationMarker = "[Earlier log output truncated]\n";
 let outputBuf = "";
+let truncated = false;
+let progressMessages = 0;
 const decoder = new TextDecoder("utf-8");
 function enosys() {
   const err = new Error("not implemented");
@@ -14,18 +18,40 @@ export function setCallback(callback) {
   fsCallback = callback;
 }
 
+export function resetLog() {
+  outputBuf = "";
+  truncated = false;
+  progressMessages = 0;
+}
+
+// Keep at most four progress messages, then one bounded tail before the result.
+export function flushLog() {
+  if (outputBuf) {
+    fsCallback((truncated ? truncationMarker : "") + outputBuf);
+    outputBuf = "";
+  }
+}
+
 export function resetCallback() {
   fsCallback = defaultFSCallback;
+  resetLog();
 }
 
 globalThis.fs = {
   constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 }, // unused
   writeSync(fd, buf) {
-    outputBuf += decoder.decode(buf);
-    const nl = outputBuf.lastIndexOf("\n");
-    if (nl !== -1) {
-      fsCallback(outputBuf.substring(0, nl));
-      outputBuf = outputBuf.substring(nl + 1);
+    // Decode at most the retained tail, even for a single enormous write.
+    const limit = MAX_LOG_LENGTH - truncationMarker.length;
+    const chunk = buf.length > limit ? buf.subarray(buf.length - limit) : buf;
+    const text = decoder.decode(chunk);
+    if (buf.length > limit || outputBuf.length + text.length > limit) {
+      truncated = true;
+    }
+    outputBuf = (outputBuf + text).slice(-limit);
+    if (progressMessages < 4 && outputBuf.length >= 16 * 1024) {
+      fsCallback(outputBuf.slice(0, 16 * 1024));
+      outputBuf = outputBuf.slice(16 * 1024);
+      progressMessages++;
     }
     return buf.length;
   },
