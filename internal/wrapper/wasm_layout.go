@@ -3,6 +3,7 @@ package wrapper
 import (
 	"bufio"
 	"cmp"
+	"container/heap"
 	"errors"
 	"fmt"
 	"io"
@@ -158,42 +159,82 @@ func (w *WasmWrapper) addFileMapping(m entity.FileMapping) {
 	if m.Size == 0 {
 		return
 	}
-	if len(w.fileMappings) == 0 || w.fileMappings[len(w.fileMappings)-1].Addr+w.fileMappings[len(w.fileMappings)-1].Size <= m.Addr {
-		w.fileMappings = append(w.fileMappings, m)
+	if m.Size > ^uint64(0)-m.Addr {
 		return
 	}
-	// Replace only the intersecting interval. Rebuilding and sorting the full
-	// slice per segment allocates gigabytes for Go's sparse WASM data sections.
-	lo, _ := slices.BinarySearchFunc(w.fileMappings, m.Addr, func(old entity.FileMapping, addr uint64) int {
-		if old.Addr+old.Size <= addr {
-			return -1
-		}
-		return 1
-	})
-	end := m.Addr + m.Size
-	hi, _ := slices.BinarySearchFunc(w.fileMappings, end, func(old entity.FileMapping, addr uint64) int {
-		return cmp.Compare(old.Addr, addr)
-	})
-	var replacement [3]entity.FileMapping
-	parts := replacement[:0]
-	if lo < hi && w.fileMappings[lo].Addr < m.Addr {
-		left := w.fileMappings[lo]
-		left.Size = m.Addr - left.Addr
-		parts = append(parts, left)
+	if len(w.fileMappings) > 0 {
+		last := w.fileMappings[len(w.fileMappings)-1]
+		w.mappingsDirty = w.mappingsDirty || last.Addr+last.Size > m.Addr
 	}
-	parts = append(parts, m)
-	if lo < hi && w.fileMappings[hi-1].Addr+w.fileMappings[hi-1].Size > end {
-		right := w.fileMappings[hi-1]
-		right.Size -= end - right.Addr
-		right.Offset += end - right.Addr
-		right.Addr = end
-		parts = append(parts, right)
-	}
-	w.fileMappings = slices.Replace(w.fileMappings, lo, hi, parts...)
+	w.fileMappings = append(w.fileMappings, m)
 }
-func (w *WasmWrapper) FileAddressMappings() []entity.FileMapping { return w.fileMappings }
+
+// Normalize in one sweep. The highest original segment index wins each
+// interval, matching WebAssembly's later-initialization overwrite semantics.
+// Every segment contributes two endpoints and at most one heap push/pop.
+func (w *WasmWrapper) normalizeFileMappings() {
+	if !w.mappingsDirty {
+		return
+	}
+	type endpoint struct {
+		addr  uint64
+		index int
+		start bool
+	}
+	events := make([]endpoint, 0, 2*len(w.fileMappings))
+	for i, m := range w.fileMappings {
+		events = append(events, endpoint{m.Addr, i, true}, endpoint{m.Addr + m.Size, i, false})
+	}
+	slices.SortFunc(events, func(a, b endpoint) int { return cmp.Compare(a.addr, b.addr) })
+	active := make([]bool, len(w.fileMappings))
+	var winners mappingHeap
+	out := make([]entity.FileMapping, 0, len(w.fileMappings))
+	for i := 0; i < len(events); {
+		addr := events[i].addr
+		for i < len(events) && events[i].addr == addr {
+			e := events[i]
+			active[e.index] = e.start
+			if e.start {
+				heap.Push(&winners, e.index)
+			}
+			i++
+		}
+		for len(winners) > 0 && !active[winners[0]] {
+			heap.Pop(&winners)
+		}
+		if i == len(events) || len(winners) == 0 {
+			continue
+		}
+		m := w.fileMappings[winners[0]]
+		m.Offset += addr - m.Addr
+		m.Addr, m.Size = addr, events[i].addr-addr
+		if len(out) > 0 {
+			last := &out[len(out)-1]
+			if last.Addr+last.Size == m.Addr && last.Offset+last.Size == m.Offset {
+				last.Size += m.Size
+				continue
+			}
+		}
+		out = append(out, m)
+	}
+	w.fileMappings, w.mappingsDirty = out, false
+}
+
+type mappingHeap []int
+
+func (h mappingHeap) Len() int           { return len(h) }
+func (h mappingHeap) Less(i, j int) bool { return h[i] > h[j] }
+func (h mappingHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *mappingHeap) Push(x any)        { *h = append(*h, x.(int)) }
+func (h *mappingHeap) Pop() any          { old := *h; x := old[len(old)-1]; *h = old[:len(old)-1]; return x }
+
+func (w *WasmWrapper) FileAddressMappings() []entity.FileMapping {
+	w.normalizeFileMappings()
+	return w.fileMappings
+}
 
 func (w *WasmWrapper) FileDataContains(addr, size uint64) bool {
+	w.normalizeFileMappings()
 	if size == 0 || addr > uint64(len(w.memory)) || size > uint64(len(w.memory))-addr {
 		return false
 	}
@@ -219,6 +260,7 @@ func (w *WasmWrapper) FileDataIntervals(ranges []entity.AddrPos) uint64 {
 }
 
 func (w *WasmWrapper) mappedDataSize(count int, at func(int) entity.AddrPos) uint64 {
+	w.normalizeFileMappings()
 	var size uint64
 	i, j := 0, 0
 	if count > 0 {

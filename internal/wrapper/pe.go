@@ -4,7 +4,6 @@ import (
 	"debug/dwarf"
 	"debug/pe"
 	"errors"
-	"fmt"
 	"slices"
 	"strings"
 
@@ -125,15 +124,14 @@ func peSectionType(s *pe.Section) entity.SectionContentType {
 
 func (p *PeWrapper) LoadSections() *entity.Store {
 	ret := entity.NewStore()
+	var names sectionNames
 	for _, s := range p.file.Sections {
 		d := strings.HasPrefix(s.Name, ".debug_") || strings.HasPrefix(s.Name, ".zdebug_")
 
-		if _, ok := ret.Sections[s.Name]; ok {
-			panic(fmt.Errorf("section %s already exists", s.Name))
-		}
+		name := names.unique(s.Name)
 
-		ret.Sections[s.Name] = &entity.Section{
-			Name:         s.Name,
+		ret.Sections[name] = &entity.Section{
+			Name:         name,
 			Size:         uint64(s.VirtualSize),
 			FileSize:     uint64(s.Size),
 			Offset:       uint64(s.Offset),

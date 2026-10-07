@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"slices"
 	"strings"
 
@@ -121,6 +122,40 @@ func (m *MachoWrapper) SlidePointer(addr uint64) uint64 {
 	return m.file.SlidePointer(addr) + m.file.GetBaseAddress()
 }
 
+func readMachoDWARFSection(s *types.Section) ([]byte, error) {
+	b, err := s.Data()
+	if err != nil && uint64(len(b)) < s.Size {
+		return nil, err
+	}
+
+	if len(b) >= 12 && string(b[:4]) == "ZLIB" {
+		dlen := binary.BigEndian.Uint64(b[4:12])
+		// A generous per-section limit protects both native and browser
+		// analysis from hostile expansion without trusting the ZLIB header.
+		const maxDWARFSectionSize = 1 << 30
+		if dlen > maxDWARFSectionSize {
+			return nil, fmt.Errorf("Mach-O DWARF section %q exceeds decompression limit", s.Name)
+		}
+		r, err := zlib.NewReader(bytes.NewBuffer(b[12:]))
+		if err != nil {
+			return nil, err
+		}
+		dbuf, err := io.ReadAll(io.LimitReader(r, int64(dlen)+1))
+		closeErr := r.Close()
+		if err != nil {
+			return nil, err
+		}
+		if closeErr != nil {
+			return nil, closeErr
+		}
+		if uint64(len(dbuf)) != dlen {
+			return nil, fmt.Errorf("Mach-O DWARF section %q has incorrect decompressed size", s.Name)
+		}
+		b = dbuf
+	}
+	return b, nil
+}
+
 // DWARF a copy of go-macho's DWARF function
 func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	dwarfSuffix := func(s *types.Section) string {
@@ -132,29 +167,6 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 		default:
 			return ""
 		}
-	}
-	sectionData := func(s *types.Section) ([]byte, error) {
-		b, err := s.Data()
-		if err != nil && uint64(len(b)) < s.Size {
-			return nil, err
-		}
-
-		if len(b) >= 12 && string(b[:4]) == "ZLIB" {
-			dlen := binary.BigEndian.Uint64(b[4:12])
-			dbuf := make([]byte, dlen)
-			r, err := zlib.NewReader(bytes.NewBuffer(b[12:]))
-			if err != nil {
-				return nil, err
-			}
-			if _, err := io.ReadFull(r, dbuf); err != nil {
-				return nil, err
-			}
-			if err := r.Close(); err != nil {
-				return nil, err
-			}
-			b = dbuf
-		}
-		return b, nil
 	}
 
 	// There are many other DWARF sections, but these
@@ -169,7 +181,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 		if _, ok := dat[suffix]; !ok {
 			continue
 		}
-		b, err := sectionData(s)
+		b, err := readMachoDWARFSection(s)
 		if err != nil {
 			return nil, err
 		}
@@ -192,7 +204,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 			continue
 		}
 
-		b, err := sectionData(s)
+		b, err := readMachoDWARFSection(s)
 		if err != nil {
 			return nil, err
 		}
@@ -296,6 +308,7 @@ func machoSectionType(s *types.Section) entity.SectionContentType {
 
 func (m *MachoWrapper) LoadSections() *entity.Store {
 	ret := entity.NewStore()
+	var names sectionNames
 
 	for _, s := range m.file.Sections {
 		if s.Size == 0 {
@@ -305,9 +318,10 @@ func (m *MachoWrapper) LoadSections() *entity.Store {
 		d := strings.HasPrefix(s.Name, "__debug_") || strings.HasPrefix(s.Name, "__zdebug_")
 
 		if machoSectionShouldIgnore(s) {
+			name := names.unique(s.Name)
 			// seems like .bss section
-			ret.Sections[s.Name] = &entity.Section{
-				Name:         s.Name,
+			ret.Sections[name] = &entity.Section{
+				Name:         name,
 				Addr:         s.Addr,
 				AddrEnd:      s.Addr + s.Size,
 				OnlyInMemory: true,
@@ -317,11 +331,7 @@ func (m *MachoWrapper) LoadSections() *entity.Store {
 			continue
 		}
 
-		name := s.Name + " " + s.Seg
-
-		if _, ok := ret.Sections[name]; ok {
-			panic(fmt.Errorf("section %s already exists", name))
-		}
+		name := names.unique(s.Name + " " + s.Seg)
 
 		ret.Sections[name] = &entity.Section{
 			Name:         name,
@@ -367,13 +377,44 @@ func (m *MachoWrapper) ReadAddr(addr, size uint64) ([]byte, error) {
 	if size == 0 {
 		return nil, nil
 	}
+	// GetOffset validates only the starting address against Memsz. Require
+	// the complete range to fit a file-backed segment before allocating.
+	backed := false
+	var expectedOffset uint64
+	for _, seg := range m.file.Segments() {
+		if addr >= seg.Addr && addr-seg.Addr < seg.Memsz {
+			delta := addr - seg.Addr
+			if seg.Memsz <= ^uint64(0)-seg.Addr && delta <= seg.Filesz && size <= seg.Filesz-delta && delta <= ^uint64(0)-seg.Offset {
+				backed = true
+				expectedOffset = seg.Offset + delta
+			}
+			// GetOffset uses the first matching segment. A later overlapping
+			// segment must not authorize a read through that first mapping.
+			break
+		}
+	}
+	if !backed || size > uint64(int(^uint(0)>>1)) {
+		return nil, ErrAddrNotFound
+	}
 	off, err := m.file.GetOffset(addr)
-	if err != nil {
+	if err != nil || off != expectedOffset || off > math.MaxInt64 || size > math.MaxInt64-off {
+		return nil, ErrAddrNotFound
+	}
+	// Segment lengths are also untrusted: reject truncated physical backing
+	// with a one-byte probe before making the requested allocation.
+	var last [1]byte
+	if n, err := m.file.ReadAt(last[:], int64(off+size-1)); n != 1 || err != nil {
 		return nil, ErrAddrNotFound
 	}
 	b := make([]byte, size)
-	_, err = m.file.ReadAt(b, int64(off))
-	return b, err
+	n, err := m.file.ReadAt(b, int64(off))
+	if err != nil {
+		return nil, err
+	}
+	if n != len(b) {
+		return nil, io.ErrUnexpectedEOF
+	}
+	return b, nil
 }
 
 func (m *MachoWrapper) Text() (textStart uint64, text []byte, err error) {

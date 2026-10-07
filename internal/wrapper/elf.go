@@ -6,7 +6,6 @@ import (
 	"debug/elf"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"slices"
 	"strings"
 	"sync"
@@ -177,6 +176,7 @@ func elfSectionType(s *elf.Section) entity.SectionContentType {
 
 func (e *ElfWrapper) LoadSections() *entity.Store {
 	ret := entity.NewStore()
+	var names sectionNames
 
 	for _, s := range e.file.Sections {
 		// not exist in binary
@@ -187,14 +187,12 @@ func (e *ElfWrapper) LoadSections() *entity.Store {
 		// check if debug
 		d := strings.HasPrefix(s.Name, ".debug_") || strings.HasPrefix(s.Name, ".zdebug_")
 
-		if _, ok := ret.Sections[s.Name]; ok {
-			panic(fmt.Errorf("section %s already exists", s.Name))
-		}
+		name := names.unique(s.Name)
 
 		if s.Type == elf.SHT_NOBITS {
 			// seems like .bss section
-			ret.Sections[s.Name] = &entity.Section{
-				Name:         s.Name,
+			ret.Sections[name] = &entity.Section{
+				Name:         name,
 				Size:         s.Size,
 				Addr:         s.Addr,
 				AddrEnd:      s.Addr + s.Size,
@@ -205,8 +203,8 @@ func (e *ElfWrapper) LoadSections() *entity.Store {
 			continue
 		}
 
-		ret.Sections[s.Name] = &entity.Section{
-			Name:         s.Name,
+		ret.Sections[name] = &entity.Section{
+			Name:         name,
 			Size:         s.Size,
 			FileSize:     s.FileSize,
 			Offset:       s.Offset,

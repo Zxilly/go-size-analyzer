@@ -27,6 +27,7 @@ type WasmWrapper struct {
 	functionSizes  []uint64
 	functionRanges []entity.FileRange
 	fileMappings   []entity.FileMapping
+	mappingsDirty  bool
 	fileMetadata   []entity.FileRange
 }
 
@@ -146,7 +147,9 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 	w.functionSizes = nil
 	w.functionRanges = nil
 	w.fileMappings = nil
+	w.mappingsDirty = false
 	w.fileMetadata = nil
+	var names sectionNames
 	offset := uint64(len(header))
 	for offset < size {
 		sectionOffset := offset
@@ -194,18 +197,14 @@ func (w *WasmWrapper) LoadRaw(reader io.ReaderAt, size uint64) error {
 
 		offset += uint64(payloadSize)
 		originalName := name
-		for duplicate := 2; ; duplicate++ {
-			if _, exists := w.sections[name]; !exists {
-				break
-			}
-			name = fmt.Sprintf("%s#%d", originalName, duplicate)
-		}
+		name = names.unique(originalName)
 		w.sections[name] = wasmSection{
 			kind: sectionID, parsed: true, originalName: originalName,
 			offset: sectionOffset,
 			size:   offset - sectionOffset,
 		}
 	}
+	w.normalizeFileMappings()
 	return nil
 }
 
