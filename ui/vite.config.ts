@@ -4,6 +4,7 @@ import * as process from "node:process";
 import { defineConfig } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { serializeHtmlJson } from "./html-json";
 import { build, codecov, commonPlugin, getVersionTag } from "./vite.common";
 
 const placeHolder = `"GSA_PACKAGE_DATA"`;
@@ -23,10 +24,10 @@ function getPlaceHolder(): string {
       target = new URL("../testdata/result.json", import.meta.url);
     }
 
-    return fs.readFileSync(
+    return serializeHtmlJson(JSON.parse(fs.readFileSync(
       target,
       "utf-8",
-    );
+    )));
   }
   catch (e) {
     console.error("Failed to load data.json, for dev you should create one with gsa", e);

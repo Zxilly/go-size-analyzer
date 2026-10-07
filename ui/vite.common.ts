@@ -4,6 +4,7 @@ import * as path from "node:path";
 import process from "node:process";
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 import react from "@vitejs/plugin-react";
+import { serializeHtmlJson } from "./html-json";
 
 export function getSha(): string | undefined {
   const envs = process.env;
@@ -31,10 +32,10 @@ export function getVersionTag(): HtmlTagDescriptor | null {
     return {
       tag: "script",
       children:
-                `console.info("Branch: ${branchName}");`
-                + `console.info("Commit: ${commitHash}");`
-                + `console.info("Date: ${commitDate}");`
-                + `console.info("Message: ${lastCommitMessage}");`,
+                `console.info(${serializeHtmlJson(`Branch: ${branchName}`)});`
+                + `console.info(${serializeHtmlJson(`Commit: ${commitHash}`)});`
+                + `console.info(${serializeHtmlJson(`Date: ${commitDate}`)});`
+                + `console.info(${serializeHtmlJson(`Message: ${lastCommitMessage}`)});`,
     };
   }
   catch (e) {
