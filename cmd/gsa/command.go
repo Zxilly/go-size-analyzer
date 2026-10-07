@@ -35,7 +35,7 @@ var Options struct {
 	PaddingRoot int `help:"Padding around root content" default:"32" group:"svg"`
 
 	Web         bool                  `long:"web" help:"use web interface to explore the details" group:"web"`
-	Listen      string                `long:"listen" help:"listen address" default:":8080" group:"web"`
+	Listen      string                `long:"listen" help:"Listen address; use 0.0.0.0:8080 to allow remote access" default:"127.0.0.1:8080" group:"web"`
 	Open        bool                  `long:"open" help:"Open browser" group:"web"`
 	UpdateCache webui.UpdateCacheFlag `long:"update-cache" help:"Update the cache file for the web UI" group:"web"`
 

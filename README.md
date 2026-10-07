@@ -58,7 +58,8 @@ go install github.com/Zxilly/go-size-analyzer/cmd/gsa@latest
 gsa --web golang-compiled-binary
 ```
 
-Will start a web server on port 8080, you can view the result in your browser.
+Will start a web server at `http://127.0.0.1:8080`, accessible from your own machine.
+Use `--listen 0.0.0.0:8080` to allow remote access to the report.
 
 Or you can use the WebAssembly version in the browser: [GSA Treemap](https://gsa.zxilly.dev)
 
@@ -220,7 +221,7 @@ Svg output options
 
 Web interface options
   --web               use web interface to explore the details
-  --listen=":8080"    listen address
+  --listen="127.0.0.1:8080"    Listen address; use 0.0.0.0:8080 to allow remote access
   --open              Open browser
   --update-cache      Update the cache file for the web UI
 
