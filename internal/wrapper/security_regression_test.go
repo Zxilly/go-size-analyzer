@@ -212,7 +212,7 @@ func TestMachoCompressedDWARFChecksStream(t *testing.T) {
 }
 
 func TestWasmMappingSweepMatchesInitialization(t *testing.T) {
-	rng := rand.New(rand.NewPCG(1, 2))
+	rng := rand.New(rand.NewPCG(1, 2)) //nolint:gosec // A fixed seed makes this non-security test reproducible.
 	for range 50 {
 		w := &WasmWrapper{}
 		expected := make([]uint64, 128)

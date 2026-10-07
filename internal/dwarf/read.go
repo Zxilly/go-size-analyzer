@@ -104,7 +104,7 @@ func signedLength(value uint64, width int64) (uint64, error) {
 	return value, nil
 }
 
-func readString(typ *dwarf.StructType, addr uint64, m MemoryReader) (uint64, uint64, error) {
+func readString(typ *dwarf.StructType, addr uint64, m MemoryReader) (dataAddr uint64, size uint64, err error) {
 	if err := checkHeader(typ, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"}); err != nil {
 		return 0, 0, err
 	}
@@ -125,7 +125,7 @@ func readString(typ *dwarf.StructType, addr uint64, m MemoryReader) (uint64, uin
 	return values[0], length, nil
 }
 
-func readSlice(typ *dwarf.StructType, addr uint64, m MemoryReader, memberTyp string) (uint64, uint64, error) {
+func readSlice(typ *dwarf.StructType, addr uint64, m MemoryReader, memberTyp string) (dataAddr uint64, size uint64, err error) {
 	if err := checkHeader(typ, fieldPattern{"array", memberTyp}, fieldPattern{"len", "int"}, fieldPattern{"cap", "int"}); err != nil {
 		return 0, 0, err
 	}

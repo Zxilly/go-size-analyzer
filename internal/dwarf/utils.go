@@ -2,6 +2,7 @@ package dwarf
 
 import (
 	"debug/dwarf"
+	"errors"
 	"fmt"
 )
 
@@ -12,7 +13,7 @@ type fieldPattern struct {
 
 func checkField(typ *dwarf.StructType, fields ...fieldPattern) error {
 	if typ == nil {
-		return fmt.Errorf("nil struct type")
+		return errors.New("nil struct type")
 	}
 	if len(typ.Field) != len(fields) {
 		return fmt.Errorf("%s struct has %d fields", typ.StructName, len(typ.Field))

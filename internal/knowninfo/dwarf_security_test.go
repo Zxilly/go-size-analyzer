@@ -10,6 +10,7 @@ import (
 )
 
 func reversedRangeData(t *testing.T) (*dwarf.Data, *dwarf.Entry) {
+	t.Helper()
 	// DWARF 4 compile unit with a subprogram whose absolute high_pc precedes low_pc.
 	abbrev := []byte{1, 0x11, 1, 0, 0, 2, 0x2e, 0, 3, 8, 0x11, 1, 0x12, 1, 0, 0, 0}
 	body := []byte{4, 0, 0, 0, 0, 0, 8, 1, 2, 'b', 'a', 'd', 0}
