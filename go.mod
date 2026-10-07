@@ -4,13 +4,13 @@ go 1.27.0
 
 require (
 	charm.land/bubbles/v2 v2.2.1
-	charm.land/bubbletea/v2 v2.0.9
+	charm.land/bubbletea/v2 v2.0.10
 	charm.land/lipgloss/v2 v2.0.6
 	github.com/ZxillyFork/gore v0.0.0-20260905164552-56042fb9d356
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.16.1
-	github.com/blacktop/go-macho v1.1.283
+	github.com/blacktop/go-macho v1.1.286
 	github.com/charmbracelet/colorprofile v0.4.3
 	github.com/charmbracelet/glamour v1.0.0
 	github.com/charmbracelet/x/ansi v0.11.8
