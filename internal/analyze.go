@@ -173,7 +173,9 @@ func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []
 	utils.WaitDebugger("All analyzers and deps done")
 	k.Deps.ClearCaches()
 
-	k.CalculatePackageSize()
+	if err := k.CalculatePackageSize(); err != nil {
+		return nil, nil, err
+	}
 
 	codeSectUsed := wasmCodeSectUsed(k)
 	if err := k.CollectCoverage(); err != nil {
@@ -195,7 +197,11 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 	// fixme: add wasm dwarf support
 	if !options.SkipDwarf {
 		slog.Info("Parsing DWARF...")
-		if k.TryLoadDwarf() {
+		loaded, err := k.TryLoadDwarf()
+		if err != nil {
+			return nil, nil, err
+		}
+		if loaded {
 			analyzers = append(analyzers, entity.AnalyzerDwarf)
 			slog.Info("Parsed DWARF")
 		} else {
@@ -257,7 +263,9 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 	if err := k.CalculateSectionSize(); err != nil {
 		return nil, nil, err
 	}
-	k.CalculatePackageSize()
+	if err := k.CalculatePackageSize(); err != nil {
+		return nil, nil, err
+	}
 
 	sections := utils.Collect(maps.Values(k.Sects.Sections))
 	return sections, analyzers, nil

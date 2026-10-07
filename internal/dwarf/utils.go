@@ -11,11 +11,17 @@ type fieldPattern struct {
 }
 
 func checkField(typ *dwarf.StructType, fields ...fieldPattern) error {
+	if typ == nil {
+		return fmt.Errorf("nil struct type")
+	}
 	if len(typ.Field) != len(fields) {
 		return fmt.Errorf("%s struct has %d fields", typ.StructName, len(typ.Field))
 	}
 
 	for i, field := range fields {
+		if typ.Field[i] == nil || typ.Field[i].Type == nil {
+			return fmt.Errorf("field %d has no type", i)
+		}
 		if typ.Field[i].Name != field.name {
 			return fmt.Errorf("field %d name is %s, expect %s", i, typ.Field[i].Name, field.name)
 		}

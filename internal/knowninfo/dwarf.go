@@ -130,10 +130,10 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	subEntry *dwarf.Entry,
 	pkg *entity.Package,
 	readFileName func(entry *dwarf.Entry) string,
-) {
+) error {
 	subEntryName, ok := safeGetEntryVal[string](subEntry, dwarf.AttrName, "function name", !isGo)
 	if !ok {
-		return
+		return nil
 	}
 
 	ranges, err := d.Ranges(subEntry)
@@ -141,7 +141,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 		if isGo {
 			slog.Debug(fmt.Sprintf("Failed to load DWARF function size: %v", err))
 		}
-		return
+		return nil
 	}
 
 	if len(ranges) == 0 {
@@ -150,14 +150,21 @@ func (k *KnownInfo) AddDwarfSubProgram(
 		if isGo {
 			slog.Debug(fmt.Sprintf("Failed to load DWARF function size, no range: %s", subEntryName))
 		}
-		return
+		return nil
 	}
 
 	// Functions may be split across non-contiguous ranges (PGO, inlining).
 	addr := ranges[0][0]
 	var size uint64
 	for _, r := range ranges {
-		size += r[1] - r[0]
+		if r[1] < r[0] {
+			return fmt.Errorf("DWARF function %q has reversed range [%#x, %#x)", subEntryName, r[0], r[1])
+		}
+		length := r[1] - r[0]
+		if length > ^uint64(0)-size {
+			return fmt.Errorf("DWARF function %q range size overflow", subEntryName)
+		}
+		size += length
 	}
 
 	typ := entity.FuncTypeFunction
@@ -194,6 +201,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 			k.KnownAddr.InsertTextFromDWARF(r[0], r[1]-r[0], fn)
 		}
 	}
+	return nil
 }
 
 func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity.Package {
@@ -238,7 +246,7 @@ func (k *KnownInfo) GetPackageFromDwarfCompileUnit(cuEntry *dwarf.Entry) *entity
 	return pkg
 }
 
-type EntryFeeder func(e *dwarf.Entry)
+type EntryFeeder func(e *dwarf.Entry) error
 
 func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entry, ptrSize int) (EntryFeeder, bool) {
 	cuLang, ok := safeGetEntryVal[int64](cuEntry, dwarf.AttrLanguage, "compile unit language", false)
@@ -255,22 +263,23 @@ func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entr
 
 	isGo := cuLang == dwarfutil.DwLangGo
 
-	return func(e *dwarf.Entry) {
+	return func(e *dwarf.Entry) error {
 		switch e.Tag {
 		case dwarf.TagSubprogram:
-			k.AddDwarfSubProgram(isGo, d, e, pkg, readFileName)
+			return k.AddDwarfSubProgram(isGo, d, e, pkg, readFileName)
 		case dwarf.TagVariable:
 			k.AddDwarfVariable(e, d, pkg, ptrSize, isGo)
 		default:
 		}
+		return nil
 	}, true
 }
 
-func (k *KnownInfo) TryLoadDwarf() bool {
+func (k *KnownInfo) TryLoadDwarf() (bool, error) {
 	d, err := k.Wrapper.DWARF()
 	if err != nil {
 		slog.Debug(fmt.Sprintf("Failed to load DWARF: %v", err))
-		return false
+		return false, nil
 	}
 
 	ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
@@ -283,7 +292,7 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 		entry, err := r.Next()
 		if err != nil {
 			slog.Warn("Failed to load DWARF", "error", err)
-			return false
+			return false, nil
 		}
 		if entry == nil {
 			break
@@ -297,7 +306,9 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 			}
 		case dwarf.TagSubprogram, dwarf.TagVariable:
 			if feeder != nil && !dwarfutil.EntryShouldIgnore(entry) {
-				feeder(entry)
+				if err := feeder(entry); err != nil {
+					return false, err
+				}
 			}
 			if entry.Tag == dwarf.TagSubprogram {
 				r.SkipChildren()
@@ -306,5 +317,5 @@ func (k *KnownInfo) TryLoadDwarf() bool {
 		}
 	}
 	k.HasDWARF = true
-	return true
+	return true, nil
 }

@@ -11,107 +11,154 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
-func readUintTo64(data []byte, order binary.ByteOrder) uint64 {
-	switch len(data) {
-	case 4:
-		return uint64(order.Uint32(data))
-	case 8:
-		return order.Uint64(data)
-	default:
-		panic(fmt.Errorf("unexpected size: %d", len(data)))
-	}
-}
-
-func readIntTo64(data []byte, order binary.ByteOrder) int64 {
-	switch len(data) {
-	case 4:
-		return int64(order.Uint32(data))
-	case 8:
-		return int64(order.Uint64(data))
-	default:
-		panic(fmt.Errorf("unexpected size: %d", len(data)))
-	}
-}
-
 // MemoryReader decodes values in the analyzed binary's byte order.
 type MemoryReader struct {
 	Read      func(addr, size uint64) ([]byte, error)
 	ByteOrder binary.ByteOrder
 }
 
-func readString(structTyp *dwarf.StructType, typAddr uint64, readMemory MemoryReader) (addr uint64, size uint64, err error) {
-	err = checkField(structTyp, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"})
-	if err != nil {
-		return 0, 0, err
+func readUintTo64(data []byte, order binary.ByteOrder) (uint64, error) {
+	if order == nil {
+		return 0, errors.New("missing memory byte order")
 	}
-
-	ptrSize := structTyp.Field[0].Type.Size()
-	lenOffset := structTyp.Field[1].ByteOffset
-
-	readSize := structTyp.Size()
-
-	data, err := readMemory.Read(typAddr, uint64(readSize))
-	if err != nil {
-		if errors.Is(err, wrapper.ErrAddrNotFound) {
-			// a memory only variable
-			return 0, 0, nil
-		}
-
-		return 0, 0, err
+	switch len(data) {
+	case 4:
+		return uint64(order.Uint32(data)), nil
+	case 8:
+		return order.Uint64(data), nil
+	default:
+		return 0, fmt.Errorf("unexpected integer size: %d", len(data))
 	}
-
-	// read ptr
-	ptr := readUintTo64(data[:ptrSize], readMemory.ByteOrder)
-	strLen := readIntTo64(data[lenOffset:], readMemory.ByteOrder)
-
-	return ptr, uint64(strLen), nil
 }
 
-func readSlice(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader, memberTyp string) (addr uint64, size uint64, err error) {
-	err = checkField(typ, fieldPattern{"array", memberTyp}, fieldPattern{"len", "int"}, fieldPattern{"cap", "int"})
-	if err != nil {
-		return 0, 0, err
+// Validate the complete header before asking the wrapper to allocate/read it.
+func checkHeader(typ *dwarf.StructType, fields ...fieldPattern) error {
+	if err := checkField(typ, fields...); err != nil {
+		return err
 	}
-
-	ptrSize := typ.Field[0].Type.Size()
-	lenOffset := typ.Field[1].ByteOffset
-	lenSize := typ.Field[1].Type.Size()
-	capOffset := typ.Field[2].ByteOffset
-	capSize := typ.Field[2].Type.Size()
-
-	readSize := typ.Size()
-
-	data, err := readMemory.Read(typAddr, uint64(readSize))
-	if err != nil {
-		if errors.Is(err, wrapper.ErrAddrNotFound) {
-			// a memory only variable
-			return 0, 0, nil
+	if typ.Size() < 0 {
+		return errors.New("negative header size")
+	}
+	var end int64
+	var width int64
+	for i, field := range typ.Field {
+		size := field.Type.Size()
+		if size != 4 && size != 8 {
+			return fmt.Errorf("field %d has unsupported width %d", i, size)
 		}
+		if i == 0 {
+			width = size
+		}
+		if size != width {
+			return fmt.Errorf("field %d width differs from pointer width", i)
+		}
+		if field.ByteOffset != int64(i)*width || field.BitSize != 0 || field.BitOffset != 0 {
+			return fmt.Errorf("field %d has unsupported Go header layout", i)
+		}
+		if field.ByteOffset < end || field.ByteOffset > typ.Size() || size > typ.Size()-field.ByteOffset {
+			return fmt.Errorf("field %d lies outside header or overlaps another field", i)
+		}
+		end = field.ByteOffset + size
+	}
+	return nil
+}
 
+func (m MemoryReader) readExact(addr, size uint64) ([]byte, error) {
+	if m.Read == nil || m.ByteOrder == nil {
+		return nil, errors.New("incomplete memory reader")
+	}
+	if size > ^uint64(0)-addr {
+		return nil, errors.New("memory address range overflow")
+	}
+	data, err := m.Read(addr, size)
+	if err != nil {
+		return nil, err
+	}
+	if uint64(len(data)) < size {
+		return nil, fmt.Errorf("short memory read: got %d bytes, want %d", len(data), size)
+	}
+	return data[:size], nil
+}
+
+func readHeader(typ *dwarf.StructType, addr uint64, m MemoryReader) ([]uint64, error) {
+	// Only the validated fields are needed, so ignore any trailing DWARF padding.
+	last := typ.Field[len(typ.Field)-1]
+	data, err := m.readExact(addr, uint64(last.ByteOffset+last.Type.Size()))
+	if err != nil {
+		return nil, err
+	}
+	values := make([]uint64, len(typ.Field))
+	for i, field := range typ.Field {
+		values[i], err = readUintTo64(data[field.ByteOffset:field.ByteOffset+field.Type.Size()], m.ByteOrder)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return values, nil
+}
+
+func signedLength(value uint64, width int64) (uint64, error) {
+	if width == 4 && int32(value) < 0 || width == 8 && int64(value) < 0 {
+		return 0, errors.New("negative header length")
+	}
+	return value, nil
+}
+
+func readString(typ *dwarf.StructType, addr uint64, m MemoryReader) (uint64, uint64, error) {
+	if err := checkHeader(typ, fieldPattern{"str", "*uint8"}, fieldPattern{"len", "int"}); err != nil {
 		return 0, 0, err
 	}
-
-	// read ptr
-	ptr := readUintTo64(data[:ptrSize], readMemory.ByteOrder)
-	dataLen := readUintTo64(data[lenOffset:lenOffset+lenSize], readMemory.ByteOrder)
-	dataCap := readUintTo64(data[capOffset:capOffset+capSize], readMemory.ByteOrder)
-
-	if dataLen != dataCap {
-		return 0, 0, fmt.Errorf("byte slice len(%d) != cap(%d)", dataLen, dataCap)
+	values, err := readHeader(typ, addr, m)
+	if errors.Is(err, wrapper.ErrAddrNotFound) {
+		return 0, 0, nil
 	}
+	if err != nil {
+		return 0, 0, err
+	}
+	length, err := signedLength(values[1], typ.Field[1].Type.Size())
+	if err != nil {
+		return 0, 0, err
+	}
+	if length > ^uint64(0)-values[0] {
+		return 0, 0, errors.New("string address range overflow")
+	}
+	return values[0], length, nil
+}
 
-	return ptr, dataLen, nil
+func readSlice(typ *dwarf.StructType, addr uint64, m MemoryReader, memberTyp string) (uint64, uint64, error) {
+	if err := checkHeader(typ, fieldPattern{"array", memberTyp}, fieldPattern{"len", "int"}, fieldPattern{"cap", "int"}); err != nil {
+		return 0, 0, err
+	}
+	values, err := readHeader(typ, addr, m)
+	if errors.Is(err, wrapper.ErrAddrNotFound) {
+		return 0, 0, nil
+	}
+	if err != nil {
+		return 0, 0, err
+	}
+	length, err := signedLength(values[1], typ.Field[1].Type.Size())
+	if err != nil {
+		return 0, 0, err
+	}
+	capacity, err := signedLength(values[2], typ.Field[2].Type.Size())
+	if err != nil {
+		return 0, 0, err
+	}
+	if length != capacity {
+		return 0, 0, fmt.Errorf("byte slice len(%d) != cap(%d)", length, capacity)
+	}
+	return values[0], length, nil
 }
 
 func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader) ([]Content, error) {
-	err := checkField(typ, fieldPattern{"files", "*struct []embed.file"})
+	err := checkHeader(typ, fieldPattern{"files", "*struct []embed.file"})
 	if err != nil {
 		return nil, err
 	}
 
 	// read ptr
 	ptrSize := typ.Field[0].Type.Size()
-	data, err := readMemory.Read(typAddr, uint64(ptrSize))
+	values, err := readHeader(typ, typAddr, readMemory)
 	if err != nil {
 		if errors.Is(err, wrapper.ErrAddrNotFound) {
 			// a memory only variable
@@ -121,7 +168,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		return nil, err
 	}
 
-	ptr := readUintTo64(data, readMemory.ByteOrder)
+	ptr := values[0]
 
 	filesPtrType, ok := typ.Field[0].Type.(*dwarf.PtrType)
 	if !ok {
@@ -142,8 +189,11 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		return nil, nil
 	}
 
+	if filesType.Field[0].Type.Size() != ptrSize {
+		return nil, errors.New("embed.FS file pointer width differs from header width")
+	}
+
 	// read files
-	// tired of check size, just assume this not changes
 
 	// a file struct is a single file in the FS.
 	// it implements fs.FileInfo and fs.DirEntry.
@@ -161,7 +211,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	if overflow != 0 {
 		return nil, fmt.Errorf("embed.FS files length overflow: %d entries of %d bytes", filesLen, fileStructSize)
 	}
-	data, err = readMemory.Read(filesAddr, readSize)
+	data, err := readMemory.readExact(filesAddr, readSize)
 	if err != nil {
 		return nil, err
 	}
@@ -170,17 +220,41 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	for i := range filesLen {
 		offset := int64(i * fileStructSize)
 
-		nameAddr := readUintTo64(data[offset:offset+ptrSize], readMemory.ByteOrder)
-		nameLen := readUintTo64(data[offset+ptrSize:offset+ptrSize*2], readMemory.ByteOrder)
+		nameAddr, err := readUintTo64(data[offset:offset+ptrSize], readMemory.ByteOrder)
+		if err != nil {
+			return nil, err
+		}
+		nameLen, err := readUintTo64(data[offset+ptrSize:offset+ptrSize*2], readMemory.ByteOrder)
+		if err != nil {
+			return nil, err
+		}
 
-		nameData, err := readMemory.Read(nameAddr, nameLen)
+		nameLen, err = signedLength(nameLen, ptrSize)
+		if err != nil {
+			return nil, err
+		}
+		nameData, err := readMemory.readExact(nameAddr, nameLen)
 		if err != nil {
 			return nil, err
 		}
 		name := utils.Deduplicate(fmt.Sprintf("embed:%s", string(nameData)))
 
-		dataAddr := readUintTo64(data[offset+ptrSize*2:offset+ptrSize*3], readMemory.ByteOrder)
-		dataLen := readUintTo64(data[offset+ptrSize*3:offset+ptrSize*4], readMemory.ByteOrder)
+		dataAddr, err := readUintTo64(data[offset+ptrSize*2:offset+ptrSize*3], readMemory.ByteOrder)
+		if err != nil {
+			return nil, err
+		}
+		dataLen, err := readUintTo64(data[offset+ptrSize*3:offset+ptrSize*4], readMemory.ByteOrder)
+		if err != nil {
+			return nil, err
+		}
+
+		dataLen, err = signedLength(dataLen, ptrSize)
+		if err != nil {
+			return nil, err
+		}
+		if dataLen > ^uint64(0)-dataAddr {
+			return nil, errors.New("embed.FS data address range overflow")
+		}
 
 		hashAddr := filesAddr + uint64(offset+ptrSize*4)
 		hashLen := uint64(16)

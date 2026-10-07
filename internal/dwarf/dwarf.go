@@ -34,6 +34,10 @@ func SizeForDWARFVar(
 		return nil, 0, err
 	}
 
+	if typ.Size() < 0 {
+		return nil, 0, errors.New("negative DWARF variable size")
+	}
+
 	structTyp, ok := typ.(*dwarf.StructType)
 	if ok {
 		// check string

@@ -8,7 +8,11 @@ import (
 func (k *KnownInfo) CollectCoverage() error {
 	covs := make([]entity.AddrCoverage, 0, len(k.Deps.TopPkgs))
 	for _, pkg := range k.Deps.TopPkgs {
-		covs = append(covs, pkg.GetPackageCoverage())
+		cov, err := pkg.GetPackageCoverage()
+		if err != nil {
+			return err
+		}
+		covs = append(covs, cov)
 	}
 	var err error
 	k.Coverage, err = entity.MergeAndCleanCoverage(covs)
@@ -34,16 +38,20 @@ func (k *KnownInfo) CalculateSectionSize() error {
 	return nil
 }
 
-func (k *KnownInfo) CalculatePackageSize() {
+func (k *KnownInfo) CalculatePackageSize() error {
 	if w, ok := k.Wrapper.(*wrapper.WasmWrapper); ok {
 		for fn := range k.Deps.Functions {
 			size := w.FileDataIntervals(fn.PclnRanges)
 			fn.PclnFileSize = &size
 		}
 	}
-	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
+	return k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
 		if w, ok := k.Wrapper.(*wrapper.WasmWrapper); ok {
-			p.Size = w.FileDataSize(p.GetPackageCoverage())
+			cov, err := p.GetPackageCoverage()
+			if err != nil {
+				return err
+			}
+			p.Size = w.FileDataSize(cov)
 			var code []entity.FileRange
 			var collect func(*entity.Package)
 			collect = func(pkg *entity.Package) {
@@ -60,7 +68,6 @@ func (k *KnownInfo) CalculatePackageSize() {
 			p.Size += entity.UnionFileSize(code)
 			return nil
 		}
-		p.AssignPackageSize()
-		return nil
+		return p.AssignPackageSize()
 	})
 }

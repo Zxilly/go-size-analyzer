@@ -48,7 +48,9 @@ func main() { println(Message, len(Blob)); data, _ := Files.ReadFile("payload.tx
 			require.NoError(t, k.LoadSectionMap())
 			k.KnownAddr = entity.NewKnownAddr(k.Sects)
 			require.NoError(t, k.LoadGoreInfo(gf, false))
-			require.True(t, k.TryLoadDwarf())
+			loaded, err := k.TryLoadDwarf()
+			require.NoError(t, err)
+			require.True(t, loaded)
 			pkg, ok := k.Deps.GetPackage("main")
 			require.True(t, ok)
 			wanted := map[string]bool{"main.Message.string": false, "main.Blob.[]uint8": false, "main.Files.embed:payload.txt.data": false}

@@ -48,7 +48,7 @@ type Package struct {
 	loaded bool // mean it comes from gore
 
 	symbolAddrSpace AddrSpace
-	coverageGetter  func() AddrCoverage
+	coverageGetter  func() (AddrCoverage, error)
 }
 
 func NewPackage() *Package {
@@ -62,7 +62,7 @@ func NewPackage() *Package {
 		filesCache:      make(map[string]*File),
 		funcsCache:      make(map[uint64]*Function),
 	}
-	p.coverageGetter = sync.OnceValue(p.buildPackageCoverage)
+	p.coverageGetter = sync.OnceValues(p.buildPackageCoverage)
 	return p
 }
 
@@ -202,11 +202,11 @@ func (p *Package) GetFunctionSizeRecursive() uint64 {
 	return size
 }
 
-func (p *Package) GetPackageCoverage() AddrCoverage {
+func (p *Package) GetPackageCoverage() (AddrCoverage, error) {
 	return p.coverageGetter()
 }
 
-func (p *Package) buildPackageCoverage() AddrCoverage {
+func (p *Package) buildPackageCoverage() (AddrCoverage, error) {
 	var own AddrCoverage
 	for addr := range p.OwnAddresses {
 		own = append(own, &CoveragePart{Pos: addr.AddrPos, Addrs: []*Addr{addr}})
@@ -214,18 +214,26 @@ func (p *Package) buildPackageCoverage() AddrCoverage {
 	covs := []AddrCoverage{own}
 
 	for _, sp := range p.SubPackages {
-		covs = append(covs, sp.GetPackageCoverage())
+		cov, err := sp.GetPackageCoverage()
+		if err != nil {
+			return nil, err
+		}
+		covs = append(covs, cov)
 	}
 
 	cov, err := MergeAndCleanCoverage(covs)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("package %q coverage: %w", p.Name, err)
 	}
 
-	return cov
+	return cov, nil
 }
 
-func (p *Package) AssignPackageSize() {
+func (p *Package) AssignPackageSize() error {
+	cov, err := p.GetPackageCoverage()
+	if err != nil {
+		return err
+	}
 	pkgSize := uint64(0)
 	var wasmSize func(*Package)
 	wasmSize = func(pkg *Package) {
@@ -239,10 +247,11 @@ func (p *Package) AssignPackageSize() {
 		}
 	}
 	wasmSize(p)
-	for _, cp := range p.GetPackageCoverage() {
+	for _, cp := range cov {
 		pkgSize += cp.Pos.Size
 	}
 	p.Size = pkgSize
+	return nil
 }
 
 // OwnAddresses preserves unmerged evidence for global file accounting.
