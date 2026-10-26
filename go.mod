@@ -10,14 +10,14 @@ require (
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
 	github.com/alecthomas/kong v1.16.1
-	github.com/blacktop/go-macho v1.1.292
+	github.com/blacktop/go-macho v1.1.295
 	github.com/charmbracelet/colorprofile v0.4.3
 	github.com/charmbracelet/glamour v1.0.0
 	github.com/charmbracelet/x/ansi v0.11.9
 	github.com/charmbracelet/x/exp/teatest/v2 v2.0.0-20260517005351-920740d613be
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/dustin/go-humanize v1.1.0
-	github.com/eliben/watgo v0.8.0
+	github.com/eliben/watgo v0.9.0
 	github.com/go-delve/delve v1.27.2
 	github.com/jedib0t/go-pretty/v6 v6.8.3
 	github.com/knadh/profiler v0.2.0
@@ -30,7 +30,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/arch v0.32.0
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
-	golang.org/x/net v0.60.0
+	golang.org/x/net v0.61.0
 	golang.org/x/sync v0.24.0
 )
 
@@ -63,7 +63,7 @@ require (
 	github.com/yuin/goldmark v1.8.2 // indirect
 	github.com/yuin/goldmark-emoji v1.0.6 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/term v0.46.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/term v0.47.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 )
