@@ -288,15 +288,35 @@ func (k *KnownInfo) TryLoadDwarf() (bool, error) {
 		slog.Debug(fmt.Sprintf("Failed to load DWARF: %v", err))
 		return false, nil
 	}
-	k.dwarfKinds, err = dwarfutil.ReadGoTypeKinds(d)
+	entries, err := dwarfutil.ReadAnalysisEntries(d)
 	if err != nil {
 		k.DwarfFailure = fmt.Errorf("read type kinds: %w", err)
 		slog.Debug("Failed to load DWARF type kinds", "error", err)
 		return false, nil
 	}
+	k.dwarfKinds = entries.Kinds
 	defer func() { k.dwarfKinds = nil }()
 
 	ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
+	if entries.CanReplay {
+		for i := range entries.Units {
+			unit := &entries.Units[i]
+			feeder, ok := k.GetDwarfCompileUnitFeeder(d, unit.Unit, ptrSize)
+			if ok {
+				for _, entry := range unit.Entries {
+					if !dwarfutil.EntryShouldIgnore(entry) {
+						if err := feeder(entry); err != nil {
+							return false, err
+						}
+					}
+				}
+			}
+			// Parsed entries are no longer needed after this unit is applied.
+			unit.Unit, unit.Entries = nil, nil
+		}
+		k.HasDWARF = true
+		return true, nil
+	}
 
 	// debug/dwarf.Data lazily caches unit and type information. Resolving
 	// types concurrently with the main reader races on those shared caches.

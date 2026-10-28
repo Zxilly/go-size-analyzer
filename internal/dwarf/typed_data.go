@@ -22,6 +22,10 @@ type typedDataWalker struct {
 // Go's DW_AT_go_kind distinguishes named slices/strings from user structs
 // with identical fields. debug/dwarf does not retain this extension on Type.
 func ReadGoTypeKinds(d *dwarf.Data) (map[dwarf.Type]int64, error) {
+	return scanGoTypeKinds(d, nil)
+}
+
+func scanGoTypeKinds(d *dwarf.Data, visit func(*dwarf.Entry)) (map[dwarf.Type]int64, error) {
 	kinds := map[dwarf.Type]int64{}
 	r := d.Reader()
 	for {
@@ -31,6 +35,9 @@ func ReadGoTypeKinds(d *dwarf.Data) (map[dwarf.Type]int64, error) {
 		}
 		if e == nil {
 			break
+		}
+		if visit != nil {
+			visit(e)
 		}
 		kind, ok := e.Val(dwarf.Attr(0x2900)).(int64)
 		if !ok || (kind != 23 && kind != 24) {
