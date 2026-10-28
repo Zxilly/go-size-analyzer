@@ -1,7 +1,6 @@
 import os
 
-from markdown_strings import header, code_block
-
+from tool.markdown import header, code_block
 from tool.utils import get_project_root, write_github_summary, details
 
 # these are the tips that are not considered as errors

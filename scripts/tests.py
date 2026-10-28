@@ -6,11 +6,11 @@ import time
 from argparse import ArgumentParser
 
 import requests
-from markdown_strings import code_block
 
 from tool.gsa import build_gsa, GSAInstance
 from tool.html import assert_html_valid
 from tool.junit import generate_junit
+from tool.markdown import code_block
 from tool.merge import merge_covdata
 from tool.remote import load_remote_binaries_as_test, load_remote_for_unit_test
 from tool.utils import log, get_project_root, ensure_dir, format_time, load_skip, init_dirs, write_github_summary, \

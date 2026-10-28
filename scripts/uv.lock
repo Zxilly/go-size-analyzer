@@ -47,7 +47,6 @@ name = "gsa-scripts"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "markdown-strings" },
     { name = "plotille" },
     { name = "psutil" },
     { name = "requests" },
@@ -61,7 +60,6 @@ research = [
 
 [package.metadata]
 requires-dist = [
-    { name = "markdown-strings", specifier = ">=3.4.0" },
     { name = "plotille", specifier = ">=6.0.5" },
     { name = "psutil", specifier = ">=7.2.2" },
     { name = "requests", specifier = ">=2.32.3" },
@@ -78,15 +76,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9", size = 190490, upload-time = "2024-09-15T18:07:39.745Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3", size = 70442, upload-time = "2024-09-15T18:07:37.964Z" },
-]
-
-[[package]]
-name = "markdown-strings"
-version = "3.4.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/72/d2/ef65d0f3c150bfc99f5c4a516ae57e7c3acddfaacc1196dd296b1299ea7f/markdown_strings-3.4.0.tar.gz", hash = "sha256:7574de0606160d7291ac2e1933a8ed47d31f0b49b674f128da1f548930c8578b", size = 7869, upload-time = "2024-05-03T15:40:04.784Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/aa/aa65cf458a5053d24237902e7a07a2f895f4d515aee53f73636deb4d36ea/markdown_strings-3.4.0-py2.py3-none-any.whl", hash = "sha256:1a7e2a575b2af27482ccbe6a0efc3407f678ac5cece8654c36fd827ac540a631", size = 8424, upload-time = "2024-05-03T15:40:02.713Z" },
 ]
 
 [[package]]
