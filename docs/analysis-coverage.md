@@ -2,6 +2,8 @@
 
 本文记录 2026-09-05 完成的覆盖率扩展。原方案的五个方向均已有实现：物理文件区间台账、ELF 可写数据、外部函数定义、原生字符串模式，以及 WASM 指令与数据映射。额外实现了具名变量静态头、GC stackmap 和经过验证的写屏障路径分析。
 
+2026-10-28 的文件元数据、符号附属记录和多证据模型扩展见[文件元数据与多证据归属](file-metadata-attribution.md)。新报告使用 `coverage.version = 2`，包大小和 section 已知大小均由物理文件台账投影；下文实测表保留为此前版本的历史记录。
+
 ## 统计口径
 
 JSON 的 `coverage` 按物理文件偏移统计：
@@ -32,7 +34,7 @@ Treemap 保留独立段面积，对共享包面积进行归一化，根对象提
 | bin-js-1.27-wasm | 2,644,952 | 2,129,690 | 370,434 | 144,828 | 2,329 |
 | bin-wasip1-1.27-wasm | 2,554,276 | 2,055,548 | 356,050 | 142,678 | 2,156 |
 
-同一实现、同一样本，比较默认分析和 `--skip-disasm`，得到指令分析带来的净新增唯一文件字节。静态变量头和编译器元数据在两组中都启用。
+同一实现、同一样本，比较默认分析和 `--no-disasm`，得到指令分析带来的净新增唯一文件字节。静态变量头和编译器元数据在两组中都启用。
 
 | 样本 | 关闭指令分析时已归属 | 启用后净增加 |
 |---|---:|---:|
@@ -103,7 +105,7 @@ go test -tags embed ./...
 go test -race ./internal/knowninfo ./internal/disasm ./internal/entity ./internal/wrapper
 go test ./internal/disasm -run 'TestCompilerGenerated' -v
 go run ./cmd/gsa scripts/bins/docker-compose-linux-x86_64 --format json --compact --output full.json
-go run ./cmd/gsa scripts/bins/docker-compose-linux-x86_64 --format json --compact --skip-disasm --output skip.json
+go run ./cmd/gsa scripts/bins/docker-compose-linux-x86_64 --format json --compact --no-disasm --output skip.json
 go run ./cmd/gsa scripts/bins/bin-js-1.27-wasm --format json --coverage-details --output wasm-details.json
 ```
 
