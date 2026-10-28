@@ -34,9 +34,9 @@ jobs:
           pnpm eslint .
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
-        continue-on-error: true
 
       - name: Upload analysis results to GitHub
+        if: ${{ !cancelled() && hashFiles('ui/eslint-results.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
         with:
           sarif_file: ./ui/eslint-results.sarif
@@ -65,9 +65,9 @@ jobs:
           version: 'latest'
           install-mode: 'binary'
           args: '--output.text.path stdout --output.sarif.path golangci-lint-results.sarif'
-        continue-on-error: true
 
       - name: Upload analysis results to GitHub
+        if: ${{ !cancelled() && hashFiles('golangci-lint-results.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
         with:
           sarif_file: ./golangci-lint-results.sarif
