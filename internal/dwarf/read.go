@@ -15,6 +15,17 @@ import (
 type MemoryReader struct {
 	Read      func(addr, size uint64) ([]byte, error)
 	ByteOrder binary.ByteOrder
+	Limit     uint64
+	Resolve   func(uint64) uint64
+	Kinds     map[dwarf.Type]int64
+	Valid     func(uint64, uint64) bool
+}
+
+func (m MemoryReader) resolve(addr uint64) uint64 {
+	if m.Resolve != nil {
+		return m.Resolve(addr)
+	}
+	return addr
 }
 
 func readUintTo64(data []byte, order binary.ByteOrder) (uint64, error) {
@@ -69,6 +80,9 @@ func (m MemoryReader) readExact(addr, size uint64) ([]byte, error) {
 	}
 	if size > ^uint64(0)-addr {
 		return nil, errors.New("memory address range overflow")
+	}
+	if m.Limit != 0 && size > m.Limit {
+		return nil, errors.New("memory read exceeds file size")
 	}
 	data, err := m.Read(addr, size)
 	if err != nil {
@@ -179,7 +193,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		return nil, fmt.Errorf("unexpected type: %T", filesPtrType.Type)
 	}
 
-	filesAddr, filesLen, err := readSlice(filesType, ptr, readMemory, "*embed.file")
+	filesAddr, filesLen, err := readSlice(filesType, readMemory.resolve(ptr), readMemory, "*embed.file")
 	if err != nil {
 		return nil, err
 	}
@@ -211,6 +225,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 	if overflow != 0 {
 		return nil, fmt.Errorf("embed.FS files length overflow: %d entries of %d bytes", filesLen, fileStructSize)
 	}
+	filesAddr = readMemory.resolve(filesAddr)
 	data, err := readMemory.readExact(filesAddr, readSize)
 	if err != nil {
 		return nil, err
@@ -233,7 +248,7 @@ func readEmbedFS(typ *dwarf.StructType, typAddr uint64, readMemory MemoryReader)
 		if err != nil {
 			return nil, err
 		}
-		nameData, err := readMemory.readExact(nameAddr, nameLen)
+		nameData, err := readMemory.readExact(readMemory.resolve(nameAddr), nameLen)
 		if err != nil {
 			return nil, err
 		}

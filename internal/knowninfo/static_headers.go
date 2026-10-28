@@ -17,6 +17,11 @@ func (k *KnownInfo) AnalyzeStaticHeaders() {
 	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
 		var headers []*entity.Addr
 		for addr := range p.SymbolAddresses {
+			// A typed DWARF traversal already handled this variable. Its
+			// declared type takes precedence over a pointer/length resemblance.
+			if known, ok := k.KnownAddr.SymbolAddrSpace.Get(addr.Addr); ok && known.SourceType == entity.AddrSourceDwarf {
+				continue
+			}
 			if addr.Symbol == nil || (addr.SourceType != entity.AddrSourceSymbol && addr.SourceType != entity.AddrSourceDwarf) || (addr.Size != uint64(ptr*2) && addr.Size != uint64(ptr*3)) {
 				continue
 			}

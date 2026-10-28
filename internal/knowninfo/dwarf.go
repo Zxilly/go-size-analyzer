@@ -74,7 +74,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 	}
 
 	contents, typSize, err := dwarfutil.SizeForDWARFVar(d, entry, addr, dwarfutil.MemoryReader{
-		Read: k.Wrapper.ReadAddr, ByteOrder: order,
+		Read: k.Wrapper.ReadAddr, ByteOrder: order, Limit: k.Size, Resolve: k.convertAddr, Kinds: k.dwarfKinds, Valid: k.Sects.IsData,
 	})
 	if err != nil {
 		if isGo {
@@ -281,6 +281,12 @@ func (k *KnownInfo) TryLoadDwarf() (bool, error) {
 		slog.Debug(fmt.Sprintf("Failed to load DWARF: %v", err))
 		return false, nil
 	}
+	k.dwarfKinds, err = dwarfutil.ReadGoTypeKinds(d)
+	if err != nil {
+		slog.Debug("Failed to load DWARF type kinds", "error", err)
+		return false, nil
+	}
+	defer func() { k.dwarfKinds = nil }()
 
 	ptrSize, _ := ptrSizeAndOrder(k.Wrapper.GoArch())
 

@@ -1,6 +1,7 @@
 package knowninfo
 
 import (
+	"debug/dwarf"
 	"encoding/binary"
 	"log/slog"
 	"strings"
@@ -55,7 +56,8 @@ type KnownInfo struct {
 
 	VersionFlag VersionFlag
 
-	HasDWARF bool
+	HasDWARF   bool
+	dwarfKinds map[dwarf.Type]int64
 }
 
 func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {

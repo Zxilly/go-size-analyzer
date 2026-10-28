@@ -37,57 +37,12 @@ func SizeForDWARFVar(
 	if typ.Size() < 0 {
 		return nil, 0, errors.New("negative DWARF variable size")
 	}
-
-	structTyp, ok := typ.(*dwarf.StructType)
-	if ok {
-		// check string
-		// user can still define a struct has this name, but it's rare
-		switch structTyp.StructName {
-		case "string":
-			strAddr, size, err := readString(structTyp, addr, readMemory)
-			if err != nil || size == 0 {
-				return nil, uint64(typ.Size()), err
-			}
-
-			return []Content{{
-				Name: "string",
-				Addr: strAddr,
-				Size: size,
-			}}, uint64(typ.Size()), nil
-		case "[]uint8":
-			// check byte slice, normally it comes from embed
-			dataAddr, size, err := readSlice(structTyp, addr, readMemory, "*uint8")
-			if err != nil || size == 0 {
-				return nil, uint64(typ.Size()), err
-			}
-
-			return []Content{{
-				Name: "[]uint8",
-				Addr: dataAddr,
-				Size: size,
-			}}, uint64(typ.Size()), nil
-		}
-	} else {
-		typeDefTyp, ok := typ.(*dwarf.TypedefType)
-		if ok {
-			structTyp, ok = typeDefTyp.Type.(*dwarf.StructType)
-			if !ok {
-				return nil, uint64(typ.Size()), nil
-			}
-
-			if structTyp.StructName == "embed.FS" {
-				// check embed.FS
-				parts, err := readEmbedFS(structTyp, addr, readMemory)
-				if err != nil || len(parts) == 0 {
-					return nil, uint64(typ.Size()), err
-				}
-
-				return parts, uint64(typ.Size()), nil
-			}
-		}
+	walker := typedDataWalker{memory: readMemory, references: map[dwarf.Type]bool{}}
+	walker.walk(typ, addr, "", 0)
+	if walker.err != nil {
+		return nil, uint64(typ.Size()), walker.err
 	}
-
-	return nil, uint64(typ.Size()), nil
+	return walker.contents, uint64(typ.Size()), nil
 }
 
 var boolIgnores = [...]dwarf.Attr{
