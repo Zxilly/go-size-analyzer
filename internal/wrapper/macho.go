@@ -122,10 +122,19 @@ func (m *MachoWrapper) SlidePointer(addr uint64) uint64 {
 	return m.file.SlidePointer(addr) + m.file.GetBaseAddress()
 }
 
-func readMachoDWARFSection(s *types.Section) ([]byte, error) {
-	b, err := s.Data()
-	if err != nil && uint64(len(b)) < s.Size {
-		return nil, err
+func readMachoDWARFSection(reader io.ReaderAt, s *types.Section) ([]byte, error) {
+	// DWARF sections may have no virtual-memory backing after external
+	// linking. Section.Data reads through VM addresses in go-macho, so
+	// use the section's physical file range instead.
+	if s.Size > uint64(math.MaxInt64)-uint64(s.Offset) {
+		return nil, fmt.Errorf("DWARF section %s exceeds the file-offset range", s.Name)
+	}
+	b, err := io.ReadAll(io.NewSectionReader(reader, int64(s.Offset), int64(s.Size)))
+	if err != nil {
+		return nil, fmt.Errorf("read DWARF section %s: %w", s.Name, err)
+	}
+	if uint64(len(b)) != s.Size {
+		return nil, fmt.Errorf("read DWARF section %s: %w", s.Name, io.ErrUnexpectedEOF)
 	}
 
 	if len(b) >= 12 && string(b[:4]) == "ZLIB" {
@@ -159,14 +168,28 @@ func readMachoDWARFSection(s *types.Section) ([]byte, error) {
 // DWARF a copy of go-macho's DWARF function
 func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 	dwarfSuffix := func(s *types.Section) string {
+		name := s.Name
+		var prefix int
 		switch {
-		case strings.HasPrefix(s.Name, "__debug_"):
-			return s.Name[8:]
-		case strings.HasPrefix(s.Name, "__zdebug_"):
-			return s.Name[9:]
+		case strings.HasPrefix(name, "__debug_"):
+			prefix = 8
+		case strings.HasPrefix(name, "__zdebug_"):
+			prefix = 9
 		default:
 			return ""
 		}
+		// Mach-O stores only 16 bytes of a section name. Restore the DWARF
+		// names before passing their contents to debug/dwarf.AddSection.
+		for _, full := range []string{
+			"__debug_str_offsets", "__zdebug_line_str", "__zdebug_loclists",
+			"__zdebug_pubnames", "__zdebug_pubtypes", "__zdebug_rnglists", "__zdebug_str_offsets",
+		} {
+			if name == full[:16] {
+				name = full
+				break
+			}
+		}
+		return name[prefix:]
 	}
 
 	// There are many other DWARF sections, but these
@@ -181,7 +204,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 		if _, ok := dat[suffix]; !ok {
 			continue
 		}
-		b, err := readMachoDWARFSection(s)
+		b, err := readMachoDWARFSection(m.file, s)
 		if err != nil {
 			return nil, err
 		}
@@ -204,7 +227,7 @@ func (m *MachoWrapper) DWARF() (*dwarf.Data, error) {
 			continue
 		}
 
-		b, err := readMachoDWARFSection(s)
+		b, err := readMachoDWARFSection(m.file, s)
 		if err != nil {
 			return nil, err
 		}

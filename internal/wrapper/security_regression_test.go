@@ -200,7 +200,7 @@ func TestMachoCompressedDWARFChecksStream(t *testing.T) {
 				data[len(data)-1] ^= 1
 			}
 			w := machoFixture(t, "__zdebug_str", data, uint64(len(data)))
-			got, err := readMachoDWARFSection(w.file.Sections[0])
+			got, err := readMachoDWARFSection(w.file, w.file.Sections[0])
 			if tc.valid {
 				require.NoError(t, err)
 				require.Equal(t, []byte("debug strings\x00"), got)
