@@ -16,35 +16,63 @@ func (k *KnownInfo) ValidateNativeCoverage() error {
 		start, end uint64
 		typ        int
 	}
-	var intervals []interval
+	var bounds []interval
 	types := make(map[entity.AddrType]int)
-	var furthest []uint64
+	var count int
 	var overflow bool
 	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
 		if overflow {
 			return nil
 		}
-		for addr := range p.OwnAddresses {
+		for addr := range p.OwnAddressValues {
 			if addr.Size > ^uint64(0)-addr.Addr {
 				overflow = true
 				return nil
 			}
 			typ, ok := types[addr.Type]
 			if !ok {
-				typ = len(furthest)
+				typ = len(bounds)
 				types[addr.Type] = typ
-				furthest = append(furthest, 0)
+				bounds = append(bounds, interval{start: addr.Addr, end: addr.Addr + addr.Size, typ: typ})
+			} else {
+				bounds[typ].start = min(bounds[typ].start, addr.Addr)
+				bounds[typ].end = max(bounds[typ].end, addr.Addr+addr.Size)
 			}
-			intervals = append(intervals, interval{start: addr.Addr, end: addr.Addr + addr.Size, typ: typ})
+			count++
 		}
 		return nil
 	})
 	if overflow {
 		return k.CollectCoverage()
 	}
-	slices.SortFunc(intervals, func(a, b interval) int {
-		return cmp.Or(cmp.Compare(a.start, b.start), cmp.Compare(a.end, b.end))
+	compare := func(a, b interval) int {
+		if order := cmp.Compare(a.start, b.start); order != 0 {
+			return order
+		}
+		return cmp.Compare(a.end, b.end)
+	}
+	// Text and data usually occupy separate address envelopes. Proving that
+	// separation needs one bound per type, rather than storing and sorting
+	// every repeated pclntab range. Overlapping envelopes are inconclusive.
+	slices.SortFunc(bounds, compare)
+	var end uint64
+	var overlap bool
+	for _, bound := range bounds {
+		overlap = overlap || bound.start < end
+		end = max(end, bound.end)
+	}
+	if !overlap {
+		return nil
+	}
+	intervals := make([]interval, 0, count)
+	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
+		for addr := range p.OwnAddressValues {
+			intervals = append(intervals, interval{start: addr.Addr, end: addr.Addr + addr.Size, typ: types[addr.Type]})
+		}
+		return nil
 	})
+	slices.SortFunc(intervals, compare)
+	furthest := make([]uint64, len(types))
 	for _, current := range intervals {
 		// Keep empty ranges: the legacy merge can reject an empty range
 		// whose start is inside a range of another type.

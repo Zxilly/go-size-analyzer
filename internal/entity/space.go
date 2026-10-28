@@ -2,7 +2,6 @@ package entity
 
 import (
 	"cmp"
-	"maps"
 	"slices"
 )
 
@@ -26,20 +25,8 @@ func (a AddrSpace) Insert(addr *Addr) {
 		return
 	}
 	if exists && len(addr.evidence) == 0 {
-		match := old
-		if len(old.evidence) > 0 {
-			index, found := slices.BinarySearchFunc(old.evidence, addr, compareAddrIdentity)
-			if found {
-				match = old.evidence[index]
-			} else {
-				match = nil
-			}
-		}
-		// Shared names and package paths are commonly reported once per type.
-		// Repeated equivalent provenance must not copy the growing claim set.
-		if match != nil && compareAddrIdentity(match, addr) == 0 && compareAddrEntity(match, addr) <= 0 {
-			return
-		}
+		a.insertSingle(addr, old)
+		return
 	}
 	var claims []*Addr
 	if exists {
@@ -60,6 +47,50 @@ func (a AddrSpace) Insert(addr *Addr) {
 	if len(claims) > 1 {
 		stored.evidence = claims
 	}
+	a[addr.Addr] = stored
+}
+
+// Single claims dominate collection. Their insertion point is already known
+// from the sorted identity set, so neither sorting nor duplicate compaction is
+// needed. Changed sets still own independent snapshots of all their claims.
+func (a AddrSpace) insertSingle(addr, old *Addr) {
+	previous := old.evidence
+	if len(previous) == 0 {
+		if compareAddrIdentity(old, addr) == 0 {
+			if compareAddrEntity(old, addr) > 0 {
+				a[addr.Addr] = addr.snapshot()
+			}
+			return
+		}
+		previous = []*Addr{old}
+	}
+	index, found := slices.BinarySearchFunc(previous, addr, compareAddrIdentity)
+	if found && compareAddrEntity(previous[index], addr) <= 0 {
+		return
+	}
+	count := len(previous)
+	if !found {
+		count++
+	}
+	claims := make([]*Addr, count)
+	snapshots := make([]addrSnapshot, count+1)
+	var best *Addr
+	for i := range claims {
+		source := addr
+		if i != index {
+			oldIndex := i
+			if !found && i > index {
+				oldIndex--
+			}
+			source = previous[oldIndex]
+		}
+		claims[i] = snapshots[i].set(source)
+		if best == nil || preferAddr(claims[i], best) {
+			best = claims[i]
+		}
+	}
+	stored := snapshots[count].set(best)
+	stored.evidence = claims
 	a[addr.Addr] = stored
 }
 
@@ -117,23 +148,35 @@ func addrRole(addr *Addr) string {
 // A claim's identity describes its extent and provenance. Several symbols or
 // functions in one package can provide the same evidence for shared data.
 func compareAddrIdentity(a, b *Addr) int {
-	return cmp.Or(
-		cmp.Compare(a.Addr, b.Addr),
-		cmp.Compare(a.Size, b.Size),
-		cmp.Compare(a.Type, b.Type),
-		cmp.Compare(addrPackageName(a), addrPackageName(b)),
-		cmp.Compare(a.SourceType, b.SourceType),
-		cmp.Compare(addrRole(a), addrRole(b)),
-		cmp.Compare(a.Boundary, b.Boundary),
-	)
+	if n := cmp.Compare(a.Addr, b.Addr); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(a.Size, b.Size); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(a.Type, b.Type); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(addrPackageName(a), addrPackageName(b)); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(a.SourceType, b.SourceType); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(addrRole(a), addrRole(b)); n != 0 {
+		return n
+	}
+	return cmp.Compare(a.Boundary, b.Boundary)
 }
 
 func compareAddrEntity(a, b *Addr) int {
-	return cmp.Or(
-		cmp.Compare(addrEntityKind(a), addrEntityKind(b)),
-		cmp.Compare(addrEntityName(a), addrEntityName(b)),
-		cmp.Compare(addrFunctionEntry(a), addrFunctionEntry(b)),
-	)
+	if n := cmp.Compare(addrEntityKind(a), addrEntityKind(b)); n != 0 {
+		return n
+	}
+	if n := cmp.Compare(addrEntityName(a), addrEntityName(b)); n != 0 {
+		return n
+	}
+	return cmp.Compare(addrFunctionEntry(a), addrFunctionEntry(b))
 }
 
 // Entity names choose a deterministic representative of equivalent claims;
@@ -195,7 +238,27 @@ func preferAddr(a, b *Addr) bool {
 // All visits evidence in deterministic order. The returned records retain
 // their individual sizes; a larger claim never widens a smaller one.
 func (a AddrSpace) All(yield func(*Addr) bool) {
-	for _, start := range slices.Sorted(maps.Keys(a)) {
+	if len(a) <= 1 {
+		for _, addr := range a {
+			if len(addr.evidence) == 0 {
+				yield(addr)
+				return
+			}
+			for _, claim := range addr.evidence {
+				if !yield(claim) {
+					return
+				}
+			}
+			return
+		}
+		return
+	}
+	starts := make([]uint64, 0, len(a))
+	for start := range a {
+		starts = append(starts, start)
+	}
+	slices.Sort(starts)
+	for _, start := range starts {
 		addr := a[start]
 		if len(addr.evidence) == 0 {
 			if !yield(addr) {

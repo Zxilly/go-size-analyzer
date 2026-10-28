@@ -28,7 +28,7 @@ func (k *KnownInfo) attributeSymbolMetadata(ledger *entity.FileLedger, records [
 		return nil
 	}
 	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
-		for addr := range p.OwnAddresses {
+		for addr := range p.OwnAddressValues {
 			key := metadataTarget{addr.Addr, addr.Type}
 			owners, ok := wanted[key]
 			if !ok || addr.Size == 0 || addr.Role == "reference" {

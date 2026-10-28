@@ -65,11 +65,51 @@ type FileClaim struct {
 
 type FileLedger struct {
 	size          uint64
-	claims        []FileClaim
+	events        []fileEvent
+	attributes    []fileAttributes
+	attributeIDs  map[fileAttributeKey]int
+	lastAttribute int
+	names         []string
+	nameIDs       map[string]int
 	packageGroups map[string][]string
 }
 
-func NewFileLedger(size uint64) *FileLedger { return &FileLedger{size: size} }
+// Claims commonly repeat the same provenance across thousands of ranges.
+// Retain that provenance once and keep only a signed ID at each endpoint.
+// The event storage has no pointers for the garbage collector to scan.
+type fileEvent struct {
+	at        uint64
+	attribute int // positive: start, negative: end; zero: file boundary
+}
+
+type fileAttributeKey struct {
+	FileEvidence
+	class    int
+	metadata bool
+}
+
+type fileAttributes struct {
+	fileAttributeKey
+	owner, source int
+}
+
+func NewFileLedger(size uint64) *FileLedger {
+	return &FileLedger{
+		size: size, events: []fileEvent{{at: 0}, {at: size}},
+		attributeIDs: make(map[fileAttributeKey]int),
+		names:        []string{""}, nameIDs: map[string]int{"": 0},
+	}
+}
+
+func (l *FileLedger) nameID(name string) int {
+	if id, ok := l.nameIDs[name]; ok {
+		return id
+	}
+	id := len(l.names)
+	l.names = append(l.names, name)
+	l.nameIDs[name] = id
+	return id
+}
 
 // SetPackageGroups supplies each package's containing report nodes, including
 // itself. Overlapping claims by a parent and child count once in the parent.
@@ -101,48 +141,92 @@ func (l *FileLedger) Add(c FileClaim) error {
 		}
 	}
 	if c.Size > 0 {
-		l.claims = append(l.claims, c)
+		key := fileAttributeKey{
+			FileEvidence: FileEvidence{Owner: c.Owner, Source: c.Source, Role: c.Role, Boundary: c.Boundary},
+			class:        c.Class, metadata: c.Metadata,
+		}
+		id := l.lastAttribute
+		if id == 0 || l.attributes[id-1].fileAttributeKey != key {
+			var ok bool
+			id, ok = l.attributeIDs[key]
+			if !ok {
+				id = len(l.attributes) + 1
+				l.attributes = append(l.attributes, fileAttributes{fileAttributeKey: key, owner: l.nameID(c.Owner), source: l.nameID(c.Source)})
+				l.attributeIDs[key] = id
+			}
+			l.lastAttribute = id
+		}
+		l.events = append(l.events, fileEvent{at: c.Offset, attribute: id}, fileEvent{at: c.Offset + c.Size, attribute: -id})
 	}
 	return nil
+}
+
+// fileCounts keeps a dense list of active IDs alongside direct counters.
+// Iteration costs depend on the active set, not the number of packages or
+// sources in the file, and endpoint updates do not hash strings.
+type fileCounts struct {
+	counts, positions, active []int
+}
+
+func newFileCounts(size int) fileCounts {
+	return fileCounts{counts: make([]int, size), positions: make([]int, size)}
+}
+
+func (c *fileCounts) update(id, delta int) {
+	if id == 0 {
+		return
+	}
+	previous := c.counts[id]
+	c.counts[id] += delta
+	if previous == 0 {
+		c.positions[id] = len(c.active)
+		c.active = append(c.active, id)
+	} else if c.counts[id] == 0 {
+		index, last := c.positions[id], c.active[len(c.active)-1]
+		c.active[index] = last
+		c.positions[last] = index
+		c.active = c.active[:len(c.active)-1]
+	}
+}
+
+func (c *fileCounts) keys(names []string) []string {
+	keys := make([]string, 0, len(c.active))
+	for _, id := range c.active {
+		keys = append(keys, names[id])
+	}
+	slices.Sort(keys)
+	return keys
+}
+
+func (l *FileLedger) groupIDs() [][]int {
+	groups := make([][]int, len(l.names))
+	// Only claim owners need entries. Ancestors are interned as totals keys
+	// even when they never appear as direct owners (including an empty name).
+	for owner := range groups {
+		if ancestors, ok := l.packageGroups[l.names[owner]]; ok {
+			for _, ancestor := range ancestors {
+				groups[owner] = append(groups[owner], l.nameID(ancestor))
+			}
+		} else {
+			groups[owner] = []int{owner}
+		}
+	}
+	return groups
 }
 
 // Finish partitions physical bytes by evidence priority. Ownership is counted
 // as a set, so duplicate claims cannot inflate unique or shared coverage.
 func (l *FileLedger) Finish(details bool) *FileCoverage {
-	type event struct {
-		at    uint64
-		claim int
-		delta int
-	}
-	events := make([]event, 0, len(l.claims)*2+2)
-	for i, c := range l.claims {
-		events = append(events, event{c.Offset, i, 1}, event{c.Offset + c.Size, i, -1})
-	}
-	events = append(events, event{0, -1, 0}, event{l.size, -1, 0})
-	slices.SortFunc(events, func(a, b event) int { return cmp.Compare(a.at, b.at) })
-	definitions, references, metadata := map[string]int{}, map[string]int{}, map[string]int{}
+	events := l.events
+	slices.SortFunc(events, func(a, b fileEvent) int { return cmp.Compare(a.at, b.at) })
+	groups := l.groupIDs()
+	definitions, references, metadata := newFileCounts(len(l.names)), newFileCounts(len(l.names)), newFileCounts(len(l.names))
 	evidence := map[FileEvidence]int{}
-	sources := [3]map[string]int{{}, {}, {}}
+	sources := [3]fileCounts{newFileCounts(len(l.names)), newFileCounts(len(l.names)), newFileCounts(len(l.names))}
 	counts := [3]int{}
 	result := &FileCoverage{Version: 2, BySource: map[string]uint64{}, PackageSizes: map[string]uint64{}, MetadataSizes: map[string]uint64{}}
-	groups := map[string]struct{}{}
-	keys := func(m map[string]int) []string {
-		r := make([]string, 0, len(m))
-		for k := range m {
-			r = append(r, k)
-		}
-		slices.Sort(r)
-		return r
-	}
-	update := func(m map[string]int, key string, delta int) {
-		if key == "" {
-			return
-		}
-		m[key] += delta
-		if m[key] == 0 {
-			delete(m, key)
-		}
-	}
+	packageSizes, metadataSizes, bySource := make([]uint64, len(l.names)), make([]uint64, len(l.names)), make([]uint64, len(l.names))
+	groupSeen := make([]uint64, len(l.names))
 	var previous uint64
 	for i := 0; i < len(events); {
 		at := events[i].at
@@ -150,9 +234,9 @@ func (l *FileLedger) Finish(details bool) *FileCoverage {
 			length := at - previous
 			class := 0
 			name := "unclassified"
-			owners := definitions
-			if len(owners) == 0 {
-				owners = references
+			owners := &definitions
+			if len(owners.active) == 0 {
+				owners = &references
 			}
 			if counts[2] > 0 {
 				class = 2
@@ -163,27 +247,22 @@ func (l *FileLedger) Finish(details bool) *FileCoverage {
 				} else {
 					result.AttributedRanges = append(result.AttributedRanges, FileRange{Offset: previous, Size: length})
 				}
-				for source := range sources[2] {
-					result.BySource[source] += length
+				for _, source := range sources[2].active {
+					bySource[source] += length
 				}
-				if len(owners) > 1 {
+				if len(owners.active) > 1 {
 					result.Shared += length
 				}
-				clear(groups)
-				for owner := range owners {
-					if metadata[owner] > 0 {
-						result.MetadataSizes[owner] += length
+				for _, owner := range owners.active {
+					if metadata.counts[owner] > 0 {
+						metadataSizes[owner] += length
 					}
-					if ancestors, ok := l.packageGroups[owner]; ok {
-						for _, ancestor := range ancestors {
-							groups[ancestor] = struct{}{}
+					for _, group := range groups[owner] {
+						if groupSeen[group] != at {
+							groupSeen[group] = at
+							packageSizes[group] += length
 						}
-					} else {
-						groups[owner] = struct{}{}
 					}
-				}
-				for group := range groups {
-					result.PackageSizes[group] += length
 				}
 			} else if counts[1] > 0 {
 				class = 1
@@ -193,11 +272,11 @@ func (l *FileLedger) Finish(details bool) *FileCoverage {
 				result.Unclassified += at - previous
 			}
 			if details {
-				region := FileRegion{FileRange: FileRange{Offset: previous, Size: at - previous}, Class: name, Sources: keys(sources[class])}
+				region := FileRegion{FileRange: FileRange{Offset: previous, Size: at - previous}, Class: name, Sources: sources[class].keys(l.names)}
 				if class == 2 {
-					region.Owners = keys(owners)
-					region.DefinitionOwners = keys(definitions)
-					region.Referrers = keys(references)
+					region.Owners = owners.keys(l.names)
+					region.DefinitionOwners = definitions.keys(l.names)
+					region.Referrers = references.keys(l.names)
 					for item := range evidence {
 						region.Evidence = append(region.Evidence, item)
 					}
@@ -220,21 +299,27 @@ func (l *FileLedger) Finish(details bool) *FileCoverage {
 		}
 		for i < len(events) && events[i].at == at {
 			e := events[i]
-			if e.claim >= 0 {
-				c := l.claims[e.claim]
-				counts[c.Class] += e.delta
-				update(sources[c.Class], c.Source, e.delta)
-				if c.Class == 2 {
+			if e.attribute != 0 {
+				id, delta := e.attribute, 1
+				if id < 0 {
+					id, delta = -id, -1
+				}
+				c := &l.attributes[id-1]
+				counts[c.class] += delta
+				if details || c.class == 2 {
+					sources[c.class].update(c.source, delta)
+				}
+				if c.class == 2 {
 					if c.Role == "reference" {
-						update(references, c.Owner, e.delta)
+						references.update(c.owner, delta)
 					} else {
-						update(definitions, c.Owner, e.delta)
+						definitions.update(c.owner, delta)
 					}
-					if c.Metadata {
-						update(metadata, c.Owner, e.delta)
+					if c.metadata {
+						metadata.update(c.owner, delta)
 					}
 					if details {
-						updateFileEvidence(evidence, c, e.delta)
+						updateFileEvidence(evidence, c.FileEvidence, delta)
 					}
 				}
 			}
@@ -242,11 +327,21 @@ func (l *FileLedger) Finish(details bool) *FileCoverage {
 		}
 		previous = at
 	}
+	for id, name := range l.names {
+		if packageSizes[id] > 0 {
+			result.PackageSizes[name] = packageSizes[id]
+		}
+		if metadataSizes[id] > 0 {
+			result.MetadataSizes[name] = metadataSizes[id]
+		}
+		if bySource[id] > 0 {
+			result.BySource[name] = bySource[id]
+		}
+	}
 	return result
 }
 
-func updateFileEvidence(evidence map[FileEvidence]int, claim FileClaim, delta int) {
-	item := FileEvidence{Owner: claim.Owner, Source: claim.Source, Role: claim.Role, Boundary: claim.Boundary}
+func updateFileEvidence(evidence map[FileEvidence]int, item FileEvidence, delta int) {
 	evidence[item] += delta
 	if evidence[item] == 0 {
 		delete(evidence, item)

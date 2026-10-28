@@ -35,32 +35,60 @@ type Addr struct {
 	evidence []*Addr
 }
 
-func (a *Addr) snapshot() *Addr {
-	cloned := *a
-	pos := *a.AddrPos
-	cloned.AddrPos = &pos
-	cloned.evidence = nil
-	if cloned.Role == "" {
-		cloned.Role = AddrRoleDefinition
+// AddrValue is a read-only projection of one address claim. Its position is a
+// value so synchronous accounting does not allocate a synthetic Addr/AddrPos
+// pair for every pclntab range. It never contains an AddrSpace's other claims.
+type AddrValue struct {
+	AddrPos
+	Pkg        *Package
+	Function   *Function
+	Symbol     *Symbol
+	SourceType AddrSourceType
+	Role       string
+	Boundary   string
+}
+
+// Keep each address and its position in one allocation. A snapshot owns its
+// position even when the source came from a different space or a caller's stack.
+type addrSnapshot struct {
+	addr Addr
+	pos  AddrPos
+}
+
+func (s *addrSnapshot) set(a *Addr) *Addr {
+	s.addr = *a
+	s.pos = *a.AddrPos
+	s.addr.AddrPos = &s.pos
+	s.addr.evidence = nil
+	if s.addr.Role == "" {
+		s.addr.Role = AddrRoleDefinition
 	}
-	return &cloned
+	return &s.addr
+}
+
+func (a *Addr) snapshot() *Addr {
+	return new(addrSnapshot).set(a)
 }
 
 func (a *Addr) setSourceEvidence() {
-	a.Role = AddrRoleDefinition
-	switch a.SourceType {
+	a.Role, a.Boundary = sourceEvidence(a.SourceType, a.Boundary)
+}
+
+func sourceEvidence(source AddrSourceType, boundary string) (role, resolvedBoundary string) {
+	switch source {
 	case AddrSourceSymbol:
-		a.Boundary = "symbol"
+		return AddrRoleDefinition, "symbol"
 	case AddrSourceDwarf:
-		a.Boundary = "declared"
+		return AddrRoleDefinition, "declared"
 	case AddrSourceGoPclntab, AddrSourceTyp:
-		a.Boundary = "encoded"
+		return AddrRoleDefinition, "encoded"
 	case AddrSourceStaticRead, AddrSourceStaticCopy:
-		a.Role, a.Boundary = AddrRoleReference, "instruction"
+		return AddrRoleReference, "instruction"
 	case AddrSourceDisasm, AddrSourceStaticHeader:
-		a.Role, a.Boundary = AddrRoleReference, "heuristic"
+		return AddrRoleReference, "heuristic"
 	default:
 		// Unspecified sources retain the caller-provided boundary.
+		return AddrRoleDefinition, boundary
 	}
 }
 

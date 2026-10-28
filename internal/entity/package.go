@@ -266,42 +266,88 @@ func (p *Package) AssignPackageSize() error {
 
 // OwnAddresses preserves unmerged evidence for global file accounting.
 func (p *Package) OwnAddresses(yield func(*Addr) bool) {
+	var snapshots []addrSnapshot
+	p.visitOwnAddresses(yield, func(pos AddrPos, fn *Function, source AddrSourceType) bool {
+		if snapshots == nil {
+			// A retained yield pointer must keep its own slot. Reserve the usual
+			// total once, while append still permits callbacks to add more ranges.
+			var count int
+			for f := range p.Functions {
+				count += len(f.PclnRanges)
+				if !f.Wasm && len(f.codeEvidence) == 0 {
+					count += max(1, len(f.Ranges))
+				}
+			}
+			snapshots = make([]addrSnapshot, 0, count)
+		}
+		snapshots = append(snapshots, addrSnapshot{})
+		snapshot := &snapshots[len(snapshots)-1]
+		snapshot.pos = pos
+		snapshot.addr = Addr{AddrPos: &snapshot.pos, Pkg: p, Function: fn, SourceType: source}
+		snapshot.addr.setSourceEvidence()
+		return yield(&snapshot.addr)
+	})
+}
+
+// OwnAddressValues visits the same unmerged evidence as OwnAddresses without
+// allocating pointer snapshots for synthetic code and pclntab ranges. Stored
+// records are copied by value, and stopping the callback stops the traversal.
+func (p *Package) OwnAddressValues(yield func(AddrValue) bool) {
+	p.visitOwnAddresses(func(addr *Addr) bool {
+		return yield(AddrValue{AddrPos: *addr.AddrPos, Pkg: addr.Pkg, Function: addr.Function, Symbol: addr.Symbol, SourceType: addr.SourceType, Role: addr.Role, Boundary: addr.Boundary})
+	}, func(pos AddrPos, fn *Function, source AddrSourceType) bool {
+		role, boundary := sourceEvidence(source, "")
+		return yield(AddrValue{AddrPos: pos, Pkg: p, Function: fn, SourceType: source, Role: role, Boundary: boundary})
+	})
+}
+
+// Stored evidence already has stable addresses. Synthetic ranges are passed by
+// value so each public iterator can choose the representation its caller needs.
+func (p *Package) visitOwnAddresses(stored func(*Addr) bool, synthetic func(AddrPos, *Function, AddrSourceType) bool) {
 	for addr := range p.symbolAddrSpace.All {
-		if !yield(addr) {
+		if !stored(addr) {
 			return
 		}
 	}
-	functions := slices.Collect(p.Functions)
+	var functionCount int
+	for _, f := range p.Files {
+		functionCount += len(f.Functions)
+	}
+	functions := make([]*Function, 0, functionCount)
+	for _, f := range p.Files {
+		functions = append(functions, f.Functions...)
+	}
 	slices.SortFunc(functions, func(a, b *Function) int {
-		return cmp.Or(cmp.Compare(a.Addr, b.Addr), cmp.Compare(a.Name, b.Name))
+		if n := cmp.Compare(a.Addr, b.Addr); n != 0 {
+			return n
+		}
+		return cmp.Compare(a.Name, b.Name)
 	})
 	for _, fn := range functions {
 		for addr := range fn.disasm.All {
-			if !yield(addr) {
+			if !stored(addr) {
 				return
 			}
 		}
 		if !fn.Wasm {
 			if len(fn.codeEvidence) > 0 {
 				for addr := range fn.codeEvidence.All {
-					if !yield(addr) {
+					if !stored(addr) {
 						return
 					}
 				}
 			} else {
 				for r := range fn.CodeRegions {
-					addr := &Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeText}, Pkg: p, Function: fn, SourceType: fn.Source}
-					addr.setSourceEvidence()
-					if !yield(addr) {
+					r.Type = AddrTypeText
+					if !synthetic(r, fn, fn.Source) {
 						return
 					}
 				}
 			}
 		}
 		for _, r := range fn.PclnRanges {
-			addr := &Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeData}, Pkg: p, Function: fn, SourceType: AddrSourceGoPclntab}
-			addr.setSourceEvidence()
-			if !yield(addr) {
+			r.Type = AddrTypeData
+			if !synthetic(r, fn, AddrSourceGoPclntab) {
 				return
 			}
 		}

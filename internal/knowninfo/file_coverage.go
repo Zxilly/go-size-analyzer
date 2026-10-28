@@ -70,7 +70,7 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 		}
 	}
 	err := k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
-		for addr := range p.OwnAddresses {
+		for addr := range p.OwnAddressValues {
 			if addr.Size == 0 || addr.Addr+addr.Size < addr.Addr {
 				continue
 			}
