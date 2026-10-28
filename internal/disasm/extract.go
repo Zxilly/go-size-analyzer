@@ -23,7 +23,7 @@ func x86Register(arg x86asm.Arg) int {
 }
 
 func ripAddress(mem x86asm.Mem, pc uint64, n int) (uint64, bool) {
-	if mem.Base != x86asm.RIP || mem.Index != 0 {
+	if mem.Base != x86asm.RIP || mem.Index != 0 || mem.Segment != 0 {
 		return 0, false
 	}
 	return pc + uint64(n) + uint64(int64(int32(mem.Disp))), true
@@ -50,6 +50,7 @@ func extractAmd64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 			continue
 		}
 		dst := x86Register(inst.Args[0])
+		captureX86Load(&s, inst, pc)
 		w := trackedWord{}
 		switch inst.Op {
 		case x86asm.NOP, x86asm.CMP, x86asm.TEST:
@@ -70,7 +71,7 @@ func extractAmd64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 			}
 		case x86asm.MOVUPS, x86asm.MOVUPD, x86asm.MOVDQU, x86asm.MOVDQA, x86asm.MOVAPS:
 			// Static aggregate copies can carry an entire string header in XMM.
-			if mem, ok := inst.Args[1].(x86asm.Mem); ok && mem.Index == 0 {
+			if mem, ok := inst.Args[1].(x86asm.Mem); ok && mem.Index == 0 && mem.Segment == 0 {
 				addr, known := ripAddress(mem, pc, inst.Len)
 				if !known {
 					base := s.get(x86Register(mem.Base))
@@ -133,4 +134,29 @@ func extractAmd64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 		pc += uint64(inst.Len)
 	}
 	return s.candidates()
+}
+
+// A fixed-width load proves access to exactly MemBytes at this address.
+// Unknown indices, segment bases and address-only LEA are not data reads.
+func captureX86Load(s *wordTracker, inst x86asm.Inst, pc uint64) {
+	switch inst.Op {
+	case x86asm.MOV, x86asm.MOVZX, x86asm.MOVSX, x86asm.MOVSXD,
+		x86asm.MOVSS, x86asm.MOVSD_XMM, x86asm.MOVUPS, x86asm.MOVUPD,
+		x86asm.MOVDQU, x86asm.MOVDQA, x86asm.MOVAPS, x86asm.MOVAPD:
+	default:
+		return
+	}
+	mem, ok := inst.Args[1].(x86asm.Mem)
+	if !ok || mem.Index != 0 || mem.Segment != 0 || inst.MemBytes <= 0 || inst.MemBytes > 64 {
+		return
+	}
+	addr, known := ripAddress(mem, pc, inst.Len)
+	if !known {
+		base := s.get(x86Register(mem.Base))
+		known = base.kind == wordAddress
+		addr = base.value + uint64(mem.Disp)
+	}
+	if known {
+		s.result[PossibleStr{Addr: addr, Size: uint64(inst.MemBytes), Read: true}] = struct{}{}
+	}
 }

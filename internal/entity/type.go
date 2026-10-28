@@ -17,5 +17,6 @@ const (
 	AddrSourceDwarf        AddrSourceType = "dwarf"
 	AddrSourceTyp          AddrSourceType = "type"
 	AddrSourceStaticCopy   AddrSourceType = "static_copy"
+	AddrSourceStaticRead   AddrSourceType = "static_read"
 	AddrSourceStaticHeader AddrSourceType = "static_header"
 )

@@ -17,6 +17,7 @@ type PossibleStr struct {
 	Header   bool
 	TypeAddr uint64
 	Copy     bool
+	Read     bool
 }
 
 type extractorFunc func(code []byte, pc uint64) []PossibleStr
@@ -96,7 +97,7 @@ func (e *Extractor) Validate(addr, size uint64) bool {
 }
 
 func (e *Extractor) ValidateReference(p PossibleStr) bool {
-	if !p.Copy {
+	if !p.Copy && !p.Read {
 		return e.Validate(p.Addr, p.Size)
 	}
 	return p.Size > 0 && p.Size <= e.size && p.Addr+p.Size >= p.Addr && e.dataCheck != nil && e.dataCheck(p.Addr, p.Size)

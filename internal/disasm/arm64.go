@@ -41,6 +41,7 @@ func extractArm64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 			pc += 4
 			continue
 		}
+		captureARM64Load(&s, bits)
 		switch {
 		case bits&0x7f000000 == 0x34000000: // CBZ skipping a bounded write-barrier block
 			distance := signExtend((bits>>5)&0x7ffff, 19) * 4
@@ -92,6 +93,10 @@ func extractArm64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 			s.set(rd, w)
 		case bits&0xffc00000 == 0xb9400000: // LDR Wt does not alter stored object fields.
 			s.set(rd, trackedWord{})
+		case bits&0xffc00000 == 0x39400000 || bits&0xffc00000 == 0x79400000:
+			s.set(rd, trackedWord{}) // LDRB/LDRH
+		case bits&0x3fc00000 == 0x3d400000 || bits&0xffc00000 == 0x3dc00000:
+			// Unsigned-offset SIMD loads do not write integer registers.
 		case bits&0xffc00000 == 0xa9400000: // LDP Xt1, Xt2, [Xn,#imm]
 			base := s.get(rn)
 			w := trackedWord{}
@@ -145,9 +150,48 @@ func extractArm64WithBarriers(code []byte, pc uint64, calls barrierCalls) []Poss
 		default:
 			s.reset()
 		}
+		// Encoding 31 is XZR for these writes, but SP for memory bases.
+		// Never carry a discarded XZR value into a later SP-relative load.
+		s.regs[31] = trackedWord{}
 		s.registers(arm64ABI[:])
 		code = code[4:]
 		pc += 4
 	}
 	return s.candidates()
+}
+
+func captureARM64Load(s *wordTracker, bits uint32) {
+	base := s.get(int((bits >> 5) & 31))
+	if base.kind != wordAddress {
+		return
+	}
+	var size uint64
+	var offset int64
+	paired := false
+	switch bits & 0xffc00000 {
+	case 0x39400000: // LDRB
+		size = 1
+	case 0x79400000: // LDRH
+		size = 2
+	case 0xb9400000, 0xb9800000, 0xbd400000: // LDR W/LDRSW/LDR S
+		size = 4
+	case 0xf9400000, 0xfd400000: // LDR X/LDR D
+		size = 8
+	case 0x3dc00000: // LDR Q
+		size = 16
+	case 0xa9400000, 0x6d400000: // LDP X/LDP D, signed offset
+		paired = true
+		size = 16
+		offset = signExtend((bits>>15)&127, 7) * 8
+	case 0xad400000: // LDP Q
+		paired = true
+		size = 32
+		offset = signExtend((bits>>15)&127, 7) * 16
+	default:
+		return
+	}
+	if !paired {
+		offset = int64(uint64((bits>>10)&0xfff) * size)
+	}
+	s.result[PossibleStr{Addr: base.value + uint64(offset), Size: size, Read: true}] = struct{}{}
 }

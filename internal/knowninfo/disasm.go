@@ -44,8 +44,8 @@ func (k *KnownInfo) Disasm() error {
 	}
 
 	type result struct {
-		addr, size uint64
-		fn         *entity.Function
+		ref disasm.PossibleStr
+		fn  *entity.Function
 	}
 
 	resultChan := make(chan result, 32)
@@ -58,13 +58,17 @@ func (k *KnownInfo) Disasm() error {
 	go func() {
 		defer resultDone()
 		for r := range resultChan {
-			if !e.Validate(r.addr, r.size) {
+			if !e.ValidateReference(r.ref) {
 				throw++
 				continue
 			}
 			added++
 
-			k.KnownAddr.InsertDisasm(r.addr, r.size, r.fn)
+			source := entity.AddrSourceDisasm
+			if r.ref.Read {
+				source = entity.AddrSourceStaticRead
+			}
+			k.KnownAddr.InsertDisasm(r.ref.Addr, r.ref.Size, r.fn, source)
 		}
 	}()
 
@@ -80,9 +84,8 @@ func (k *KnownInfo) Disasm() error {
 				candidates := e.Extract(region.Addr, region.Addr+region.Size)
 				lo.ForEach(candidates, func(p disasm.PossibleStr, _ int) {
 					resultChan <- result{
-						addr: p.Addr,
-						size: p.Size,
-						fn:   fn,
+						ref: p,
+						fn:  fn,
 					}
 				})
 			}
