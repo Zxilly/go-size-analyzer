@@ -161,12 +161,10 @@ func analyzeWasm(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, []
 
 	analyzers := []entity.Analyzer{entity.AnalyzerPclntab}
 
-	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers,
-		"Type analysis skipped: Go version not available in binary"); err != nil {
+	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers, "Type analysis skipped: Go version not available in binary"); err != nil {
 		return nil, nil, err
 	}
-	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers,
-		"Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
+	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers, "Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
 		return nil, nil, err
 	}
 
@@ -231,12 +229,10 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 	}
 	utils.WaitDebugger("Symbol done")
 
-	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers,
-		"Type analysis skipped: Go version not available in binary"); err != nil {
+	if err := runOptionalAnalyzer(k.AnalyzeTypes, entity.AnalyzerTyp, &analyzers, "Type analysis skipped: Go version not available in binary"); err != nil {
 		return nil, nil, err
 	}
-	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers,
-		"Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
+	if err := runOptionalAnalyzer(k.AnalyzePclntabMeta, entity.AnalyzerPclntabMeta, &analyzers, "Pclntab meta analysis skipped: Go version not available in binary"); err != nil {
 		return nil, nil, err
 	}
 

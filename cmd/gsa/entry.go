@@ -202,10 +202,11 @@ func run() error {
 	}
 	defer closeAll(specs)
 	if Options.DiffTarget != "" {
-		if err := diff.Diff(specs[0].writer, diff.Options{
+		err := diff.Diff(specs[0].writer, diff.Options{
 			Options: options, OldTarget: Options.Binary, NewTarget: Options.DiffTarget,
 			Format: specs[0].format, Indent: Options.Indent,
-		}); err != nil {
+		})
+		if err != nil {
 			return err
 		}
 		return commitOutputs(specs)
