@@ -26,22 +26,25 @@ func TestAddrSpaceInsertAddsNewAddr(t *testing.T) {
 	a := entity.AddrSpace{}
 	addr := &entity.Addr{AddrPos: &entity.AddrPos{Addr: 1}}
 	a.Insert(addr)
-	assert.Equal(t, addr, a[1])
+	assert.Equal(t, addr.AddrPos, a[1].AddrPos)
+	assert.Equal(t, entity.AddrRoleDefinition, a[1].Role)
 }
 
 func TestAddrSpaceInsertUpdatesExistingAddrWithLargerSize(t *testing.T) {
 	a := entity.AddrSpace{1: &entity.Addr{AddrPos: &entity.AddrPos{Addr: 1, Size: 1}}}
 	addr := &entity.Addr{AddrPos: &entity.AddrPos{Addr: 1, Size: 2}}
 	a.Insert(addr)
-	assert.Equal(t, addr, a[1])
+	assert.Equal(t, addr.AddrPos, a[1].AddrPos)
+	assert.Len(t, a.ToDirtyCoverage(), 2)
 }
 
-func TestAddrSpaceInsertIgnoresExistingAddrWithSmallerSize(t *testing.T) {
+func TestAddrSpaceInsertKeepsLargerLookupAndSmallerEvidence(t *testing.T) {
 	existingAddr := &entity.Addr{AddrPos: &entity.AddrPos{Addr: 1, Size: 2}}
 	a := entity.AddrSpace{1: existingAddr}
 	addr := &entity.Addr{AddrPos: &entity.AddrPos{Addr: 1, Size: 1}}
 	a.Insert(addr)
-	assert.Equal(t, existingAddr, a[1])
+	assert.Equal(t, existingAddr.AddrPos, a[1].AddrPos)
+	assert.Len(t, a.ToDirtyCoverage(), 2)
 }
 
 func TestMergeAddrSpaceMergesMultipleAddrSpaces(t *testing.T) {
@@ -50,8 +53,8 @@ func TestMergeAddrSpaceMergesMultipleAddrSpaces(t *testing.T) {
 	merged := entity.MergeAddrSpace(a1, a2)
 
 	assert.Len(t, merged, 2)
-	assert.Equal(t, a1[1], merged[1])
-	assert.Equal(t, a2[2], merged[2])
+	assert.Equal(t, a1[1].AddrPos, merged[1].AddrPos)
+	assert.Equal(t, a2[2].AddrPos, merged[2].AddrPos)
 }
 
 func TestMergeAddrSpacePrefersLargerSize(t *testing.T) {
@@ -60,7 +63,8 @@ func TestMergeAddrSpacePrefersLargerSize(t *testing.T) {
 	merged := entity.MergeAddrSpace(a1, a2)
 
 	assert.Len(t, merged, 1)
-	assert.Equal(t, a2[1], merged[1])
+	assert.Equal(t, a2[1].AddrPos, merged[1].AddrPos)
+	assert.Len(t, merged.ToDirtyCoverage(), 2)
 }
 
 func TestToDirtyCoverageReturnsCoverageParts(t *testing.T) {

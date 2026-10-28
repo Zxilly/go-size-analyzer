@@ -11,6 +11,11 @@ const (
 type AddrSourceType = string
 
 const (
+	AddrRoleDefinition = "definition"
+	AddrRoleReference  = "reference"
+)
+
+const (
 	AddrSourceGoPclntab    AddrSourceType = "pclntab"
 	AddrSourceSymbol       AddrSourceType = "symbol"
 	AddrSourceDisasm       AddrSourceType = "disasm"

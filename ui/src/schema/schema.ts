@@ -40,6 +40,7 @@ interface PackageRef {
   files: File[];
   symbols: FileSymbol[];
   size: number;
+  metadata_size?: number;
   importedBy?: string[];
 }
 
@@ -57,6 +58,7 @@ export const PackageSchema: GenericSchema<PackageRef> = object({
   files: array(FileSchema),
   symbols: array(FileSymbolSchema),
   size: number(),
+  metadata_size: optional(number()),
   importedBy: optional(array(string())),
 });
 
@@ -64,6 +66,7 @@ export type Package = InferInput<typeof PackageSchema>;
 
 export const ResultSchema = object({
   coverage: optional(object({
+    version: optional(number()),
     attributed: number(),
     recognized: number(),
     unclassified: number(),

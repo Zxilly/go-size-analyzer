@@ -114,6 +114,7 @@ func (k *KnownInfo) AddDwarfVariable(entry *dwarf.Entry, d *dwarf.Data, pkg *ent
 			valueName := utils.Deduplicate(fmt.Sprintf("%s.%s", entryName, content.Name))
 
 			symbol = entity.NewSymbol(valueName, k.convertAddr(content.Addr), content.Size, entity.AddrTypeData)
+			symbol.Role = "reference"
 
 			ap = k.KnownAddr.InsertSymbolFromDWARF(symbol, pkg)
 			if ap == nil {
@@ -195,11 +196,15 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	fn.Init()
 
 	added := pkg.AddFuncIfNotExists(filename, fn)
-
-	if added {
-		for _, r := range ranges {
-			k.KnownAddr.InsertTextFromDWARF(r[0], r[1]-r[0], fn)
+	if !added {
+		var ok bool
+		fn, ok = pkg.GetFunction(addr)
+		if !ok {
+			return nil
 		}
+	}
+	for _, r := range ranges {
+		k.KnownAddr.InsertTextFromDWARF(r[0], r[1]-r[0], fn)
 	}
 	return nil
 }
@@ -276,13 +281,16 @@ func (k *KnownInfo) GetDwarfCompileUnitFeeder(d *dwarf.Data, cuEntry *dwarf.Entr
 }
 
 func (k *KnownInfo) TryLoadDwarf() (bool, error) {
+	k.DwarfFailure = nil
 	d, err := k.Wrapper.DWARF()
 	if err != nil {
+		k.DwarfFailure = fmt.Errorf("load sections: %w", err)
 		slog.Debug(fmt.Sprintf("Failed to load DWARF: %v", err))
 		return false, nil
 	}
 	k.dwarfKinds, err = dwarfutil.ReadGoTypeKinds(d)
 	if err != nil {
+		k.DwarfFailure = fmt.Errorf("read type kinds: %w", err)
 		slog.Debug("Failed to load DWARF type kinds", "error", err)
 		return false, nil
 	}
@@ -297,6 +305,7 @@ func (k *KnownInfo) TryLoadDwarf() (bool, error) {
 	for {
 		entry, err := r.Next()
 		if err != nil {
+			k.DwarfFailure = fmt.Errorf("read entries: %w", err)
 			slog.Warn("Failed to load DWARF", "error", err)
 			return false, nil
 		}

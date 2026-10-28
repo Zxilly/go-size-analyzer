@@ -56,7 +56,7 @@ func (f *KnownAddr) InsertTextFromPclnTab(entry uint64, size uint64, fn *Functio
 		Function:   fn,
 		SourceType: AddrSourceGoPclntab,
 	}
-	f.cancelIfSectionTypeMismatch(&cur, f.TextAddrSpace)
+	f.insertTextEvidence(&cur)
 }
 
 func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function) {
@@ -70,12 +70,22 @@ func (f *KnownAddr) InsertTextFromDWARF(entry uint64, size uint64, fn *Function)
 		Function:   fn,
 		SourceType: AddrSourceDwarf,
 	}
-	f.cancelIfSectionTypeMismatch(&cur, f.TextAddrSpace)
+	f.insertTextEvidence(&cur)
 }
 
 func (f *KnownAddr) InsertTextFromSymbol(entry, size uint64, fn *Function) {
 	cur := &Addr{AddrPos: &AddrPos{Addr: entry, Size: size, Type: AddrTypeText}, Pkg: fn.pkg, Function: fn, SourceType: AddrSourceSymbol}
-	f.cancelIfSectionTypeMismatch(cur, f.TextAddrSpace)
+	f.insertTextEvidence(cur)
+}
+
+func (f *KnownAddr) insertTextEvidence(cur *Addr) {
+	cur.setSourceEvidence()
+	if f.cancelIfSectionTypeMismatch(cur, f.TextAddrSpace) {
+		if cur.Function.codeEvidence == nil {
+			cur.Function.codeEvidence = AddrSpace{}
+		}
+		cur.Function.codeEvidence.Insert(cur)
+	}
 }
 
 func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, sources ...AddrSourceType) *Addr {
@@ -94,6 +104,13 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, sources ...AddrSour
 	if len(sources) > 0 {
 		cur.SourceType = sources[0]
 	}
+	cur.setSourceEvidence()
+	if symbol.Role != "" {
+		cur.Role = symbol.Role
+	}
+	if symbol.Boundary != "" {
+		cur.Boundary = symbol.Boundary
+	}
 	ok := f.cancelIfSectionTypeMismatch(cur, f.SymbolAddrSpace)
 	if !ok {
 		return nil
@@ -103,22 +120,7 @@ func (f *KnownAddr) InsertSymbol(symbol *Symbol, p *Package, sources ...AddrSour
 }
 
 func (f *KnownAddr) InsertSymbolFromDWARF(symbol *Symbol, p *Package) *Addr {
-	cur := &Addr{
-		AddrPos: &AddrPos{
-			Addr: symbol.Addr,
-			Size: symbol.Size,
-			Type: symbol.Type,
-		},
-		Pkg:        p,
-		Function:   nil,
-		Symbol:     symbol,
-		SourceType: AddrSourceDwarf,
-	}
-	ok := f.cancelIfSectionTypeMismatch(cur, f.SymbolAddrSpace)
-	if !ok {
-		return nil
-	}
-	return cur
+	return f.InsertSymbol(symbol, p, AddrSourceDwarf)
 }
 
 func (f *KnownAddr) BuildSymbolCoverage() {
@@ -171,14 +173,16 @@ func (f *KnownAddr) InsertDisasm(entry uint64, size uint64, fn *Function, source
 		SourceType: AddrSourceDisasm,
 	}
 
-	// Linker may place non-data values (function pointers in type descriptors,
 	if len(sources) > 0 {
 		cur.SourceType = sources[0]
 	}
-	// itabs, etc.) whose symbols overlap disasm candidates — drop as false
-	// positives rather than treating them as real strings.
+	cur.setSourceEvidence()
+	// Instruction-sized reads and copies may legitimately reference an existing
+	// data object. String heuristics still reject overlapping symbols, where
+	// pointer-shaped metadata could otherwise be mistaken for string contents.
 	typ, ok := f.SymbolCovHas(entry, size)
-	if ok && (typ != AddrTypeData || cur.SourceType != AddrSourceStaticCopy) {
+	exactAccess := cur.SourceType == AddrSourceStaticCopy || cur.SourceType == AddrSourceStaticRead
+	if ok && (typ != AddrTypeData || !exactAccess) {
 		if typ != AddrTypeData {
 			slog.Debug(fmt.Sprintf("disasm addr %x size %x overlaps symbol of type %s, dropped", entry, size, typ))
 		}

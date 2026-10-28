@@ -21,7 +21,8 @@ func TestUnattributedMetadataRemainsVisible(t *testing.T) {
 		if s.Name == ".symtab" {
 			symbolsFound = true
 			require.Positive(t, s.FileSize)
-			require.Zero(t, s.KnownSize, "symbol table must retain its own area")
+			require.Positive(t, s.KnownSize, "records for established package definitions are attributed")
+			require.Less(t, s.KnownSize, s.FileSize, "unattributed symbol records must retain a visible section area")
 		}
 	}
 	require.True(t, debugFound)

@@ -24,6 +24,44 @@ type Addr struct {
 	Symbol   *Symbol   // for function source it will be a nil
 
 	SourceType AddrSourceType
+
+	// Role distinguishes a declaration from a package's use of existing data.
+	// An empty role in older callers is treated as a definition.
+	Role     string
+	Boundary string
+
+	// evidence is a flat set of immutable address snapshots. Only AddrSpace
+	// representatives carry it; the snapshots never point back to this slice.
+	evidence []*Addr
+}
+
+func (a *Addr) snapshot() *Addr {
+	cloned := *a
+	pos := *a.AddrPos
+	cloned.AddrPos = &pos
+	cloned.evidence = nil
+	if cloned.Role == "" {
+		cloned.Role = AddrRoleDefinition
+	}
+	return &cloned
+}
+
+func (a *Addr) setSourceEvidence() {
+	a.Role = AddrRoleDefinition
+	switch a.SourceType {
+	case AddrSourceSymbol:
+		a.Boundary = "symbol"
+	case AddrSourceDwarf:
+		a.Boundary = "declared"
+	case AddrSourceGoPclntab, AddrSourceTyp:
+		a.Boundary = "encoded"
+	case AddrSourceStaticRead, AddrSourceStaticCopy:
+		a.Role, a.Boundary = AddrRoleReference, "instruction"
+	case AddrSourceDisasm, AddrSourceStaticHeader:
+		a.Role, a.Boundary = AddrRoleReference, "heuristic"
+	default:
+		// Unspecified sources retain the caller-provided boundary.
+	}
 }
 
 func (a *Addr) String() string {

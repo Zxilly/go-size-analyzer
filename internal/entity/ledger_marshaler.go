@@ -8,6 +8,9 @@ func (c *FileCoverage) MarshalJavaScript() any {
 		sources[source] = size
 	}
 	result := map[string]any{"attributed": c.Attributed, "recognized": c.Recognized, "unclassified": c.Unclassified, "shared": c.Shared, "by_source": sources}
+	if c.Version != 0 {
+		result["version"] = c.Version
+	}
 	if len(c.Notes) > 0 {
 		notes := make([]any, len(c.Notes))
 		for i, note := range c.Notes {
@@ -32,6 +35,26 @@ func (c *FileCoverage) MarshalJavaScript() any {
 					sources[i] = v
 				}
 				item["sources"] = sources
+			}
+			for name, values := range map[string][]string{"definition_owners": r.DefinitionOwners, "referrers": r.Referrers} {
+				if len(values) > 0 {
+					list := make([]any, len(values))
+					for i, value := range values {
+						list[i] = value
+					}
+					item[name] = list
+				}
+			}
+			if len(r.Evidence) > 0 {
+				evidence := make([]any, 0, len(r.Evidence))
+				for _, e := range r.Evidence {
+					value := map[string]any{"owner": e.Owner, "source": e.Source, "role": e.Role}
+					if e.Boundary != "" {
+						value["boundary"] = e.Boundary
+					}
+					evidence = append(evidence, value)
+				}
+				item["evidence"] = evidence
 			}
 			regions = append(regions, item)
 		}

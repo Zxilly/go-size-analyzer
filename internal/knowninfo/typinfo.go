@@ -90,6 +90,9 @@ func (k *KnownInfo) AnalyzeTypes() error {
 		pkg := k.resolveTypePackage(t.PackagePath)
 		symName := fmt.Sprintf("type:%s", t.Name)
 		sym := entity.NewSymbol(symName, t.Addr, size, entity.AddrTypeData)
+		if t.FlatSize == 0 {
+			sym.Boundary = "estimated"
+		}
 
 		ap := k.KnownAddr.InsertSymbol(sym, pkg, entity.AddrSourceTyp)
 		if ap == nil {

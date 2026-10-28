@@ -1,9 +1,62 @@
 package knowninfo
 
 import (
+	"cmp"
+	"slices"
+
 	"github.com/Zxilly/go-size-analyzer/internal/entity"
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
+
+// ValidateNativeCoverage skips recursive coverage construction when address
+// types do not overlap. Ambiguous ranges retain the legacy merge's errors and
+// disassembly exceptions, which depend on the package hierarchy.
+func (k *KnownInfo) ValidateNativeCoverage() error {
+	type interval struct {
+		start, end uint64
+		typ        int
+	}
+	var intervals []interval
+	types := make(map[entity.AddrType]int)
+	var furthest []uint64
+	var overflow bool
+	_ = k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
+		if overflow {
+			return nil
+		}
+		for addr := range p.OwnAddresses {
+			if addr.Size > ^uint64(0)-addr.Addr {
+				overflow = true
+				return nil
+			}
+			typ, ok := types[addr.Type]
+			if !ok {
+				typ = len(furthest)
+				types[addr.Type] = typ
+				furthest = append(furthest, 0)
+			}
+			intervals = append(intervals, interval{start: addr.Addr, end: addr.Addr + addr.Size, typ: typ})
+		}
+		return nil
+	})
+	if overflow {
+		return k.CollectCoverage()
+	}
+	slices.SortFunc(intervals, func(a, b interval) int {
+		return cmp.Or(cmp.Compare(a.start, b.start), cmp.Compare(a.end, b.end))
+	})
+	for _, current := range intervals {
+		// Keep empty ranges: the legacy merge can reject an empty range
+		// whose start is inside a range of another type.
+		for typ, end := range furthest {
+			if typ != current.typ && current.start < end {
+				return k.CollectCoverage()
+			}
+		}
+		furthest[current.typ] = max(furthest[current.typ], current.end)
+	}
+	return nil
+}
 
 func (k *KnownInfo) CollectCoverage() error {
 	covs := make([]entity.AddrCoverage, 0, len(k.Deps.TopPkgs))

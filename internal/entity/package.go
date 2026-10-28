@@ -1,9 +1,11 @@
 package entity
 
 import (
+	"cmp"
 	"errors"
 	"fmt"
 	"maps"
+	"slices"
 	"strings"
 	"sync"
 
@@ -33,7 +35,8 @@ type Package struct {
 	SubPackages PackageMap `json:"subPackages"`
 	Files       []*File    `json:"files"`
 
-	Size uint64 `json:"size"` // late filled
+	Size         uint64 `json:"size"`                   // late filled
+	MetadataSize uint64 `json:"metadata_size,omitzero"` // file metadata owned by this package, excluding children
 
 	// should not be used to calculate size,
 	// since linker can create overlapped symbols.
@@ -138,6 +141,13 @@ func (p *Package) AddFuncIfNotExists(path string, fn *Function) bool {
 		return true
 	}
 	return false
+}
+
+// GetFunction finds a function registered during analysis without replacing
+// its display name, source file, or original code size.
+func (p *Package) GetFunction(addr uint64) (*Function, bool) {
+	fn, ok := p.funcsCache[addr]
+	return fn, ok
 }
 
 func (p *Package) getOrInitFile(s string) *File {
@@ -256,26 +266,42 @@ func (p *Package) AssignPackageSize() error {
 
 // OwnAddresses preserves unmerged evidence for global file accounting.
 func (p *Package) OwnAddresses(yield func(*Addr) bool) {
-	for _, addr := range p.symbolAddrSpace {
+	for addr := range p.symbolAddrSpace.All {
 		if !yield(addr) {
 			return
 		}
 	}
-	for fn := range p.Functions {
-		for _, addr := range fn.disasm {
+	functions := slices.Collect(p.Functions)
+	slices.SortFunc(functions, func(a, b *Function) int {
+		return cmp.Or(cmp.Compare(a.Addr, b.Addr), cmp.Compare(a.Name, b.Name))
+	})
+	for _, fn := range functions {
+		for addr := range fn.disasm.All {
 			if !yield(addr) {
 				return
 			}
 		}
 		if !fn.Wasm {
-			for r := range fn.CodeRegions {
-				if !yield(&Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeText}, Pkg: p, Function: fn, SourceType: fn.Source}) {
-					return
+			if len(fn.codeEvidence) > 0 {
+				for addr := range fn.codeEvidence.All {
+					if !yield(addr) {
+						return
+					}
+				}
+			} else {
+				for r := range fn.CodeRegions {
+					addr := &Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeText}, Pkg: p, Function: fn, SourceType: fn.Source}
+					addr.setSourceEvidence()
+					if !yield(addr) {
+						return
+					}
 				}
 			}
 		}
 		for _, r := range fn.PclnRanges {
-			if !yield(&Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeData}, Pkg: p, Function: fn, SourceType: AddrSourceGoPclntab}) {
+			addr := &Addr{AddrPos: &AddrPos{Addr: r.Addr, Size: r.Size, Type: AddrTypeData}, Pkg: p, Function: fn, SourceType: AddrSourceGoPclntab}
+			addr.setSourceEvidence()
+			if !yield(addr) {
 				return
 			}
 		}
@@ -300,7 +326,7 @@ func (p *Package) AddSymbolCoverage(ap *Addr) {
 }
 
 func (p *Package) SymbolAddresses(yield func(*Addr) bool) {
-	for _, addr := range p.symbolAddrSpace {
+	for addr := range p.symbolAddrSpace.All {
 		if !yield(addr) {
 			return
 		}

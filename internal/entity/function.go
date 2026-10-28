@@ -27,8 +27,9 @@ type Function struct {
 	Source       AddrSourceType `json:"-"`
 	pclnBytes    uint64
 
-	disasm AddrSpace
-	pkg    *Package
+	disasm       AddrSpace
+	codeEvidence AddrSpace
+	pkg          *Package
 }
 
 func (f *Function) CodeRegions(yield func(AddrPos) bool) {
@@ -45,6 +46,7 @@ func (f *Function) CodeRegions(yield func(AddrPos) bool) {
 
 func (f *Function) Init() {
 	f.disasm = make(AddrSpace)
+	f.codeEvidence = make(AddrSpace)
 }
 
 func (f *Function) Size() uint64 {

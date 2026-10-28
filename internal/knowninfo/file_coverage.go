@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 	"slices"
 	"strings"
@@ -25,6 +26,7 @@ func recognizedSection(s *entity.Section) bool {
 
 func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Section, details bool) (*entity.FileCoverage, error) {
 	ledger := entity.NewFileLedger(k.Size)
+	ledger.SetPackageGroups(k.packageGroups())
 	var mappings []entity.FileMapping
 	wasm, isWasm := k.Wrapper.(*wrapper.WasmWrapper)
 	for _, s := range sections {
@@ -54,6 +56,19 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 	if err := addFileHeaders(ledger, reader, k.Size); err != nil {
 		return nil, err
 	}
+	metadata, metadataErr := wrapper.LoadFileMetadata(k.Wrapper, reader, k.Size)
+	if metadataErr == nil {
+		for _, r := range metadata.Ranges {
+			if err := ledger.Add(entity.FileClaim{FileRange: r.FileRange, Class: 1, Source: r.Source}); err != nil {
+				return nil, err
+			}
+		}
+		if !k.SkipSymbolMetadata {
+			if err := k.attributeSymbolMetadata(ledger, metadata.Symbols); err != nil {
+				return nil, err
+			}
+		}
+	}
 	err := k.Deps.Trie.Walk(func(_ string, p *entity.Package) error {
 		for addr := range p.OwnAddresses {
 			if addr.Size == 0 || addr.Addr+addr.Size < addr.Addr {
@@ -80,7 +95,7 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 				if lo >= hi {
 					continue
 				}
-				if err := ledger.Add(entity.FileClaim{FileRange: entity.FileRange{Offset: m.Offset + lo - m.Addr, Size: hi - lo}, Class: 2, Owner: p.Name, Source: addr.SourceType}); err != nil {
+				if err := ledger.Add(entity.FileClaim{FileRange: entity.FileRange{Offset: m.Offset + lo - m.Addr, Size: hi - lo}, Class: 2, Owner: p.Name, Source: addr.SourceType, Role: addr.Role, Boundary: addr.Boundary}); err != nil {
 					return err
 				}
 			}
@@ -88,7 +103,7 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 		if isWasm {
 			for fn := range p.Functions {
 				if r, ok := wasm.FunctionFileRange(fn.Addr, k.VersionFlag.Meq125); ok {
-					if err := ledger.Add(entity.FileClaim{FileRange: r, Class: 2, Owner: p.Name, Source: entity.AddrSourceGoPclntab}); err != nil {
+					if err := ledger.Add(entity.FileClaim{FileRange: r, Class: 2, Owner: p.Name, Source: entity.AddrSourceGoPclntab, Boundary: "encoded"}); err != nil {
 						return err
 					}
 				}
@@ -99,7 +114,12 @@ func (k *KnownInfo) BuildFileCoverage(reader io.ReaderAt, sections []*entity.Sec
 	if err != nil {
 		return nil, err
 	}
-	return ledger.Finish(details), nil
+	coverage := ledger.Finish(details)
+	if metadataErr != nil {
+		coverage.Notes = append(coverage.Notes, fmt.Sprintf("Native file metadata parsing failed: %v", metadataErr))
+	}
+	k.applyFileAccounting(coverage, sections)
+	return coverage, nil
 }
 
 func addFileHeaders(ledger *entity.FileLedger, r io.ReaderAt, size uint64) error {

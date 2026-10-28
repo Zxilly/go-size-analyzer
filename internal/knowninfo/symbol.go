@@ -61,7 +61,10 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 		if !k.Sects.IsText(addr, size) || size == 0 {
 			return
 		}
-		if _, exists := k.KnownAddr.TextAddrSpace.Get(addr); exists {
+		if existing, exists := k.KnownAddr.TextAddrSpace.Get(addr); exists {
+			if existing.Function != nil {
+				k.KnownAddr.InsertTextFromSymbol(addr, size, existing.Function)
+			}
 			return
 		}
 	}

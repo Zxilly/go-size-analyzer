@@ -49,7 +49,7 @@ export class BaseImpl {
 }
 
 export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
-  constructor(private readonly data: Section) {
+  constructor(private readonly data: Section, private readonly physicalAccounting = false) {
     super();
   }
 
@@ -64,7 +64,7 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
   getSize(): number {
     // Older reports marked these sections fully known without assigning
     // their bytes to packages. Keep their standalone area visible as well.
-    if (this.data.debug || isDebugSection(this.data.name) || isLinkerMetadataSection(this.data.name)) {
+    if (!this.physicalAccounting && (this.data.debug || isDebugSection(this.data.name) || isLinkerMetadataSection(this.data.name))) {
       return this.data.file_size;
     }
     return Math.max(0, this.data.file_size - this.data.known_size);
@@ -138,6 +138,10 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
 
     for (const s of data.symbols) {
       children.push(new SymbolImpl(s, data.name));
+    }
+
+    if (data.metadata_size) {
+      children.push(new MetadataImpl(data.metadata_size));
     }
 
     const leftSize = data.size - children.reduce((acc, child) => acc + child.getSize(), 0);
@@ -217,6 +221,23 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
 
   getType(): "disasm" {
     return "disasm";
+  }
+}
+
+export class MetadataImpl extends BaseImpl implements EntryLike<"symbol"> {
+  constructor(private readonly size: number) {
+    super();
+  }
+
+  getChildren(): EntryChildren["symbol"] { return []; }
+  override getName(): string { return "File metadata"; }
+  getSize(): number { return this.size; }
+  getType(): "symbol" { return "symbol"; }
+  toString(): string {
+    return new Aligner()
+      .add("File metadata:", "Symbol records and names")
+      .add("Size:", formatBytes(this.size))
+      .toString();
   }
 }
 
@@ -355,7 +376,7 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
     const metadataSectChildren: EntryLike<"section">[] = [];
 
     for (const section of data.sections) {
-      const s = new SectionImpl(section);
+      const s = new SectionImpl(section, (data.coverage?.version ?? 0) >= 2);
       if (section.debug || isDebugSection(section.name)) {
         debugSectChildren.push(s);
       }
@@ -418,7 +439,9 @@ export class ResultImpl extends BaseImpl implements EntryLike<"result"> {
     children.push(...typedPackagesChildren);
 
     const headers = Math.max(0, data.size - data.sections.reduce((sum, section) => sum + section.file_size, 0));
-    const leftSize = Math.max(headers, data.size - children.reduce((acc, child) => acc + child.getSize(), 0));
+    const leftSize = data.coverage && (data.coverage.version ?? 0) >= 2
+      ? Math.max(0, data.coverage.recognized + data.coverage.unclassified - uknSectContainerSize - debugSectContainerSize - metadataSectContainerSize)
+      : Math.max(headers, data.size - children.reduce((acc, child) => acc + child.getSize(), 0));
     if (leftSize > 0) {
       children.push(new UnknownImpl(leftSize));
     }

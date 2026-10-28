@@ -22,7 +22,7 @@ func (p *Package) MarshalJavaScript() any {
 	files = lo.Map(p.Files, func(f *File, _ int) any { return f.MarshalJavaScript() })
 	subs := p.SubPackages.MarshalJavaScript()
 
-	return map[string]any{
+	result := map[string]any{
 		"name":        p.Name,
 		"type":        p.Type,
 		"size":        p.Size,
@@ -30,4 +30,8 @@ func (p *Package) MarshalJavaScript() any {
 		"subPackages": subs,
 		"files":       files,
 	}
+	if p.MetadataSize > 0 {
+		result["metadata_size"] = p.MetadataSize
+	}
+	return result
 }

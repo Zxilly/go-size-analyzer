@@ -56,8 +56,10 @@ type KnownInfo struct {
 
 	VersionFlag VersionFlag
 
-	HasDWARF   bool
-	dwarfKinds map[dwarf.Type]int64
+	HasDWARF           bool
+	dwarfKinds         map[dwarf.Type]int64
+	DwarfFailure       error
+	SkipSymbolMetadata bool
 }
 
 func (k *KnownInfo) LoadGoreInfo(f *gore.GoFile, isWasm bool) error {

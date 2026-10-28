@@ -51,8 +51,9 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	}
 
 	k := &knowninfo.KnownInfo{
-		Size:      size,
-		BuildInfo: file.BuildInfo,
+		Size:               size,
+		BuildInfo:          file.BuildInfo,
+		SkipSymbolMetadata: options.SkipSymbol,
 
 		Gore:    file,
 		Wrapper: rawWrapper,
@@ -109,7 +110,12 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 		coverage.Notes = append(coverage.Notes, "Instruction analysis unavailable for "+k.Wrapper.GoArch())
 	}
 	if !isWasm && !options.SkipDwarf && !slices.Contains(analyzers, entity.AnalyzerDwarf) {
-		coverage.Notes = append(coverage.Notes, "DWARF information unavailable")
+		hasDebug := slices.ContainsFunc(sections, func(s *entity.Section) bool { return s.Debug })
+		if hasDebug && k.DwarfFailure != nil {
+			coverage.Notes = append(coverage.Notes, "DWARF parsing failed: "+k.DwarfFailure.Error())
+		} else {
+			coverage.Notes = append(coverage.Notes, "DWARF information unavailable")
+		}
 	}
 	if !isWasm && !options.SkipSymbol && !slices.Contains(analyzers, entity.AnalyzerSymbol) {
 		coverage.Notes = append(coverage.Notes, "Native symbol table unavailable")
@@ -257,13 +263,7 @@ func analyzeNative(k *knowninfo.KnownInfo, options Options) ([]*entity.Section, 
 	utils.WaitDebugger("All analyzers and deps done")
 	k.Deps.ClearCaches()
 
-	if err := k.CollectCoverage(); err != nil {
-		return nil, nil, err
-	}
-	if err := k.CalculateSectionSize(); err != nil {
-		return nil, nil, err
-	}
-	if err := k.CalculatePackageSize(); err != nil {
+	if err := k.ValidateNativeCoverage(); err != nil {
 		return nil, nil, err
 	}
 

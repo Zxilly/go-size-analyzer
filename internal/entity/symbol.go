@@ -11,6 +11,10 @@ type Symbol struct {
 	Addr uint64   `json:"addr"`
 	Size uint64   `json:"size"`
 	Type AddrType `json:"type"`
+
+	// Provenance is carried into the address ledger, not the display symbol.
+	Role     string `json:"-"`
+	Boundary string `json:"-"`
 }
 
 func NewSymbol(name string, addr, size uint64, typ AddrType) *Symbol {
