@@ -7,7 +7,9 @@ vi.mock("@chenglou/pretext", () => ({
   layoutWithLines: vi.fn((_prepared: { text: string }, _maxWidth: number, lineHeight: number) => ({
     lineCount: 1,
     height: lineHeight,
-    lines: [{ text: _prepared.text, width: _prepared.text.length * 7 }],
+    lines: [
+      { text: _prepared.text, width: _prepared.text.length * 7 },
+    ],
   })),
 }));
 

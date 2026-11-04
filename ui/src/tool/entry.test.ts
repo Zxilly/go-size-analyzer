@@ -42,8 +42,20 @@ describe("entry", () => {
       size: 1200,
       packages: {},
       sections: [
-        { ...section, name: "__debug_info", debug: true, file_size: 1000, known_size: 1000 },
-        { ...section, name: ".symtab", debug: false, file_size: 200, known_size: 200 },
+        {
+          ...section,
+          name: "__debug_info",
+          debug: true,
+          file_size: 1000,
+          known_size: 1000,
+        },
+        {
+          ...section,
+          name: ".symtab",
+          debug: false,
+          file_size: 200,
+          known_size: 200,
+        },
       ],
     });
     const children = entry.getChildren();

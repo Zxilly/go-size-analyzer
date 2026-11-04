@@ -105,7 +105,12 @@ export const FileSelector: React.FC<FileSelectorProps> = memo(({ handler }) => {
           }}
         >
           <input {...getInputProps()} data-testid="file-selector" />
-          <Troubleshoot sx={{ fontSize: 40, mb: 1, color: isDragActive ? "#1976d2" : "#757575" }} />
+          <Troubleshoot sx={{
+            fontSize: 40,
+            mb: 1,
+            color: isDragActive ? "#1976d2" : "#757575",
+          }}
+          />
           <Typography
             variant="body1"
             sx={{

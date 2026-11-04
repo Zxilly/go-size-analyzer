@@ -45,7 +45,9 @@ self.onmessage = (e: MessageEvent<[string, Uint8Array]>) => {
     result = gsa_analyze(filename, data);
   }
   catch (error) {
-    const reason = error instanceof Error ? error.message : String(error);
+    const reason = error instanceof Error
+      ? error.message
+      : String(error);
     globalThis.fs.writeSync(2, new TextEncoder().encode(`Error: ${reason.slice(0, 4096)}\n`));
   }
   finally {

@@ -28,7 +28,11 @@ export const FileSymbolSchema = object({
   name: string(),
   addr: number(),
   size: number(),
-  type: union([literal("unknown"), literal("text"), literal("data")]),
+  type: union([
+    literal("unknown"),
+    literal("text"),
+    literal("data"),
+  ]),
 });
 
 export type FileSymbol = InferInput<typeof FileSymbolSchema>;
@@ -78,7 +82,14 @@ export const ResultSchema = object({
   size: number(),
   packages: record(string(), PackageSchema),
   sections: array(SectionSchema),
-  analyzers: optional(array(union([literal("dwarf"), literal("disasm"), literal("symbol"), literal("pclntab"), literal("type"), literal("pclntab_meta")]))),
+  analyzers: optional(array(union([
+    literal("dwarf"),
+    literal("disasm"),
+    literal("symbol"),
+    literal("pclntab"),
+    literal("type"),
+    literal("pclntab_meta"),
+  ]))),
 });
 
 export type Result = InferInput<typeof ResultSchema>;
