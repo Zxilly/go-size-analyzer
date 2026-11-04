@@ -25,9 +25,15 @@ function relativeLuminance(o: RGBColor) {
   const gsrgb = o.g / 255;
   const bsrgb = o.b / 255;
 
-  const r = rsrgb <= 0.03928 ? rsrgb * lowc : adjustGamma(rsrgb);
-  const g = gsrgb <= 0.03928 ? gsrgb * lowc : adjustGamma(gsrgb);
-  const b = bsrgb <= 0.03928 ? bsrgb * lowc : adjustGamma(bsrgb);
+  const r = rsrgb <= 0.03928
+    ? rsrgb * lowc
+    : adjustGamma(rsrgb);
+  const g = gsrgb <= 0.03928
+    ? gsrgb * lowc
+    : adjustGamma(gsrgb);
+  const b = bsrgb <= 0.03928
+    ? bsrgb * lowc
+    : adjustGamma(bsrgb);
 
   return r * rc + g * gc + b * bc;
 }
@@ -71,7 +77,9 @@ function createRainbowColor(root: HierarchyNode<Entry>): NodeColorGetter {
     if (!colorMap.has(node)) {
       const backgroundColor = getBackgroundColor(node);
       const l = relativeLuminance(backgroundColor.rgb());
-      const fontColor = l > 0.19 ? "#000" : "#fff";
+      const fontColor = l > 0.19
+        ? "#000"
+        : "#fff";
       colorMap.set(node, {
         backgroundColor: backgroundColor.toString(),
         fontColor,

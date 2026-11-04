@@ -15,7 +15,9 @@ export function measureText(text: string): [number, number] {
   const prepared = prepareWithSegments(text, FONT_STRING);
   const result = layoutWithLines(prepared, Infinity, FONT_SIZE_PX);
 
-  const width = result.lines.length > 0 ? result.lines[0].width : 0;
+  const width = result.lines.length > 0
+    ? result.lines[0].width
+    : 0;
   const entry: [number, number] = [width, result.height];
   measureCache.set(text, entry);
   return entry;

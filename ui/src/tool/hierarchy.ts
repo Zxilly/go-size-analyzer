@@ -29,9 +29,13 @@ export function buildHierarchy(entry: Entry) {
       }
     }
     const budget = Math.max(0, (node.value ?? 0) - fixed);
-    const scale = total > 0 ? Math.min(1, budget / total) : 0;
+    const scale = total > 0
+      ? Math.min(1, budget / total)
+      : 0;
     for (const child of node.children) {
-      (child as WeightedNode).value = Math.max(0, child.data.getSize()) * (isFixed(child) ? 1 : scale);
+      (child as WeightedNode).value = Math.max(0, child.data.getSize()) * (isFixed(child)
+        ? 1
+        : scale);
     }
   });
   return root;

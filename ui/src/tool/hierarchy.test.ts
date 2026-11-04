@@ -12,8 +12,18 @@ it("keeps overlapping symbol areas within the package's byte budget", () => {
     files: [],
     subPackages: {},
     symbols: [
-      { name: "example.first", addr: 100, size: 80, type: "data" },
-      { name: "example.second", addr: 120, size: 80, type: "data" },
+      {
+        name: "example.first",
+        addr: 100,
+        size: 80,
+        type: "data",
+      },
+      {
+        name: "example.second",
+        addr: 120,
+        size: 80,
+        type: "data",
+      },
     ],
   };
   const root = buildHierarchy(new PackageImpl(pkg));
@@ -30,7 +40,14 @@ it("propagates a reduced budget through nested packages", () => {
     size: 100,
     files: [],
     subPackages: {},
-    symbols: [{ name: "payload", addr: 100, size: 100, type: "data" }],
+    symbols: [
+      {
+        name: "payload",
+        addr: 100,
+        size: 100,
+        type: "data",
+      },
+    ],
   };
   const parent: Package = {
     name: "example",
@@ -38,7 +55,14 @@ it("propagates a reduced budget through nested packages", () => {
     size: 100,
     files: [],
     subPackages: { child },
-    symbols: [{ name: "shared", addr: 100, size: 100, type: "data" }],
+    symbols: [
+      {
+        name: "shared",
+        addr: 100,
+        size: 100,
+        type: "data",
+      },
+    ],
   };
   const root = buildHierarchy(new PackageImpl(parent));
   root.each((node) => {
@@ -55,11 +79,30 @@ it("reserves the exact area of debug sections and file headers", () => {
     ...source,
     size: 250,
     packages: {
-      example: { name: "example", type: "main", size: 200, files: [], subPackages: {}, symbols: [] },
+      example: {
+        name: "example",
+        type: "main",
+        size: 200,
+        files: [],
+        subPackages: {},
+        symbols: [],
+      },
     },
     sections: [
-      { ...source.sections[0], name: ".debug_info", debug: true, file_size: 100, known_size: 0 },
-      { ...source.sections[0], name: ".text", debug: false, file_size: 100, known_size: 100 },
+      {
+        ...source.sections[0],
+        name: ".debug_info",
+        debug: true,
+        file_size: 100,
+        known_size: 0,
+      },
+      {
+        ...source.sections[0],
+        name: ".text",
+        debug: false,
+        file_size: 100,
+        known_size: 100,
+      },
     ],
   }));
   expect(root.children?.find(n => n.data.getURLSafeName() === "debug-sections")?.value).toBe(100);

@@ -8,12 +8,20 @@ import { getVersionTag } from "./vite.common";
 vi.mock("node:child_process", async (importOriginal) => {
   const original = await importOriginal<typeof import("node:child_process")>();
   const execSync = vi.fn();
-  return { ...original, execSync, default: { ...original, execSync } };
+  return {
+    ...original,
+    execSync,
+    default: { ...original, execSync },
+  };
 });
 vi.mock("node:fs", async (importOriginal) => {
   const original = await importOriginal<typeof import("node:fs")>();
   const readFileSync = vi.fn();
-  return { ...original, readFileSync, default: { ...original, readFileSync } };
+  return {
+    ...original,
+    readFileSync,
+    default: { ...original, readFileSync },
+  };
 });
 afterEach(() => vi.restoreAllMocks());
 
@@ -42,9 +50,17 @@ it("the development HTML plugin safely embeds hostile report JSON", async () => 
   const { default: config } = await import("./vite.config");
   const plugins = (config as { plugins: unknown[] }).plugins.flat(Infinity);
   const plugin = plugins.find((plugin: any) => plugin?.name === "vite:html") as any;
-  plugin.configResolved({ base: "/", mode: "test", root: process.cwd(), build: {}, env: {} });
+  plugin.configResolved({
+    base: "/",
+    mode: "test",
+    root: process.cwd(),
+    build: {},
+    env: {},
+  });
   const transform = plugin.transformIndexHtml;
-  const result = await (typeof transform === "function" ? transform : transform.handler)("<html><head></head><body></body></html>", { path: "/", filename: "index.html" });
+  const result = await (typeof transform === "function"
+    ? transform
+    : transform.handler)("<html><head></head><body></body></html>", { path: "/", filename: "index.html" });
   const tag = result.tags.find((tag: any) => tag.attrs?.id === "data");
   document.body.innerHTML = `<script type="application/json" id="data">${tag.children}</script>`;
   expect(document.querySelectorAll("script")).toHaveLength(1);

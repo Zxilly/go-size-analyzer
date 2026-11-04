@@ -1,7 +1,9 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { MAX_LOG_LENGTH } from "../runtime/logLimit";
 
-vi.mock("../../gsa.wasm?init", () => ({ default: async () => ({}) }));
+vi.mock("../../gsa.wasm?init", () => ({
+  default: async () => ({}),
+}));
 vi.mock("../runtime/wasm_exec.js", () => ({}));
 afterEach(() => vi.unstubAllGlobals());
 
@@ -24,7 +26,12 @@ it("the actual worker bounds log messages, flushes failures, and resets each ana
   await import("./worker");
   await vi.waitFor(() => expect(postMessage).toHaveBeenCalledWith({ type: "load", status: "success" }));
   postMessage.mockClear();
-  worker.onmessage!(new MessageEvent("message", { data: ["bad", new Uint8Array()] }));
+  worker.onmessage!(new MessageEvent("message", {
+    data: [
+      "bad",
+      new Uint8Array(),
+    ],
+  }));
   const messages = postMessage.mock.calls.map(call => call[0]);
   const logs = messages.filter(message => message.type === "log");
   expect(logs).toHaveLength(5);
@@ -36,7 +43,12 @@ it("the actual worker bounds log messages, flushes failures, and resets each ana
     return null as never;
   });
   postMessage.mockClear();
-  worker.onmessage!(new MessageEvent("message", { data: ["next", new Uint8Array()] }));
+  worker.onmessage!(new MessageEvent("message", {
+    data: [
+      "next",
+      new Uint8Array(),
+    ],
+  }));
   expect(postMessage.mock.calls.map(call => call[0])).toEqual([
     { type: "log", line: "new analysis\n" },
     { type: "analyze", result: null },

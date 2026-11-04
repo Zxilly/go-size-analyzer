@@ -112,7 +112,12 @@ function TreeMap({ entry }: TreeMapProps) {
     }
 
     return layout(root!);
-  }, [layout, rawHierarchy, rawHierarchyID, selectedNodeID]);
+  }, [
+    layout,
+    rawHierarchy,
+    rawHierarchyID,
+    selectedNodeID,
+  ]);
 
   const layers = useMemo(() => {
     const layerMap = group(

@@ -181,6 +181,11 @@ pnpm run dev:ui # Development
 pnpm run build:ui # Production
 ```
 
+The UI uses TypeScript 7 for `tsc` and a `typescript` package alias to
+`@typescript/typescript6` for tools such as ESLint that still need the JavaScript
+compiler API. Keep both aliases when updating TypeScript; `tsc6` is available
+for compatibility checks.
+
 ### Tests
 
 ```bash
