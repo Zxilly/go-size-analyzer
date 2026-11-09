@@ -37,7 +37,7 @@ jobs:
 
       - name: Upload analysis results to GitHub
         if: ${{ !cancelled() && hashFiles('ui/eslint-results.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           sarif_file: ./ui/eslint-results.sarif
           wait-for-processing: true
@@ -68,7 +68,7 @@ jobs:
 
       - name: Upload analysis results to GitHub
         if: ${{ !cancelled() && hashFiles('golangci-lint-results.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           sarif_file: ./golangci-lint-results.sarif
           wait-for-processing: true
@@ -81,6 +81,6 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: typos-action
-        uses: crate-ci/typos@7f9d0819ca1c008ade73f4b41fa9d258d48f605b # v1.51.1
+        uses: crate-ci/typos@4c8b7f51ca60df14e3c5ca82770dfbbe6c3dae85 # v1.52.0
         with:
           config: typos.toml
