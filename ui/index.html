@@ -3,9 +3,30 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <% if (typeof explorerPage !== 'undefined' && explorerPage) { %>
+    <title>Go Size Analyzer — Explore Go binary size in your browser</title>
+    <meta name="description" content="Find what makes your Go executable large. Analyze a Go binary locally in your browser with WebAssembly and explore package and symbol sizes in an interactive treemap."/>
+    <link rel="canonical" href="https://gsa.zxilly.dev/"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Go Size Analyzer — Explore Go binary size"/>
+    <meta property="og:description" content="Analyze a Go binary locally with WebAssembly and explore package and symbol sizes in an interactive treemap."/>
+    <meta property="og:url" content="https://gsa.zxilly.dev/"/>
+    <meta name="twitter:card" content="summary"/>
+    <% } else { %>
     <title>GSA TreeMap</title>
+    <% } %>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+    <% if (typeof explorerPage !== 'undefined' && explorerPage) { %>
+    <main>
+        <h1>Go Size Analyzer</h1>
+        <p>Find what makes your Go executable large. Select a binary to explore package and symbol sizes in an interactive treemap.</p>
+        <p>Analysis runs locally in your browser with WebAssembly. Your binary is not uploaded.</p>
+        <p><a href="https://github.com/Zxilly/go-size-analyzer">Source code, supported formats and command-line usage</a></p>
+        <noscript><p>Enable JavaScript to use the browser analyzer, or use the command-line tool linked above.</p></noscript>
+    </main>
+    <% } %>
+</div>
 </body>
 </html>

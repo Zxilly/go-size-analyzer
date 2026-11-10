@@ -108,10 +108,16 @@ export const Explorer: React.FC = () => {
         </>
       ),
       content: (
-        <FileSelector handler={(file) => {
-          setFile(file);
-        }}
-        />
+        <>
+          <DialogContentText sx={{ mb: 2 }}>
+            Find what makes your Go executable large. Explore package and symbol sizes in an interactive treemap.
+            Analysis runs locally in your browser with WebAssembly. Your binary is not uploaded.
+          </DialogContentText>
+          <FileSelector handler={(file) => {
+            setFile(file);
+          }}
+          />
+        </>
       ),
     };
   }
