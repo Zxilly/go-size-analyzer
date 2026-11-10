@@ -24,6 +24,7 @@ if (process.env.GSA_TELEMETRY) {
 }
 
 export default defineConfig({
+  publicDir: "explorer-public",
   plugins: [
     ...commonPlugin(),
     createHtmlPlugin({

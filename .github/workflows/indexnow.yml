@@ -1,0 +1,44 @@
+name: IndexNow
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-gsa.zxilly.dev
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: >-
+      github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Public ownership proof, served verbatim at /<key>.txt; not a credential.
+      INDEXNOW_KEY: 10b4e86c9ad6e4716bbea718148e8dd0
+      INDEXNOW_HOST: gsa.zxilly.dev
+    steps:
+      - name: Verify the production key file
+        shell: bash
+        run: |
+          actual=$(curl --fail --silent --show-error \
+            --retry 6 --retry-all-errors --retry-delay 10 --retry-max-time 120 \
+            --connect-timeout 10 --max-time 20 \
+            "https://${INDEXNOW_HOST}/${INDEXNOW_KEY}.txt")
+          test "$actual" = "$INDEXNOW_KEY"
+
+      # Submit only the canonical sitemap after a successful production deploy.
+      # There is no scheduled resubmission of unchanged content.
+      - name: Notify IndexNow
+        uses: jtprogru/indexnow@e4d2007b9d3d724c14c415b86fcbf162dd78646c # v0.7.2
+        with:
+          version: v0.7.2
+          key: ${{ env.INDEXNOW_KEY }}
+          host: ${{ env.INDEXNOW_HOST }}
+          sitemap: https://gsa.zxilly.dev/sitemap.xml
+          endpoint: api
+          fail-on: any
