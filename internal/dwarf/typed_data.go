@@ -4,23 +4,32 @@ import (
 	"debug/dwarf"
 	"errors"
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/Zxilly/go-size-analyzer/internal/wrapper"
 )
 
-// Traverse only statically typed aggregates. Ordinary pointers and interfaces
-// are not chased: they require a separate ownership and dynamic-type model.
+// Traverse statically typed aggregates and initialized, file-backed pointers.
+// These are references from a variable, not declarations of the target objects.
+// Interfaces and other runtime-managed containers need a dynamic-type model.
 type typedDataWalker struct {
 	memory     MemoryReader
 	references map[dwarf.Type]bool
 	contents   []Content
 	visited    int
 	err        error
+	objects    map[typedObject]bool
+	targets    map[typedObject]bool
 }
 
-// Go's DW_AT_go_kind distinguishes named slices/strings from user structs
-// with identical fields. debug/dwarf does not retain this extension on Type.
+type typedObject struct {
+	addr uint64
+	typ  dwarf.Type
+}
+
+// Go's DW_AT_go_kind distinguishes slices/strings and runtime-managed types
+// from user structs. debug/dwarf does not retain this extension on Type.
 func ReadGoTypeKinds(d *dwarf.Data) (map[dwarf.Type]int64, error) {
 	return scanGoTypeKinds(d, nil)
 }
@@ -40,7 +49,7 @@ func scanGoTypeKinds(d *dwarf.Data, visit func(*dwarf.Entry)) (map[dwarf.Type]in
 			visit(e)
 		}
 		kind, ok := e.Val(dwarf.Attr(0x2900)).(int64)
-		if !ok || (kind != 23 && kind != 24) {
+		if !ok || (kind < 18 || kind > 24) && kind != 26 {
 			continue
 		}
 		t, err := d.Type(e.Offset)
@@ -77,7 +86,7 @@ func underlying(t dwarf.Type) dwarf.Type {
 }
 
 func (w *typedDataWalker) hasReferences(t dwarf.Type, depth int) bool {
-	if t == nil || depth >= 32 {
+	if t == nil || depth >= 32 || w.runtimeManaged(t) {
 		return false
 	}
 	if value, ok := w.references[t]; ok {
@@ -86,7 +95,12 @@ func (w *typedDataWalker) hasReferences(t dwarf.Type, depth int) bool {
 	w.references[t] = false
 	result := false
 	switch typ := underlying(t).(type) {
+	case *dwarf.PtrType:
+		result = w.pointerTarget(typ) != nil
 	case *dwarf.StructType:
+		if typ.Incomplete || typ.Kind == "union" {
+			return false
+		}
 		result = w.isString(typ) || typ.StructName == "embed.FS" || w.isSlice(typ)
 		for i, field := range typ.Field {
 			if field == nil || field.Type == nil {
@@ -101,6 +115,95 @@ func (w *typedDataWalker) hasReferences(t dwarf.Type, depth int) bool {
 	}
 	w.references[t] = result
 	return result
+}
+
+func (w *typedDataWalker) runtimeManaged(t dwarf.Type) bool {
+	for _, kind := range []int64{w.memory.Kinds[t], w.memory.Kinds[underlying(t)]} {
+		switch kind {
+		case 18, 19, 20, 21, 26: // chan, func, interface, map, unsafe.Pointer
+			return true
+		}
+	}
+	if typ, ok := underlying(t).(*dwarf.StructType); ok {
+		return typ.StructName == "runtime.eface" || typ.StructName == "runtime.iface"
+	}
+	return false
+}
+
+func (w *typedDataWalker) pointerTarget(t *dwarf.PtrType) dwarf.Type {
+	if t == nil || t.Type == nil || (t.Size() != 4 && t.Size() != 8) || w.runtimeManaged(t.Type) {
+		return nil
+	}
+	target := underlying(t.Type)
+	switch target.(type) {
+	case nil, *dwarf.VoidType, *dwarf.FuncType, *dwarf.UnspecifiedType:
+		return nil
+	}
+	if aggregate, ok := target.(*dwarf.StructType); ok && (aggregate.Incomplete || aggregate.Kind == "union") {
+		return nil
+	}
+	if size, ok := checkedTypeSize(target, 0); !ok || size <= 0 {
+		return nil
+	}
+	return target
+}
+
+// ArrayType.Size recursively multiplies signed lengths without overflow or
+// cycle checks. Validate newly followed targets before asking it for a size.
+func checkedTypeSize(t dwarf.Type, depth int) (int64, bool) {
+	if depth >= 32 || t == nil {
+		return 0, false
+	}
+	t = underlying(t)
+	if t == nil {
+		return 0, false
+	}
+	if array, ok := t.(*dwarf.ArrayType); ok {
+		if array.Count < 0 {
+			return 0, false
+		}
+		size, valid := checkedTypeSize(array.Type, depth+1)
+		if !valid || size < 0 || size != 0 && array.Count > math.MaxInt64/size {
+			return 0, false
+		}
+		return array.Count * size, true
+	}
+	return t.Size(), t.Size() >= 0
+}
+
+func (w *typedDataWalker) pointer(t *dwarf.PtrType, addr uint64, prefix string, depth int) {
+	target := w.pointerTarget(t)
+	if target == nil {
+		return
+	}
+	data, err := w.memory.readExact(addr, uint64(t.Size()))
+	if err != nil {
+		return
+	} // BSS and unavailable static pointer fields add no evidence.
+	pointer, err := readUintTo64(data, w.memory.ByteOrder)
+	if err != nil || pointer == 0 {
+		return
+	}
+	resolved := w.memory.resolve(pointer)
+	key := typedObject{addr: resolved, typ: target}
+	if w.objects[key] || w.targets[key] {
+		return
+	}
+	checkpoint := len(w.contents)
+	if !w.add(prefix, "*", pointer, uint64(target.Size())) {
+		return
+	}
+	if w.targets == nil {
+		w.targets = make(map[typedObject]bool)
+	}
+	w.targets[key] = true
+	w.walk(target, resolved, joinContent(prefix, "*"), depth+1)
+	if w.err != nil {
+		// A newly followed pointer must not discard a variable's other valid
+		// fields when its target contains an invalid or unsupported header.
+		w.contents = w.contents[:checkpoint]
+		w.err = nil
+	}
 }
 
 func joinContent(prefix, name string) string {
@@ -136,8 +239,18 @@ func (w *typedDataWalker) walk(t dwarf.Type, addr uint64, prefix string, depth i
 	if !w.hasReferences(t, 0) || w.err != nil {
 		return
 	}
+	key := typedObject{addr: addr, typ: underlying(t)}
+	if w.objects == nil {
+		w.objects = make(map[typedObject]bool)
+	}
+	if w.objects[key] {
+		return
+	}
+	w.objects[key] = true
 	w.visited++
 	switch typ := underlying(t).(type) {
+	case *dwarf.PtrType:
+		w.pointer(typ, addr, prefix, depth)
 	case *dwarf.StructType:
 		switch {
 		case w.isString(typ):
