@@ -50,7 +50,7 @@ func TestMergeCoverage(t *testing.T) {
 	}
 	cov4 := entity.AddrCoverage{
 		&entity.CoveragePart{
-			Pos:   &entity.AddrPos{Addr: 4160, Size: 128, Type: entity.AddrTypeData}, // 与 cov3 有重叠
+			Pos:   &entity.AddrPos{Addr: 4160, Size: 128, Type: entity.AddrTypeData}, // Overlaps cov3.
 			Addrs: []*entity.Addr{{}},
 		},
 	}

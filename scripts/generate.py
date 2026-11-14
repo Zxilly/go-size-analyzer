@@ -44,7 +44,7 @@ def generate_cockroachdb() -> list[RemoteBinary]:
 def generate_kubernetes() -> list[RemoteBinary]:
     ret = []
 
-    # kubectl 部分
+    # kubectl
     kubectl_oses = ["windows", "linux", "darwin"]
     kubectl_archs = ["amd64", "arm64", "386"]
 
