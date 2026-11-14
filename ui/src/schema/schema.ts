@@ -16,10 +16,47 @@ export const SectionSchema = object({
 
 export type Section = InferInput<typeof SectionSchema>;
 
+export const FunctionEvidenceSchema = object({
+  offset: number(),
+  size: number(),
+  section: optional(string()),
+  source: string(),
+  role: string(),
+  boundary: optional(string()),
+});
+
+export const FunctionSchema = object({
+  name: string(),
+  full_name: optional(string()),
+  addr: number(),
+  code_size: number(),
+  type: optional(string()),
+  receiver: optional(string()),
+  pcln_bytes: optional(number()),
+  pcln_size: optional(object({
+    name: optional(number()),
+    pcfile: optional(number()),
+    pcsp: optional(number()),
+    pcln: optional(number()),
+    header: optional(number()),
+    funcdata: optional(number()),
+    ftab: optional(number()),
+    gc_maps: optional(number()),
+    pcdata: optional(record(string(), number())),
+    aux_data: optional(record(string(), number())),
+  })),
+  referenced_bytes: optional(number()),
+  reference_evidence: optional(array(FunctionEvidenceSchema)),
+  reference_evidence_count: optional(number()),
+});
+
+export type FileFunction = InferInput<typeof FunctionSchema>;
+
 export const FileSchema = object({
   file_path: string(),
-  size: number(),
-  pcln_size: number(),
+  size: optional(number()),
+  pcln_size: optional(number()),
+  functions: optional(array(FunctionSchema)),
 });
 
 export type File = InferInput<typeof FileSchema>;

@@ -1,13 +1,14 @@
-import type { File, FileSymbol, Package, Result, Section } from "../schema/schema.ts";
+import type { File, FileFunction, FileSymbol, Package, Result, Section } from "../schema/schema.ts";
 import { Aligner } from "./aligner.ts";
 import { orderedID } from "./id.ts";
 import { formatBytes, title, trimPrefix } from "./utils.ts";
 
-export type EntryType = "section" | "file" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
+export type EntryType = "section" | "file" | "function" | "package" | "result" | "symbol" | "disasm" | "unknown" | "container";
 
 export interface EntryChildren {
   section: never[];
-  file: never[];
+  file: EntryLike<"function">[];
+  function: never[];
   package: EntryLike<"package" | "symbol" | "disasm" | "file">[];
   result: EntryLike<"section" | "container" | "unknown">[];
   symbol: never[];
@@ -90,29 +91,42 @@ export class SectionImpl extends BaseImpl implements EntryLike<"section"> {
 }
 
 export class FileImpl extends BaseImpl implements EntryLike<"file"> {
+  private children?: FunctionImpl[];
+  private size?: number;
+
   constructor(private readonly data: File) {
     super();
   }
 
   getChildren(): EntryChildren["file"] {
-    return [];
+    this.children ??= (this.data.functions ?? []).map(fn => new FunctionImpl(fn, this.data.file_path));
+    return this.children;
+  }
+
+  hasFunctions(): boolean {
+    return (this.data.functions?.length ?? 0) > 0;
   }
 
   override getName(): string {
-    return this.data.file_path.split("/").pop()!;
+    return this.data.file_path.split(/[\\/]/).pop()!;
   }
 
   getSize(): number {
-    return this.data.size;
+    this.size ??= this.data.size ?? (this.data.functions ?? []).reduce((sum, fn) => sum + fn.code_size + functionPclnBytes(fn), 0);
+    return this.size;
   }
 
   toString(): string {
     const align = new Aligner();
     align.add("File:", this.data.file_path)
       .add("Path:", this.data.file_path)
-      .add("Size:", formatBytes(this.data.size));
-    if (this.data.pcln_size > 0) {
-      align.add("Pcln Size:", formatBytes(this.data.pcln_size));
+      .add("Size:", formatBytes(this.getSize()));
+    const pclnSize = this.data.pcln_size ?? (this.data.functions ?? []).reduce((sum, fn) => sum + functionPclnBytes(fn), 0);
+    if (pclnSize > 0) {
+      align.add("Pcln Size:", formatBytes(pclnSize));
+    }
+    if (this.hasFunctions()) {
+      align.add("Functions:", String(this.data.functions!.length));
     }
     return align.toString();
   }
@@ -122,11 +136,69 @@ export class FileImpl extends BaseImpl implements EntryLike<"file"> {
   }
 }
 
+export function functionPclnBytes(fn: FileFunction): number {
+  if (fn.pcln_bytes !== undefined) {
+    return fn.pcln_bytes;
+  }
+  if (!fn.pcln_size) {
+    return 0;
+  }
+  return Object.values(fn.pcln_size).reduce<number>((sum, value) => {
+    if (typeof value === "number") {
+      return sum + value;
+    }
+    return sum + Object.values(value ?? {}).reduce((total, n) => total + n, 0);
+  }, 0);
+}
+
+export class FunctionImpl extends BaseImpl implements EntryLike<"function"> {
+  constructor(private readonly data: FileFunction, readonly filePath: string) {
+    super();
+  }
+
+  getData(): Readonly<FileFunction> { return this.data; }
+  getChildren(): EntryChildren["function"] { return []; }
+  getType(): "function" { return "function"; }
+  override getName(): string {
+    if (this.data.full_name) {
+      return this.data.full_name;
+    }
+    return this.data.receiver && !this.data.name.includes(".")
+      ? `${this.data.receiver}.${this.data.name}`
+      : this.data.name;
+  }
+
+  override getURLSafeName(): string {
+    return encodeURIComponent(`${this.data.full_name ?? this.getName()}@${this.data.addr.toString(16)}`);
+  }
+
+  getSize(): number { return this.data.code_size + functionPclnBytes(this.data); }
+  toString(): string {
+    const align = new Aligner()
+      .add("Function:", this.data.full_name ?? this.getName())
+      .add("File:", this.filePath)
+      .add("Code:", formatBytes(this.data.code_size))
+      .add("Pcln metadata:", formatBytes(functionPclnBytes(this.data)))
+      .add("Address:", `0x${this.data.addr.toString(16)}`)
+      .add("Referenced data:", this.data.referenced_bytes === undefined
+        ? "Not measured"
+        : formatBytes(this.data.referenced_bytes));
+    return `${align.toString()}\n\nReferenced data may be shared; it does not add to the function's area.`;
+  }
+}
+
 export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
-  private readonly children: EntryChildren["package"];
+  private children?: EntryChildren["package"];
 
   constructor(private readonly data: Package, private readonly parent?: string) {
     super();
+  }
+
+  getChildren(): EntryChildren["package"] {
+    if (this.children) {
+      return this.children;
+    }
+    const data = this.data;
 
     const children: EntryChildren["package"] = [];
     for (const file of data.files) {
@@ -146,14 +218,11 @@ export class PackageImpl extends BaseImpl implements EntryLike<"package"> {
 
     const leftSize = data.size - children.reduce((acc, child) => acc + child.getSize(), 0);
     if (leftSize > 0) {
-      const name = `${data.name} Disasm`;
+      const name = `${data.name} Other attributed bytes`;
       children.push(new DisasmImpl(name, leftSize));
     }
 
     this.children = children;
-  }
-
-  getChildren(): EntryChildren["package"] {
     return this.children;
   }
 
@@ -210,12 +279,12 @@ export class DisasmImpl extends BaseImpl implements EntryLike<"disasm"> {
 
   toString(): string {
     const align = new Aligner();
-    align.add("Disasm:", this.name)
+    align.add("Other attributed bytes:", this.name)
       .add("Size:", formatBytes(this.size));
     let ret = align.toString();
     ret += "\n\n"
-      + "This size was not accurate."
-      + "The real size determined by disassembling can be larger.";
+      + "Package bytes not listed as individual files or symbols. "
+      + "They can include referenced or shared data.";
     return ret;
   }
 

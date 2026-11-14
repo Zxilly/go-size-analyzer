@@ -2,8 +2,10 @@ import type { HierarchyNode } from "d3-hierarchy";
 import type { Entry } from "./entry.ts";
 import { hierarchy } from "d3-hierarchy";
 
-export function buildHierarchy(entry: Entry) {
-  const root = hierarchy(entry, e => e.getChildren())
+export function buildHierarchy(entry: Entry, expandedFileID?: number | null) {
+  const root = hierarchy(entry, e => e.getType() === "file" && expandedFileID !== undefined && e.getID() !== expandedFileID
+    ? []
+    : e.getChildren())
     .sort((a, b) => a.data.getSize() - b.data.getSize());
   // D3's layout values are mutable; keep them separate from raw sizes shown
   // in tooltips. Shared symbols must not inflate their containing package.

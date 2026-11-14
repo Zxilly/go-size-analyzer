@@ -46,15 +46,15 @@ export interface NodeColor {
 export type NodeColorGetter = (node: HierarchyNode<Entry>) => NodeColor;
 
 function createRainbowColor(root: HierarchyNode<Entry>): NodeColorGetter {
-  const colorParentMap = new Map<HierarchyNode<Entry>, CssColor>();
-  colorParentMap.set(root, COLOR_BASE);
-
-  if (root.children != null) {
-    const colorScale = scaleSequential([0, root.children.length], n => hsl(360 * n, 0.3, 0.85));
-    root.children.forEach((c, id) => {
-      colorParentMap.set(c, colorScale(id).toString());
-    });
-  }
+  const colorParentMap = new Map<number, CssColor>();
+  colorParentMap.set(root.data.getID(), COLOR_BASE);
+  // Use the report's complete top-level categories, including culled ones,
+  // so zooming into a single category preserves its hue.
+  const categories = [
+    ...root.data.getChildren(),
+  ].sort((a, b) => a.getSize() - b.getSize());
+  const colorScale = scaleSequential([0, categories.length], n => hsl(360 * n, 0.3, 0.85));
+  categories.forEach((entry, id) => colorParentMap.set(entry.getID(), colorScale(id).toString()));
 
   const colorMap = new Map<HierarchyNode<Entry>, NodeColor>();
 
@@ -64,8 +64,8 @@ function createRainbowColor(root: HierarchyNode<Entry>): NodeColorGetter {
     const parents = node.ancestors();
     const colorStr
       = parents.length === 1
-        ? colorParentMap.get(parents[0])
-        : colorParentMap.get(parents[parents.length - 2]);
+        ? colorParentMap.get(parents[0].data.getID())
+        : colorParentMap.get(parents[parents.length - 2].data.getID());
 
     const hslColor = hsl(colorStr as string);
     hslColor.l = lightScale(node.depth);

@@ -87,11 +87,11 @@ describe("entry", () => {
       expect(str).toMatchSnapshot();
     });
 
-    it("toString warns about potential size inaccuracy", () => {
+    it("toString explains the unlisted package bytes", () => {
       const disasm = new DisasmImpl("TestDisasm", 1024);
       const str = disasm.toString();
-      expect(str).toContain("This size was not accurate.");
-      expect(str).toContain("The real size determined by disassembling can be larger.");
+      expect(str).toContain("Package bytes not listed as individual files or symbols.");
+      expect(str).toContain("referenced or shared data");
     });
 
     it("getType returns 'disasm'", () => {

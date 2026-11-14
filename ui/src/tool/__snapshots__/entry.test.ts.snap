@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`entry > disasmImp > toString includes name and size 1`] = `
-"Disasm: TestDisasm
-Size:   1 KB
+"Other attributed bytes: TestDisasm
+Size:                   1 KB
 
-This size was not accurate.The real size determined by disassembling can be larger."
+Package bytes not listed as individual files or symbols. They can include referenced or shared data."
 `;
 
 exports[`entry > match 1`] = `"bin-linux-1.21-amd64"`;

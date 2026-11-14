@@ -1,16 +1,14 @@
-import type { HierarchyNode } from "d3-hierarchy";
 import type { Entry } from "./tool/entry.ts";
 import { group } from "d3-array";
-import { treemap, treemapSquarify } from "d3-hierarchy";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTitle, useWindowSize } from "react-use";
+import { FunctionDetails } from "./FunctionDetails.tsx";
+import { ItemBrowser } from "./ItemBrowser.tsx";
 import { Node } from "./Node.tsx";
 import createRainbowColor from "./tool/color.ts";
-import { PADDING, TOP_PADDING } from "./tool/const.ts";
-import { shallowCopy } from "./tool/copy.ts";
-import { buildHierarchy } from "./tool/hierarchy.ts";
-import { trimPrefix } from "./tool/utils.ts";
+import { FileImpl, FunctionImpl } from "./tool/entry.ts";
+import { buildViewportHierarchy, pathFromHash } from "./tool/viewport.ts";
 import { Tooltip } from "./Tooltip.tsx";
 import "./style.scss";
 
@@ -18,220 +16,59 @@ interface TreeMapProps {
   entry: Entry;
 }
 
-function TreeMap({ entry }: TreeMapProps) {
-  // Set the document title to the name of the entry
-  useTitle(entry.getName(), {
-    restoreOnUnmount: true,
-  });
-
-  // Get the window size
+function TreeMapView({ entry }: TreeMapProps) {
+  useTitle(entry.getName(), { restoreOnUnmount: true });
   const { width, height } = useWindowSize();
-
-  const rawHierarchy = useMemo(() => {
-    return buildHierarchy(entry);
-  }, [entry]);
-
-  const rawHierarchyID = useMemo(() => {
-    const cache = new Map<number, HierarchyNode<Entry>>();
-    rawHierarchy.descendants().forEach((node) => {
-      cache.set(node.data.getID(), node);
-    });
-    return cache;
-  }, [rawHierarchy]);
-
-  const getModuleColorRaw = useMemo(() => {
-    return createRainbowColor(rawHierarchy);
-  }, [rawHierarchy]);
-
-  const getModuleColor = useCallback((id: number) => {
-    return getModuleColorRaw(rawHierarchyID.get(id)!);
-  }, [getModuleColorRaw, rawHierarchyID]);
-
-  const layout = useMemo(() => {
-    return treemap<Entry>()
-      .size([width, height])
-      .paddingInner(PADDING)
-      .paddingTop(TOP_PADDING)
-      .round(true)
-      .tile(treemapSquarify);
-  }, [height, width]);
-
-  const loadNodeFromHash = useCallback(() => {
-    const parts = trimPrefix(location.hash, "#").split("#");
-    if (parts.length >= 1) {
-      const base = parts[0];
-      if (base !== entry.getURLSafeName()) {
-        return null;
-      }
-    }
-    let cur = rawHierarchy;
-    for (let i = 1; i < parts.length; i++) {
-      const part = parts[i];
-      if (!cur.children) {
-        return null;
-      }
-
-      const found = cur.children.find(d => d.data.getURLSafeName() === part);
-      if (!found) {
-        return null;
-      }
-      cur = found;
-    }
-
-    return cur.data.getID();
-  }, [entry, rawHierarchy]);
-
-  const [selectedNodeID, setSelectedNodeID] = useState<number | null>(loadNodeFromHash);
-
-  const layoutRoot = useMemo(() => {
-    let root: HierarchyNode<Entry> | null;
-    if (!selectedNodeID || selectedNodeID === rawHierarchy.data.getID()) {
-      root = rawHierarchy;
-    }
-    else {
-      const selectedNode = rawHierarchyID.get(selectedNodeID)!;
-      const ancestors = selectedNode.ancestors().reverse();
-
-      function writeValue(n: HierarchyNode<Entry>, value?: number) {
-        // @ts-expect-error write to readonly
-        // noinspection JSConstantReassignment
-        n.value = value;
-      }
-
-      root = shallowCopy(rawHierarchy);
-      writeValue(root, selectedNode.value);
-
-      let cur = root;
-      for (let i = 1; i < ancestors.length; i++) {
-        // use shallowCopy
-        const node = shallowCopy(ancestors[i]);
-        writeValue(node, selectedNode.value);
-        cur.children = [node];
-        cur = node;
-      }
-    }
-
-    return layout(root!);
-  }, [
-    layout,
-    rawHierarchy,
-    rawHierarchyID,
-    selectedNodeID,
-  ]);
-
-  const layers = useMemo(() => {
-    const layerMap = group(
-      layoutRoot.descendants(),
-      (d: HierarchyNode<Entry>) => d.height,
-    );
-    const layerArray = Array.from(layerMap, ([key, values]) => ({
-      key,
-      values,
-    }));
-    layerArray.sort((a, b) => b.key - a.key);
-    return layerArray;
-  }, [layoutRoot]);
+  const [selection, setSelection] = useState<Entry[] | null>(() => pathFromHash(entry, location.hash));
+  const selectedEntry = selection?.[selection.length - 1];
+  const selectedNodeID = selectedEntry?.getID() ?? null;
+  const view = useMemo(() => buildViewportHierarchy(entry, width, height, selection), [entry, width, height, selection]);
+  const getModuleColor = useMemo(() => createRainbowColor(view.root), [view]);
+  const layers = useMemo(() => [
+    ...group(view.root.descendants(), node => node.depth),
+  ].sort(([a], [b]) => a - b), [view]);
 
   useEffect(() => {
-    if (selectedNodeID === null) {
-      if (location.hash !== "") {
-        history.replaceState(null, "", " ");
-      }
-      return;
-    }
-    const selectedNode = rawHierarchyID.get(selectedNodeID);
-    if (!selectedNode) {
-      return;
-    }
-    const path = `#${selectedNode
-      .ancestors()
-      .map((d) => {
-        return d.data.getURLSafeName();
-      })
-      .reverse()
-      .join("#")}`;
+    const restore = () => setSelection(pathFromHash(entry, location.hash));
+    window.addEventListener("hashchange", restore);
+    return () => window.removeEventListener("hashchange", restore);
+  }, [entry]);
 
+  useEffect(() => {
+    const path = selection
+      ? `#${selection.map(item => item.getURLSafeName()).join("#")}`
+      : "";
     if (location.hash !== path) {
-      history.replaceState(null, "", path);
+      history.replaceState(null, "", path || `${location.pathname}${location.search}`);
     }
-  }, [rawHierarchyID, selectedNodeID]);
+  }, [selection]);
 
   const svgRef = useRef<SVGSVGElement>(null);
+  const getTargetNode = useCallback((target: EventTarget) => {
+    const element = (target as Element).closest?.(".node[data-id]");
+    const id = element?.getAttribute("data-id");
+    return id
+      ? view.byID.get(Number(id))?.data ?? null
+      : null;
+  }, [view]);
 
-  const getTargetNode = useCallback((e: EventTarget) => {
-    const target = (e as SVGElement).parentNode;
-    if (!target) {
-      return null;
-    }
-
-    const dataIdStr = (target as Element).getAttribute("data-id");
-    if (!dataIdStr) {
-      return null;
-    }
-
-    const dataId = Number.parseInt(dataIdStr);
-
-    return rawHierarchyID.get(dataId)?.data ?? null;
-  }, [rawHierarchyID]);
-
-  const onClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    const node = getTargetNode(e.target);
-    if (node === null) {
+  const onClick = useCallback((event: React.MouseEvent<SVGSVGElement>) => {
+    const node = getTargetNode(event.target);
+    if (!node) {
       return;
     }
-
-    if (e.ctrlKey) {
+    if (event.ctrlKey) {
       console.log(node);
       return;
     }
-
-    if (selectedNodeID === node.getID()) {
-      setSelectedNodeID(null);
-    }
-    else {
-      setSelectedNodeID(node.getID());
-    }
-  }, [getTargetNode, selectedNodeID]);
-
-  const nodes = useMemo(() => {
-    return layers.map(({ key, values }) => {
-      return (
-        <g className="layer" key={key}>
-          {values.map((node) => {
-            if (node.x1 - node.x0 < 2 || node.y1 - node.y0 < 2) {
-              return null;
-            }
-
-            const { backgroundColor, fontColor } = getModuleColor(node.data.getID());
-
-            return (
-              <Node
-                key={node.data.getID()}
-                id={node.data.getID()}
-                title={node.data.getName()}
-                selected={selectedNodeID === node.data.getID()}
-                x0={node.x0}
-                y0={node.y0}
-                x1={node.x1}
-                y1={node.y1}
-
-                backgroundColor={backgroundColor}
-                fontColor={fontColor}
-                hasChildren={node.children !== undefined}
-              />
-            );
-          }).filter(Boolean)}
-        </g>
-      );
-    });
-  }, [getModuleColor, layers, selectedNodeID]);
+    setSelection(selectedNodeID === node.getID()
+      ? null
+      : view.byID.get(node.getID())!.ancestors().reverse().map(item => item.data));
+  }, [getTargetNode, selectedNodeID, view]);
 
   return (
     <>
-      <Tooltip
-        moveRef={svgRef}
-        getTargetNode={getTargetNode}
-      />
+      {!(selectedEntry instanceof FunctionImpl) && <Tooltip moveRef={svgRef} getTargetNode={getTargetNode} />}
       <svg
         id="treemap-svg"
         xmlns="http://www.w3.org/2000/svg"
@@ -239,10 +76,56 @@ function TreeMap({ entry }: TreeMapProps) {
         onClick={onClick}
         ref={svgRef}
       >
-        {nodes}
+        {layers.map(([depth, nodes]) => (
+          <g className="layer" key={depth}>
+            {nodes.map((node) => {
+              if (node.x1 - node.x0 < 2 || node.y1 - node.y0 < 2) {
+                return null;
+              }
+              const { backgroundColor, fontColor } = getModuleColor(node);
+              const type = node.data.getType();
+              const expandable = type === "package" || type === "container" || type === "result"
+                || (node.data instanceof FileImpl && node.data.hasFunctions());
+              return (
+                <Node
+                  key={node.data.getID()}
+                  id={node.data.getID()}
+                  title={node.data.getName()}
+                  selected={selectedNodeID === node.data.getID()}
+                  x0={node.x0}
+                  y0={node.y0}
+                  x1={node.x1}
+                  y1={node.y1}
+                  backgroundColor={backgroundColor}
+                  fontColor={fontColor}
+                  hasChildren={expandable}
+                />
+              );
+            })}
+          </g>
+        ))}
       </svg>
+      {selectedEntry instanceof FunctionImpl && (
+        <FunctionDetails
+          entry={selectedEntry}
+          onClose={() => setSelection(selection!.slice(0, -1))}
+        />
+      )}
+      {selectedEntry && !(selectedEntry instanceof FunctionImpl) && selectedEntry.getChildren().length > 0 && (
+        <ItemBrowser
+          key={selectedEntry.getID()}
+          entry={selectedEntry}
+          onSelect={child => setSelection([...selection!, child])}
+        />
+      )}
     </>
   );
+}
+
+function TreeMap({ entry }: TreeMapProps) {
+  // Explorer can replace the report without unmounting this component.
+  // Paths contain Entry objects and must belong to the current report.
+  return <TreeMapView key={entry.getID()} entry={entry} />;
 }
 
 export default TreeMap;
