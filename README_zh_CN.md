@@ -130,6 +130,11 @@ $ gsa docker-compose-linux-x86_64
 
 #### 差异模式
 
+差异报告会列出函数的代码、pcln 元数据、已检测引用数据和具名符号范围的变化，能够发现同一包内相互抵消的增减，并提示目标 Go 版本、构建参数和依赖差异。旧 JSON 或 `--compact` 报告缺少的明细保持为未知；函数或符号身份冲突会明确提示并跳过。引用和符号范围可能重叠，不能据此估算删除收益。
+
+使用 `gsa --coverage-details -o report.html binary`，可以从文件下钻到函数，查看引用的物理文件范围和分析来源。完整 JSON 还会输出 `full_name`、可选的 `referenced_bytes` 和 `build_info`。
+选中父项后，可通过 **Browse all items** 列表搜索面积过小、尚未出现在图中的对象。Web 报告保留函数指标和证据样本；需要完整物理覆盖台账时，请使用 `--coverage-details` 导出 JSON。
+
 ```bash
 $ gsa bin-linux-1.21-amd64 bin-linux-1.22-amd64
 ┌────────────────────────────────────────────────────────────────┐

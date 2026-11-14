@@ -133,6 +133,20 @@ $ gsa docker-compose-linux-x86_64
 
 #### Diff Mode
 
+Diff output includes function-level code, pcln metadata, detected referenced-data,
+and named symbol range changes, including changes that cancel out within a package.
+It also reports target Go version, build settings, and dependency differences.
+Missing details in older or `--compact` JSON reports remain unknown; ambiguous
+function or symbol identities are reported and skipped. Reference and symbol
+ranges can overlap and do not estimate deletion savings.
+
+Use `gsa --coverage-details -o report.html binary` to drill down from files to
+functions and inspect sampled file ranges and reference provenance. Full JSON
+reports include `full_name`, optional `referenced_bytes`, and `build_info`.
+Select a parent and use **Browse all items** to search for objects too small to
+appear in the treemap. Web reports retain function metrics and evidence samples;
+export JSON with `--coverage-details` for the complete physical coverage ledger.
+
 ```bash
 $ gsa bin-linux-1.21-amd64 bin-linux-1.22-amd64
 ┌────────────────────────────────────────────────────────────────┐
