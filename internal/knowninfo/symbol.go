@@ -99,7 +99,7 @@ func (k *KnownInfo) MarkSymbol(name string, addr, size uint64, typ entity.AddrTy
 		}
 	}
 	if typ == entity.AddrTypeText {
-		fn := &entity.Function{Name: name, Addr: addr, CodeSize: size, Type: entity.FuncTypeFunction, PclnSize: entity.NewEmptyPclnSymbolSize()}
+		fn := &entity.Function{Name: name, FullName: name, Addr: addr, CodeSize: size, Type: entity.FuncTypeFunction, PclnSize: entity.NewEmptyPclnSymbolSize()}
 		fn.Source = entity.AddrSourceSymbol
 		fn.Init()
 		if pkg.AddFuncIfNotExists("<symbols>", fn) {

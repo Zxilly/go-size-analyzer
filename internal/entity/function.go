@@ -14,6 +14,7 @@ const (
 
 type Function struct {
 	Name     string    `json:"name"`
+	FullName string    `json:"full_name,omitempty"` // unnormalized linker/DWARF name, stable across address changes
 	Addr     uint64    `json:"addr"`
 	CodeSize uint64    `json:"code_size"`
 	Type     FuncType  `json:"type"`
@@ -26,6 +27,12 @@ type Function struct {
 	Wasm         bool           `json:"-"`
 	Source       AddrSourceType `json:"-"`
 	pclnBytes    uint64
+
+	// References are a separate file-range union, not part of Size or deletion savings.
+	// Nil means instruction reference analysis was unavailable or disabled.
+	ReferencedBytes        *uint64            `json:"referenced_bytes,omitempty"`
+	ReferenceEvidence      []FunctionEvidence `json:"reference_evidence,omitempty"`
+	ReferenceEvidenceCount int                `json:"reference_evidence_count,omitzero"`
 
 	disasm       AddrSpace
 	codeEvidence AddrSpace

@@ -120,7 +120,19 @@ func Analyze(name string, reader io.ReaderAt, size uint64, options Options) (*re
 	if !isWasm && !options.SkipSymbol && !slices.Contains(analyzers, entity.AnalyzerSymbol) {
 		coverage.Notes = append(coverage.Notes, "Native symbol table unavailable")
 	}
+	var buildInfo *debug.BuildInfo
+	if k.BuildInfo != nil {
+		buildInfo = k.BuildInfo.ModInfo
+	}
+	referencesAvailable := !isWasm && slices.Contains(analyzers, entity.AnalyzerDisasm)
+	_ = k.Deps.Trie.Walk(func(_ string, pkg *entity.Package) error {
+		for fn := range pkg.Functions {
+			fn.SetReferenceSummary(sections, options.CoverageDetails, referencesAvailable)
+		}
+		return nil
+	})
 	return &result.Result{
+		BuildInfo: buildInfo,
 		Coverage:  coverage,
 		Name:      filepath.Base(name),
 		Size:      k.Size,

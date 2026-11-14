@@ -182,6 +182,7 @@ func (k *KnownInfo) AddDwarfSubProgram(
 	fn := &entity.Function{
 		Source:   entity.AddrSourceDwarf,
 		Name:     subEntryName,
+		FullName: subEntryName,
 		Addr:     addr,
 		CodeSize: size,
 		Type:     typ,

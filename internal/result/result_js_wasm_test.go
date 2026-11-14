@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/Zxilly/go-size-analyzer/internal/entity/marshaler"
 	"github.com/Zxilly/go-size-analyzer/internal/result"
 )
 
@@ -37,9 +38,11 @@ func TestResultMarshalJavaScript(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("Result", func(t *testing.T) {
+		detailJSON, err := json.Marshal(&r, json.WithMarshalers(marshaler.GetFileDetailMarshaler()))
+		require.NoError(t, err)
 		jsVal := r.MarshalJavaScript()
 		jsStr := stringify.Invoke(jsVal).String()
-		assert.JSONEq(t, string(testdataJSON), jsStr)
+		assert.JSONEq(t, string(detailJSON), jsStr)
 	})
 
 	var testdataJSONVal map[string]any

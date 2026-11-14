@@ -15,6 +15,7 @@ import (
 type JSONOption struct {
 	Indent        *int
 	HideDetail    bool
+	FileDetail    bool
 	EscapeForHTML bool
 }
 
@@ -31,6 +32,8 @@ func JSON(r any, writer io.Writer, options *JSONOption) error {
 	}
 	if options.HideDetail {
 		jsonOptions = append(jsonOptions, json.WithMarshalers(marshaler.GetFileCompactMarshaler()))
+	} else if options.FileDetail {
+		jsonOptions = append(jsonOptions, json.WithMarshalers(marshaler.GetFileDetailMarshaler()))
 	}
 
 	err := json.MarshalWrite(writer, r, jsonOptions...)

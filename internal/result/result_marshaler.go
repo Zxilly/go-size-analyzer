@@ -22,7 +22,14 @@ func (r *Result) MarshalJavaScript() any {
 		"analyzers": analyzers,
 	}
 	if r.Coverage != nil {
-		value["coverage"] = r.Coverage.MarshalJavaScript()
+		// The UI consumes coverage summaries, not the complete physical ledger.
+		// Keep the original available to full JSON and other consumers.
+		coverage := *r.Coverage
+		coverage.Regions = nil
+		value["coverage"] = coverage.MarshalJavaScript()
+	}
+	if r.BuildInfo != nil {
+		value["build_info"] = buildInfoJavaScript(r.BuildInfo)
 	}
 	return value
 }

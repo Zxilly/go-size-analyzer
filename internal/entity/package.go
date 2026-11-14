@@ -82,10 +82,15 @@ func NewPackageWithGorePackage(gp *gore.Package, name string, typ PackageType, p
 			pclnSize = NewPclnSymbolSize(f.Func)
 		}
 
+		var fullName string
+		if f.Func != nil && f.Func.Sym != nil {
+			fullName = utils.Deduplicate(f.Func.Name)
+		}
 		return &Function{
 			Wasm:     isWasm,
 			Source:   AddrSourceGoPclntab,
 			Name:     utils.Deduplicate(f.Name),
+			FullName: fullName,
 			Addr:     f.Offset,
 			CodeSize: getCodeSize(f),
 			PclnSize: pclnSize,
