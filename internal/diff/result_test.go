@@ -58,5 +58,11 @@ func TestCommonResultFromFullAndCompactJSON(t *testing.T) {
 	err = json.UnmarshalRead(fullJSONData, crFromFullJSON)
 	require.NoError(t, err)
 
-	assert.Equal(t, crFromCompactJSON, crFromFullJSON) //nolint:testifylint // workaround github.com/Antonboom/testifylint/issues/198
+	assert.Equal(t, crFromCompactJSON.Size, crFromFullJSON.Size)
+	assert.Equal(t, crFromCompactJSON.Sections, crFromFullJSON.Sections)
+	comparison := newDiffResult(crFromCompactJSON, crFromFullJSON)
+	assert.Empty(t, comparison.Packages)
+	assert.Empty(t, comparison.Functions, "omitted compact details do not mean functions were deleted")
+	assert.Empty(t, comparison.Symbols, "compact retains the same symbol inventory")
+	assert.Contains(t, diagnosticCodes(comparison.Diagnostics), "function_details_unavailable")
 }

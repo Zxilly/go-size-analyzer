@@ -2,6 +2,7 @@ package diff
 
 import (
 	"cmp"
+	"runtime/debug"
 	"slices"
 )
 
@@ -12,8 +13,14 @@ type diffResult struct {
 	OldSize int64 `json:"old_size"`
 	NewSize int64 `json:"new_size"`
 
-	Packages []diffPackage `json:"packages"`
-	Sections []diffSection `json:"sections"`
+	Packages     []diffPackage    `json:"packages"`
+	Sections     []diffSection    `json:"sections"`
+	Functions    []diffFunction   `json:"functions,omitempty"`
+	Symbols      []diffSymbol     `json:"symbols,omitempty"`
+	Diagnostics  []diagnostic     `json:"diagnostics,omitempty"`
+	OldBuildInfo *debug.BuildInfo `json:"old_build_info,omitempty"`
+	NewBuildInfo *debug.BuildInfo `json:"new_build_info,omitempty"`
+	BuildChanges []buildChange    `json:"build_changes,omitempty"`
 }
 
 type changeType string
@@ -131,6 +138,24 @@ func newDiffResult(newResult, oldResult *commonResult) diffResult {
 		Packages: processPackages(newResult.Packages, oldResult.Packages),
 		Sections: processSections(newResult.Sections, oldResult.Sections),
 	}
+	ret.Functions, ret.Diagnostics = processFunctions(newResult, oldResult)
+	symbols, symbolNotes := processSymbols(newResult, oldResult)
+	ret.Symbols = symbols
+	ret.Diagnostics = append(ret.Diagnostics, symbolNotes...)
+	ret.OldBuildInfo, ret.NewBuildInfo = oldResult.BuildInfo, newResult.BuildInfo
+	ret.BuildChanges, ret.Diagnostics = compareContext(oldResult, newResult, ret.Diagnostics)
+	slices.SortFunc(ret.Diagnostics, func(a, b diagnostic) int {
+		if n := cmp.Compare(a.Code, b.Code); n != 0 {
+			return n
+		}
+		if n := cmp.Compare(a.Package, b.Package); n != 0 {
+			return n
+		}
+		if n := cmp.Compare(a.Identity, b.Identity); n != 0 {
+			return n
+		}
+		return cmp.Compare(a.Message, b.Message)
+	})
 
 	slices.SortFunc(ret.Packages, func(a, b diffPackage) int {
 		return diffBaseCmp(a.Base, b.Base)

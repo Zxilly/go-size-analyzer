@@ -53,7 +53,7 @@ func Diff(writer io.Writer, options Options) error {
 	switch options.Format {
 	case printer.FormatJSON:
 		return printer.JSON(&diff, writer, &printer.JSONOption{
-			Indent: nil,
+			Indent: options.Indent,
 		})
 	case printer.FormatText:
 		return text(&diff, writer)

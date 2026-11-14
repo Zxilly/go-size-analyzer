@@ -82,5 +82,8 @@ func TestNewDiffResult(t *testing.T) {
 	}
 
 	result := newDiffResult(newResult, oldResult)
-	assert.Equal(t, expected, result)
+	assert.Equal(t, expected.Packages, result.Packages)
+	assert.Equal(t, expected.Sections, result.Sections)
+	assert.Empty(t, result.Functions)
+	assert.Contains(t, diagnosticCodes(result.Diagnostics), "function_details_unavailable")
 }

@@ -1,6 +1,8 @@
 package diff
 
 import (
+	"bytes"
+	"encoding/json/v2"
 	"io"
 	"os"
 	"path/filepath"
@@ -12,6 +14,29 @@ import (
 	"github.com/Zxilly/go-size-analyzer/internal/printer"
 	"github.com/Zxilly/go-size-analyzer/internal/test"
 )
+
+func TestDiffAPIRetainsFunctionChangesAndJSONIndent(t *testing.T) {
+	dir := t.TempDir()
+	oldPath, newPath := filepath.Join(dir, "old.json"), filepath.Join(dir, "new.json")
+	for path, r := range map[string]*commonResult{
+		oldPath: functionReport(measured("f", 12, 3, 5)),
+		newPath: functionReport(measured("f", 12, 3, 25)),
+	} {
+		data, err := json.Marshal(r)
+		require.NoError(t, err)
+		require.NoError(t, os.WriteFile(path, data, 0o600))
+	}
+	var output bytes.Buffer
+	indent := 2
+	require.NoError(t, Diff(&output, Options{OldTarget: oldPath, NewTarget: newPath, Format: "json", Indent: &indent}))
+	require.Contains(t, output.String(), "\n  ")
+	var result diffResult
+	require.NoError(t, json.Unmarshal(output.Bytes(), &result))
+	require.Empty(t, result.Packages)
+	require.Len(t, result.Functions, 1)
+	require.Equal(t, "p.f", result.Functions[0].FullName)
+	require.Equal(t, int64(20), result.Functions[0].ReferencedBytes.Delta)
+}
 
 func TestDiffJSONAndBinary(t *testing.T) {
 	tests := []struct {

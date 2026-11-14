@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"strings"
 
 	"github.com/dustin/go-humanize"
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -95,7 +96,66 @@ func text(r *diffResult, writer io.Writer) error {
 		signedBytesString(r.NewSize - r.OldSize),
 	})
 
-	data := []byte(t.Render() + "\n")
+	var output strings.Builder
+	output.WriteString(t.Render() + "\n")
+	if len(r.BuildChanges) > 0 {
+		output.WriteString("\nBuild context changes:\n")
+		for _, change := range r.BuildChanges {
+			fmt.Fprintf(&output, "  %s: %s -> %s\n", change.Field, change.From, change.To)
+		}
+	}
+	if len(r.Functions) > 0 {
+		functions := table.NewWriter()
+		functions.SetStyle(utils.GetTableStyle())
+		functions.SetTitle("Function changes (component bytes can overlap)")
+		functions.AppendHeader(table.Row{"Package / Function", "Change", "Code old -> new (delta)", "Pcln old -> new (delta)", "Referenced old -> new (delta)"})
+		for _, function := range r.Functions {
+			name := function.FullName
+			if name == "" {
+				name = displayFunction(commonFunction{Name: function.Name, Receiver: function.Receiver})
+			}
+			functions.AppendRow(table.Row{function.Package + "\n" + name, function.ChangeType, metricString(function.CodeSize), metricString(function.PclnBytes), metricString(function.ReferencedBytes)})
+		}
+		output.WriteString("\n" + functions.Render() + "\n")
+	}
+	if len(r.Symbols) > 0 {
+		symbols := table.NewWriter()
+		symbols.SetStyle(utils.GetTableStyle())
+		symbols.SetTitle("Symbol changes (reported ranges can overlap)")
+		symbols.AppendHeader(table.Row{"Package / Symbol", "Type", "Change", "Range size old -> new (delta)"})
+		for _, symbol := range r.Symbols {
+			symbols.AppendRow(table.Row{symbol.Package + "\n" + symbol.Name, symbol.Type, symbol.ChangeType, metricString(symbol.Size)})
+		}
+		output.WriteString("\n" + symbols.Render() + "\n")
+	}
+	if len(r.Diagnostics) > 0 {
+		output.WriteString("\nComparison notes:\n")
+		shownCollisions := map[string]int{}
+		omittedCollisions := map[string]int{}
+		for _, note := range r.Diagnostics {
+			if note.Code == "function_identity_collision" || note.Code == "symbol_identity_collision" {
+				if shownCollisions[note.Code] >= 10 {
+					omittedCollisions[note.Code]++
+					continue
+				}
+				shownCollisions[note.Code]++
+			}
+			context := ""
+			if note.Package != "" {
+				context = " [" + note.Package + "]"
+			}
+			if note.Identity != "" {
+				context += " " + note.Identity
+			}
+			fmt.Fprintf(&output, "  %s%s: %s\n", note.Code, context, note.Message)
+		}
+		for _, code := range []string{"function_identity_collision", "symbol_identity_collision"} {
+			if count := omittedCollisions[code]; count > 0 {
+				fmt.Fprintf(&output, "  %s: %d additional ambiguous identities omitted from text; JSON diff preserves every entry.\n", code, count)
+			}
+		}
+	}
+	data := []byte(output.String())
 
 	slog.Info("Diff report rendered")
 
@@ -104,4 +164,11 @@ func text(r *diffResult, writer io.Writer) error {
 	slog.Info("Diff report written")
 
 	return err
+}
+
+func metricString(m *byteChange) string {
+	if m == nil {
+		return "unavailable"
+	}
+	return fmt.Sprintf("%s -> %s (%s)", humanize.Bytes(m.From), humanize.Bytes(m.To), signedBytesString(m.Delta))
 }
