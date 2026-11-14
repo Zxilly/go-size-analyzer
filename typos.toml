@@ -7,6 +7,10 @@ extend-exclude = [
     "result.json"
 ]
 
+[default]
+# Preserve the exact marker bytes in the controlled binary attribution fixture.
+extend-ignore-re = ["cycle_a_payload_24a6ba671f5e4bd19ffc"]
+
 [default.extend-words]
 typ = "typ"
 rela = "rela"
