@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	charm.land/bubbles/v2 v2.2.1
 	charm.land/bubbletea/v2 v2.1.1
-	charm.land/lipgloss/v2 v2.0.6
+	charm.land/lipgloss/v2 v2.1.0
 	github.com/ZxillyFork/gore v0.0.0-20260905164552-56042fb9d356
 	github.com/ZxillyFork/gosym v0.0.0-20240510024817-deed2b882525
 	github.com/ZxillyFork/trie v0.0.0-20240512061834-f75150731646
@@ -19,7 +19,7 @@ require (
 	github.com/dustin/go-humanize v1.1.0
 	github.com/eliben/watgo v0.9.0
 	github.com/go-delve/delve v1.27.2
-	github.com/jedib0t/go-pretty/v6 v6.8.3
+	github.com/jedib0t/go-pretty/v6 v6.9.1
 	github.com/knadh/profiler v0.2.0
 	github.com/muesli/reflow v0.3.0
 	github.com/nikolaydubina/treemap v1.2.5
@@ -28,10 +28,10 @@ require (
 	github.com/puzpuzpuz/xsync/v4 v4.5.0
 	github.com/samber/lo v1.53.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/arch v0.32.0
+	golang.org/x/arch v0.33.0
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
 	golang.org/x/net v0.62.0
-	golang.org/x/sync v0.24.0
+	golang.org/x/sync v0.25.0
 )
 
 require (
