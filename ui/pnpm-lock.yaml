@@ -48,8 +48,8 @@ importers:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
       react-dropzone:
-        specifier: ^20.1.4
-        version: 20.1.4(@types/react@19.3.0)(react@19.3.1)
+        specifier: ^20.2.0
+        version: 20.2.0(@types/react@19.3.0)(react@19.3.1)
       react-use:
         specifier: ^17.6.1
         version: 17.6.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -289,6 +289,10 @@ packages:
     resolution: {integrity: sha512-fWegr+WsEsiMVW4KUNdIIzzMTZSzNiqhy0//6+2MRi2d5NFNsL/AYwBQW8eBnRbTBVRnDVzjaJEUqKaCWjMMdQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-string-parser@7.29.14':
+    resolution: {integrity: sha512-CXvKMFvM80ihI7Vox9jb+kQjnyjESQNPM+vB7U0Zz6TWuZA+Z/FL0QPMH300h33qJtIx+REeBhXqWOPW48TcAQ==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-string-parser@7.29.7':
     resolution: {integrity: sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==}
     engines: {node: '>=6.9.0'}
@@ -307,6 +311,11 @@ packages:
 
   '@babel/parser@7.29.13':
     resolution: {integrity: sha512-fJM50YYjlTiBhgdkGmC1tBpv+FMAyo4annf2X6Aks+0yRlaiVkYW/3f07xAfVVkYIoZ9fFZp+mEThUFnuybhkQ==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  '@babel/parser@7.29.14':
+    resolution: {integrity: sha512-VL220vXuyO2z3rNIQwY7ftj9UwpqOt+33sH+sBWkOekbsSR2g7EEMnOx24ZlCH0xOA3DM/33SifVFGbnJD8r/w==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -349,6 +358,10 @@ packages:
 
   '@babel/types@7.29.11':
     resolution: {integrity: sha512-WCsemW40Cpc6gouC1SrY6PBaZ+oLRlEVY9XBvZBI7il/HyUrb2nJ505wE1MHEFyDZNnrWDEuy4jL50WVHfTTSQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/types@7.29.14':
+    resolution: {integrity: sha512-UjI/dKmwJwT9pOszJitq2G6EObZPnsZUfdCr92z2TlF3EZK9J3EdfOKUrCzHl6wFthbzwhzl1Soc/UIwxRiq6w==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.29.7':
@@ -2680,8 +2693,8 @@ packages:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
 
-  file-selector@5.0.1:
-    resolution: {integrity: sha512-v0g/PTeuQgvKCBrVRsfVudvwXlRHSWHEQkVgKawgCGHkEpKA1clp3Om5jvEVhz8G9W/mOYjJH9FhkH4C888PgQ==}
+  file-selector@5.0.2:
+    resolution: {integrity: sha512-1hAy178VaMCWWj/vSUITOTpLWH1PoGW3eO7i3kPIppuSyOHBm3o1cHq+CvKAM5hQKQXlazrDt/3K1HCXgs7MpQ==}
     engines: {node: '>= 22'}
 
   filelist@1.0.4:
@@ -3496,8 +3509,8 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-dropzone@20.1.4:
-    resolution: {integrity: sha512-LyjT9iQySNkJGC6yL+XTlmfTRxHhPx0eSoTh+WlR0Ge+W35rLcRH/oH7w5bzijfPHeCFcLnO9G7i+hX+LINAAA==}
+  react-dropzone@20.2.0:
+    resolution: {integrity: sha512-FRlcSp6UFT9Etg57U4+g6O6qF/jH7sUh2Hz67lQlrZJa/3FjfAFvw7DwDSItiG2vBUXTdh2wroEwXPPg7o/jkg==}
     engines: {node: '>= 22'}
     peerDependencies:
       '@types/react': '*'
@@ -3779,6 +3792,7 @@ packages:
 
   tldts-core@7.4.20:
     resolution: {integrity: sha512-C630TWXZCZmLq0F2bW4QqwnaaxCQ/svpAqvJwnC4JvgEM5ohhBnGsEzTLSOXcN+xjz+kEaHS5uoWIw2klnqd0A==}
+    deprecated: Partial release, see https://github.com/remusao/tldts/issues/2735. Use >=7.4.22.
 
   tldts@7.4.19:
     resolution: {integrity: sha512-48dH6aSpQnpbzDUc4vIQZ1VjB8tkK+e8c1yx05/SZK+rkssgjEOlxDd/yU8/a4vGYQ9vRgJr9dwMq9TJ0b3X2Q==}
@@ -4276,6 +4290,8 @@ snapshots:
 
   '@babel/helper-string-parser@7.29.13': {}
 
+  '@babel/helper-string-parser@7.29.14': {}
+
   '@babel/helper-string-parser@7.29.7': {}
 
   '@babel/helper-validator-identifier@7.29.7': {}
@@ -4290,6 +4306,10 @@ snapshots:
   '@babel/parser@7.29.13':
     dependencies:
       '@babel/types': 7.29.11
+
+  '@babel/parser@7.29.14':
+    dependencies:
+      '@babel/types': 7.29.14
 
   '@babel/parser@7.29.7':
     dependencies:
@@ -4332,6 +4352,11 @@ snapshots:
   '@babel/types@7.29.11':
     dependencies:
       '@babel/helper-string-parser': 7.29.13
+      '@babel/helper-validator-identifier': 7.29.7
+
+  '@babel/types@7.29.14':
+    dependencies:
+      '@babel/helper-string-parser': 7.29.14
       '@babel/helper-validator-identifier': 7.29.7
 
   '@babel/types@7.29.7':
@@ -5629,7 +5654,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.13':
     dependencies:
-      '@babel/parser': 7.29.13
+      '@babel/parser': 7.29.14
       '@vue/shared': 3.5.13
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -5642,7 +5667,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.13':
     dependencies:
-      '@babel/parser': 7.29.13
+      '@babel/parser': 7.29.14
       '@vue/compiler-core': 3.5.13
       '@vue/compiler-dom': 3.5.13
       '@vue/compiler-ssr': 3.5.13
@@ -6617,7 +6642,7 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
-  file-selector@5.0.1: {}
+  file-selector@5.0.2: {}
 
   filelist@1.0.4:
     dependencies:
@@ -7594,10 +7619,10 @@ snapshots:
       react: 19.3.1
       scheduler: 0.28.0
 
-  react-dropzone@20.1.4(@types/react@19.3.0)(react@19.3.1):
+  react-dropzone@20.2.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       attr-accept: 4.0.1
-      file-selector: 5.0.1
+      file-selector: 5.0.2
       react: 19.3.1
     optionalDependencies:
       '@types/react': 19.3.0
