@@ -48,8 +48,8 @@ importers:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
       react-dropzone:
-        specifier: ^20.2.0
-        version: 20.2.0(@types/react@19.3.0)(react@19.3.1)
+        specifier: ^20.2.1
+        version: 20.2.1(@types/react@19.3.0)(react@19.3.1)
       react-use:
         specifier: ^17.6.1
         version: 17.6.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -2717,8 +2717,8 @@ packages:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
 
-  file-selector@5.0.2:
-    resolution: {integrity: sha512-1hAy178VaMCWWj/vSUITOTpLWH1PoGW3eO7i3kPIppuSyOHBm3o1cHq+CvKAM5hQKQXlazrDt/3K1HCXgs7MpQ==}
+  file-selector@5.0.3:
+    resolution: {integrity: sha512-d15nlW+KKq82TlItRvCHtJ8NXCX0nwz2SEUR1MOT8W50c5q2se551ZFdhITFrWohl/5wbRPfMMF9jq4Oj1xRGQ==}
     engines: {node: '>= 22'}
 
   filelist@1.0.4:
@@ -3496,6 +3496,10 @@ packages:
     resolution: {integrity: sha512-LJlKCCAUFKOuZxipUdYw1NzIITEsPcgyOG9LkvRJvuKj/bRzbuRY0ARXvL0pWGpsZvn8jku+LMep2eU0seHp8g==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postcss@8.5.33:
+    resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
+    engines: {node: ^10 || ^12 || >=14}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3530,8 +3534,8 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-dropzone@20.2.0:
-    resolution: {integrity: sha512-FRlcSp6UFT9Etg57U4+g6O6qF/jH7sUh2Hz67lQlrZJa/3FjfAFvw7DwDSItiG2vBUXTdh2wroEwXPPg7o/jkg==}
+  react-dropzone@20.2.1:
+    resolution: {integrity: sha512-8ldzI42a+iz6jlC5t0HoOO5ce65dU8ZGo8ZpesL2E57JByC8LBUieMrkGj97YYfgMaYKwkhpkfYxKOCKAekywA==}
     engines: {node: '>= 22'}
     peerDependencies:
       '@types/react': '*'
@@ -3699,6 +3703,10 @@ packages:
   source-map-js@1.2.2:
     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
     engines: {node: '>=0.10.0'}
+
+  source-map-js@1.2.4:
+    resolution: {integrity: sha512-J7ZjMvHd9O1fcT/5V09QWaaSl2BbWx3F6O08spde82Namf9UB0GxRVIPiNbVsdKkoizHiSpTodo3vp2bAy91MA==}
+    engines: {node: '>=6.0.0'}
 
   source-map-support@0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
@@ -5711,7 +5719,7 @@ snapshots:
       '@vue/shared': 3.5.13
       entities: 4.5.0
       estree-walker: 2.0.2
-      source-map-js: 1.2.2
+      source-map-js: 1.2.4
 
   '@vue/compiler-dom@3.5.13':
     dependencies:
@@ -5727,8 +5735,8 @@ snapshots:
       '@vue/shared': 3.5.13
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.32
-      source-map-js: 1.2.2
+      postcss: 8.5.33
+      source-map-js: 1.2.4
 
   '@vue/compiler-ssr@3.5.13':
     dependencies:
@@ -6700,7 +6708,7 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
-  file-selector@5.0.2: {}
+  file-selector@5.0.3: {}
 
   filelist@1.0.4:
     dependencies:
@@ -7643,6 +7651,12 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.2
 
+  postcss@8.5.33:
+    dependencies:
+      nanoid: 3.3.20
+      picocolors: 1.1.1
+      source-map-js: 1.2.4
+
   prelude-ls@1.2.1: {}
 
   pretty-format@27.5.1:
@@ -7674,10 +7688,10 @@ snapshots:
       react: 19.3.1
       scheduler: 0.28.0
 
-  react-dropzone@20.2.0(@types/react@19.3.0)(react@19.3.1):
+  react-dropzone@20.2.1(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       attr-accept: 4.0.1
-      file-selector: 5.0.2
+      file-selector: 5.0.3
       react: 19.3.1
     optionalDependencies:
       '@types/react': 19.3.0
@@ -7866,6 +7880,8 @@ snapshots:
   sisteransi@1.0.5: {}
 
   source-map-js@1.2.2: {}
+
+  source-map-js@1.2.4: {}
 
   source-map-support@0.5.21:
     dependencies:
